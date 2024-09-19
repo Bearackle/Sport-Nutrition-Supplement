@@ -1,9 +1,9 @@
 export const runtime = "edge";
 
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/header/Header";
 import type { Metadata } from "next";
 import "../globals.css";
-import { Footer } from "@/components/Footer";
-import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Sport Nutrition Supplements",
@@ -21,7 +21,8 @@ export default function MainLayout({
 }>) {
   return (
     <>
-      <Navbar />
+      <Header />
+      {/* <Navbar /> */}
       {children}
       <Footer />
     </>
