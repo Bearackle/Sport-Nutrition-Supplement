@@ -43,12 +43,12 @@ export const Header = () => {
             Hệ thống cửa hàng
           </p>
         </div>
-        <div className="flex cursor-pointer flex-row items-center gap-2">
+        <Link href="login" className="flex flex-row items-center gap-2">
           <Image src={accountIcon} alt="" className="size-[1.75rem]" />
           <p className="text-center text-[0.75rem] font-semibold text-white">
             Đăng nhập
           </p>
-        </div>
+        </Link>
         <div className="">
           <button className="flex flex-row items-center gap-2 rounded-[0.625rem] border-[0.1rem] border-solid border-white px-3 py-2">
             <Image src={cartIcon} alt="" className="size-[1.75rem]" />

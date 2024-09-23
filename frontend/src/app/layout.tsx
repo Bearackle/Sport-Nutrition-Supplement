@@ -1,4 +1,5 @@
 export const runtime = "edge";
+import { roboto } from "@/lib/font";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -15,8 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi">
-      <body className={cn("flex w-full flex-col items-center")}>
-      <div className="relative flex w-full max-w-[120rem] flex-col items-center">
+      <body
+        className={cn("flex w-full flex-col items-center", roboto.className)}
+      >
+        <div className="relative flex w-full max-w-[120rem] flex-col items-center">
           <main className="w-full overflow-hidden bg-app-silver">
             {children}
           </main>
