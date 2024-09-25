@@ -8,13 +8,14 @@ export default function SearchInput() {
     e.preventDefault();
   };
   return (
-    <form action="">
+    <form action="" className="w-[25rem] rounded-[3.125rem] bg-white">
       <input
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Nhập tên sản phẩm..."
-        className="w-[15rem] rounded-[0.375rem] px-4 py-2 text-[0.875rem] focus:outline-none"
+        className="grow bg-transparent px-4 py-2 text-[0.875rem] focus:outline-none"
       />
+      <button type="submit"></button>
     </form>
   );
 }

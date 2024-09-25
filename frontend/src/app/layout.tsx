@@ -20,7 +20,7 @@ export default function RootLayout({
         className={cn("flex w-full flex-col items-center", roboto.className)}
       >
         <div className="relative flex w-full max-w-[120rem] flex-col items-center">
-          <main className="w-full overflow-hidden bg-app-silver">
+          <main className="w-full overflow-hidden bg-[#F5F5FA]">
             {children}
           </main>
         </div>

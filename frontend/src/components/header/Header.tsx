@@ -11,7 +11,13 @@ import phoneIcon from "/public/phone-icon.webp";
 
 export const Header = () => {
   return (
-    <header className="bg-[#066196]">
+    <header
+      style={{
+        background:
+          "linear-gradient(180deg, rgba(63,133,233,1) 0%, rgba(48,116,225,1) 50%, rgba(37,105,222,1) 100%)",
+        backgroundColor: "rgb(63, 133, 233)",
+      }}
+    >
       <div className="mx-auto flex max-w-[75rem] flex-row items-center gap-6 py-2">
         <Link href="/" className="flex flex-row items-center gap-2">
           <Image src={logo} alt="logo" className="size-[4rem]" />
