@@ -8,6 +8,12 @@ import googleLogo from "/public/google-icon.svg";
 import visibilityIcon from "/public/visibility-icon.svg";
 import visibilityOffIcon from "/public/visibility-off-icon.svg";
 
+// export const metadata: Metadata = {
+//   title: "Đăng ký | 4H",
+//   description:
+//     "4H | Đăng ký để mua sắm các sản phẩm dinh dưỡng thể thao hàng đầu",
+// };
+
 export default function page() {
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");

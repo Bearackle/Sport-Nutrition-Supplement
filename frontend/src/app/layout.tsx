@@ -5,8 +5,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sport Nutrition Supplements",
-  description: "Sport Nutrition Supplements",
+  title: "4H | Sport Nutrition Supplements",
+  description: "4H | Sport Nutrition Supplements",
 };
 
 export default function RootLayout({

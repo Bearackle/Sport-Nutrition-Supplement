@@ -12,17 +12,17 @@ export default function SearchInput() {
   return (
     <form
       action=""
-      className="flex w-[30rem] flex-row items-center rounded-[3.125rem] bg-white"
+      className="flex h-10 w-[30rem] flex-row items-center rounded-[3.125rem] bg-white"
     >
       <input
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
         placeholder="Nhập tên sản phẩm..."
-        className="grow bg-transparent px-4 py-2 text-[0.875rem] focus:outline-none"
+        className="h-full grow bg-transparent px-4 py-2 text-[0.875rem] focus:outline-none"
       />
       <button
         type="submit"
-        className="mr-[0.15625rem] flex size-8 items-center justify-center rounded-[6.25rem] bg-[#B5D4F5]"
+        className="mr-1 flex size-8 items-center justify-center rounded-[6.25rem] bg-[#B5D4F5]"
       >
         <Image src={searchIcon} alt="search" className="size-4" />
       </button>

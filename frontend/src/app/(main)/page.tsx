@@ -2,7 +2,8 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "4H | Thực phẩm thể hình chính hãng",
-  description: "Sport Nutrition Supplements",
+  description:
+    "4H | Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
 };
 
 export default function Home() {
