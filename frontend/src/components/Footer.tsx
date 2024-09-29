@@ -17,26 +17,26 @@ export const Footer = () => {
       <div className={cn("mx-auto max-w-[75rem]")}>
         <div className={cn("flex flex-wrap gap-4")}>
           <div>
-            <h2 className={cn("text-normal font-bold text-app-carbon")}>
+            <h2 className={cn("text-base font-bold text-app-carbon")}>
               Thông tin cửa hàng
             </h2>
             <Image src={logo} alt="logo" className="size-40" />
-            <p className={cn("text-normal text-app-carbon")}>
+            <p className={cn("text-base text-app-carbon")}>
               <strong>Địa chỉ:</strong> 123 Nguyễn Thị Minh Khai, Quận 1, TP.HCM
             </p>
           </div>
           <div>
-            <h2 className={cn("text-normal font-bold text-app-carbon")}>
+            <h2 className={cn("text-base font-bold text-app-carbon")}>
               Hỗ trợ khách hàng
             </h2>
           </div>
           <div>
-            <h2 className={cn("text-normal font-bold text-app-carbon")}>
+            <h2 className={cn("text-base font-bold text-app-carbon")}>
               Chính sách
             </h2>
           </div>
           <div>
-            <h2 className={cn("text-normal font-bold text-app-carbon")}>
+            <h2 className={cn("text-base font-bold text-app-carbon")}>
               Tổng đài hỗ trợ
             </h2>
           </div>

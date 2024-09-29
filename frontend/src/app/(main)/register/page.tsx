@@ -143,7 +143,7 @@ export default function page() {
           </div>
           <button
             type="submit"
-            className="text-normal w-full border-[2px] border-solid border-[#266196] bg-white py-3 font-bold text-[#266196] transition-all duration-300 hover:bg-[#266196] hover:text-white"
+            className="w-full border-[2px] border-solid border-[#266196] bg-white py-3 text-base font-bold text-[#266196] transition-all duration-300 hover:bg-[#266196] hover:text-white"
           >
             Đăng ký
           </button>

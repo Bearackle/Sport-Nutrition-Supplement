@@ -1,3 +1,4 @@
+import SideBar from "@/components/SideBar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,8 +9,9 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <div className="w-full">
-      <div className="h-screen bg-white"></div>
-    </div>
+    <main className="mx-auto flex w-full max-w-[75rem] flex-row justify-around py-8">
+      <SideBar />
+      <div className="h-screen w-[52.5rem]"></div>
+    </main>
   );
 }
