@@ -31,7 +31,7 @@ export const Header = () => {
           <p
             className={cn(
               nunito.className,
-              "max-w-[15rem] text-center text-[0.7rem] font-extrabold uppercase text-white",
+              "max-w-[15rem] text-center text-[0.75rem] font-extrabold uppercase text-white",
             )}
           >
             Thực phẩm dinh dưỡng thể thao sport nutrition supplement

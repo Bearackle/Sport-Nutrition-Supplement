@@ -20,9 +20,7 @@ export default function RootLayout({
         className={cn("flex w-full flex-col items-center", inter.className)}
       >
         <div className="relative flex w-full flex-col items-center">
-          <main className="w-full overflow-hidden bg-[#EDF0F3]">
-            {children}
-          </main>
+          <main className="w-full bg-[#EDF0F3]">{children}</main>
         </div>
       </body>
     </html>
