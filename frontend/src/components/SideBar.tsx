@@ -1,21 +1,53 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+
+// ** Import images
+import allAccessories from "/public/categories/all-accessories.svg";
+import allDiet from "/public/categories/all-diet.png";
+import allElements from "/public/categories/all-elements.png";
+import allFat from "/public/categories/all-fat.png";
+import allMass from "/public/categories/all-mass.png";
+import allPreworkout from "/public/categories/all-preworkout.png";
 import allProducts from "/public/categories/all-products.svg";
+import allVitamin from "/public/categories/all-vitamin.png";
+import allWhey from "/public/categories/all-whey.png";
 import amino from "/public/categories/amino.svg";
+import arginine from "/public/categories/arginine.png";
 import arrow from "/public/categories/arrow.svg";
+import bcaaeaa from "/public/categories/BCAA-EAA.png";
+import bcaa from "/public/categories/BCAA.png";
+import betaAlanine from "/public/categories/beta-alanine.png";
+import caffeine from "/public/categories/caffeine.png";
+import citrulline from "/public/categories/citrulline.png";
+import creatine from "/public/categories/creatine.png";
 import diet from "/public/categories/diet.svg";
+import eaa from "/public/categories/EAA.png";
 import element from "/public/categories/element.png";
 import fatBurner from "/public/categories/fat-burner.svg";
+import fatCaffeine from "/public/categories/fat-caffeine.png";
+import fatNoCaffeine from "/public/categories/fat-no-caffeine.png";
+import hightMass from "/public/categories/high-mass.png";
 import lookup from "/public/categories/lookup.svg";
 import massGainer from "/public/categories/mass-gainer.svg";
+import mediumMass from "/public/categories/medium-mass.png";
+import otherElements from "/public/categories/other-elements.png";
 import practice from "/public/categories/practice.svg";
+import preworkoutCaffeine from "/public/categories/preworkout-caffeine.png";
+import preworkoutNoCaffeine from "/public/categories/preworkout-no-caffeine.png";
+import taurine from "/public/categories/taurine.png";
+import vitaminBeauty from "/public/categories/vitamin-beauty.png";
+import vitaminHealthy from "/public/categories/vitamin-healthy.png";
 import vitamin from "/public/categories/vitamin.svg";
+import wheyBlend from "/public/categories/whey-blend.png";
+import wheyPlant from "/public/categories/whey-plant.png";
+import wheyProtein2 from "/public/categories/whey-protein.png";
 import wheyProtein from "/public/categories/whey-protein.svg";
 import workout from "/public/categories/workout.svg";
+import zma from "/public/categories/zma.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
 
-const navList = [
+export const navList = [
   {
     label: "GIÁ SIÊU ƯU ĐÃI",
     icon: saleIcon,
@@ -32,22 +64,22 @@ const navList = [
     children: [
       {
         label: "Whey Protein",
-        icon: "",
+        icon: wheyProtein2,
         href: "#",
       },
       {
         label: "Protein Trải Dài",
-        icon: "",
+        icon: wheyBlend,
         href: "#",
       },
       {
         label: "Protein Thực Vật",
-        icon: "",
+        icon: wheyPlant,
         href: "#",
       },
       {
         label: "Whey Protein Thực Phẩm Thể Thao (All Products)",
-        icon: "",
+        icon: allWhey,
         href: "#",
       },
     ],
@@ -57,8 +89,18 @@ const navList = [
     icon: massGainer,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất Cả Mass Gainer",
+        icon: allMass,
+        href: "#",
+      },
+      {
+        label: "Mass Cao Năng Lượng",
+        icon: hightMass,
+        href: "#",
+      },
+      {
+        label: "Mass Trung Năng Lượng",
+        icon: mediumMass,
         href: "#",
       },
     ],
@@ -68,8 +110,18 @@ const navList = [
     icon: amino,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất cả BCAA-EAA",
+        icon: bcaaeaa,
+        href: "#",
+      },
+      {
+        label: "EAA",
+        icon: eaa,
+        href: "#",
+      },
+      {
+        label: "BCAA",
+        icon: bcaa,
         href: "#",
       },
     ],
@@ -79,8 +131,18 @@ const navList = [
     icon: fatBurner,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất cả Fat Burner",
+        icon: allFat,
+        href: "#",
+      },
+      {
+        label: "Đốt Mỡ Có Chất Kích Thích",
+        icon: fatCaffeine,
+        href: "#",
+      },
+      {
+        label: "Đốt Mỡ Không Chất Kích Thích",
+        icon: fatNoCaffeine,
         href: "#",
       },
     ],
@@ -90,8 +152,18 @@ const navList = [
     icon: workout,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất Cả Pre-Workout",
+        icon: allPreworkout,
+        href: "#",
+      },
+      {
+        label: "Tăng Sức Mạnh Có Caffeine",
+        icon: preworkoutCaffeine,
+        href: "#",
+      },
+      {
+        label: "Tăng Sức Mạnh Không Caffeine",
+        icon: preworkoutNoCaffeine,
         href: "#",
       },
     ],
@@ -101,8 +173,23 @@ const navList = [
     icon: vitamin,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất Cả Các Loại Vitamin",
+        icon: allVitamin,
+        href: "#",
+      },
+      {
+        label: "Vitamin Sức Khỏe",
+        icon: vitaminHealthy,
+        href: "#",
+      },
+      {
+        label: "Thực phẩm Sắc Đẹp",
+        icon: vitaminBeauty,
+        href: "#",
+      },
+      {
+        label: "ZMA (Zinc - Magnesium - B6)",
+        icon: zma,
         href: "#",
       },
     ],
@@ -112,8 +199,43 @@ const navList = [
     icon: element,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất Cả Các Đơn Chất",
+        icon: allElements,
+        href: "#",
+      },
+      {
+        label: "Creatine",
+        icon: creatine,
+        href: "#",
+      },
+      {
+        label: "Caffeine",
+        icon: caffeine,
+        href: "#",
+      },
+      {
+        label: "Beta Alanine",
+        icon: betaAlanine,
+        href: "#",
+      },
+      {
+        label: "Citrulline",
+        icon: citrulline,
+        href: "#",
+      },
+      {
+        label: "Arginine",
+        icon: arginine,
+        href: "#",
+      },
+      {
+        label: "Taurine",
+        icon: taurine,
+        href: "#",
+      },
+      {
+        label: "Các Đơn Chất Khác",
+        icon: otherElements,
         href: "#",
       },
     ],
@@ -123,8 +245,8 @@ const navList = [
     icon: diet,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất Cả Các Loại Thực Phẩm Ăn Kiêng",
+        icon: allDiet,
         href: "#",
       },
     ],
@@ -134,8 +256,8 @@ const navList = [
     icon: practice,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "Tất Cả Phụ Kiện",
+        icon: allAccessories,
         href: "#",
       },
     ],
@@ -145,8 +267,8 @@ const navList = [
     icon: saleTag,
     children: [
       {
-        label: "",
-        icon: "",
+        label: "XẢ KHO SALE",
+        icon: saleTag,
         href: "#",
       },
     ],
@@ -166,7 +288,9 @@ const navList = [
 const SideBar = () => {
   return (
     <div
-      className={cn("sticky top-8 h-[37.75rem] w-[20rem] rounded-2xl bg-white")}
+      className={cn(
+        "sticky top-8 z-[1] h-[37.75rem] w-[20rem] rounded-2xl bg-white",
+      )}
     >
       <div className="relative">
         <div className="px-4 py-3">
@@ -232,13 +356,13 @@ const SideBar = () => {
                                 "flex min-h-8 flex-row items-center gap-2 text-[0.875rem] font-semibold text-[#333333] hover:text-[#1250DC] hover:underline",
                               )}
                             >
-                              <div className="flex w-8 items-center justify-center">
+                              <div className="flex w-8 flex-shrink-0 items-center justify-center">
                                 {childNav.icon && (
                                   <Image
                                     src={childNav.icon}
                                     alt={childNav.label}
                                     className={cn(
-                                      "h-8 w-auto",
+                                      "h-8 w-auto object-fill",
                                       childNav.icon ? "" : "opacity-0",
                                     )}
                                   />

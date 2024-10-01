@@ -6,6 +6,7 @@ import Link from "next/link";
 
 // ** Import images
 import CategoryBar from "@/components/home/CategoryBar";
+import CouponCard from "@/components/home/CouponCard";
 import cafeMocha from "/public/product-banners/cafe-mocha.jpeg";
 import liciousGainer from "/public/product-banners/licious-gainer-banner.png";
 import megaMass from "/public/product-banners/mega-mass-banner.png";
@@ -15,6 +16,17 @@ export const metadata: Metadata = {
   title: "4H | Thực phẩm thể hình chính hãng",
   description:
     "4H | Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
+};
+
+const data = {
+  title: "MÃ 5% GIẢM TỐI ĐA 50K",
+  shortDescription: [
+    "🔅Áp dụng toàn bộ sản phẩm",
+    "🔅Giảm tối đa 50k",
+    "🔅Áp dụng đơn > 399k",
+  ],
+  conditionUrl: "#",
+  code: "36A666",
 };
 
 export default function Home() {
@@ -30,33 +42,35 @@ export default function Home() {
           >
             <Link
               href="#"
-              className="h-[25.875rem] w-[31.25rem] rounded-[0.9375rem]"
+              className="h-[25.875rem] w-[31.25rem] rounded-[0.625rem]"
             >
               <Image
                 src={cafeMocha}
                 alt="banner"
-                className="h-full w-full rounded-[0.9375rem] object-cover"
+                className="h-full w-full rounded-[0.625rem] object-cover"
               />
             </Link>
             <div className="flex w-[18.75rem] flex-col gap-[0.875rem]">
-              <Link href="#" className="h-[12.5rem] w-full rounded-[0.9375rem]">
+              <Link href="#" className="h-[12.5rem] w-full rounded-[0.625rem]">
                 <Image
                   src={cafeMocha}
                   alt="banner"
-                  className="h-full w-full rounded-[0.9375rem] object-cover"
+                  className="h-full w-full rounded-[0.625rem] object-cover"
                 />
               </Link>
-              <Link href="#" className="h-[12.5rem] w-full rounded-[0.9375rem]">
+              <Link href="#" className="h-[12.5rem] w-full rounded-[0.625rem]">
                 <Image
                   src={cafeMocha}
                   alt="banner"
-                  className="h-full w-full rounded-[0.9375rem] object-cover"
+                  className="h-full w-full rounded-[0.625rem] object-cover"
                 />
               </Link>
             </div>
           </div>
           <CategoryBar />
-          <div className="h-[7.375rem] w-full"></div>
+          <div className="h-[7.375rem] w-full">
+            <CouponCard {...data} />
+          </div>
           <div className="h-[23.875rem] w-full rounded-[0.9375rem] bg-white"></div>
           <div className="flex h-[18rem] w-full flex-row items-center justify-evenly rounded-[0.9375rem] bg-white">
             <Link href="#">

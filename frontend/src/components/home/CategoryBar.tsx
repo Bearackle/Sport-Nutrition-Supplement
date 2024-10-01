@@ -90,7 +90,7 @@ const CategoryBar = () => {
                 )}
               >
                 <div
-                  className="absolute h-full w-full rounded-full opacity-70 blur-[2px]"
+                  className="absolute z-0 h-full w-full rounded-full opacity-70 blur-[2px]"
                   style={{ backgroundColor: `${category.bgColor}` }}
                 ></div>
                 <Image
