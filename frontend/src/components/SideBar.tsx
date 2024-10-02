@@ -361,6 +361,7 @@ const SideBar = () => {
                                   <Image
                                     src={childNav.icon}
                                     alt={childNav.label}
+                                    loading="lazy"
                                     className={cn(
                                       "h-8 w-auto object-fill",
                                       childNav.icon ? "" : "opacity-0",

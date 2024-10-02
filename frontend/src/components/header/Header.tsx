@@ -20,7 +20,7 @@ export const Header = () => {
       }}
     >
       <div className="relative mx-auto flex h-[6.75rem] max-w-[75rem] flex-row items-center justify-between px-8 py-2">
-        <div className="absolute right-8 top-3 flex flex-row items-center gap-1">
+        <div className="absolute right-9 top-2 flex flex-row items-center gap-1">
           <Image src={phoneIcon} alt="phone" className="size-4" />
           <p className="text-center text-[0.75rem] font-semibold text-white">
             Tel: 033 330 3802

@@ -7,6 +7,7 @@ import Link from "next/link";
 // ** Import images
 import CategoryBar from "@/components/home/CategoryBar";
 import CouponCard from "@/components/home/CouponCard";
+import TopDealSection from "@/components/home/TopDealSection";
 import cafeMocha from "/public/product-banners/cafe-mocha.jpeg";
 import liciousGainer from "/public/product-banners/licious-gainer-banner.png";
 import megaMass from "/public/product-banners/mega-mass-banner.png";
@@ -68,15 +69,18 @@ export default function Home() {
             </div>
           </div>
           <CategoryBar />
-          <div className="h-[7.375rem] w-full">
+          <div className="flex h-[7.375rem] w-full flex-row items-center justify-between">
+            <CouponCard {...data} />
+            <CouponCard {...data} />
             <CouponCard {...data} />
           </div>
-          <div className="h-[23.875rem] w-full rounded-[0.9375rem] bg-white"></div>
+          <TopDealSection />
           <div className="flex h-[18rem] w-full flex-row items-center justify-evenly rounded-[0.9375rem] bg-white">
             <Link href="#">
               <Image
                 src={proteinGainer}
                 alt="Protein Gainer"
+                loading="lazy"
                 className="size-[16.5625rem] rounded-[0.625rem] transition-all duration-300 hover:scale-90"
               />
             </Link>
@@ -84,6 +88,7 @@ export default function Home() {
               <Image
                 src={liciousGainer}
                 alt="Licious Gainer"
+                loading="lazy"
                 className="size-[16.5625rem] rounded-[0.625rem] transition-all duration-300 hover:scale-90"
               />
             </Link>
@@ -91,6 +96,7 @@ export default function Home() {
               <Image
                 src={megaMass}
                 alt="Mega Mass"
+                loading="lazy"
                 className="size-[16.5625rem] rounded-[0.625rem] transition-all duration-300 hover:scale-90"
               />
             </Link>

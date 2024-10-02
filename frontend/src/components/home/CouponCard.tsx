@@ -1,4 +1,9 @@
+"use client";
+import { cn } from "@/lib/utils";
+import copy from "clipboard-copy";
 import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 import coupon from "/public/home/coupon.svg";
 
 type TProps = {
@@ -14,8 +19,17 @@ const CouponCard = ({
   conditionUrl,
   code,
 }: TProps) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const handleCopyClick = async () => {
+    try {
+      await copy(code);
+      setIsCopied(true);
+    } catch (error) {
+      console.error("Sao chép mã giảm giá thất bại!", error);
+    }
+  };
   return (
-    <div className="flex h-full w-[16.5rem] flex-row">
+    <div className="flex h-full w-[17rem] flex-row">
       <Image src={coupon} alt="coupon" className="h-full w-auto" />
       <div className="grow rounded-e-[1.25rem] bg-white">
         <strong className="px-1 text-[0.75rem] font-bold leading-[1.21] text-[#C11616]">
@@ -31,6 +45,25 @@ const CouponCard = ({
             </li>
           ))}
         </ul>
+        <div className="mt-1 flex flex-row items-center justify-between px-3">
+          <button
+            onClick={handleCopyClick}
+            className={cn(
+              "rounded-[0.625rem] px-3 py-2 text-[0.6875rem] text-white transition-all duration-300 hover:scale-105 active:scale-100",
+              isCopied
+                ? "border-[1.5px] border-solid border-[#F42406] bg-white text-[#C11616]"
+                : "bg-[#F42406]",
+            )}
+          >
+            {isCopied ? "Copied" : "Copy mã"}
+          </button>
+          <Link
+            href={conditionUrl}
+            className="text-[0.75rem] font-normal leading-[1.21] text-[#2E72D2] underline"
+          >
+            Điều kiện
+          </Link>
+        </div>
       </div>
     </div>
   );
