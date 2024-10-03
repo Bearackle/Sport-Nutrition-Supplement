@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import copy from "clipboard-copy";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import coupon from "/public/home/coupon.svg";
 
@@ -19,13 +20,18 @@ const CouponCard = ({
   conditionUrl,
   code,
 }: TProps) => {
+  const router = useRouter();
   const [isCopied, setIsCopied] = useState(false);
   const handleCopyClick = async () => {
-    try {
-      await copy(code);
-      setIsCopied(true);
-    } catch (error) {
-      console.error("Sao chép mã giảm giá thất bại!", error);
+    if (isCopied) {
+      router.push("#");
+    } else {
+      try {
+        await copy(code);
+        setIsCopied(true);
+      } catch (error) {
+        console.error("Sao chép mã giảm giá thất bại!", error);
+      }
     }
   };
   return (
@@ -45,17 +51,17 @@ const CouponCard = ({
             </li>
           ))}
         </ul>
-        <div className="mt-1 flex flex-row items-center justify-between px-3">
+        <div className="mt-1 flex w-full flex-row items-center justify-between px-3">
           <button
             onClick={handleCopyClick}
             className={cn(
-              "rounded-[0.625rem] px-3 py-2 text-[0.6875rem] text-white transition-all duration-300 hover:scale-105 active:scale-100",
+              "rounded-[0.625rem] px-3 py-2 text-[0.6875rem] font-medium text-white transition-all duration-300 hover:scale-105 active:scale-100",
               isCopied
                 ? "border-[1.5px] border-solid border-[#F42406] bg-white text-[#C11616]"
                 : "bg-[#F42406]",
             )}
           >
-            {isCopied ? "Copied" : "Copy mã"}
+            {isCopied ? "Dùng ngay" : "Lấy mã"}
           </button>
           <Link
             href={conditionUrl}

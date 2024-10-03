@@ -6,8 +6,8 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatPrice(price: number) {
-  return price.toLocaleString("vi-VN", {
+  return new Intl.NumberFormat("vi-VN", {
     style: "currency",
     currency: "VND",
-  });
+  }).format(price);
 }

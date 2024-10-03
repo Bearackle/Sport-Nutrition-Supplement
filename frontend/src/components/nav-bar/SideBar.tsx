@@ -289,7 +289,7 @@ const SideBar = () => {
   return (
     <div
       className={cn(
-        "sticky top-8 z-[1] h-[37.75rem] w-[20rem] rounded-2xl bg-white",
+        "sticky top-8 z-[1] hidden h-[37.75rem] w-[20rem] rounded-2xl bg-white xl:block",
       )}
     >
       <div className="relative">

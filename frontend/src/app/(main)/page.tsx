@@ -1,4 +1,4 @@
-import SideBar from "@/components/SideBar";
+import SideBar from "@/components/nav-bar/SideBar";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import Image from "next/image";
@@ -6,6 +6,7 @@ import Link from "next/link";
 
 // ** Import images
 import CategoryBar from "@/components/home/CategoryBar";
+import ClearanceSaleSection from "@/components/home/ClearanceSaleSection";
 import CouponCard from "@/components/home/CouponCard";
 import TopDealSection from "@/components/home/TopDealSection";
 import cafeMocha from "/public/product-banners/cafe-mocha.jpeg";
@@ -101,6 +102,7 @@ export default function Home() {
               />
             </Link>
           </div>
+          <ClearanceSaleSection />
         </div>
       </div>
     </div>

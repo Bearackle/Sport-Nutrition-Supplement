@@ -1,9 +1,10 @@
 import Image from "next/image";
-import Carousel from "../common/Carousel";
+import { CustomCarousel } from "../common/CustomCarousel";
+import { CarouselItem } from "../ui/carousel";
 import HomeProductCard from "./HomeProductCard";
 import saleIcon from "/public/sale-icon.svg";
 
-const data = Array.from({ length: 5 }, (_, i) => ({
+const data = Array.from({ length: 8 }, (_, i) => ({
   id: i,
   image:
     "https://s3-alpha-sig.figma.com/img/12e6/74fb/2c212ef3f0d69e729019abe60b526a57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=B6mHWBTG3mHNsoTIAaP310gqNaPysqZkXT1fA~Mg9PxuFG7UqLCXHDjyJKpCagoAcLs5FAOpiVYwZ0J--OS1jdiST1GBU5cdVSOUbn7h6xrcY-66N5UZLI3wKiecbwzL-TTC8nKJ32YLquSk4ZOKkWMcf-XY2e6ufTsGWQwLbintnBtC~vJtai8WtPFJz7SHB7b6LLH~cr7jFc832dhC48wstb6Z8id-EhocAXO-yDzHLHlEou~-7ShD5~AFl5zjDFhwRaD6GS9gpXGlVkkLQWzfbaDooav87G7~xUe~q3anIiuCn4cM6uhJYctJeOT3Bm2KP1KhMAP9tAypFF2AiA__",
@@ -22,13 +23,16 @@ const TopDealSection = () => {
         <span>TOP DEAL • SIÊU RẺ</span>
       </h3>
       <div className="w-full px-4">
-        <Carousel itemsPerSlide={3}>
+        <CustomCarousel>
           {data.map((product, index) => (
-            <div key={product.id} className="mx-auto">
+            <CarouselItem
+              key={product.id}
+              className="flex basis-1/3 justify-center"
+            >
               <HomeProductCard index={index} {...product} />
-            </div>
+            </CarouselItem>
           ))}
-        </Carousel>
+        </CustomCarousel>
       </div>
     </div>
   );

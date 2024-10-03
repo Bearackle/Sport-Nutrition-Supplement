@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 // ** Import images
 import accessory from "/public/home/category-bar/accessory.png";
@@ -79,8 +80,8 @@ const categories = [
 
 const CategoryBar = () => {
   return (
-    <div className="w-full rounded-[0.9375rem] bg-white py-3">
-      <div className="no-scrollbar flex h-full w-full flex-row justify-evenly overflow-scroll">
+    <ScrollArea className="w-full whitespace-nowrap rounded-[0.9375rem] bg-white py-3">
+      <div className="flex h-full w-max flex-row justify-evenly">
         {categories.map((category, index) => (
           <div key={index} className="p-1">
             <Link href={category.url}>
@@ -99,14 +100,15 @@ const CategoryBar = () => {
                   className="relative h-[3.25rem] w-auto"
                 />
               </div>
-              <p className="mt-1 w-[6rem] text-center text-[0.875rem]">
+              <p className="mt-1 w-[6rem] max-w-[6rem] whitespace-normal text-center text-[0.875rem]">
                 {category.name}
               </p>
             </Link>
           </div>
         ))}
       </div>
-    </div>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 };
 
