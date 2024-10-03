@@ -39,7 +39,7 @@ const CouponCard = ({
           {shortDescription.map((description, index) => (
             <li
               key={index}
-              className="ml-1 px-1 text-[0.6875rem] font-bold text-black"
+              className="px-1 text-[0.6875rem] font-bold text-black"
             >
               {description}
             </li>
