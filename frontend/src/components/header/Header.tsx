@@ -15,12 +15,18 @@ import trackingIcon from "/public/tracking-icon.svg";
 export const Header = () => {
   return (
     <header
+      className="pb-2 xl:pb-0"
       style={{
         background:
           "linear-gradient(180deg, rgba(63,133,233,1) 0%, rgba(48,116,225,1) 50%, rgba(37,105,222,1) 100%)",
       }}
     >
-      <div className="relative mx-auto flex max-w-[75rem] flex-row items-center justify-center px-8 py-2 xl:h-[6.75rem] xl:justify-between">
+      <div
+        className={cn(
+          "relative mx-auto flex max-w-[75rem] flex-col items-center justify-center px-8 pb-1 pt-2",
+          "xl:h-[6.75rem] xl:flex-row xl:justify-between xl:py-2",
+        )}
+      >
         <div className="absolute right-9 top-2 hidden flex-row items-center gap-1 xl:flex">
           <Image src={phoneIcon} alt="phone" className="size-4" />
           <p className="text-center text-[0.75rem] font-semibold text-white">
@@ -104,6 +110,9 @@ export const Header = () => {
             </button>
           </div>
         </div>
+      </div>
+      <div className="w-full xl:hidden">
+        <SearchInput />
       </div>
     </header>
   );

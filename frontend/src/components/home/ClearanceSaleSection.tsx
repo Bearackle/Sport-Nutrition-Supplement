@@ -1,9 +1,11 @@
 "use client";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { useState } from "react";
 import { CustomCarousel } from "../common/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import HomeProductCard from "./HomeProductCard";
+import arrow from "/public/arrow.svg";
 
 const data1 = Array.from({ length: 8 }, (_, i) => ({
   id: i,
@@ -31,7 +33,7 @@ const ClearanceSaleSection = () => {
   const [activeProduct, setActiveProduct] = useState("clearance-sale");
   const displayData = activeProduct === "clearance-sale" ? data1 : data2;
   return (
-    <div className="w-full rounded-[0.9375rem] bg-white p-4">
+    <div className="w-full rounded-[0.9375rem] bg-white p-4 pb-3">
       <div className="flex flex-row items-center justify-between">
         <h3 className="mb-2 text-[1.25rem] font-bold uppercase leading-[1.21] text-[#333]">
           Thanh lý - Xả kho
@@ -72,6 +74,12 @@ const ClearanceSaleSection = () => {
             </CarouselItem>
           ))}
         </CustomCarousel>
+      </div>
+      <div className="mt-2 flex justify-center">
+        <button className="flex flex-row items-center rounded-[0.625rem] border border-solid border-[#8C8F8D] px-2 py-1 text-[0.875rem]">
+          Xem tất cả{" "}
+          <Image src={arrow} alt="arrow" className="size-4 leading-[1.21]" />
+        </button>
       </div>
     </div>
   );

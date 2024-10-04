@@ -12,7 +12,7 @@ export default function SearchInput() {
   return (
     <form
       action=""
-      className="flex h-10 w-[30rem] flex-row items-center rounded-[3.125rem] bg-white"
+      className="mx-auto flex h-10 w-[92.5%] flex-row items-center rounded-[3.125rem] bg-white xl:w-[30rem]"
     >
       <input
         value={searchQuery}

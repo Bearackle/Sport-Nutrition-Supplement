@@ -2,6 +2,10 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 // ** Import images
+import arrow from "/public/arrow.svg";
+import bcaaeaa from "/public/categories/BCAA-EAA.png";
+import bcaa from "/public/categories/BCAA.png";
+import eaa from "/public/categories/EAA.png";
 import allAccessories from "/public/categories/all-accessories.svg";
 import allDiet from "/public/categories/all-diet.png";
 import allElements from "/public/categories/all-elements.png";
@@ -13,15 +17,11 @@ import allVitamin from "/public/categories/all-vitamin.png";
 import allWhey from "/public/categories/all-whey.png";
 import amino from "/public/categories/amino.svg";
 import arginine from "/public/categories/arginine.png";
-import arrow from "/public/categories/arrow.svg";
-import bcaaeaa from "/public/categories/BCAA-EAA.png";
-import bcaa from "/public/categories/BCAA.png";
 import betaAlanine from "/public/categories/beta-alanine.png";
 import caffeine from "/public/categories/caffeine.png";
 import citrulline from "/public/categories/citrulline.png";
 import creatine from "/public/categories/creatine.png";
 import diet from "/public/categories/diet.svg";
-import eaa from "/public/categories/EAA.png";
 import element from "/public/categories/element.png";
 import fatBurner from "/public/categories/fat-burner.svg";
 import fatCaffeine from "/public/categories/fat-caffeine.png";
