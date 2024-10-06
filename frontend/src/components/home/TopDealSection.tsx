@@ -22,12 +22,12 @@ const TopDealSection = () => {
         <Image src={saleIcon} alt="top deal" className="size-8" />
         <span>TOP DEAL • SIÊU RẺ</span>
       </h3>
-      <div className="w-full px-4">
+      <div className="mx-auto mt-2 w-full px-3 sm:w-[80%] ml:w-full ml:px-4">
         <CustomCarousel>
           {data.map((product, index) => (
             <CarouselItem
               key={product.id}
-              className="flex basis-1/3 justify-center"
+              className="flex basis-full justify-center xs:basis-1/2 ml:basis-1/3"
             >
               <HomeProductCard index={index} {...product} />
             </CarouselItem>

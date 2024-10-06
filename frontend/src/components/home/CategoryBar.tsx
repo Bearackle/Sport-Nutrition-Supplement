@@ -5,14 +5,14 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 // ** Import images
 import accessory from "/public/home/category-bar/accessory.png";
-import bcaa from "/public/home/category-bar/bcaa.svg";
-import bounty from "/public/home/category-bar/bounty.svg";
-import diet from "/public/home/category-bar/diet.svg";
-import element from "/public/home/category-bar/element.svg";
-import lipo from "/public/home/category-bar/lipo.svg";
-import mass from "/public/home/category-bar/mass.svg";
-import preworkout from "/public/home/category-bar/pre-workout.svg";
-import vitamin from "/public/home/category-bar/vitamin.svg";
+import bcaa from "/public/home/category-bar/bcaa.png";
+import bounty from "/public/home/category-bar/bounty.png";
+import diet from "/public/home/category-bar/diet.png";
+import element from "/public/home/category-bar/element.png";
+import lipo from "/public/home/category-bar/lipo.png";
+import mass from "/public/home/category-bar/mass.png";
+import preworkout from "/public/home/category-bar/pre-workout.png";
+import vitamin from "/public/home/category-bar/vitamin.png";
 import whey from "/public/home/category-bar/whey.png";
 
 const categories = [
@@ -87,7 +87,7 @@ const CategoryBar = () => {
             <Link href={category.url}>
               <div
                 className={cn(
-                  "relative mx-auto flex size-[4.5rem] items-center justify-center rounded-full",
+                  "relative mx-auto flex size-16 items-center justify-center rounded-full md:size-[4.5rem]",
                 )}
               >
                 <div
@@ -97,7 +97,7 @@ const CategoryBar = () => {
                 <Image
                   src={category.img}
                   alt={category.name}
-                  className="relative h-[3.25rem] w-auto"
+                  className="relative h-10 w-auto md:h-[3.25rem]"
                 />
               </div>
               <p className="mt-1 w-[6rem] max-w-[6rem] whitespace-normal text-center text-[0.875rem]">

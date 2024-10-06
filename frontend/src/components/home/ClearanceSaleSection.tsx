@@ -34,7 +34,7 @@ const ClearanceSaleSection = () => {
   const displayData = activeProduct === "clearance-sale" ? data1 : data2;
   return (
     <div className="w-full rounded-[0.9375rem] bg-white p-4 pb-3">
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex flex-col items-start justify-start xs:flex-row xs:items-center xs:justify-between">
         <h3 className="mb-2 text-[1.25rem] font-bold uppercase leading-[1.21] text-[#333]">
           Thanh lý - Xả kho
         </h3>
@@ -63,12 +63,12 @@ const ClearanceSaleSection = () => {
           </button>
         </div>
       </div>
-      <div className="mt-2 w-full px-4">
+      <div className="mx-auto mt-2 w-full px-3 sm:w-[80%] ml:w-full ml:px-4">
         <CustomCarousel>
           {displayData.map((product, index) => (
             <CarouselItem
               key={product.id}
-              className="flex basis-1/3 justify-center"
+              className="flex basis-full justify-center xs:basis-1/2 ml:basis-1/3"
             >
               <HomeProductCard index={index} {...product} />
             </CarouselItem>

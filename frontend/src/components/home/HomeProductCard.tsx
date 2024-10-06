@@ -26,7 +26,7 @@ const HomeProductCard = ({
   priceAfterDiscount,
 }: TProps) => {
   return (
-    <div className="group w-[13.5rem] space-y-1 overflow-hidden rounded-[0.625rem] border border-solid border-[#8C8F8D] bg-white px-4 py-3">
+    <div className="group mx-auto w-[13.5rem] space-y-1 overflow-hidden rounded-[0.625rem] border border-solid border-[#8C8F8D] bg-white px-4 py-3">
       <div>
         <Image
           src={image}
@@ -40,7 +40,7 @@ const HomeProductCard = ({
         <Link href={"#"} className="space-y-1">
           <div
             className={cn(
-              "flex flex-row items-center gap-2 text-[0.625rem] font-bold uppercase !no-underline",
+              "flex flex-row items-center gap-2 text-[0.6rem] font-bold uppercase !no-underline ml:text-[0.625rem]",
               index === 0 ? "opacity-100" : "opacity-0",
             )}
           >

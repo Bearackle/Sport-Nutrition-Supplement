@@ -51,36 +51,36 @@ export const navList = [
   {
     label: "GIÁ SIÊU ƯU ĐÃI",
     icon: saleIcon,
-    href: "#",
+    href: "/",
   },
   {
     label: "Deal Hot - Combo Tiết Kiệm",
     icon: saleIcon,
-    href: "#",
+    href: "/",
   },
   {
     label: "Whey Protein (Sữa Tăng Cơ)",
     icon: wheyProtein,
     children: [
       {
+        label: "Whey Protein Thực Phẩm Thể Thao (Tất Cả Sản Phẩm)",
+        icon: allWhey,
+        href: "/",
+      },
+      {
         label: "Whey Protein",
         icon: wheyProtein2,
-        href: "#",
+        href: "/",
       },
       {
         label: "Protein Trải Dài",
         icon: wheyBlend,
-        href: "#",
+        href: "/",
       },
       {
         label: "Protein Thực Vật",
         icon: wheyPlant,
-        href: "#",
-      },
-      {
-        label: "Whey Protein Thực Phẩm Thể Thao (All Products)",
-        icon: allWhey,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -91,17 +91,17 @@ export const navList = [
       {
         label: "Tất Cả Mass Gainer",
         icon: allMass,
-        href: "#",
+        href: "/",
       },
       {
         label: "Mass Cao Năng Lượng",
         icon: hightMass,
-        href: "#",
+        href: "/",
       },
       {
         label: "Mass Trung Năng Lượng",
         icon: mediumMass,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -112,17 +112,17 @@ export const navList = [
       {
         label: "Tất cả BCAA-EAA",
         icon: bcaaeaa,
-        href: "#",
+        href: "/",
       },
       {
         label: "EAA",
         icon: eaa,
-        href: "#",
+        href: "/",
       },
       {
         label: "BCAA",
         icon: bcaa,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -133,17 +133,17 @@ export const navList = [
       {
         label: "Tất cả Fat Burner",
         icon: allFat,
-        href: "#",
+        href: "/",
       },
       {
         label: "Đốt Mỡ Có Chất Kích Thích",
         icon: fatCaffeine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Đốt Mỡ Không Chất Kích Thích",
         icon: fatNoCaffeine,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -154,17 +154,17 @@ export const navList = [
       {
         label: "Tất Cả Pre-Workout",
         icon: allPreworkout,
-        href: "#",
+        href: "/",
       },
       {
         label: "Tăng Sức Mạnh Có Caffeine",
         icon: preworkoutCaffeine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Tăng Sức Mạnh Không Caffeine",
         icon: preworkoutNoCaffeine,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -175,22 +175,22 @@ export const navList = [
       {
         label: "Tất Cả Các Loại Vitamin",
         icon: allVitamin,
-        href: "#",
+        href: "/",
       },
       {
         label: "Vitamin Sức Khỏe",
         icon: vitaminHealthy,
-        href: "#",
+        href: "/",
       },
       {
         label: "Thực phẩm Sắc Đẹp",
         icon: vitaminBeauty,
-        href: "#",
+        href: "/",
       },
       {
         label: "ZMA (Zinc - Magnesium - B6)",
         icon: zma,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -201,42 +201,42 @@ export const navList = [
       {
         label: "Tất Cả Các Đơn Chất",
         icon: allElements,
-        href: "#",
+        href: "/",
       },
       {
         label: "Creatine",
         icon: creatine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Caffeine",
         icon: caffeine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Beta Alanine",
         icon: betaAlanine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Citrulline",
         icon: citrulline,
-        href: "#",
+        href: "/",
       },
       {
         label: "Arginine",
         icon: arginine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Taurine",
         icon: taurine,
-        href: "#",
+        href: "/",
       },
       {
         label: "Các Đơn Chất Khác",
         icon: otherElements,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -247,7 +247,7 @@ export const navList = [
       {
         label: "Tất Cả Các Loại Thực Phẩm Ăn Kiêng",
         icon: allDiet,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -258,7 +258,7 @@ export const navList = [
       {
         label: "Tất Cả Phụ Kiện",
         icon: allAccessories,
-        href: "#",
+        href: "/",
       },
     ],
   },
@@ -269,19 +269,19 @@ export const navList = [
       {
         label: "XẢ KHO SALE",
         icon: saleTag,
-        href: "#",
+        href: "/",
       },
     ],
   },
   {
     label: "Tra cứu sản phẩm",
     icon: lookup,
-    href: "#",
+    href: "/",
   },
   {
     label: "Tất cả sản phẩm",
     icon: allProducts,
-    href: "#",
+    href: "/collections/all",
   },
 ];
 

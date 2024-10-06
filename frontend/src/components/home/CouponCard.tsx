@@ -35,7 +35,7 @@ const CouponCard = ({
     }
   };
   return (
-    <div className="flex h-full w-[17rem] flex-row">
+    <div className="flex h-full w-[17rem] flex-shrink-0 flex-row">
       <Image src={coupon} alt="coupon" className="h-full w-auto" />
       <div className="grow rounded-e-[1.25rem] bg-white">
         <strong className="px-1 text-[0.75rem] font-bold leading-[1.21] text-[#C11616]">

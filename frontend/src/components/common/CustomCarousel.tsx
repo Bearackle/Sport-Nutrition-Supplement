@@ -13,7 +13,12 @@ type TProps = {
 
 export function CustomCarousel({ children }: TProps) {
   return (
-    <Carousel className="mx-auto w-full">
+    <Carousel
+      opts={{
+        align: "start",
+      }}
+      className="mx-auto w-full"
+    >
       <CarouselContent>{children}</CarouselContent>
       <CarouselPrevious className="-left-6" />
       <CarouselNext className="-right-6" />
