@@ -7,7 +7,7 @@ import bcaaeaa from "/public/categories/BCAA-EAA.png";
 import bcaa from "/public/categories/BCAA.png";
 import eaa from "/public/categories/EAA.png";
 import allAccessories from "/public/categories/all-accessories.svg";
-import allDiet from "/public/categories/all-diet.png";
+import allDiet from "/public/categories/all-diet.webp";
 import allElements from "/public/categories/all-elements.png";
 import allFat from "/public/categories/all-fat.png";
 import allMass from "/public/categories/all-mass.png";
