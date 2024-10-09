@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CustomCarousel } from "../common/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import HomeProductCard from "./HomeProductCard";
+import arrow from "/public/arrow.svg";
 import saleIcon from "/public/sale-icon.svg";
 
 const data = Array.from({ length: 8 }, (_, i) => ({
@@ -33,6 +34,12 @@ const TopDealSection = () => {
             </CarouselItem>
           ))}
         </CustomCarousel>
+      </div>
+      <div className="mt-2 flex justify-center">
+        <button className="flex flex-row items-center rounded-[0.625rem] border border-solid border-[#8C8F8D] px-2 py-1 text-[0.875rem]">
+          Xem tất cả{" "}
+          <Image src={arrow} alt="arrow" className="size-4 leading-[1.21]" />
+        </button>
       </div>
     </div>
   );

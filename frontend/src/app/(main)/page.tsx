@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 // ** Import images
+import BrandLogoSection from "@/components/home/BrandLogoSection";
 import CategoryBar from "@/components/home/CategoryBar";
 import ClearanceSaleSection from "@/components/home/ClearanceSaleSection";
 import CouponCard from "@/components/home/CouponCard";
@@ -103,6 +104,7 @@ export default function Home() {
             </Link>
           </div>
           <ClearanceSaleSection />
+          <BrandLogoSection />
         </div>
       </div>
     </div>

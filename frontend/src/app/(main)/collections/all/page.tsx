@@ -13,7 +13,7 @@ import {
 const page = () => {
   return (
     <div className="relative w-full leading-[1.21]">
-      <div className="mx-auto w-full max-w-[75rem] space-y-4 py-8">
+      <div className="mx-auto w-[95%] max-w-[75rem] space-y-4 py-8 xl:w-full">
         <Breadcrumb className="px-[0.625rem]">
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -31,7 +31,7 @@ const page = () => {
         <ProductCategoryList />
         <div className="flex w-full flex-row justify-around pt-8">
           <FilterBar />
-          <div className="w-[54.5rem]">
+          <div className="w-[90%] ml:w-[54.5rem]">
             <ProductSection />
           </div>
         </div>

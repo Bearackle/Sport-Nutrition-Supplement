@@ -112,7 +112,7 @@ function convertValidStringQueries(queries: Record<string, string[]>) {
   for (let key of sortedKeys) {
     const value = queries[key];
     if (value.length > 0) {
-      q = q + `${q === "" ? "" : "&"}${key}=${value.join(",")}`;
+      q = q + `${q === "" ? "" : "&"}${key}=${value.join(`&${key}=`)}`;
     }
   }
   return q;
@@ -198,7 +198,7 @@ const FilterBar = () => {
     );
   }
   return (
-    <div className="sticky top-3 h-max max-h-[95vh] w-[18rem] rounded-xl bg-white pb-8 leading-[1.21]">
+    <div className="sticky top-3 hidden h-max max-h-[95vh] w-[18rem] rounded-xl bg-white pb-8 leading-[1.21] xl:block">
       <div className="flex w-full flex-row items-center gap-2 border-b border-solid border-[#333]/30 px-4 pb-2 pt-3">
         <Image src={filterIcon} alt="filter" width={24} height={24} />
         <span className="text-base font-semibold">Bộ lọc nâng cao</span>
