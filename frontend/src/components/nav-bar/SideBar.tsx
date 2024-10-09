@@ -43,7 +43,7 @@ import wheyPlant from "/public/categories/whey-plant.png";
 import wheyProtein2 from "/public/categories/whey-protein.png";
 import wheyProtein from "/public/categories/whey-protein.svg";
 import workout from "/public/categories/workout.svg";
-import zma from "/public/categories/zma.png";
+import zma from "/public/categories/ZMA.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
 
