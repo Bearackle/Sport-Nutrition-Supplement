@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 // ** Import images
 import arrow from "/public/arrow.svg";
@@ -47,7 +47,18 @@ import zma from "/public/categories/zma.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
 
-export const navList = [
+interface IProductCategory {
+  label: string;
+  icon: string | StaticImageData;
+  href: string;
+  children?: {
+    label: string;
+    icon: string | StaticImageData;
+    href: string;
+  }[];
+}
+
+export const navList: Array<IProductCategory> = [
   {
     label: "GIÁ SIÊU ƯU ĐÃI",
     icon: saleIcon,
@@ -61,6 +72,7 @@ export const navList = [
   {
     label: "Whey Protein (Sữa Tăng Cơ)",
     icon: wheyProtein,
+    href: "",
     children: [
       {
         label: "Whey Protein Thực Phẩm Thể Thao (Tất Cả Sản Phẩm)",
@@ -87,6 +99,7 @@ export const navList = [
   {
     label: "Mass Gainer (Sữa Tăng Cân)",
     icon: massGainer,
+    href: "",
     children: [
       {
         label: "Tất Cả Mass Gainer",
@@ -108,6 +121,7 @@ export const navList = [
   {
     label: "EAA-BCAA (Amino Thiết Yếu)",
     icon: amino,
+    href: "",
     children: [
       {
         label: "Tất cả BCAA-EAA",
@@ -129,6 +143,7 @@ export const navList = [
   {
     label: "Fat Burner (Đốt Mỡ)",
     icon: fatBurner,
+    href: "",
     children: [
       {
         label: "Tất cả Fat Burner",
@@ -150,6 +165,7 @@ export const navList = [
   {
     label: "Pre-Workout (Tăng Sức Mạnh)",
     icon: workout,
+    href: "",
     children: [
       {
         label: "Tất Cả Pre-Workout",
@@ -171,6 +187,7 @@ export const navList = [
   {
     label: "Vitamin (Tăng Cường Sức Khỏe)",
     icon: vitamin,
+    href: "",
     children: [
       {
         label: "Tất Cả Các Loại Vitamin",
@@ -197,6 +214,7 @@ export const navList = [
   {
     label: "Đơn Chất",
     icon: element,
+    href: "",
     children: [
       {
         label: "Tất Cả Các Đơn Chất",
@@ -243,6 +261,7 @@ export const navList = [
   {
     label: "Thực Phẩm Ăn Kiêng",
     icon: diet,
+    href: "",
     children: [
       {
         label: "Tất Cả Các Loại Thực Phẩm Ăn Kiêng",
@@ -254,6 +273,7 @@ export const navList = [
   {
     label: "Phụ Kiện Tập Luyện",
     icon: practice,
+    href: "",
     children: [
       {
         label: "Tất Cả Phụ Kiện",
@@ -265,6 +285,7 @@ export const navList = [
   {
     label: "Thanh Lý Hàng Lỗi",
     icon: saleTag,
+    href: "",
     children: [
       {
         label: "XẢ KHO SALE",
