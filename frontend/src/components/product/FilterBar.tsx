@@ -91,7 +91,7 @@ function checkValidQuery(queries: string[]) {
 export function convertStringToQueriesObject(
   searchParams: ReadonlyURLSearchParams,
 ) {
-  let selectedQueries: Record<string, string[]> = {};
+  const selectedQueries: Record<string, string[]> = {};
   searchParams.forEach((value, key) => {
     const queries = value.split(",");
     if (selectedQueries[key]) {
@@ -109,7 +109,7 @@ function convertValidStringQueries(queries: Record<string, string[]>) {
     const order = ["categories", "brands", "priceFrom", "priceTo"];
     return order.indexOf(a) - order.indexOf(b);
   });
-  for (let key of sortedKeys) {
+  for (const key of sortedKeys) {
     const value = queries[key];
     if (value.length > 0) {
       q = q + `${q === "" ? "" : "&"}${key}=${value.join(`&${key}=`)}`;
@@ -137,7 +137,7 @@ const FilterBar = () => {
     const value = e.target.value;
     const type = e.target.type;
 
-    let selectedQueries = { ...selectedFilterQueries }; // Copy object để giữ nguyên trạng thái cũ
+    const selectedQueries = { ...selectedFilterQueries }; // Copy object để giữ nguyên trạng thái cũ
 
     if (name === "prices") {
       // Tìm khoảng giá dựa trên tên

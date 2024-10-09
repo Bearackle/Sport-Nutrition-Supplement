@@ -1,11 +1,8 @@
 import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 
 // ** Import images
 import arrow from "/public/arrow.svg";
-import bcaaeaa from "/public/categories/BCAA-EAA.png";
-import bcaa from "/public/categories/BCAA.png";
-import eaa from "/public/categories/EAA.png";
 import allAccessories from "/public/categories/all-accessories.svg";
 import allDiet from "/public/categories/all-diet.webp";
 import allElements from "/public/categories/all-elements.png";
@@ -17,11 +14,14 @@ import allVitamin from "/public/categories/all-vitamin.png";
 import allWhey from "/public/categories/all-whey.png";
 import amino from "/public/categories/amino.svg";
 import arginine from "/public/categories/arginine.png";
+import bcaaeaa from "/public/categories/bcaa-eaa.png";
+import bcaa from "/public/categories/bcaa.png";
 import betaAlanine from "/public/categories/beta-alanine.png";
 import caffeine from "/public/categories/caffeine.png";
 import citrulline from "/public/categories/citrulline.png";
 import creatine from "/public/categories/creatine.png";
 import diet from "/public/categories/diet.svg";
+import eaa from "/public/categories/eaa.png";
 import element from "/public/categories/element.png";
 import fatBurner from "/public/categories/fat-burner.svg";
 import fatCaffeine from "/public/categories/fat-caffeine.png";
@@ -43,11 +43,22 @@ import wheyPlant from "/public/categories/whey-plant.png";
 import wheyProtein2 from "/public/categories/whey-protein.png";
 import wheyProtein from "/public/categories/whey-protein.svg";
 import workout from "/public/categories/workout.svg";
-import zma from "/public/categories/ZMA.png";
+import zma from "/public/categories/zma.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
 
-export const navList = [
+interface IProductCategory {
+  label: string;
+  icon: string | StaticImageData;
+  href: string;
+  children?: {
+    label: string;
+    icon: string | StaticImageData;
+    href: string;
+  }[];
+}
+
+export const navList: Array<IProductCategory> = [
   {
     label: "GIÁ SIÊU ƯU ĐÃI",
     icon: saleIcon,
@@ -61,6 +72,7 @@ export const navList = [
   {
     label: "Whey Protein (Sữa Tăng Cơ)",
     icon: wheyProtein,
+    href: "",
     children: [
       {
         label: "Whey Protein Thực Phẩm Thể Thao (Tất Cả Sản Phẩm)",
@@ -87,6 +99,7 @@ export const navList = [
   {
     label: "Mass Gainer (Sữa Tăng Cân)",
     icon: massGainer,
+    href: "",
     children: [
       {
         label: "Tất Cả Mass Gainer",
@@ -108,6 +121,7 @@ export const navList = [
   {
     label: "EAA-BCAA (Amino Thiết Yếu)",
     icon: amino,
+    href: "",
     children: [
       {
         label: "Tất cả BCAA-EAA",
@@ -129,6 +143,7 @@ export const navList = [
   {
     label: "Fat Burner (Đốt Mỡ)",
     icon: fatBurner,
+    href: "",
     children: [
       {
         label: "Tất cả Fat Burner",
@@ -150,6 +165,7 @@ export const navList = [
   {
     label: "Pre-Workout (Tăng Sức Mạnh)",
     icon: workout,
+    href: "",
     children: [
       {
         label: "Tất Cả Pre-Workout",
@@ -171,6 +187,7 @@ export const navList = [
   {
     label: "Vitamin (Tăng Cường Sức Khỏe)",
     icon: vitamin,
+    href: "",
     children: [
       {
         label: "Tất Cả Các Loại Vitamin",
@@ -197,6 +214,7 @@ export const navList = [
   {
     label: "Đơn Chất",
     icon: element,
+    href: "",
     children: [
       {
         label: "Tất Cả Các Đơn Chất",
@@ -243,6 +261,7 @@ export const navList = [
   {
     label: "Thực Phẩm Ăn Kiêng",
     icon: diet,
+    href: "",
     children: [
       {
         label: "Tất Cả Các Loại Thực Phẩm Ăn Kiêng",
@@ -254,6 +273,7 @@ export const navList = [
   {
     label: "Phụ Kiện Tập Luyện",
     icon: practice,
+    href: "",
     children: [
       {
         label: "Tất Cả Phụ Kiện",
@@ -265,6 +285,7 @@ export const navList = [
   {
     label: "Thanh Lý Hàng Lỗi",
     icon: saleTag,
+    href: "",
     children: [
       {
         label: "XẢ KHO SALE",

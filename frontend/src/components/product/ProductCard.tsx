@@ -23,7 +23,10 @@ const ProductCard = ({
   priceAfterDiscount,
 }: TProps) => {
   return (
-    <div className="group mx-auto w-[13rem] space-y-1 overflow-hidden rounded-[0.625rem] bg-white px-4 py-3">
+    <div
+      id={id.toString()}
+      className="group mx-auto w-[13rem] space-y-1 overflow-hidden rounded-[0.625rem] bg-white px-4 py-3"
+    >
       <div>
         <Image
           src={image}

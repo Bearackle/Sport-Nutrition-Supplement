@@ -24,7 +24,7 @@ function CustomPagination({ currentPage, setCurrentPage, count }: TProps) {
         siblingCount={1}
         shape="rounded"
         page={currentPage}
-        onChange={(event, newPage) => setCurrentPage(newPage)}
+        onChange={(_event, newPage) => setCurrentPage(newPage)}
         sx={{
           "Button.MuiPaginationItem-rounded.Mui-selected": {
             background:

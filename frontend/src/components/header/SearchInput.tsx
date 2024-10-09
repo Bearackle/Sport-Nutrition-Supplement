@@ -6,9 +6,9 @@ import searchIcon from "/public/search-icon.svg";
 export default function SearchInput() {
   const [searchQuery, setSearchQuery] = React.useState("");
 
-  const onSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-  };
+  // const onSearch = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  // };
   return (
     <form
       action=""

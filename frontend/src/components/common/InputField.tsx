@@ -33,6 +33,8 @@ export const InputField = ({
           id={id}
           type={type}
           placeholder={placeholder}
+          value={value}
+          onAbort={onChange}
           required
           className={cn("grow px-3 py-2 font-normal focus:outline-none")}
         />

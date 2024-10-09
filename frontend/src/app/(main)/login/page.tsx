@@ -9,7 +9,7 @@ import visibilityIcon from "/public/visibility-icon.svg";
 import visibilityOffIcon from "/public/visibility-off-icon.svg";
 
 export default function page() {
-  const [email, setEmail] = useState("");
+  const [_email, _setEmail] = useState("");
   const [password, setPassword] = useState({ value: "", visible: false });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

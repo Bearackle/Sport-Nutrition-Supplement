@@ -15,9 +15,9 @@ import visibilityOffIcon from "/public/visibility-off-icon.svg";
 // };
 
 export default function page() {
-  const [name, setName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [email, setEmail] = useState("");
+  const [_name, _setName] = useState("");
+  const [_phoneNumber, _setPhoneNumber] = useState("");
+  const [_email, _setEmail] = useState("");
   const [password, setPassword] = useState({ value: "", visible: false });
   const [confirmPassword, setConfirmPassword] = useState({
     value: "",

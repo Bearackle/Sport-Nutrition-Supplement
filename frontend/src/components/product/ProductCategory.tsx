@@ -1,13 +1,12 @@
 // ** Import next
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { Url } from "url";
 
 type TProps = {
   image: string | StaticImageData;
   name: string;
   amount?: number;
-  url: Url;
+  url: string;
 };
 
 const ProductCategory = ({ image, name, amount, url }: TProps) => {
