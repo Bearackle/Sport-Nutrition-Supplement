@@ -3,9 +3,6 @@ import Image from "next/image";
 
 // ** Import images
 import arrow from "/public/arrow.svg";
-import bcaaeaa from "/public/categories/BCAA-EAA.png";
-import bcaa from "/public/categories/BCAA.png";
-import eaa from "/public/categories/EAA.png";
 import allAccessories from "/public/categories/all-accessories.svg";
 import allDiet from "/public/categories/all-diet.webp";
 import allElements from "/public/categories/all-elements.png";
@@ -17,11 +14,14 @@ import allVitamin from "/public/categories/all-vitamin.png";
 import allWhey from "/public/categories/all-whey.png";
 import amino from "/public/categories/amino.svg";
 import arginine from "/public/categories/arginine.png";
+import bcaaeaa from "/public/categories/bcaa-eaa.png";
+import bcaa from "/public/categories/bcaa.png";
 import betaAlanine from "/public/categories/beta-alanine.png";
 import caffeine from "/public/categories/caffeine.png";
 import citrulline from "/public/categories/citrulline.png";
 import creatine from "/public/categories/creatine.png";
 import diet from "/public/categories/diet.svg";
+import eaa from "/public/categories/eaa.png";
 import element from "/public/categories/element.png";
 import fatBurner from "/public/categories/fat-burner.svg";
 import fatCaffeine from "/public/categories/fat-caffeine.png";
@@ -43,7 +43,7 @@ import wheyPlant from "/public/categories/whey-plant.png";
 import wheyProtein2 from "/public/categories/whey-protein.png";
 import wheyProtein from "/public/categories/whey-protein.svg";
 import workout from "/public/categories/workout.svg";
-import zma from "/public/categories/ZMA.png";
+import zma from "/public/categories/zma.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
 
