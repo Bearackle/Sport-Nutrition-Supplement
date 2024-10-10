@@ -2,9 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * ShoppingCart
+ * @mixin Builder
+ */
 class ShoppingCart extends Model
 {
     use HasFactory;
@@ -15,6 +20,6 @@ class ShoppingCart extends Model
         return $this->belongsToMany('Product','CartItems','CartID','ProductID');
     }
     public function productVariants(){
-        return $this->belongsToMany('ProductVariant','CartItems','CartID','VariantID'); 
+        return $this->belongsToMany('ProductVariant','CartItems','CartID','VariantID');
     }
 }

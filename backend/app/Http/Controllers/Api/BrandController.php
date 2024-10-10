@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
+use App\Services\Product\BrandServcieInterface;
 use Illuminate\Http\Request;
-use App\Services\Product\CategoryServiceInterface;
 
-class CategoryController
+class BrandController extends Controller
 {
-    protected CategoryServiceInterface $categoryService;
-    public function __construct (CategoryServiceInterface $categoryService){
-        $this->categoryService = $categoryService;
+    protected BrandServcieInterface $brandServcie;
+    public function __construct(BrandServcieInterface $brandServcie){
+        $this->brandServcie = $brandServcie;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return $this->categoryService->getCategoryTrace();
+        return $this->brandServcie->getBrands();
     }
-    public function getTopProductsByCategory(){
-        return $this->categoryService->getTopProductCategories();
-    }
+
     /**
      * Show the form for creating a new resource.
      */

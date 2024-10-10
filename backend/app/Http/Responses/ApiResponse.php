@@ -6,15 +6,16 @@ use Illuminate\Contracts\Support\Responsable;
 
 class ApiResponse implements Responsable
 {
-    protected $httpCode;
+    protected int $httpCode;
     protected array $data;
-    protected $errorMessage;
+    protected string $errorMessage;
     public function __construct(int $httpCode, array $data=[],string $errorMessage=''){
         $this->httpCode = $httpCode;
         $this->data = $data;
         $this->errorMessage = $errorMessage;
     }
-    public function toResponse($request){
+    public function toResponse($request): \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
+    {
         $payload = match (true) {
             $this->httpCode >= 500 => ['error_message' => 'Server error'],
             $this->httpCode >= 400 => ['error_message' => $this->errorMessage],

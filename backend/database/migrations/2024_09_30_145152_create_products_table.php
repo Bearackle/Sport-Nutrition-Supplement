@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id('ProductID');
             $table->string('ProductName');
             $table->text('Description');
-            $table->text('Short_Description');
+            $table->text('Short_Description')->nullable();
             $table->integer('Price');
-            $table->integer('Sale');
+            $table->integer('Sale');    
             $table->integer('PriceAfterSale');
             $table->integer('StockQuantity');
             $table->unsignedInteger('CategoryID');  // foreign key

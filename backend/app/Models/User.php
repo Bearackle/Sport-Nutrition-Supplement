@@ -10,7 +10,12 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * User
+ * @mixin Builder
+*/
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
@@ -61,6 +66,6 @@ class User extends Authenticatable
         return $this->hasMany('Order','OrderID','userid');
     }
     public function tokens(){
-        return $this->morphMany(PersonalAccessToken::class,'tokenable');  
+        return $this->morphMany(PersonalAccessToken::class,'tokenable');
     }
 }

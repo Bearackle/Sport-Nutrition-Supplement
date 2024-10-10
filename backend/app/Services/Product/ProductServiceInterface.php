@@ -1,10 +1,13 @@
-<?php 
+<?php
 
 namespace App\Services\Product;
 
 interface ProductServiceInterface{
-    public function getProductOfCategory($category);
-    public function getProductOfChildCategory(array $categoryTrace);
     public function getAllProductAvailable();
-    public function insertNewProduct($product);
+    public function getHotProductBySale();
+    public function getProductDetail($id);
+    public function insertNewProduct(array $product);
+    public function insertProductVariants(array $productVariant);
+    public function updateProduct($id, array $product);
+
 }

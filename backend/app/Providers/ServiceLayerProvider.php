@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Product\BrandServcieInterface;
+use App\Services\Product\BrandService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\User\UserService;
 use App\Services\Product\ProductService;
@@ -21,6 +23,7 @@ class ServiceLayerProvider extends ServiceProvider
         $this->app->bind(ProductServiceInterface::class, ProductService::class);
         $this->app->bind(UserServiceInterface::class,UserService::class);
         $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
+        $this->app->bind(BrandServcieInterface::class,BrandService::class);
     }
     /**
      * Bootstrap services.

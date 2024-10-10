@@ -3,9 +3,14 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * Order
+ * @mixin Builder
+ */
 class Order extends Model
 {
     use HasFactory;

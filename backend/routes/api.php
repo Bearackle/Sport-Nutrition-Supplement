@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -24,13 +26,27 @@ Route::group([
 Route::group([
     'prefix' => 'collection'
 ],function(){
-    Route::get('all',[ProductController::class,'index']);
+    Route::get('all',[ProductController::class,'allProducts']);
+});
 
+Route::group([
+    'prefix' => 'products'
+],function(){
+    Route::post('create', [ProductController::class,'store']);
+//        ->middleware('auth:sanctum');
+    Route::get('/{id}',[ProductController::class,'show']);
 });
 
 Route::group([
     'prefix' => 'categories'
 ],function(){
-    Route::get('all',[CategoryController::class,'index']);
+    Route::get('/all',[CategoryController::class,'index']);
+    Route::get('/top_products',[CategoryController::class,'getTopProductCategories']);
+});
+
+Route::group([
+    'prefix' => 'brands'
+],function (){
+    Route::get('/all',[BrandController::class,'index']);
 });
 

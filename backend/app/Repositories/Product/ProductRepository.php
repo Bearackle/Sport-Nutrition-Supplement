@@ -7,38 +7,43 @@ use App\Repositories\BaseRepository;
 
 
 class ProductRepository extends BaseRepository implements ProductRepositoryInterface {
-    public function getModel(){
+    public function getModel(): string
+    {
         return Product::class;
     }
     public function getHotProductByEachCategory(){
         return; //
     }
-    public function getAllAvailableProduct(){
-        return Product::where('StockQuantity')
+    public function getAllAvailableProduct(): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Product)->whereNot('StockQuantity',0)
         ->orderBy('updated_at','desc')
         ->get();
     }
-    public function getHotProductSale(){
-        return Product::orderBy('Sale','desc')->take(10)->get();
+    public function getTop10ProductHighestSale(): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Product)->orderBy('Sale','desc')->take(10)->get();
     }
-    public function getProductByCategories($categoryID){
-        return Product::where('CategoryID',$categoryID)
+    public function getProductByCategories($categoryID): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Product)->where('CategoryID',$categoryID)
         ->get();
     }
-    public function searchProduct($string){
-        return; // 
+    public function searchProduct($string): void
+    {
+        return; //
     }
-    public function updateProductStockQuantity($id,$data){
-        return $this->update($id,$data);
+    public function getProductByBrand($brand): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Product)->where('BrandID',$brand)->get();
     }
-    public function getProductByBrand($brand){
-        return Product::where('BrandID',function($query){
-            $query->select('*')
-            ->from('brands')
-            ->where('BrandName',$brand);
-        });
+    public function getProductByPriceRange($range): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Product)->where('PriceAfterSale',[$range['minPrice'],$range['maxPrice']])->get();
     }
-    public function getProductByPriceRange(array $range){
-        return Product::where('PriceAfterSale',[$range['minPrice'],$range['maxPrice']])->get();
+    public function getProductData($id): \Illuminate\Database\Eloquent\Collection
+    {
+        return $product = (new \App\Models\Product)->with('images')
+            ->find($id);
     }
 }

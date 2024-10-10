@@ -10,27 +10,28 @@ use App\Repositories\User\UserRepositoryInterface;
 
 class UserService implements UserServiceInterface
 {
-    protected $userRepository;
+    protected UserRepositoryInterface $userRepository;
     public function __construct(UserRepositoryInterface $userRepository){
         $this->userRepository = $userRepository;
     }
-    public function register(array $userData){
+    public function register(array $userData): ApiResponse
+    {
         if(!$this->userRepository->isEmailExists($userData['email'])){
             return new ApiResponse(409,[],'Email already used');
         }
-        if(!$this->userRepository->isPhoneExists($userData['phone'])){
+        if(! $this->userRepository->isPhoneExists($userData['phone'])){
             return new ApiResponse(409,[],'Phone number already used');
         }
         $userData['password'] = bcrypt($userData['password']);
-        $userData['is_admin'] = false; // dangerous
+        $userData['is_admin'] = false;
         $userRegisterd = $this->userRepository->create($userData);
         $success['name'] = $userRegisterd->name;
         $success['token'] = $userRegisterd->createToken('access_token')->plainTextToken;
         $success['message'] = 'Register successfully';
-        $success['code'] = 200;
         return new ApiResponse(200, $success);
     }
-    public function login(array $userUnAuthorized){
+    public function login(array $userUnAuthorized): ApiResponse
+    {
         $user = $this->userRepository->findByEmail($userUnAuthorized['email']);
         if(!$user || !Hash::check($userUnAuthorized['password'],$user->password)){
             return new ApiResponse(401,[],'Login Fail :(');
@@ -41,9 +42,10 @@ class UserService implements UserServiceInterface
             'message' => 'Login successfully',
             'token' => $user->createToken('access_token')->plainTextToken
         ];
-        return new ApiResponse(200,$data); 
+        return new ApiResponse(200,$data);
     }
-    public function profile(){
+    public function profile(): ApiResponse
+    {
         $user = Auth::user();
         return new ApiResponse(200,[$user]);
     }

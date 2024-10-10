@@ -6,11 +6,16 @@ use App\Services\Product\CategoryServiceInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
 
 class CategoryService implements CategoryServiceInterface{
-    protected $categoryRepository;
+    protected CategoryRepositoryInterface $categoryRepository;
     public function __construct(CategoryRepositoryInterface $categoryRepository){
         $this->categoryRepository = $categoryRepository;
     }
-    public function getCategoryTrace(){
-       return $this->categoryRepository->TraceCategories();
+    public function getCategoryTrace()
+    {
+        return $this->categoryRepository->TraceCategories();
+    }
+    public function getTopProductCategories(): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->categoryRepository->getSomeProductsByEachCategory();
     }
 }

@@ -10,12 +10,25 @@ class ProductVariantRepository extends BaseRepository implements ProductVariantR
     public function getModel(){
         return ProductVariant::class;
     }
-    public function getVariantAvailableForProduct($productID){
-        return ProductVariant::where('ProductID',$productID);
+    public function getVariantAvailableForProduct($productID): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\ProductVariant)->where('ProductID',$productID)
+            ->where('StockQuantity', '>','0')
+            ->get();
     }
-    public function findVariantByNameAndProduct($variantName,$productID){
-        return ProductVariant::where('ProductID',$productID)
+    public function findVariantByNameAndProduct($variantName,$productID): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\ProductVariant)->where('ProductID',$productID)
         ->where('VariantName',$variantName)
         ->get();
+    }
+    public function getImageProductVariant($productVariantsID){
+        return $this->find($productVariantsID)->image;
+    }
+    public function getVariantsDataWithImage($productID): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\ProductVariant)->where('ProductID', $productID)
+            ->with('image')
+            ->get();
     }
 }
