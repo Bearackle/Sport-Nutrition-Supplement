@@ -8,11 +8,9 @@ type TProps = {
 };
 
 function CustomPagination({ currentPage, setCurrentPage, count }: TProps) {
-  const smMatch = useMediaQuery("(min-width: 800px)");
-  const lgMatch = useMediaQuery("(min-width: 1440px)");
+  const mlMatch = useMediaQuery("(min-width: 875px)");
   const calcCoefficient = () => {
-    if (lgMatch) return 1;
-    if (smMatch) return 0.8;
+    if (mlMatch) return 1;
     return 0.8;
   };
   return (

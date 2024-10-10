@@ -142,6 +142,7 @@ const MobileFilter = () => {
         </SheetTrigger>
         <SheetContent
           side="bottom"
+          iconColor={"text-[#000]"}
           className="no-scrollbar h-[80vh] w-full overflow-x-hidden overflow-y-scroll rounded-t-[0.625rem] bg-white"
         >
           <div className="w-full border-b border-solid border-[#333]/30 p-4 text-center text-base font-semibold">
@@ -158,7 +159,9 @@ const MobileFilter = () => {
                     <AccordionContent
                       className={cn(
                         "grid items-center gap-4 px-4 pt-2",
-                        id === "prices" ? "grid-cols-1" : "grid-cols-2",
+                        id === "prices"
+                          ? "grid-cols-1 sm:grid-cols-2"
+                          : "grid-cols-2",
                       )}
                     >
                       {options.map((value) => {
@@ -264,7 +267,7 @@ function CheckboxAndRadioItem({ id, label, ...props }: CheckboxAndRadioItem) {
         htmlFor={id}
         className={cn(
           "inline-flex w-full cursor-pointer flex-row items-center justify-center rounded-[0.375rem] border border-solid border-[#333] px-4 py-3 text-sm transition-all duration-200",
-          "peer-checked:border-[#1250dc] peer-checked:text-[#1250dc]",
+          "peer-checked:border-[#1250dc] peer-checked:bg-[#1250dc]/10 peer-checked:text-[#1250dc]",
           props.type === "radio" ? "" : "uppercase",
         )}
       >

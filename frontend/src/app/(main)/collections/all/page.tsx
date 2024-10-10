@@ -33,7 +33,7 @@ const page = () => {
         </div>
         <div className="flex w-full flex-row justify-around pt-4 xs:pt-8">
           <FilterBar />
-          <div className="w-full ml:w-[54.5rem]">
+          <div className="w-full xl:w-[54.5rem]">
             <ProductSection />
           </div>
         </div>

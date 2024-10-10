@@ -13,7 +13,7 @@ const ProductCategory = ({ image, name, amount, url }: TProps) => {
   return (
     <Link
       href={url}
-      className="flex flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
+      className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
     >
       <div className="size-10">
         <Image
