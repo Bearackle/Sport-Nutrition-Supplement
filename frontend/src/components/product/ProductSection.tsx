@@ -127,7 +127,7 @@ const ProductSection = () => {
         </div>
       </div>
 
-      <div className="mx-auto mt-4 grid w-[90%] grid-cols-2 gap-2 xs:grid-cols-3 ml:grid-cols-4 ml:gap-5 xl:w-full">
+      <div className="mx-auto mt-4 grid w-[95%] grid-cols-2 gap-2 xs:grid-cols-3 ml:grid-cols-4 ml:gap-5 xl:w-full">
         {data.map((product) => (
           <ProductCard key={product.id} {...product} />
         ))}

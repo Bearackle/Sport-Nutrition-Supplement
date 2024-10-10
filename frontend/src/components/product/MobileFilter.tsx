@@ -122,7 +122,7 @@ const MobileFilter = () => {
       return (
         selectedFilterQueries.priceFrom?.includes(
           selectedPrice?.priceFrom?.toString() || "",
-        ) &&
+        ) ||
         selectedFilterQueries.priceTo?.includes(
           selectedPrice?.priceTo?.toString() || "",
         )
@@ -155,7 +155,12 @@ const MobileFilter = () => {
                     <AccordionTrigger className="px-4 pb-3 pt-4 text-base font-medium uppercase">
                       {title}
                     </AccordionTrigger>
-                    <AccordionContent className="space-y-4 px-4 pt-2">
+                    <AccordionContent
+                      className={cn(
+                        "grid items-center gap-4 px-4 pt-2",
+                        id === "prices" ? "grid-cols-1" : "grid-cols-2",
+                      )}
+                    >
                       {options.map((value) => {
                         if (id === "prices") {
                           return (
@@ -242,7 +247,9 @@ interface ICheckboxAndRadioGroup {
 }
 
 function CheckboxAndRadioGroup({ children }: ICheckboxAndRadioGroup) {
-  return <div className="flex flex-row items-center gap-2">{children}</div>;
+  return (
+    <div className="relative flex flex-row items-center gap-2">{children}</div>
+  );
 }
 
 interface CheckboxAndRadioItem extends ComponentPropsWithoutRef<"input"> {
@@ -252,10 +259,14 @@ interface CheckboxAndRadioItem extends ComponentPropsWithoutRef<"input"> {
 function CheckboxAndRadioItem({ id, label, ...props }: CheckboxAndRadioItem) {
   return (
     <>
-      <input id={id} className="size-4 shrink-0 text-[0.875rem]" {...props} />
+      <input id={id} className="peer hidden" {...props} />
       <label
         htmlFor={id}
-        className={cn("text-sm", props.type === "radio" ? "" : "uppercase")}
+        className={cn(
+          "inline-flex w-full cursor-pointer flex-row items-center justify-center rounded-[0.375rem] border border-solid border-[#333] px-4 py-3 text-sm transition-all duration-200",
+          "peer-checked:border-[#1250dc] peer-checked:text-[#1250dc]",
+          props.type === "radio" ? "" : "uppercase",
+        )}
       >
         {label}
       </label>

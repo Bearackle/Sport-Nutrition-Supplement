@@ -25,7 +25,7 @@ const ProductCard = ({
   return (
     <div
       id={id.toString()}
-      className="group mx-auto w-[13rem] space-y-1 overflow-hidden rounded-[0.625rem] bg-white px-4 py-3"
+      className="group mx-auto space-y-1 overflow-hidden rounded-[0.625rem] bg-white px-4 py-3 xs:w-[13rem]"
     >
       <div>
         <Image
@@ -38,7 +38,7 @@ const ProductCard = ({
       </div>
       <div className="pt-3">
         <Link href={"#"} className="space-y-1">
-          <div className="line-clamp-3 text-[0.875rem] font-normal leading-normal text-[#333] group-hover:underline">
+          <div className="line-clamp-3 text-[0.825rem] font-normal leading-normal text-[#333] group-hover:underline xs:text-[0.875rem]">
             {name}
           </div>
         </Link>

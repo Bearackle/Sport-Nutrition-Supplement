@@ -63,16 +63,16 @@ const brands = ["Acient Nutrition", "Advil", "Allmax", "Liquid", "Natrol"];
 
 export const filterOptions = [
   {
-    id: "categories",
-    title: "Loại sản phẩm",
-    options: categories,
-    type: "checkbox",
-  },
-  {
     id: "prices",
     title: "Giá bán",
     options: prices,
     type: "radio",
+  },
+  {
+    id: "categories",
+    title: "Loại sản phẩm",
+    options: categories,
+    type: "checkbox",
   },
   {
     id: "brands",
