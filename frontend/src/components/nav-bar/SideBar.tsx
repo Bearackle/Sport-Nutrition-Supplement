@@ -302,7 +302,7 @@ export const navList: Array<IProductCategory> = [
   {
     label: "Tất cả sản phẩm",
     icon: allProducts,
-    href: "/collections/all",
+    href: "/products/all",
   },
 ];
 

@@ -19,7 +19,7 @@ type TProps = {
 
 const ProductCategory = ({ category }: TProps) => {
   const pathname = usePathname();
-  if (pathname === "/collections/all") {
+  if (pathname === "/products/all") {
     if (category.children) {
       return (
         <Link

@@ -21,7 +21,7 @@ interface IProductCategory {
 const ProductCategoryList = () => {
   const pathname = usePathname();
   let categories: IProductCategory[] = [];
-  if (pathname === "/collections/all") {
+  if (pathname === "/products/all") {
     categories = navList.slice(0, -2);
   } else {
     // Call API to get categories

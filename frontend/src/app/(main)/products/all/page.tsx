@@ -1,7 +1,7 @@
 // ** Import UI
-import FilterBar from "@/components/product/FilterBar";
-import ProductCategoryList from "@/components/product/ProductCategoryList";
-import ProductSection from "@/components/product/ProductSection";
+import FilterBar from "@/components/product-list/FilterBar";
+import ProductCategoryList from "@/components/product-list/ProductCategoryList";
+import ProductSection from "@/components/product-list/ProductSection";
 import {
   Breadcrumb,
   BreadcrumbItem,

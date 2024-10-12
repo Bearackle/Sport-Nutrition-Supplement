@@ -3,7 +3,7 @@ import {
   convertStringToQueriesObject,
   convertValidStringQueries,
   filterOptions,
-} from "@/components/product/FilterBar";
+} from "@/components/product-list/FilterBar";
 import {
   Accordion,
   AccordionContent,
