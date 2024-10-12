@@ -35,37 +35,7 @@ const ProductCategoryList = () => {
         )}
       >
         {categories.map((category, index) => (
-          <>
-            {pathname === "/collections/all" ? (
-              <>
-                {category.children ? (
-                  <ProductCategory
-                    key={index}
-                    image={category.children[0].icon}
-                    name={category.label}
-                    url={category.children[0].href}
-                  />
-                ) : (
-                  <ProductCategory
-                    key={index}
-                    image={category.icon}
-                    name={category.label}
-                    url={category.href}
-                  />
-                )}
-              </>
-            ) : (
-              <>
-                <ProductCategory
-                  key={index}
-                  image={category.icon}
-                  name={category.label}
-                  url={category.href}
-                  amount={category.amount}
-                />
-              </>
-            )}
-          </>
+          <ProductCategory category={category} key={index} />
         ))}
       </div>
     </div>
