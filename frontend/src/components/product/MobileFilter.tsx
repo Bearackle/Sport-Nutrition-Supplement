@@ -1,15 +1,18 @@
-"use client";
-
-// ** Import next
-import Image from "next/image";
 import {
-  ReadonlyURLSearchParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation";
-
-// ** Import react
+  checkValidQuery,
+  convertStringToQueriesObject,
+  convertValidStringQueries,
+  filterOptions,
+} from "@/components/product/FilterBar";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   ChangeEvent,
   ComponentPropsWithoutRef,
@@ -17,18 +20,9 @@ import {
   useEffect,
   useState,
 } from "react";
-
-// ** Import ui
-import { cn } from "@/lib/utils";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import filterIcon from "/public/filter.svg";
 
-const categories = ["Whey Protein", "Mass Gainer", "EAA-BCAA", "Pre-Workout"];
 const prices = [
   {
     name: "Giá dưới 500.000₫",
@@ -59,64 +53,8 @@ const prices = [
     priceFrom: 2500000,
   },
 ];
-const brands = ["Acient Nutrition", "Advil", "Allmax", "Liquid", "Natrol"];
 
-export const filterOptions = [
-  {
-    id: "prices",
-    title: "Giá bán",
-    options: prices,
-    type: "radio",
-  },
-  {
-    id: "categories",
-    title: "Loại sản phẩm",
-    options: categories,
-    type: "checkbox",
-  },
-  {
-    id: "brands",
-    title: "Thương hiệu",
-    options: brands,
-    type: "checkbox",
-  },
-];
-
-export function checkValidQuery(queries: string[]) {
-  return queries.filter((query) => query !== "").length > 0;
-}
-
-export function convertStringToQueriesObject(
-  searchParams: ReadonlyURLSearchParams,
-) {
-  const selectedQueries: Record<string, string[]> = {};
-  searchParams.forEach((value, key) => {
-    const queries = value.split(",");
-    if (selectedQueries[key]) {
-      selectedQueries[key].push(...queries);
-    } else {
-      selectedQueries[key] = queries;
-    }
-  });
-  return selectedQueries;
-}
-
-export function convertValidStringQueries(queries: Record<string, string[]>) {
-  let q = "";
-  const sortedKeys = Object.keys(queries).sort((a, b) => {
-    const order = ["categories", "brands", "priceFrom", "priceTo"];
-    return order.indexOf(a) - order.indexOf(b);
-  });
-  for (const key of sortedKeys) {
-    const value = queries[key];
-    if (value.length > 0) {
-      q = q + `${q === "" ? "" : "&"}${key}=${value.join(`&${key}=`)}`;
-    }
-  }
-  return q;
-}
-
-const FilterBar = () => {
+const MobileFilter = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -184,7 +122,7 @@ const FilterBar = () => {
       return (
         selectedFilterQueries.priceFrom?.includes(
           selectedPrice?.priceFrom?.toString() || "",
-        ) &&
+        ) ||
         selectedFilterQueries.priceTo?.includes(
           selectedPrice?.priceTo?.toString() || "",
         )
@@ -196,22 +134,36 @@ const FilterBar = () => {
     );
   }
   return (
-    <>
-      <div className="sticky top-3 hidden h-max max-h-[95vh] w-[18rem] rounded-xl bg-white pb-8 leading-[1.21] xl:block">
-        <div className="flex w-full flex-row items-center gap-2 border-b border-solid border-[#333]/30 px-4 pb-2 pt-3">
+    <div className="shrink-0 leading-[1.21] xl:hidden">
+      <Sheet>
+        <SheetTrigger className="flex flex-row items-center">
           <Image src={filterIcon} alt="filter" width={24} height={24} />
-          <span className="text-base font-semibold">Bộ lọc nâng cao</span>
-        </div>
-        <div className="no-scrollbar max-h-[90vh] overflow-y-scroll px-4">
+          <span className="text-base font-medium">Lọc</span>
+        </SheetTrigger>
+        <SheetContent
+          side="bottom"
+          iconColor={"text-[#000]"}
+          className="no-scrollbar h-[80vh] w-full overflow-x-hidden overflow-y-scroll rounded-t-[0.625rem] bg-white"
+        >
+          <div className="w-full border-b border-solid border-[#333]/30 p-4 text-center text-base font-semibold">
+            Bộ lọc nâng cao
+          </div>
           {filterOptions.map(({ id, title, type, options }) => {
             return (
               <div key={id}>
                 <Accordion type="single" collapsible defaultValue="prices">
                   <AccordionItem value={id}>
-                    <AccordionTrigger className="pb-2 pt-3 text-base font-medium uppercase">
+                    <AccordionTrigger className="px-4 pb-3 pt-4 text-base font-medium uppercase">
                       {title}
                     </AccordionTrigger>
-                    <AccordionContent className="space-y-4 pt-2">
+                    <AccordionContent
+                      className={cn(
+                        "grid items-center gap-4 px-4 pt-2",
+                        id === "prices"
+                          ? "grid-cols-1 sm:grid-cols-2"
+                          : "grid-cols-2",
+                      )}
+                    >
                       {options.map((value) => {
                         if (id === "prices") {
                           return (
@@ -285,20 +237,22 @@ const FilterBar = () => {
               </div>
             );
           })}
-        </div>
-      </div>
-    </>
+        </SheetContent>
+      </Sheet>
+    </div>
   );
 };
 
-export default FilterBar;
+export default MobileFilter;
 
 interface ICheckboxAndRadioGroup {
   children: ReactNode;
 }
 
 function CheckboxAndRadioGroup({ children }: ICheckboxAndRadioGroup) {
-  return <div className="flex flex-row items-center gap-2">{children}</div>;
+  return (
+    <div className="relative flex flex-row items-center gap-2">{children}</div>
+  );
 }
 
 interface CheckboxAndRadioItem extends ComponentPropsWithoutRef<"input"> {
@@ -308,10 +262,14 @@ interface CheckboxAndRadioItem extends ComponentPropsWithoutRef<"input"> {
 function CheckboxAndRadioItem({ id, label, ...props }: CheckboxAndRadioItem) {
   return (
     <>
-      <input id={id} className="size-4 shrink-0 text-[0.875rem]" {...props} />
+      <input id={id} className="peer hidden" {...props} />
       <label
         htmlFor={id}
-        className={cn("text-sm", props.type === "radio" ? "" : "uppercase")}
+        className={cn(
+          "inline-flex w-full cursor-pointer flex-row items-center justify-center rounded-[0.375rem] border border-solid border-[#333] px-4 py-3 text-sm transition-all duration-200",
+          "peer-checked:border-[#1250dc] peer-checked:bg-[#1250dc]/10 peer-checked:text-[#1250dc]",
+          props.type === "radio" ? "" : "uppercase",
+        )}
       >
         {label}
       </label>

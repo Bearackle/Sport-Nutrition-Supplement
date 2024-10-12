@@ -1,0 +1,158 @@
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import logo from "../../../public/logo.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { Subscription } from "@/components/footer/Subscription";
+import Link from "next/link";
+
+export const Footer = () => {
+  return (
+    <footer className={cn("leaading-[1.21] w-full bg-white")}>
+      <div
+        className="w-full py-3"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(63,133,233,1) 0%, rgba(48,116,225,1) 50%, rgba(37,105,222,1) 100%)",
+        }}
+      >
+        <div
+          className={cn(
+            "mx-auto flex w-[95%] max-w-[75rem] justify-between xl:w-full",
+          )}
+        >
+          <div
+            className={cn("hidden flex-row items-center gap-4 pl-4 lg:flex")}
+          >
+            <FontAwesomeIcon
+              icon={faFacebook}
+              color="white"
+              width={36}
+              height={36}
+            />
+            <FontAwesomeIcon
+              icon={faInstagram}
+              color="white"
+              width={40}
+              height={40}
+            />
+          </div>
+          <div
+            className={cn(
+              "flex w-full flex-row items-center justify-center gap-4",
+              "sm:justify-between sm:gap-0 lg:w-max lg:justify-start lg:gap-12",
+            )}
+          >
+            <div className={cn("flex flex-row items-center gap-4")}>
+              <FontAwesomeIcon
+                icon={faEnvelope}
+                color="white"
+                height={40}
+                className={cn("shrink-0")}
+              />
+              <p className={cn("hidden text-[0.875rem] text-white sm:flex")}>
+                Bạn muốn nhận khuyến mãi đặc biệt?
+                <br />
+                Đăng ký ngay.
+              </p>
+            </div>
+            <Subscription />
+          </div>
+        </div>
+      </div>
+      <div className={cn("mx-auto w-[95%] max-w-[75rem] py-8", "xl:w-full")}>
+        <div className={cn("grid grid-cols-1 gap-8 xs:grid-cols-2")}>
+          <div className={cn("space-y-8")}>
+            <div className={cn("space-y-1")}>
+              <h2 className={cn("text-base font-bold text-app-carbon")}>
+                Thông tin cửa hàng
+              </h2>
+              <Link href="/" title="4HProtein">
+                <Image src={logo} alt="logo" className="size-32" />
+              </Link>
+              <p className={cn("text-[0.875rem] text-app-carbon")}>
+                <strong>Địa chỉ:</strong> 123 Nguyễn Thị Minh Khai, Quận 1,
+                TP.HCM
+              </p>
+              <p className={cn("text-[0.875rem] text-app-carbon")}>
+                <strong>Số điện thoại:</strong> 033 330 3802
+              </p>
+              <p className={cn("text-[0.875rem] text-app-carbon")}>
+                <strong>Email:</strong> 4hprotein@gmail.com
+              </p>
+            </div>
+            <div className={cn("space-y-1")}>
+              <h2 className={cn("text-base font-bold text-app-carbon")}>
+                Tổng đài hỗ trợ
+              </h2>
+              <p className={cn("text-[0.875rem]")}>
+                Hotline: <strong>033.330.3802</strong> (9h00 - 20h00)
+              </p>
+            </div>
+          </div>
+          <div className={cn("space-y-8")}>
+            <div className={cn("space-y-1")}>
+              <h2 className={cn("text-base font-bold text-app-carbon")}>
+                Hỗ trợ khách hàng
+              </h2>
+              <ul className={cn("space-y-1 text-[0.875rem]")}>
+                <li>
+                  <Link href="#">Hướng dẫn mua hàng</Link>
+                </li>
+                <li>
+                  <Link href="#">Hướng dẫn thanh toán</Link>
+                </li>
+                <li>
+                  <Link href="#">Hướng dẫn đổi trả hàng, hoàn tiền</Link>
+                </li>
+              </ul>
+            </div>
+            <div className={cn("space-y-1")}>
+              <h2 className={cn("text-base font-bold text-app-carbon")}>
+                Chính sách
+              </h2>
+              <ul className={cn("space-y-1 text-[0.875rem]")}>
+                <li>
+                  <Link href="#">Quy định sử dụng</Link>
+                </li>
+                <li>
+                  <Link href="#">Chính sách Vận Chuyển</Link>
+                </li>
+                <li>
+                  <Link href="#">Chính sách Bảo Mật</Link>
+                </li>
+                <li>
+                  <Link href="#">Chính sách Đổi Trả Hàng</Link>
+                </li>
+                <li>
+                  <Link href="#">
+                    Chính sách bảo vệ thông tin cá nhân của người tiêu dùng
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div className={cn("my-8 h-px w-full bg-[#333]")}></div>
+        <div className={cn("text-justify text-[0.875rem] text-[#333]")}>
+          <p>
+            <strong>&copy; 2024, 4HProtein. All rights reserved.</strong>
+          </p>
+          <p>
+            Bản quyền thuộc về <strong>4HProtein</strong> | Copyright by{" "}
+            <strong>4HProtein</strong>
+          </p>
+          <p>
+            Những sản phẩm đăng trên website này không phải là thuốc, không có
+            tác dụng thay thế thuốc chữa bệnh.
+            <br />
+            Hình ảnh và Nutrition Facts của sản phẩm chỉ mang tính chất tham
+            khảo bởi thành phần, mẫu mã nhà sản xuất có thể thay đổi bất cứ lúc
+            nào mà <strong>4HProtein</strong> chưa thể cập nhật ngay lập tức.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
