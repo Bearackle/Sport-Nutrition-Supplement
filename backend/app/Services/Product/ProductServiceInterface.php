@@ -7,7 +7,4 @@ interface ProductServiceInterface{
     public function getHotProductBySale();
     public function getProductDetail($id);
     public function insertNewProduct(array $product);
-    public function insertProductVariants(array $productVariant);
-    public function updateProduct($id, array $product);
-
 }

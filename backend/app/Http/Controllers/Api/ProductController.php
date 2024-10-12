@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\NewProductRequest;
+use App\Http\Responses\ApiResponse;
 use App\Services\Product\ProductServiceInterface;
 use Illuminate\Http\Request;
 
@@ -28,8 +29,8 @@ class ProductController
      */
     public function store(NewProductRequest $request)
     {
-        return $this->productService->insertNewProduct($request->validated());
-
+        $dataProductToTrans = array_merge($request->validated(),['Images' => $request->file('Images')]);
+        $responseProduct = $this->productService->insertNewProduct($dataProductToTrans);
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Product\ProductImageRepository;
+use App\Repositories\Product\ProductImageRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\Cart\CartRepository;
 use App\Repositories\User\UserRepository;
@@ -50,6 +52,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductVariantRepositoryInterface::class,ProductVariantRepository::class);
         $this->app->bind(ReviewRepositoryInterface::class,ReviewRepository::class);
         $this->app->bind(UserRepositoryInterface::class,UserRepository::class);
+        $this->app->bind(ProductImageRepositoryInterface::class,ProductImageRepository::class);
     }
 
     /**
