@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 
 type TProps = {
   category: {
+    id: string;
     label: string;
     icon: string | StaticImageData;
-    href: string;
     amount?: number;
     children?: {
+      id: string;
       label: string;
       icon: string | StaticImageData;
-      href: string;
     }[];
   };
 };
@@ -23,7 +23,7 @@ const ProductCategory = ({ category }: TProps) => {
     if (category.children) {
       return (
         <Link
-          href={category.children[0].href}
+          href={`/products/${category.children[0].id}`}
           className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
         >
           <div className="size-10">
@@ -43,7 +43,7 @@ const ProductCategory = ({ category }: TProps) => {
     } else {
       return (
         <Link
-          href={category.href}
+          href={`/products/${category.id}`}
           className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
         >
           <div className="size-10">
@@ -64,7 +64,7 @@ const ProductCategory = ({ category }: TProps) => {
   } else {
     return (
       <Link
-        href={category.href}
+        href={`/products/${category.id}`}
         className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
       >
         <div className="size-10">

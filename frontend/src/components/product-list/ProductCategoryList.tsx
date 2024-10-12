@@ -3,18 +3,18 @@
 import { cn } from "@/lib/utils";
 import { StaticImageData } from "next/image";
 import { usePathname } from "next/navigation";
-import { navList } from "../nav-bar/SideBar";
 import ProductCategory from "./ProductCategory";
+import { productCategories } from "@/data/category";
 
 interface IProductCategory {
+  id: string;
   label: string;
   icon: string | StaticImageData;
-  href: string;
   amount?: number;
   children?: {
+    id: string;
     label: string;
     icon: string | StaticImageData;
-    href: string;
   }[];
 }
 
@@ -22,7 +22,7 @@ const ProductCategoryList = () => {
   const pathname = usePathname();
   let categories: IProductCategory[] = [];
   if (pathname === "/products/all") {
-    categories = navList.slice(0, -2);
+    categories = productCategories.slice(0, -2);
   } else {
     // Call API to get categories
   }

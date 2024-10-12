@@ -2,33 +2,15 @@
 import FilterBar from "@/components/product-list/FilterBar";
 import ProductCategoryList from "@/components/product-list/ProductCategoryList";
 import ProductSection from "@/components/product-list/ProductSection";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { ProductListBreadcrumb } from "@/components/product-list/ProductListBreadcrumb";
 
-const page = () => {
+const page = ({ params }: { params: { category: string } }) => {
   return (
     <div className="relative w-full leading-[1.21]">
       <div className="mx-auto w-full max-w-[75rem] space-y-4 py-4 xs:py-8 xl:w-full">
         <div className="mx-auto w-[95%] max-w-[75rem] space-y-4 xl:w-full">
-          <Breadcrumb className="px-[0.625rem]">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/">Trang chủ</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem className="text-black">
-                Tất cả sản phẩm
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <h2 className="px-[0.625rem] text-[1.125rem] font-bold">
-            Tất cả sản phẩm
-          </h2>
+          <ProductListBreadcrumb params={params} />
+
           <ProductCategoryList />
         </div>
         <div className="flex w-full flex-row justify-around pt-4 xs:pt-8">
