@@ -16,7 +16,7 @@ export const Subscription = () => {
         type="text"
         name="subcription"
         id="subcription"
-        placeholder="Nhập email"
+        placeholder="Nhận ngay ưu đãi"
         required
         className={cn("bg-transparent px-4 py-3 focus:outline-none")}
       />
