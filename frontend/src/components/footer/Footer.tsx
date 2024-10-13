@@ -79,7 +79,10 @@ export const Footer = () => {
                 <strong>Số điện thoại:</strong> 033 330 3802
               </p>
               <p className={cn("text-[0.875rem] text-app-carbon")}>
-                <strong>Email:</strong> 4hprotein@gmail.com
+                <strong>Email:</strong>{" "}
+                <Link href="mailto:4hprotein@gmail.com" target="_blank">
+                  4hprotein@gmail.com
+                </Link>
               </p>
             </div>
             <div className={cn("space-y-1")}>
@@ -87,7 +90,11 @@ export const Footer = () => {
                 Tổng đài hỗ trợ
               </h2>
               <p className={cn("text-[0.875rem]")}>
-                Hotline: <strong>033.330.3802</strong> (9h00 - 20h00)
+                Hotline:{" "}
+                <strong>
+                  <Link href="tel:0333303802">033.330.3802</Link>
+                </strong>{" "}
+                (9h00 - 20h00)
               </p>
             </div>
           </div>
@@ -98,13 +105,15 @@ export const Footer = () => {
               </h2>
               <ul className={cn("space-y-1 text-[0.875rem]")}>
                 <li>
-                  <Link href="#">Hướng dẫn mua hàng</Link>
+                  <Link href="/huong-dan-mua-hang">Hướng dẫn mua hàng</Link>
                 </li>
                 <li>
-                  <Link href="#">Hướng dẫn thanh toán</Link>
+                  <Link href="/huong-dan-thanh-toan">Hướng dẫn thanh toán</Link>
                 </li>
                 <li>
-                  <Link href="#">Hướng dẫn đổi trả hàng, hoàn tiền</Link>
+                  <Link href="/chinh-sach-doi-tra-hang-hoan-tien">
+                    Hướng dẫn đổi trả hàng, hoàn tiền
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -114,19 +123,23 @@ export const Footer = () => {
               </h2>
               <ul className={cn("space-y-1 text-[0.875rem]")}>
                 <li>
-                  <Link href="#">Quy định sử dụng</Link>
+                  <Link href="/quy-dinh-su-dung">Quy định sử dụng</Link>
                 </li>
                 <li>
-                  <Link href="#">Chính sách Vận Chuyển</Link>
+                  <Link href="/chinh-sach-van-chuyen">
+                    Chính sách Vận Chuyển
+                  </Link>
                 </li>
                 <li>
-                  <Link href="#">Chính sách Bảo Mật</Link>
+                  <Link href="/chinh-sach-bao-mat">Chính sách Bảo Mật</Link>
                 </li>
                 <li>
-                  <Link href="#">Chính sách Đổi Trả Hàng</Link>
+                  <Link href="/chinh-sach-doi-tra-hang-hoan-tien">
+                    Chính sách Đổi Trả Hàng
+                  </Link>
                 </li>
                 <li>
-                  <Link href="#">
+                  <Link href="/chinh-sach-bao-ve-thong-tin-ca-nhan-cua-nguoi-tieu-dung">
                     Chính sách bảo vệ thông tin cá nhân của người tiêu dùng
                   </Link>
                 </li>

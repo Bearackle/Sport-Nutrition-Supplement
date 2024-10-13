@@ -14,7 +14,7 @@ export const ProductListBreadcrumb = ({
 }: {
   params: { category: string };
 }) => {
-  const _router = useRouter();
+  const router = useRouter();
   const categoryId = params.category;
 
   const findParentCategory = (
@@ -57,6 +57,11 @@ export const ProductListBreadcrumb = ({
     }
     return null;
   };
+
+  if (findCategoryById(categoryId, productCategories) === null) {
+    router.push("/not-found");
+    return null;
+  }
 
   const parentCategory = findParentCategory(categoryId, productCategories);
   const category = findCategoryById(categoryId, productCategories);
