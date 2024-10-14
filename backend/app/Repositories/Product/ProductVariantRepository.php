@@ -27,8 +27,9 @@ class ProductVariantRepository extends BaseRepository implements ProductVariantR
     }
     public function getVariantsDataWithImage($productID): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\ProductVariant)->where('ProductID', $productID)
-            ->with('image')
+        return (new \App\Models\ProductVariant)->where('ProductID',$productID)
+            ->with(['image' =>function($query){
+        $query->whereNotNull('VariantID');}])
             ->get();
     }
 }

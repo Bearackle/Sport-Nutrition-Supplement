@@ -31,11 +31,13 @@ class CreateProductVariants
      */
     public function handle(ProductCreated $event): void
     {
-        $variants = $this->request['Variants']->validate();
+        $variants = $this->request['Variants'];
+        $indexVariants = 0;
         foreach ($variants as $variant) {
             $variant['ProductID'] = $event->product['ProductID'];
-            $variantData = array_merge($variant,$this->request->file('Variants.{$loop->index}.Image'));
+            $variantData = array_merge($variant,[$this->request->file('Variants.'.$indexVariants.'.Image')]);
             $this->productVariantService->insertProductVariant($variantData);
+            $indexVariants++;
         }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Product;
 
+use App\Events\ProductVariantCreated;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\Product\ProductVariantRepository;
 use App\Repositories\Product\ProductVariantRepositoryInterface;
@@ -27,5 +28,24 @@ class ProductVariantService implements ProductVariantServiceInterface
             'VariantName' => $productVariant['VariantName'], 'StockQuantity' => $productVariant['StockQuantity']]);
         $this->imageProductService->addImageVariants($productVariant['ProductID'], $result['VariantID']
             , $productVariant['Image']);
+        event(new ProductVariantCreated($result));
+    }
+    public function updateProductVariant(array $productVariant): bool
+    {
+        $resultDb =  $this->productVariantRepository->update($productVariant['ProductID'],$productVariant);
+        $resultImage = $this->imageProductService->updateUploadedImage($productVariant['ImageId'], $productVariant[
+            'Image']);
+        if(!$resultDb){
+            return false;
+        }
+        return true;
+    }
+    public function deleteVariant($variantId): bool
+    {
+        $result = $this->productVariantRepository->delete($variantId);
+        if(!$result){
+            return false;
+        }
+        return true;
     }
 }

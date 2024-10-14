@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProductVariantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -35,6 +36,8 @@ Route::group([
     Route::post('create', [ProductController::class,'store']);
 //        ->middleware('auth:sanctum');
     Route::get('/{id}',[ProductController::class,'show']);
+    // variants
+    Route::get('/{id}/variants',[ProductVariantController::class,'VariantsOfProduct']);
 });
 
 Route::group([

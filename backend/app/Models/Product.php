@@ -18,31 +18,40 @@ class Product extends Model
     protected $primaryKey = 'ProductID';
     protected $fillable = ['ProductName','Short_Description','Description','Price','Sale',
         'StockQuantity','CategoryID','BrandID','PriceAfterSale'];
-    public function category(){
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Category::class,'CategoryID','CategoryID');
     }
-    public function brand(){
+    public function brand(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Brand::class,'BrandID','BrandID');
     }
-    public function variations(){
+    public function variations(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(ProductVariant::class,'ProductID','ProductID');
     }
-    public function orders(){
+    public function orders(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
         return $this->belongsToMany(Order::class,'Order_Details','ProductID','OrderID');
     }
-    public function carts(){
+    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
         return $this->belongsToMany(ShoppingCart::class,'Cart_Items','ProductID','CartID');
     }
-    public function combos(){
+    public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
         return $this->belongsToMany(Combo::class,'Combo_Products','ProductID','ComboID');
     }
-    public function reviews(){
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(Review::class,'ProductID','ProductID');
     }
-    public function images(){
+    public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(ProductImages::class,'ProductID','ProductID');
     }
-    public function ratings(){
+    public function ratings(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(RatingImages::class,'ProductID','ProductID');
     }
 }

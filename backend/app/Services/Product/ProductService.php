@@ -25,16 +25,39 @@ class ProductService implements ProductServiceInterface{
     public function getHotProductBySale(){
         return $this->productRepository->getTop10ProductHighestSale();
     }
-    public function getProductDetail($id) : ApiResponse
+    public function getProductDetail($id)
     {
         $product_data = $this->productRepository->getProductData($id);
-        $variant_data = $this->productVariantService->getVariantsData($id);
-        return new ApiResponse(200,$product_data->union($variant_data));
+        return $product_data;
     }
     public function insertNewProduct(array $product) : void{
         $product['PriceAfterSale'] = $product['Price']*($product['Sale']/100);
         $result =  $this->productRepository->create($product);
         $this->imageProductService->addImagesProduct($result['ProductID'],$product['Images']);
-        event(new ProductCreated($result['ProductID']));
+        event(new ProductCreated($result));
+    }
+    public function updateStockQuantity($productID,$stockQuantity) : void{
+        $this->productRepository->insertStockQuantity($productID,$stockQuantity);
+    }
+    public function updateProduct($id, array $product): bool
+    {
+        $result = $this->productRepository->update($id, $product);
+        $imageIndex = 0;
+        foreach($product['Images'] as $image){
+            $this->imageProductService->updateUploadedImage($product['ImageID.'.$imageIndex],$image);
+            $imageIndex++;
+        }
+        if($result){
+            return true;
+        }
+        return false;
+    }
+    public function deleteProduct($id): bool
+    {
+        $result = $this->productRepository->delete($id);
+        if($result){
+            return true;
+        }
+        return false;
     }
 }

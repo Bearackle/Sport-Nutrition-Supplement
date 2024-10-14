@@ -14,4 +14,5 @@ interface ProductRepositoryInterface extends RepositoryInterface{
     public function getProductByPriceRange($range); // minPrice, maxPrice
     public function getAllAvailableProduct();
     public function getProductData($id);
+    public function insertStockQuantity($productID, $quantity);
 }

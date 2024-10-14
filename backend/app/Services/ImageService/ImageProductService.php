@@ -20,13 +20,14 @@ class ImageProductService implements ImageProductServiceInterface{
         if(empty($image)){
             return false;
         }
-            $url = $this->uploadToCloudinary($image);
-            $this->productImageRepository->create(['ProductID'=>$productId,
+            $dataUploaded = $this->uploadToCloudinary($image);
+            $this->productImageRepository->create(['ProductID' => $productId,
                 'VariantID'=>$variantId,
-                'ImageUrl'=>$url,]);
+                'IsPrimary'=>true,
+                'ImageUrl'=>$dataUploaded['Url'],
+                'PublicId' => $dataUploaded['PublicId'],]);
         return true;
     }
-
     /**
      * @throws ApiError
      */
@@ -37,9 +38,10 @@ class ImageProductService implements ImageProductServiceInterface{
         }
         $isFirst = true;
         foreach ($images as $image) {
-            $url = $this->uploadToCloudinary($image);
+            $dataUploaded = $this->uploadToCloudinary($image);
             $this->productImageRepository->create(['ProductID' => $productId,
-                'ImageURL' => $url,
+                'ImageURL' => $dataUploaded['Url'],
+                'PublicId' => $dataUploaded['PublicId'],
                 'IsPrimary' => $isFirst]);
             $isFirst = false;
         }
@@ -54,19 +56,31 @@ class ImageProductService implements ImageProductServiceInterface{
         if(empty($imageCombo)){
             return false;
         }
-        $url = $this->uploadToCloudinary($imageCombo);
-        $this->productImageRepository->create(['ComboID' => $comboID,
-            'Cb_ImageUrl' => $url,]);
+        $dataUpdated = $this->uploadToCloudinary($imageCombo);
+        $this->productImageRepository->update($comboID,
+            ['Cb_ImageUrl' => $dataUpdated]);
         return true;
     }
 
     /**
      * @throws ApiError
      */
-    public function uploadToCloudinary($image)
+    public function uploadToCloudinary($image): array
     {
-       // return cloudinary() ->upload($image->getRealPath())->getSecurePath();
-        return null;
+       $uploaded =  cloudinary() ->upload($image->getRealPath());
+       return ['Url' => $uploaded->getSecurePath(),
+           'PublicId' => $uploaded->getPublicId()];
+    }
+    /**
+     * @throws ApiError
+     */
+    public function updateUploadedImage($imageId, $image) : void
+    {
+        $img = $this->productImageRepository->find($imageId);
+        $result = cloudinary()->upload($image->getRealPath(),[
+            'public_id' => $img['PublicId'],
+            'overwrite' => true,
+        ]);
     }
 }
 

@@ -14,11 +14,11 @@ use Illuminate\Queue\SerializesModels;
 class ProductVariantCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $productVariant;
+    public ProductVariant $productVariant;
     /**
      * Create a new event instance.
      */
-    public function __construct(ProductVariant  $productVariant)
+    public function __construct(ProductVariant $productVariant)
     {
         $this->productVariant = $productVariant;
     }

@@ -41,9 +41,14 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return (new \App\Models\Product)->where('PriceAfterSale',[$range['minPrice'],$range['maxPrice']])->get();
     }
-    public function getProductData($id): \Illuminate\Database\Eloquent\Collection
+    public function getProductData($id)
     {
-        return $product = (new \App\Models\Product)->with('images')
-            ->find($id);
+        return (new \App\Models\Product)->with(['images' => function($query){
+            $query->whereNull('VariantID');
+        }])->find($id);
+    }
+    public function insertStockQuantity($productID, $quantity): false|int
+    {
+        return $this->find($productID)->increment('StockQuantity',$quantity);
     }
 }

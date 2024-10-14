@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('VariantID')->nullable();
             $table->string('ImageURL')->nullable();
             $table->boolean('IsPrimary');
+            $table->string('PublicId');
             $table->timestamps();
         });
     }

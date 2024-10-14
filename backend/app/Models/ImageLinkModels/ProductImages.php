@@ -16,7 +16,7 @@ class ProductImages extends Model
 {
     use HasFactory;
     protected $table = 'product_images';
-    protected $fillable = ['ImageID','ProductID','VariantID','ImageURL','IsPrimary'];
+    protected $fillable = ['ImageID','ProductID','VariantID','ImageURL','IsPrimary','PublicId'];
     protected $primaryKey = 'ImageID';
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
