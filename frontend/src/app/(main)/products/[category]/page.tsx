@@ -10,7 +10,6 @@ const page = ({ params }: { params: { category: string } }) => {
       <div className="mx-auto w-full max-w-[75rem] space-y-4 py-4 xs:py-8 xl:w-full">
         <div className="mx-auto w-[95%] max-w-[75rem] space-y-4 xl:w-full">
           <ProductListBreadcrumb params={params} />
-
           <ProductCategoryList />
         </div>
         <div className="flex w-full flex-row justify-around pt-4 xs:pt-8">
