@@ -76,7 +76,9 @@ export const ProductListBreadcrumb = ({
             <>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbLink href={`/products/${parentCategory?.id}`}>
+                <BreadcrumbLink
+                  href={`/products/${parentCategory.children?.[0].id}`}
+                >
                   {parentCategory?.label}
                 </BreadcrumbLink>
               </BreadcrumbItem>
