@@ -2,7 +2,9 @@
 
 namespace App\Services\Product;
 
+use App\Events\ImageDeleted;
 use App\Events\ProductVariantCreated;
+use App\Events\ProductVariantDeleted;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\Product\ProductVariantRepository;
 use App\Repositories\Product\ProductVariantRepositoryInterface;
@@ -24,10 +26,9 @@ class ProductVariantService implements ProductVariantServiceInterface
     }
     public function insertProductVariant(array $productVariant): void
     {
-        $result = $this->productVariantRepository->create(['ProductID' => $productVariant['ProductID'],
-            'VariantName' => $productVariant['VariantName'], 'StockQuantity' => $productVariant['StockQuantity']]);
+        $result = $this->productVariantRepository->create($productVariant);
         $this->imageProductService->addImageVariants($productVariant['ProductID'], $result['VariantID']
-            , $productVariant['Image']);
+            ,$productVariant['Image']);
         event(new ProductVariantCreated($result));
     }
     public function updateProductVariant(array $productVariant): bool
@@ -42,6 +43,8 @@ class ProductVariantService implements ProductVariantServiceInterface
     }
     public function deleteVariant($variantId): bool
     {
+        $variant = $this->productVariantRepository->find($variantId);
+        event(new ProductVariantDeleted($variant));
         $result = $this->productVariantRepository->delete($variantId);
         if(!$result){
             return false;

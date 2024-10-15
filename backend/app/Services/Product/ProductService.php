@@ -3,6 +3,7 @@
 namespace App\Services\Product;
 
 use App\Events\ProductCreated;
+use App\Events\ProductDeleted;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
@@ -19,22 +20,22 @@ class ProductService implements ProductServiceInterface{
         $this->productVariantService = $productVariantService;
         $this->imageProductService = $imageProductService;
     }
-    public function getAllProductAvailable(){
-        return $this->productRepository->getAllAvailableProduct();
+    public function getProducts(){
+       return $this->productRepository->getAllAvailableProducts();
     }
     public function getHotProductBySale(){
         return $this->productRepository->getTop10ProductHighestSale();
     }
     public function getProductDetail($id)
     {
-        $product_data = $this->productRepository->getProductData($id);
-        return $product_data;
+        return $this->productRepository->getProductData($id);
     }
-    public function insertNewProduct(array $product) : void{
+    public function insertNewProduct(array $product) : bool{
         $product['PriceAfterSale'] = $product['Price']*($product['Sale']/100);
         $result =  $this->productRepository->create($product);
         $this->imageProductService->addImagesProduct($result['ProductID'],$product['Images']);
         event(new ProductCreated($result));
+        return true;
     }
     public function updateStockQuantity($productID,$stockQuantity) : void{
         $this->productRepository->insertStockQuantity($productID,$stockQuantity);
@@ -54,6 +55,8 @@ class ProductService implements ProductServiceInterface{
     }
     public function deleteProduct($id): bool
     {
+        $product = $this->productRepository->find($id);
+        event(new ProductDeleted($product));
         $result = $this->productRepository->delete($id);
         if($result){
             return true;

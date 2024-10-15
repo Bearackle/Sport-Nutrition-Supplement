@@ -2,6 +2,7 @@
 
 namespace App\Services\ImageService;
 
+use App\Models\ImageLinkModels\ProductImages;
 use App\Repositories\Product\ProductImageRepositoryInterface;
 use Cloudinary\Api\Exception\ApiError;
 
@@ -21,11 +22,10 @@ class ImageProductService implements ImageProductServiceInterface{
             return false;
         }
             $dataUploaded = $this->uploadToCloudinary($image);
-            $this->productImageRepository->create(['ProductID' => $productId,
-                'VariantID'=>$variantId,
-                'IsPrimary'=>true,
-                'ImageUrl'=>$dataUploaded['Url'],
-                'PublicId' => $dataUploaded['PublicId'],]);
+            $this->productImageRepository->create(
+                ['ProductID' => $productId,
+                'VariantID'=> $variantId,'ImageURL'=> $dataUploaded['Url'],
+                    'IsPrimary'=> true,'PublicId' => $dataUploaded['PublicId'],]);
         return true;
     }
     /**
@@ -81,6 +81,9 @@ class ImageProductService implements ImageProductServiceInterface{
             'public_id' => $img['PublicId'],
             'overwrite' => true,
         ]);
+    }
+    public function deleteImage(ProductImages $image) : void {
+        cloudinary()->destroy($image['PublicId']);
     }
 }
 

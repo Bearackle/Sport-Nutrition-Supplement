@@ -11,4 +11,7 @@ class ProductImageRepository extends BaseRepository implements ProductImageRepos
     {
         return ProductImages::class;
     }
+    public function deleteImageByProductID($productID){
+
+    }
 }

@@ -23,8 +23,9 @@ class ProductController
     {
         return $this->productService->getHotProductBySale();
     }
-    public function allProducts(){
-        return $this->productService->getAllProductAvailable();
+    public function allProducts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        return ProductResource::collection(($this->productService->getProducts()));
     }
     /**
      * Store a newly created resource in storage.
@@ -50,16 +51,20 @@ class ProductController
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request)
+    public function update(UpdateProductRequest $request): ApiResponse
     {
         $dataToTrans = array_merge($request->validated(),['Images' => $request->file('Images')]);
         $result = $this->productService->updateProduct($dataToTrans['ProductID'],$dataToTrans);
+        if($result){
+            return new ApiResponse(200,['message' => 'Product updated successfully']);
+        }
+        return new ApiResponse(200,['message' => 'Product not updated']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): ApiResponse
     {
         $result = $this->productService->deleteProduct($id);
         if($result){

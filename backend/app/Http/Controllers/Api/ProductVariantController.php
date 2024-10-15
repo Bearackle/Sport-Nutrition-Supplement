@@ -33,7 +33,7 @@ class ProductVariantController extends Controller
      */
     public function store(NewProductVariants $request)
     {
-        $dataToTrans = array_merge($request->validated(),[$request->file('image')]);
+        $dataToTrans = array_merge($request->validated(),[$request->file('Image')]);
         return $this->productVariantService->insertProductVariant($dataToTrans);
     }
     public function update(UpdateVariantRequest $request) : ApiResponse
@@ -47,7 +47,8 @@ class ProductVariantController extends Controller
     }
     public function destroy($id) : ApiResponse
     {
-        if($this->productVariantService->deleteVariant($id)){
+        $result = $this->productVariantService->deleteVariant($id);
+        if($result){
             return new ApiResponse(200,['message' =>'Delete success']);
         }
         return new ApiResponse(400,['message' =>'Delete fail']);

@@ -7,7 +7,8 @@ use App\Repositories\BaseRepository;
 
 class ProductVariantRepository extends BaseRepository implements ProductVariantRepositoryInterface
 {
-    public function getModel(){
+    public function getModel(): string
+    {
         return ProductVariant::class;
     }
     public function getVariantAvailableForProduct($productID): \Illuminate\Database\Eloquent\Collection
@@ -23,7 +24,7 @@ class ProductVariantRepository extends BaseRepository implements ProductVariantR
         ->get();
     }
     public function getImageProductVariant($productVariantsID){
-        return $this->find($productVariantsID)->image;
+        return (new \App\Models\ProductVariant)->find($productVariantsID)->image;
     }
     public function getVariantsDataWithImage($productID): \Illuminate\Database\Eloquent\Collection
     {

@@ -30,7 +30,8 @@ class ProductVariant extends Model
     {
         return $this->belongsToMany('ShoppingCart','CartItems','VariantID','CartID');
     }
-    public function image(){
+    public function image(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
         return $this->hasOne(ProductImages::class,'VariantID','VariantID');
     }
 }

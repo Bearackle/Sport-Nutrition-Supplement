@@ -12,7 +12,7 @@ interface ProductRepositoryInterface extends RepositoryInterface{
     public function getProductByBrand($brand);
     public function searchProduct($productName);
     public function getProductByPriceRange($range); // minPrice, maxPrice
-    public function getAllAvailableProduct();
+    public function getAllAvailableProducts();
     public function getProductData($id);
     public function insertStockQuantity($productID, $quantity);
 }

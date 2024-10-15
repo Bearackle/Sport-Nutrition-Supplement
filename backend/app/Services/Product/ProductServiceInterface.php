@@ -3,7 +3,7 @@
 namespace App\Services\Product;
 
 interface ProductServiceInterface{
-    public function getAllProductAvailable();
+    public function getProducts();
     public function getHotProductBySale();
     public function getProductDetail($id);
     public function insertNewProduct(array $product);

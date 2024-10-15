@@ -14,11 +14,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getHotProductByEachCategory(){
         return; //
     }
-    public function getAllAvailableProduct(): \Illuminate\Database\Eloquent\Collection
+    public function getAllAvailableProducts(): \Illuminate\Database\Eloquent\Collection
     {
         return (new \App\Models\Product)->whereNot('StockQuantity',0)
-        ->orderBy('updated_at','desc')
-        ->get();
+            ->orderBy('updated_at','desc')
+            ->with(['images' => function ($query) {
+                $query->whereNull('VariantID')->where('IsPrimary',1);
+            }])->get();
     }
     public function getTop10ProductHighestSale(): \Illuminate\Database\Eloquent\Collection
     {

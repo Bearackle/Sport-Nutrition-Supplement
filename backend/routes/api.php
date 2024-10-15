@@ -36,8 +36,11 @@ Route::group([
     Route::post('create', [ProductController::class,'store']);
 //        ->middleware('auth:sanctum');
     Route::get('/{id}',[ProductController::class,'show']);
+    Route::delete('/{id}',[ProductController::class,'destroy']);
     // variants
     Route::get('/{id}/variants',[ProductVariantController::class,'VariantsOfProduct']);
+    Route::post('/variants',[ProductVariantController::class,'store']);
+    Route::delete('/variants/{id}',[ProductVariantController::class,'destroy']);
 });
 
 Route::group([
@@ -52,4 +55,5 @@ Route::group([
 ],function (){
     Route::get('/all',[BrandController::class,'index']);
 });
+
 
