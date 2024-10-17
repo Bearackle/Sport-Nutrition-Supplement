@@ -6,6 +6,6 @@ use App\Repositories\Interfaces\RepositoryInterface;
 
 interface ComboRepositoryInterface extends RepositoryInterface{
     public function getComboIDByName($comboName);
-    public function getAvailableCombo();
     public function searchCombo($searchString);
+    public function getComboOfCategory($category_id);
 }

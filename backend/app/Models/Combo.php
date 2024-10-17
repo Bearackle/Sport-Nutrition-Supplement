@@ -13,19 +13,30 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Combo extends Model
 {
     use HasFactory;
-    public function orders(){
-        return $this->belongsToMany('Order','OrderDetails','ComboID','OrderID');
+    protected $fillable = ['ComboName','Description','Price','Cb_Sale','Cb_PriceAfterSale','Cb_ImageURL','CategoryID'];
+    protected $primaryKey = 'ComboID';
+    protected $table = 'combos';
+    public function orders(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Order::class,'OrderDetails','ComboID','OrderID');
     }
-    public function products(){
-        return $this->belongsToMany('Product','ComboProducts','ComboID','ProductID');
+    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class,'combo_products','ComboID','ProductID');
     }
-    public function productvariants(){
-        return $this->belongsToMany('ProductVariant','ComboProducts','ComboID','VariantID');
+    public function productvariants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(ProductVariant::class,'ComboProducts','ComboID','VariantID');
     }
-    public function carts(){
-        return $this->belongsToMany('ShoppingCart','CartItems','ComboID','CartID');
+    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(ShoppingCart::class,'CartItems','ComboID','CartID');
     }
     public function reviews(){
-        return $this->hasMany('Review','ComboID','ComboID');
+        return $this->hasMany(Review::class,'ComboID','ComboID');
+    }
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Category::class,'CategoryID','CategoryID');
     }
 }

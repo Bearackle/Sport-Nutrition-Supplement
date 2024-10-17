@@ -18,4 +18,7 @@ class CategoryService implements CategoryServiceInterface{
     {
         return $this->categoryRepository->getSomeProductsByEachCategory();
     }
+    public function getChildrenCategories($id){
+        return $this->categoryRepository->getChildrenCategory($id);
+    }
 }

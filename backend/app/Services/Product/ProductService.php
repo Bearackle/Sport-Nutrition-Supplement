@@ -4,6 +4,7 @@ namespace App\Services\Product;
 
 use App\Events\ProductCreated;
 use App\Events\ProductDeleted;
+use App\Filters\ProductFilter;
 use App\Http\Responses\ApiResponse;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
@@ -37,9 +38,6 @@ class ProductService implements ProductServiceInterface{
         event(new ProductCreated($result));
         return true;
     }
-    public function updateStockQuantity($productID,$stockQuantity) : void{
-        $this->productRepository->insertStockQuantity($productID,$stockQuantity);
-    }
     public function updateProduct($id, array $product): bool
     {
         $result = $this->productRepository->update($id, $product);
@@ -62,5 +60,15 @@ class ProductService implements ProductServiceInterface{
             return true;
         }
         return false;
+    }
+    public function filter(ProductFilter $filters): \Illuminate\Database\Eloquent\Collection
+    {
+        return $this->productRepository->filterer($filters);
+    }
+    public function getCategoryProduct($id){
+        return $this->productRepository->getProductByCategories($id);
+    }
+    public function getModelProduct($id){
+        return $this->productRepository->find($id);
     }
 }

@@ -40,7 +40,7 @@ class Product extends Model
     }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Combo::class,'Combo_Products','ProductID','ComboID');
+        return $this->belongsToMany(Combo::class,'combo_products','ProductID','ComboID');
     }
     public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -53,5 +53,8 @@ class Product extends Model
     public function ratings(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(RatingImages::class,'ProductID','ProductID');
+    }
+    public function scopeFilter($query, $filters){
+        return $filters->apply($query);
     }
 }

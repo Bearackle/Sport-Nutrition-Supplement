@@ -27,4 +27,8 @@ class Category extends Model
     {
         return $this->hasMany(Category::class,'ParentID','CategoryID');
     }
+    public function combo(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Combo::class,'CategoryID','CategoryID');
+    }
 }

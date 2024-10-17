@@ -11,5 +11,6 @@ interface ImageProductServiceInterface
     public function addImageCombo($comboID, $imageCombo);
     public function updateUploadedImage($imageId,$image);
     public function uploadToCloudinary($image);
-    public function deleteImage(ProductImages $image);
+    public function deleteImage($image);
+    public function extract_public_id($image_url);
 }

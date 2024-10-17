@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\ComboController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
 use Illuminate\Http\Request;
@@ -28,13 +29,13 @@ Route::group([
     'prefix' => 'collection'
 ],function(){
     Route::get('all',[ProductController::class,'allProducts']);
+    Route::get('category/{id}',[ProductController::class,'CategoryProduct']);
+    Route::get('products', [ProductController::class,'filter']);
 });
-
 Route::group([
     'prefix' => 'products'
 ],function(){
     Route::post('create', [ProductController::class,'store']);
-//        ->middleware('auth:sanctum');
     Route::get('/{id}',[ProductController::class,'show']);
     Route::delete('/{id}',[ProductController::class,'destroy']);
     // variants
@@ -48,12 +49,20 @@ Route::group([
 ],function(){
     Route::get('/all',[CategoryController::class,'index']);
     Route::get('/top_products',[CategoryController::class,'getTopProductCategories']);
+    Route::get('children/{id}',[CategoryController::class,'ChildrenCategories']);
 });
-
 Route::group([
     'prefix' => 'brands'
 ],function (){
     Route::get('/all',[BrandController::class,'index']);
 });
-
+Route::group([
+    'prefix' => 'combo'
+],function(){
+    Route::get('/{id}',[ComboController::class,'show']);
+    Route::get('all',[ComboController::class,'index']);
+    Route::post('create',[ComboController::class,'store']);
+    Route::post('add',[ComboController::class,'add']);
+    Route::delete('/{id}',[ComboController::class,'destroy']);
+});
 

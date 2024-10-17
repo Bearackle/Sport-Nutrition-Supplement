@@ -14,11 +14,12 @@ class ComboRepository extends BaseRepository implements ComboRepositoryInterface
         ->where('ComboName')
         ->get();
     }
-    public function getAvailableCombo(){
-        return Combo::select('ComboID','ComboName')
-        ->get();
-    }
     public function searchCombo($searchString){
         //
+    }
+    public function getComboOfCategory($category_id): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Combo)->where("ComboID","=",$category_id)
+            ->get();
     }
 }

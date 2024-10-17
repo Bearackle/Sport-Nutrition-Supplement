@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Filters\ProductFilter;
 use App\Http\Requests\NewProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Http\Resources\ProductResource;
@@ -22,6 +23,12 @@ class ProductController
     public function index()
     {
         return $this->productService->getHotProductBySale();
+    }
+    public function filter(Request $request,ProductFilter $productFilter){
+        return $this->productService->filter($productFilter);
+    }
+    public function CategoryProduct($id){
+        return $this->productService->getCategoryProduct($id);
     }
     public function allProducts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {

@@ -17,6 +17,7 @@ class ComboProduct extends Model
     protected $table = 'combo_products';
     protected $fillable = ['ComboID','ProductID','VariantID','Quantity'];
     protected $primaryKey = 'ComboProductID';
+    public $timestamps = false;
     public function product(){
         return $this->belongsTo(Product::class,'ProductID','ProductID');
     }

@@ -2,28 +2,29 @@
 
 namespace App\Listeners;
 
-use App\Events\ProductVariantCreated;
+use App\Events\ProductVariantDeleted;
+use App\Services\Product\ProductService;
 use App\Services\Product\ProductServiceInterface;
-use App\Services\Product\ProductVariantServiceInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
 class UpdateProductStockQuantity
 {
+    protected ProductServiceInterface $productService;
     /**
      * Create the event listener.
      */
-    protected ProductServiceInterface $productService;
     public function __construct(ProductServiceInterface $productService)
     {
         $this->productService = $productService;
     }
+
     /**
      * Handle the event.
      */
-    public function handle(ProductVariantCreated $event): void
+    public function handle(ProductVariantDeleted $event): void
     {
-        $this->productService->updateStockQuantity
-        ($event->productVariant['ProductID'],$event->productVariant['StockQuantity']);
+        $this->productService->getModelProduct($event->productVariant['ProductID'])
+            ->decrement('StockQuantity',$event->productVariant['StockQuantity']);
     }
 }

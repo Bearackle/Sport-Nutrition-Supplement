@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Combo\ComboServcie;
+use App\Services\Combo\ComboServiceInterface;
 use App\Services\ImageService\ImageProductService;
 use App\Services\ImageService\ImageProductServiceInterface;
 use App\Services\Product\BrandServcieInterface;
@@ -30,6 +32,7 @@ class ServiceLayerProvider extends ServiceProvider
         $this->app->bind(BrandServcieInterface::class,BrandService::class);
         $this->app->bind(ProductVariantServiceInterface::class, ProductVariantService::class);
         $this->app->bind(ImageProductServiceInterface::class, ImageProductService::class);
+        $this->app->bind(ComboServiceInterface::class, ComboServcie::class);
     }
     /**
      * Bootstrap services.

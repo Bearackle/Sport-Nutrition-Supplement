@@ -21,28 +21,12 @@ class CategoryController
     public function getTopProductsByCategory(){
         return $this->categoryService->getTopProductCategories();
     }
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function ChildrenCategories($id){
+        return $this->categoryService->getChildrenCategories($id);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //
+
     }
 
     /**

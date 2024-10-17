@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class LoginRequest extends FormRequest
+class ComboRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,8 +26,12 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required | email',
-            'password' => 'required'
+            "ComboName" => "required",
+            "Description" => "required",
+            "Price" => "required|numeric",
+            "Cb_Sale" => "required|numeric",
+            "CategoryID" => "required",
+            "Image" => "required|image|mimes:jpeg,png,jpg,webp|max:2048",
         ];
     }
     public function failedValidation(Validator $validator)
