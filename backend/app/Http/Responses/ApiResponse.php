@@ -27,4 +27,8 @@ class ApiResponse implements Responsable
             options : JSON_UNESCAPED_UNICODE
         );
     }
+    public static function success(string $message): static
+    {
+        return new static(200, ['message' => $message]);
+    }
 }

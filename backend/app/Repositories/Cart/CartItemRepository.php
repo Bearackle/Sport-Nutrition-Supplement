@@ -27,4 +27,9 @@ class CartItemRepository extends BaseRepository implements CartItemRepositoryInt
         ->whereNotNull('ComboID')
         ->get();
     }
+    public function emptyCart($cart_id): ?bool
+    {
+        return (new \App\Models\CartItem)->where('CartID',$cart_id)
+            ->delete();
+    }
 }

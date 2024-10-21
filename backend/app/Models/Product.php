@@ -32,7 +32,7 @@ class Product extends Model
     }
     public function orders(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Order::class,'Order_Details','ProductID','OrderID');
+        return $this->belongsToMany(Order::class,'order_details','ProductID','OrderID');
     }
     public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

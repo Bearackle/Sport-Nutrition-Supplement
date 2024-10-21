@@ -56,8 +56,9 @@ class User extends Authenticatable
         ];
     }
     protected $primaryKey = 'userid';
-    public function shoppingCart(){
-        return $this->hasOne('ShoppingCart','userid','userid');
+    public function shopping_cart(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(ShoppingCart::class,'UserID','userid');
     }
     public function address(){
         return $this->hasMany('Address','UserID','userid');

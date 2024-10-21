@@ -15,4 +15,10 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
         ->where('UserID')
         ->get();
     }
+    public function getCartItems($cart_id)
+    {
+        return ShoppingCart::with('products','variants','combos')
+            ->find($cart_id)
+            ->get();
+    }
 }

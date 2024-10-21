@@ -14,16 +14,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     use HasFactory;
-    public function payment(){
-        return $this->hasOne('Payment');
+
+    protected $table = 'orders';
+    protected $fillable = ['UserID','OrderDate','Note','Status'];
+    protected $primaryKey = 'OrderID';
+    public $timestamps = false;
+    public function payment(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Payment::class,'OrderID','OrderID');
     }
-    public function user(){
-        return $this->belongsTo('User','UserID','OrderID');
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'UserID','UserID');
     }
-    public function products(){
-        return $this->belongsToMany('Product','Orderdetails','OrderID','ProductID');
+    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class,'order_details','OrderID','ProductID');
     }
-    public function combos(){
-        return $this->belongsToMany('Combo','OrderDetails','OrderID','ComboID');
+    public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(ProductVariant::class, 'order_details', 'OrderID', 'VariantID');
+    }
+    public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Combo::class,'order_details','OrderID','ComboID');
     }
 }

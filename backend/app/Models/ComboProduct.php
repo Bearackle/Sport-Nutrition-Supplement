@@ -18,13 +18,15 @@ class ComboProduct extends Model
     protected $fillable = ['ComboID','ProductID','VariantID','Quantity'];
     protected $primaryKey = 'ComboProductID';
     public $timestamps = false;
-    public function product(){
+    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(Product::class,'ProductID','ProductID');
     }
-    public function variant(){
+    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
         return $this->belongsTo(ProductVariant::class,'VariantID','VariantID');
     }
-    public function combo()
+    public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Combo::class, 'ComboID', 'ComboID');
     }

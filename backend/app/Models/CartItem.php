@@ -14,8 +14,9 @@ class CartItem extends Model
 {
     use HasFactory;
     protected $fillable = ['CartID','ProductID','VariantID','ComboID','Quantity'];
-    protected $primaryKey = 'CartID';
+    protected $primaryKey = 'CartItemID';
     protected $table = 'cart_items';
+    public $timestamps = false;
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Product::class,'ProductID','ProductID');
@@ -30,6 +31,6 @@ class CartItem extends Model
     }
     public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(ShoppingCart::class,'ShoppingCartID','ComboID');
+        return $this->belongsTo(ShoppingCart::class,'CartID','CartID');
     }
 }

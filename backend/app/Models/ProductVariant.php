@@ -34,4 +34,8 @@ class ProductVariant extends Model
     {
         return $this->hasOne(ProductImages::class,'VariantID','VariantID');
     }
+    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Order::class, 'order_details','VariantID','OrderID');
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\BrandController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ComboController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
@@ -8,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CategoryController;
-
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -65,4 +65,16 @@ Route::group([
     Route::post('add',[ComboController::class,'add']);
     Route::delete('/{id}',[ComboController::class,'destroy']);
 });
+
+Route::group([
+    'prefix' => 'cart'],
+    function() {
+        Route::get('all', [CartController::class, 'show']);
+        Route::get('/{id}', [CartController::class, 'index']);
+        Route::post('new', [CartController::class, 'newCart']);
+        Route::post('item',[CartController::class,'store']);;
+        Route::delete('item',[CartController::class,'destroy']);
+        Route::put('item',[CartController::class,'update']);
+    });
+
 

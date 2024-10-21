@@ -24,7 +24,7 @@ class Combo extends Model
     {
         return $this->belongsToMany(Product::class,'combo_products','ComboID','ProductID');
     }
-    public function productvariants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(ProductVariant::class,'ComboProducts','ComboID','VariantID');
     }

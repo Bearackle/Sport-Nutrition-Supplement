@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('combo_products', function (Blueprint $table) {
             $table->id('ComboProductID');
-            $table->unsignedBigInteger('ComboID')->nullable(); // foreign key
-            $table->unsignedBigInteger('ProductID')->nullable(); // foreign key
+            $table->unsignedBigInteger('ComboID'); // foreign key
+            $table->unsignedBigInteger('ProductID'); // foreign key
             $table->unsignedBigInteger('VariantID')->nullable(); // foreign key
             $table->integer('Quantity');
         });
