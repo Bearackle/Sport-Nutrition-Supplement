@@ -54,4 +54,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return Product::Filter($filter)->get();
     }
+
+    public function insertStockQuantity($productID, $quantity)
+    {
+        // TODO: Implement insertStockQuantity() method.
+    }
 }

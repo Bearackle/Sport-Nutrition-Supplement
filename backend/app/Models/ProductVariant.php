@@ -20,15 +20,15 @@ class ProductVariant extends Model
     public $timestamps = false;
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo('Product','ProductID','ProductID');
+        return $this->belongsTo(Product::class,'ProductID','ProductID');
     }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany('Combo','ComboProducts','VariantID','ComboID');
+        return $this->belongsToMany(Combo::class,'ComboProducts','VariantID','ComboID');
     }
     public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany('ShoppingCart','CartItems','VariantID','CartID');
+        return $this->belongsToMany(ShoppingCart::class,'CartItems','VariantID','CartID');
     }
     public function image(): \Illuminate\Database\Eloquent\Relations\HasOne
     {

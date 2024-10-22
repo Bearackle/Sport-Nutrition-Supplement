@@ -8,6 +8,8 @@ use App\Services\ImageService\ImageProductService;
 use App\Services\ImageService\ImageProductServiceInterface;
 use App\Services\Order\CartService;
 use App\Services\Order\CartServiceInterface;
+use App\Services\Order\OrderService;
+use App\Services\Order\OrderServiceInterface;
 use App\Services\Product\BrandServcieInterface;
 use App\Services\Product\BrandService;
 use App\Services\Product\ProductVariantService;
@@ -36,6 +38,7 @@ class ServiceLayerProvider extends ServiceProvider
         $this->app->bind(ImageProductServiceInterface::class, ImageProductService::class);
         $this->app->bind(ComboServiceInterface::class, ComboServcie::class);
         $this->app->bind(CartServiceInterface::class,CartService::class);
+        $this->app->bind(OrderServiceInterface::class, OrderService::class);
     }
     /**
      * Bootstrap services.

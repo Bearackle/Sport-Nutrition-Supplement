@@ -16,9 +16,10 @@ class Order extends Model
     use HasFactory;
 
     protected $table = 'orders';
-    protected $fillable = ['UserID','OrderDate','Note','Status'];
+    protected $fillable = ['UserID','OrderDate','Note','Status','TotalAmount'];
     protected $primaryKey = 'OrderID';
-    public $timestamps = false;
+    const CREATED_AT = 'OrderDate';
+    const UPDATED_AT = null;
     public function payment(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Payment::class,'OrderID','OrderID');

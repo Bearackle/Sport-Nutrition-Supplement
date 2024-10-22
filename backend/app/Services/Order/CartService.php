@@ -26,22 +26,19 @@ class CartService implements CartServiceInterface
            return $shopping_cart->shopping_cart;
     }
     public function getItems($cart_id){
-        return $this->cartRepository->find($cart_id)->load(['products'
-        => function($query){
-            $query->select('products.ProductID','ProductName','PriceAfterSale')
-                ->with(['images' => function($query){
-                    $query->where('IsPrimary', true)
-                    ->where('VariantID',null);
-                }])->withPivot('Quantity');
-            },
-            'variants' => function ($query) {
-                $query->select('product_variants.VariantID','product_variants.ProductID','VariantName')
-                ->withPivot('Quantity');
-        },
-            'combos' => function ($query) {
-                $query->select('combos.ComboID', 'ComboName', 'Cb_PriceAfterSale','Cb_ImageUrl')
-                ->withPivot('Quantity');
-        }]);
+       return $this->cartRepository->getCartItems($cart_id)->with(['products' => function($query){
+           $query->select('products.ProductID','ProductName','PriceAfterSale');
+       },'products.images' => function($query)
+       {
+           $query->where('IsPrimary', true)->where('VariantID',null);
+           },
+           'variants'=> function($query){
+               $query->select('product_variants.VariantID','product_variants.ProductID','VariantName');
+       },
+        'variants.image',
+           'combos' => function ($query) {
+                $query->select('combos.ComboID', 'ComboName', 'Cb_PriceAfterSale','Cb_ImageUrl');
+        }])->get();
     }
     public function createCart($user_id)
     {

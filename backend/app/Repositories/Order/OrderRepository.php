@@ -8,18 +8,19 @@ use App\Repositories\Order\OrderRepositoryInterface;
 
 class OrderRepository extends BaseRepository implements OrderRepositoryInterface
 {
-    public function getModel(){
+    public function getModel(): string
+    {
         return Order::class;
     }
     public function getAllOrdersByUserID($userID){
         return Order::where('UserID',$userID)->
         OrderBy('OrderDate','desc')
-        ->get();   
+        ->get();
     }
     public function getLatestOrder($userID){
         return Order::where('UserID',$userID)->
         OrderBy('OrderDate','desc')
-        ->first();   
+        ->first();
     }
     public function getStatusOrder($orderID){
         return Order::select('OrderID','Status')

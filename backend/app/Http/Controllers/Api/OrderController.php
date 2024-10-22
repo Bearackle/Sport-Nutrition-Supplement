@@ -3,16 +3,23 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\Order\OrderService;
+use App\Services\Order\OrderServiceInterface;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    protected OrderServiceInterface $orderService;
+    public function __construct(OrderServiceInterface $orderService)
+    {
+        $this->orderService = $orderService;
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $this->orderService->getOrderData($request->all());
     }
 
     /**
@@ -28,7 +35,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->orderService->createOrder($request->userid, $request->message);
     }
 
     /**
@@ -50,16 +57,16 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request): void
     {
-        //
+        $this->orderService->updateOrderStatus($request->OrderID, $request->Status);
     }
 
-    /**
+    /**s
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request) : void
     {
-        //
+        $this->orderService->destroyOrder($request->id);
     }
 }

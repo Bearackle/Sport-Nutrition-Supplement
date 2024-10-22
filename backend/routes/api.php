@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ComboController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
 use Illuminate\Http\Request;
@@ -76,5 +77,18 @@ Route::group([
         Route::delete('item',[CartController::class,'destroy']);
         Route::put('item',[CartController::class,'update']);
     });
+Route::group([
+    'prefix' => 'order'],function(){
+    Route::get('all',[OrderController::class,'index']);
+    Route::get('/',[OrderController::class,'show']);
+    Route::post('create',[OrderController::class,'store']);
+    Route::put('status',[OrderController::class,'update']);
+    Route::delete('/',[OrderController::class,'destroy'] );
+    Route::post('payment',[OrderController::class,'addPayment']);
+});
 
-
+//Route::group([
+//    'prefix' => 'address'
+//], function(){
+//    Route::get('/',[])
+//})
