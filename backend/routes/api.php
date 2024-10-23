@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ComboController;
@@ -86,10 +87,14 @@ Route::group([
     Route::delete('/',[OrderController::class,'destroy'] );
     Route::post('payment',[OrderController::class,'addPayment']);
     Route::post('address',[OrderController::class,'addAddress']);
+    Route::post('ship', [OrderController::class,'addShipping']);
 });
 
-//Route::group([
-//    'prefix' => 'address'
-//], function(){
-//    Route::get('/',[])
-//})
+Route::group([
+    'prefix' => 'address'
+], function(){
+    Route::get('/',[AddressController::class,'show']);
+    Route::get('default',[AddressController::class,'defaultAddress']);
+    Route::post('/',[AddressController::class,'store']);
+    Route::delete('/',[AddressController::class,'destroy']);
+});

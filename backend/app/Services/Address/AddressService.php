@@ -22,7 +22,7 @@ class AddressService implements AddressServiceInterface
     }
     public function getDefaultAddress($userid)
     {
-       return $this->address_repository->getLattestAddress($userid);
+       return $this->address_repository->getAddressesUser($userid)->first();
     }
     public function getAllAddresses($userid){
         return $this->address_repository->getAddressesUser($userid);

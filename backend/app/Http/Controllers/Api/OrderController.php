@@ -57,4 +57,7 @@ class OrderController extends Controller
     public function addAddress(Request $request) : void{
         $this->orderService->addAddress($request->all());
     }
+    public function addShipping(Request $request) : void{
+        $this->orderService->addShippingMethod($request->all());
+    }
 }

@@ -3,19 +3,13 @@
 namespace App\Services\Order;
 
 use App\Enum\OrderStatus;
-use App\Http\Responses\ApiResponse;
-use App\Models\Order;
-use App\Models\Product;
+use App\Enum\ShipMethod;
+use App\Events\addShippingCharges;
 use App\Repositories\Address\AddressRepositoryInterface;
-use App\Repositories\Cart\CartRepository;
 use App\Repositories\Cart\CartRepositoryInterface;
 use App\Repositories\Order\OrderDetailRepositoryInterface;
-use App\Repositories\Order\OrderRepository;
 use App\Repositories\Order\OrderRepositoryInterface;
-use App\Repositories\Product\ProductRepository;
-use App\Repositories\Product\ProductRepositoryInterface;
 use App\Services\Address\AddressServiceInterface;
-use Brick\Math\BigInteger;
 
 class OrderService implements OrderServiceInterface
 {
@@ -69,7 +63,8 @@ class OrderService implements OrderServiceInterface
         $order->combos()->detach();
         $this->order_repository->delete($id);
     }
-    private function totalAmount($product , $combo) : int {
+    private function totalAmount($product , $combo) : int
+    {
         $sum = 0;
         foreach( $product as $item){
             $sum += $item['PriceAfterSale'] * $item->pivot->Quantity;
@@ -79,7 +74,8 @@ class OrderService implements OrderServiceInterface
         }
         return $sum;
     }
-    private function createOrderItems($order,$items) : void{
+    private function createOrderItems($order,$items) : void
+    {
         foreach($items->products as $product) {
             $order->products()->attach($product->ProductID,
                 ['VariantID' => null, 'Quantity' => $product->pivot->Quantity,
@@ -102,7 +98,6 @@ class OrderService implements OrderServiceInterface
         }
         return $orders;
     }
-
     public function addAddress(array $data_address) : void
     {
         $address['OrderID'] = $data_address['OrderID'];
@@ -119,5 +114,10 @@ class OrderService implements OrderServiceInterface
     public function addPaymentMethod(array $data_method): void
     {
         $this->payment_service->addPaymentMethod($data_method);
+    }
+    public function addShippingMethod(array $data_method) : void
+    {
+        $this->order_repository->update($data_method['OrderID'],['ShipmentCharges' => ShipMethod::equals($data_method['ShipmentCharges'])->value]);
+        event(new addShippingCharges($this->order_repository->find($data_method['OrderID']),ShipMethod::equals($data_method['ShipmentCharges'])));
     }
 }
