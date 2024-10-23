@@ -60,13 +60,16 @@ class User extends Authenticatable
     {
         return $this->hasOne(ShoppingCart::class,'UserID','userid');
     }
-    public function address(){
+    public function address(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany('Address','UserID','userid');
     }
-    public function order(){
+    public function order(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany('Order','OrderID','userid');
     }
-    public function tokens(){
+    public function tokens(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    {
         return $this->morphMany(PersonalAccessToken::class,'tokenable');
     }
 }

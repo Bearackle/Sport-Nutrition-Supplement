@@ -15,8 +15,10 @@ class Address extends Model
     use HasFactory;
     protected $primaryKey = 'AddressID';
     protected $fillable = ['UserID','AddressDetail'];
-    protected $table = 'Address';
-    public function user(){
-        return $this->belongsTo('User','UserID');
+    protected $table = 'addresses';
+    public $timestamps = false;
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'UserID','userid');
     }
 }

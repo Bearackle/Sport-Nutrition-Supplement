@@ -6,6 +6,7 @@ use App\Enum\OrderStatus;
 use App\Http\Responses\ApiResponse;
 use App\Models\Order;
 use App\Models\Product;
+use App\Repositories\Address\AddressRepositoryInterface;
 use App\Repositories\Cart\CartRepository;
 use App\Repositories\Cart\CartRepositoryInterface;
 use App\Repositories\Order\OrderDetailRepositoryInterface;
@@ -13,6 +14,7 @@ use App\Repositories\Order\OrderRepository;
 use App\Repositories\Order\OrderRepositoryInterface;
 use App\Repositories\Product\ProductRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
+use App\Services\Address\AddressServiceInterface;
 use Brick\Math\BigInteger;
 
 class OrderService implements OrderServiceInterface
@@ -21,20 +23,28 @@ class OrderService implements OrderServiceInterface
     protected OrderDetailRepositoryInterface $order_detail_repository;
     protected CartServiceInterface $cart_service;
     protected CartRepositoryInterface $cart_repository;
+    protected PaymentServiceInterface $payment_service;
+    protected AddressRepositoryInterface $address_repository;
+    protected AddressServiceInterface $address_service;
+
     public function __construct(OrderRepositoryInterface $order_repository,
                                 OrderDetailRepositoryInterface $order_detail_repository,CartServiceInterface $cart_service, CartRepositoryInterface
-                                $cart_repository)
+                                $cart_repository, PaymentServiceInterface $payment_service, AddressRepositoryInterface $address_repository,
+    AddressServiceInterface $address_service)
     {
         $this->order_repository = $order_repository;
         $this->order_detail_repository = $order_detail_repository;
         $this->cart_service = $cart_service;
         $this->cart_repository = $cart_repository;
+        $this->payment_service = $payment_service;
+        $this->address_repository = $address_repository;
+        $this->address_service  = $address_service;
     }
     public function getOrderData($order_id)
     {
         return $this->order_repository->find($order_id);
     }
-    public function createOrder($userid, string $message): void
+    public function createOrder($userid, string $message)
     {
         $cart_id = $this->cart_service->getCart($userid);
         $items = $this->cart_repository->getCartItems($cart_id)->first();
@@ -45,6 +55,7 @@ class OrderService implements OrderServiceInterface
             'Note' => $message];
         $new_order = $this->order_repository->create($new_order_make);
         $this->createOrderItems($new_order,$items);
+        return $new_order->OrderID;
     }
     public function updateOrderStatus($order_id, string $status): void
     {
@@ -82,5 +93,31 @@ class OrderService implements OrderServiceInterface
             $order->combos()->attach($combo->ComboID,
                 ['UnitPrice' => $combo->PriceAfterSale,'Quantity' => $combo->pivot->Quantity]);
         }
+    }
+    public function getOrderofUser($user_id)
+    {
+        $orders = $this->order_repository->getAllOrdersByUserID($user_id);
+        foreach($orders as $order){
+            $order->Status = OrderStatus::tryFrom($order['Status'])->label();
+        }
+        return $orders;
+    }
+
+    public function addAddress(array $data_address) : void
+    {
+        $address['OrderID'] = $data_address['OrderID'];
+        $address['UserID'] = $this->order_repository->find($data_address['OrderID'])->user->userid;
+        unset($data_address['OrderID']);
+        if(array_key_exists('AddressID',$data_address)){
+            $address['AddressDetail'] = $this->address_service->getAddressDetail($data_address['AddressID']);
+        } else {
+            $address['AddressDetail'] = implode(' ,',$data_address);
+            $this->address_service->createAddress($address);
+        }
+       $this->order_repository->update($address['OrderID'],['AddressDetail' => $address['AddressDetail']]);
+    }
+    public function addPaymentMethod(array $data_method): void
+    {
+        $this->payment_service->addPaymentMethod($data_method);
     }
 }

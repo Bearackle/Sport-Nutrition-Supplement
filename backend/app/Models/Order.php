@@ -16,7 +16,7 @@ class Order extends Model
     use HasFactory;
 
     protected $table = 'orders';
-    protected $fillable = ['UserID','OrderDate','Note','Status','TotalAmount'];
+    protected $fillable = ['UserID','OrderDate','Note','Status','TotalAmount','AddressDetail','ShipmentCharges'];
     protected $primaryKey = 'OrderID';
     const CREATED_AT = 'OrderDate';
     const UPDATED_AT = null;
@@ -26,7 +26,7 @@ class Order extends Model
     }
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class,'UserID','UserID');
+        return $this->belongsTo(User::class,'UserID','userid');
     }
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

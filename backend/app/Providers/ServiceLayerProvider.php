@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Address\AddressService;
+use App\Services\Address\AddressServiceInterface;
 use App\Services\Combo\ComboServcie;
 use App\Services\Combo\ComboServiceInterface;
 use App\Services\ImageService\ImageProductService;
@@ -10,6 +12,8 @@ use App\Services\Order\CartService;
 use App\Services\Order\CartServiceInterface;
 use App\Services\Order\OrderService;
 use App\Services\Order\OrderServiceInterface;
+use App\Services\Order\PaymentService;
+use App\Services\Order\PaymentServiceInterface;
 use App\Services\Product\BrandServcieInterface;
 use App\Services\Product\BrandService;
 use App\Services\Product\ProductVariantService;
@@ -39,6 +43,8 @@ class ServiceLayerProvider extends ServiceProvider
         $this->app->bind(ComboServiceInterface::class, ComboServcie::class);
         $this->app->bind(CartServiceInterface::class,CartService::class);
         $this->app->bind(OrderServiceInterface::class, OrderService::class);
+        $this->app->bind(PaymentServiceInterface::class, PaymentService::class);
+        $this->app->bind(AddressServiceInterface::class, AddressService::class);
     }
     /**
      * Bootstrap services.

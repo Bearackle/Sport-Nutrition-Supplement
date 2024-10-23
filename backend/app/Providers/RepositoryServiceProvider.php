@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Address;
+use App\Repositories\Address\AddressRepository;
+use App\Repositories\Address\AddressRepositoryInterface;
 use App\Repositories\Product\ProductImageRepository;
 use App\Repositories\Product\ProductImageRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -53,6 +56,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ReviewRepositoryInterface::class,ReviewRepository::class);
         $this->app->bind(UserRepositoryInterface::class,UserRepository::class);
         $this->app->bind(ProductImageRepositoryInterface::class,ProductImageRepository::class);
+        $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
     }
 
     /**

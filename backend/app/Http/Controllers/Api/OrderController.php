@@ -19,21 +19,12 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $this->orderService->getOrderData($request->all());
+        return $this->orderService->getOrderofUser($request->userid);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         $this->orderService->createOrder($request->userid, $request->message);
     }
@@ -41,19 +32,10 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $order_id)
     {
-        //
+        return $this->orderService->destroyOrder($order_id);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
     /**
      * Update the specified resource in storage.
      */
@@ -68,5 +50,11 @@ class OrderController extends Controller
     public function destroy(Request $request) : void
     {
         $this->orderService->destroyOrder($request->id);
+    }
+    public function addPayment(Request $request) : void{
+        $this->orderService->addPaymentMethod($request->all());
+    }
+    public function addAddress(Request $request) : void{
+        $this->orderService->addAddress($request->all());
     }
 }

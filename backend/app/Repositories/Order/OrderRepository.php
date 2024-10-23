@@ -12,8 +12,9 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     {
         return Order::class;
     }
-    public function getAllOrdersByUserID($userID){
-        return Order::where('UserID',$userID)->
+    public function getAllOrdersByUserID($userID): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Order)->where('UserID',$userID)->
         OrderBy('OrderDate','desc')
         ->get();
     }

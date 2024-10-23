@@ -13,10 +13,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Payment extends Model
 {
     use HasFactory;
-    protected $fillable = ['OrderID','PaymentMethod','PaymentStatus','PaymentDate'];
+    protected $fillable = ['OrderID','PaymentMethod','PaymentStatus'];
     protected $primaryKey = 'PaymentID';
     protected $table = 'payments';
-    public function order(){
-        return $this->belongsTo('Order');
+    const CREATED_AT = 'PaymentDate';
+    const UPDATED_AT = null;
+    public function order(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Order::class, 'OrderID','OrderID');
     }
 }

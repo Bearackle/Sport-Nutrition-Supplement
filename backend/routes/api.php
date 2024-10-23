@@ -85,6 +85,7 @@ Route::group([
     Route::put('status',[OrderController::class,'update']);
     Route::delete('/',[OrderController::class,'destroy'] );
     Route::post('payment',[OrderController::class,'addPayment']);
+    Route::post('address',[OrderController::class,'addAddress']);
 });
 
 //Route::group([
