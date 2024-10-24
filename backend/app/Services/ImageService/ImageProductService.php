@@ -2,9 +2,8 @@
 
 namespace App\Services\ImageService;
 
-use App\Models\ImageLinkModels\ProductImages;
 use App\Repositories\Combo\ComboRepositoryInterface;
-use App\Repositories\Product\ProductImageRepositoryInterface;
+use App\Repositories\Image\ProductImageRepositoryInterface;
 use Cloudinary\Api\Exception\ApiError;
 
 class ImageProductService implements ImageProductServiceInterface{

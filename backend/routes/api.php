@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ComboController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
+use App\Http\Controllers\Api\ReviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -62,7 +63,7 @@ Route::group([
     'prefix' => 'combo'
 ],function(){
     Route::get('/{id}',[ComboController::class,'show']);
-    Route::get('all',[ComboController::class,'index']);
+    Route::get('/all',[ComboController::class,'index']);
     Route::post('create',[ComboController::class,'store']);
     Route::post('add',[ComboController::class,'add']);
     Route::delete('/{id}',[ComboController::class,'destroy']);
@@ -97,4 +98,15 @@ Route::group([
     Route::get('default',[AddressController::class,'defaultAddress']);
     Route::post('/',[AddressController::class,'store']);
     Route::delete('/',[AddressController::class,'destroy']);
+});
+
+Route::group([
+    'prefix' => 'review'
+], function(){
+    Route::get('/', [ReviewController::class,'show']);
+    Route::post('/',[ReviewController::class,'store']);
+    Route::post('image',[ReviewController::class,'addImage']);
+    Route::put('/{id}',[ReviewController::class,'update']);
+    Route::delete('/{id}',[ReviewController::class,'destroy']);
+    Route::delete('image/{id}',[ReviewController::class,'destroyImage']);
 });

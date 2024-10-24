@@ -26,13 +26,14 @@ class Combo extends Model
     }
     public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(ProductVariant::class,'ComboProducts','ComboID','VariantID');
+        return $this->belongsToMany(ProductVariant::class,'combo_products','ComboID','VariantID');
     }
     public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(ShoppingCart::class,'CartItems','ComboID','CartID');
     }
-    public function reviews(){
+    public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany(Review::class,'ComboID','ComboID');
     }
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Reivew;
+namespace App\Repositories\Review;
 
 use App\Models\Review;
 use App\Repositories\BaseRepository;
@@ -8,18 +8,22 @@ use App\Repositories\Review\ReviewRepositoryInterface;
 
 
 class ReviewRepository extends BaseRepository implements ReviewRepositoryInterface{
-    public function getModel(){
+    public function getModel() :string{
         return Review::class;
-    }   
-    public function getAllReviewsByProduct($productid){
-        return Review::select('ReviewID','UserID','Rating','Comment','CreatedAt')
-        ->where('ProductID',$productid)
-        ->get();
     }
-    public function getAllReivewsByCombo($comboid){
-        return Review::select('ReviewID','UserID','Rating','Comment','CreatedAt')
-        ->where('ComboID',$comboid)
-        ->get();
+    public function getAllReviewsByProduct($productid): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Review)->where('ProductID', $productid)
+            ->orderBy('created_at', 'desc')
+            ->with('images')
+            ->get();
+    }
+    public function getAllReivewsByCombo($comboid): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Review)->where('ComboID',$comboid)
+            ->orderBy('created_at', 'desc')
+            ->with('images')
+            ->get();
     }
     public function calculateAverageRatingsOfProduct($productid){
         return Review::where('ProductID',$productid)

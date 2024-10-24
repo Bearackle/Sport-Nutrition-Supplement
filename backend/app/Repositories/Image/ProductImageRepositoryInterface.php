@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Product;
+namespace App\Repositories\Image;
 
 use App\Repositories\Interfaces\RepositoryInterface;
 

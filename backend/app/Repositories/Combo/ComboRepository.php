@@ -6,11 +6,12 @@ use App\Models\Combo;
 use App\Repositories\BaseRepository;
 
 class ComboRepository extends BaseRepository implements ComboRepositoryInterface{
-    public function getModel(){
+    public function getModel() : string{
         return Combo::class;
     }
-    public function getComboIDByName($comboName){
-        return Combo::select('ComboID')
+    public function getComboIDByName($comboName): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\Combo)->select('ComboID')
         ->where('ComboName')
         ->get();
     }

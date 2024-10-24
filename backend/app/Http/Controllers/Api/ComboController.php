@@ -10,6 +10,7 @@ use App\Http\Resources\ComboResource;
 use App\Repositories\Combo\ComboRepository;
 use App\Services\Combo\ComboServiceInterface;
 use Illuminate\Http\Request;
+use function PHPUnit\Framework\isEmpty;
 
 class ComboController extends Controller
 {
@@ -20,9 +21,9 @@ class ComboController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): ComboResource
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        return new ComboResource($this->comboService->getAllCombos());
+        return $this->comboService->getAllCombos();
     }
     /**
      * Store a newly created resource in storage.
