@@ -72,8 +72,8 @@ export const Footer = () => {
                 <Image src={logo} alt="logo" className="size-32" />
               </Link>
               <p className={cn("text-[0.875rem] text-app-carbon")}>
-                <strong>Địa chỉ:</strong> 123 Nguyễn Thị Minh Khai, Quận 1,
-                TP.HCM
+                <strong>Địa chỉ:</strong> 35/22 Đ. Số 9, Hiệp Bình Phước, Thủ
+                Đức, TP.HCM
               </p>
               <p className={cn("text-[0.875rem] text-app-carbon")}>
                 <strong>Số điện thoại:</strong> 033 330 3802
@@ -145,6 +145,15 @@ export const Footer = () => {
                 </li>
               </ul>
             </div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d823.7710163395219!2d106.71607878361843!3d10.846668895395966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175287146c555bd%3A0x9e16535d9b4b11fc!2zMzUvMjIgxJAuIFPhu5EgOSwgSGnhu4dwIELDrG5oIFBoxrDhu5tjLCBUaOG7pyDEkOG7qWMsIEjhu5MgQ2jDrSBNaW5oLCBWaWV0bmFt!5e0!3m2!1sen!2s!4v1729355971661!5m2!1sen!2s"
+              allowFullScreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className={cn(
+                "mx-auto aspect-[8/5] w-[90%] xs:mx-0 lg:w-[25rem]",
+              )}
+            ></iframe>
           </div>
         </div>
         <div className={cn("my-8 h-px w-full bg-[#333]")}></div>

@@ -83,6 +83,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -93,6 +94,7 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
@@ -103,5 +105,80 @@
     content: '';
     background-image: url('../../public/check-icon.svg');
     @apply translate-y-[2px] mr-1 size-4 inline-block;
+  }
+
+  input.\[appearance\:textfield\]::-webkit-outer-spin-button,
+  input.\[appearance\:textfield\]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .editor-rendered-content * {
+    @apply !leading-[1.21];
+  }
+
+  .editor-rendered-content *[id]::before {
+    @apply block h-24 -mt-24 invisible;
+    content: "";
+  }
+
+  .editor-rendered-content h1 {
+    @apply text-4xl font-bold !text-[#399EEA];
+  }
+
+  .editor-rendered-content h2 {
+    @apply text-3xl font-bold text-[#399EEA] my-2;
+  }
+
+  .editor-rendered-content h3 {
+    @apply text-2xl font-bold my-2;
+  }
+
+  /* .editor-rendered-content h4 {
+    @apply text-xl font-bold text-[#399EEA];
+  }
+
+  .editor-rendered-content h5 {
+    @apply text-lg font-bold text-[#399EEA];
+  }
+
+  .editor-rendered-content h6 {
+    @apply text-sm font-bold text-[#399EEA];
+  } */
+  .editor-rendered-content p {
+    @apply text-base;
+  }
+
+  .editor-rendered-content pre {
+    @apply text-base;
+  }
+
+  .editor-rendered-content strong {
+    @apply font-bold;
+  }
+
+  .editor-rendered-content em {
+    @apply italic;
+  }
+
+  .editor-rendered-content ul {
+    @apply list-disc ml-6 mt-2 space-y-2;
+  }
+
+  .editor-rendered-content ol {
+    @apply list-decimal ml-16;
+  }
+
+  .editor-rendered-content ol li {
+    @apply pl-1;
+  }
+
+  .editor-rendered-content a {
+    @apply text-[#399EEA];
+  }
+
+  .editor-rendered-content img {
+    @apply mx-auto;
   }
 }
