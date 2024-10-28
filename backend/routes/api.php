@@ -38,19 +38,27 @@ Route::group([
 Route::group([
     'prefix' => 'products'
 ],function(){
+    Route::get('pages' , [ProductController::class,'index']);
     Route::post('create', [ProductController::class,'store']);
     Route::get('/{id}',[ProductController::class,'show']);
     Route::delete('/{id}',[ProductController::class,'destroy']);
+    Route::patch('/update',[ProductController::class,'update']);
+    //image product
+    Route::post('/{id}/image',[ProductController::class,'uploadImage']);
+    Route::patch('/{id}/image',[ProductController::class,'updateImage']);
+    Route::delete('/image/{image_id}',[ProductController::class,'destroyImage']);
     // variants
     Route::get('/{id}/variants',[ProductVariantController::class,'VariantsOfProduct']);
-    Route::post('/variants',[ProductVariantController::class,'store']);
-    Route::delete('/variants/{id}',[ProductVariantController::class,'destroy']);
+    Route::post('/variants',[ProductVariantController::class,'store'])->name('product.variants.store');
+    Route::put('/variants/{id}',[ProductVariantController::class,'update'])->name('product.variants.update');
+    Route::put('/variants/images/{image_id}',[ProductVariantController::class,'updateImage'])->name('product.variants.update.image');
+    Route::delete('/variants/{id}',[ProductVariantController::class,'destroy'])->name('product.variants.destroy');
 });
 
 Route::group([
     'prefix' => 'categories'
 ],function(){
-    Route::get('/all',[CategoryController::class,'index']);
+    Route::get('/',[CategoryController::class,'index']);
     Route::get('/top_products',[CategoryController::class,'getTopProductCategories']);
     Route::get('children/{id}',[CategoryController::class,'ChildrenCategories']);
 });

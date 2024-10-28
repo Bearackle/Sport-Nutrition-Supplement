@@ -1,0 +1,173 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Swagger UI",
+        "description": "L5 Swagger API description",
+        "contact": {
+            "name": "Dinh Huan",
+            "email": "dinhhuan1357@gmail.com"
+        },
+        "version": "1.0"
+    },
+    "paths": {
+        "products/pages": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "hot product",
+                "description": "Lấy sản phẩm hot nhất hiển thị trên trang chủ",
+                "operationId": "b0e57bdb0a6bd512e3697c70ca98bfb3",
+                "responses": {
+                    "200": {
+                        "description": "Lấy sản phẩm thành công"
+                    },
+                    "400": {
+                        "description": "Lỗi mạng"
+                    }
+                }
+            }
+        },
+        "/products/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Get product detail of a product",
+                "description": "Display the specified resource.",
+                "operationId": "b5099368868dbe7900acd129345eb148",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "account/register": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "register new account",
+                "description": "Đăng ký người dùng mới",
+                "operationId": "register",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "phone",
+                                    "password",
+                                    "c_password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "format": "name",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "phone": {
+                                        "format": "phone",
+                                        "example": "0123456789"
+                                    },
+                                    "password": {
+                                        "format": "password",
+                                        "example": "your_password"
+                                    },
+                                    "c_password": {
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful register"
+                    },
+                    "401": {
+                        "description": "fail to register"
+                    }
+                }
+            }
+        },
+        "account/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "login account",
+                "description": "đăng nhập người dùng",
+                "operationId": "login",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "format": "password",
+                                        "example": "your_password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "đăng nhập thành công"
+                    },
+                    "401": {
+                        "description": "đăng nhập thất bại, vui lòng kiểm tra lại thông tin"
+                    }
+                }
+            }
+        },
+        "accounts/profile": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "hồ sơ",
+                "description": "Lấy thông tin hồ sơ người dùng, chỉ có user mới có thể xem",
+                "operationId": "ebc9ac5abbb69a4a8679056a6475ce8f",
+                "responses": {
+                    "200": {
+                        "description": "Thông tin người dùng"
+                    },
+                    "401": {
+                        "description": "Không được cấp quyền, người dùng không có bearer token phù hợp"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Product",
+            "description": "Product"
+        },
+        {
+            "name": "User",
+            "description": "User"
+        }
+    ]
+}

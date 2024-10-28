@@ -17,12 +17,12 @@ return new class extends Migration
             $table->text('Description');
             $table->text('Short_Description')->nullable();
             $table->integer('Price');
-            $table->integer('Sale');    
+            $table->integer('Sale');
             $table->integer('PriceAfterSale');
             $table->integer('StockQuantity');
             $table->unsignedInteger('CategoryID');  // foreign key
-            $table->unsignedInteger('BrandID');     // foreign key
             $table->timestamps();
+            $table->unsignedInteger('BrandID');     // foreign key
         });
     }
 

@@ -9,17 +9,16 @@ use App\Http\Responses\ApiResponse;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
+use App\Traits\ProductStockChecking;
 
 class ProductService implements ProductServiceInterface{
+    use ProductStockChecking;
     protected ProductRepositoryInterface $productRepository;
     protected ProductVariantServiceInterface $productVariantService;
-    protected ImageProductServiceInterface $imageProductService;
     public function __construct(ProductRepositoryInterface $productRepository,
-    CategoryRepositoryInterface $categoryRepository, ProductVariantServiceInterface $productVariantService,
-    ImageProductServiceInterface $imageProductService){
+                                ProductVariantServiceInterface $productVariantService,){
         $this->productRepository = $productRepository;
         $this->productVariantService = $productVariantService;
-        $this->imageProductService = $imageProductService;
     }
     public function getProducts(){
        return $this->productRepository->getAllAvailableProducts();
@@ -31,35 +30,26 @@ class ProductService implements ProductServiceInterface{
     {
         return $this->productRepository->getProductData($id);
     }
-    public function insertNewProduct(array $product) : bool{
-        $product['PriceAfterSale'] = $product['Price']*($product['Sale']/100);
-        $result =  $this->productRepository->create($product);
-        $this->imageProductService->addImagesProduct($result['ProductID'],$product['Images']);
-        event(new ProductCreated($result));
-        return true;
+    public function insertNewProduct(array $product){
+        $product['PriceAfterSale'] = $this->calculatedPrice($product['Price'],$product['Sale']);
+        return $this->productRepository->create($product);
+        //event(new ProductCreated($result));
     }
-    public function updateProduct($id, array $product): bool
+    public function updateProduct($id, array $product) : bool
     {
-        $result = $this->productRepository->update($id, $product);
-        $imageIndex = 0;
-        foreach($product['Images'] as $image){
-            $this->imageProductService->updateUploadedImage($product['ImageID.'.$imageIndex],$image);
-            $imageIndex++;
+        $isAllowed = $this->updatedProductStock($id, $product['StockQuantity']);
+        if(!$isAllowed) {
+            return false;
         }
-        if($result){
-            return true;
-        }
-        return false;
+        $this->productRepository->update($id, $product);
+        return true;
     }
     public function deleteProduct($id): bool
     {
         $product = $this->productRepository->find($id);
         event(new ProductDeleted($product));
         $result = $this->productRepository->delete($id);
-        if($result){
-            return true;
-        }
-        return false;
+        return $result ??= null;
     }
     public function filter(ProductFilter $filters): \Illuminate\Database\Eloquent\Collection
     {
@@ -70,5 +60,8 @@ class ProductService implements ProductServiceInterface{
     }
     public function getModelProduct($id){
         return $this->productRepository->find($id);
+    }
+    public function calculatedPrice($price,$sale) : int{
+            return $price * ((100.0-$sale)/100.0);
     }
 }

@@ -15,7 +15,6 @@ class ImageProductService implements ImageProductServiceInterface{
         $this->productImageRepository = $productImageRepository;
         $this->comboRepository = $comboRepository;
     }
-
     /**
      * @throws ApiError
      */
@@ -92,6 +91,11 @@ class ImageProductService implements ImageProductServiceInterface{
         $last_backslash = strrpos($image_url,'/');
         $last_dot = strrpos($image_url,'.');
         return substr($image_url, $last_backslash+1,$last_dot-$last_backslash-1);
+    }
+
+    public function getImageData($image_id)
+    {
+        $this->productImageRepository->find($image_id);
     }
 }
 

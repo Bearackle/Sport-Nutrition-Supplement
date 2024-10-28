@@ -4,6 +4,7 @@ namespace App\Repositories\Product;
 
 use App\Filters\ProductFilter;
 use App\Models\Product;
+use App\Models\ProductVariant;
 use App\Repositories\BaseRepository;
 
 
@@ -48,15 +49,22 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return (new \App\Models\Product)->with(['images' => function ($query) {
             $query->whereNull('VariantID');
-        }])->find($id);
+        },'variations'])->find($id);
     }
     public function filterer(ProductFilter $filter): \Illuminate\Database\Eloquent\Collection
     {
         return Product::Filter($filter)->get();
     }
 
-    public function insertStockQuantity($productID, $quantity)
+    public function increaseQuantity($productID, $quantity) : void
     {
-        // TODO: Implement insertStockQuantity() method.
+        Product::increment('StockQuantity',$quantity);
+    }
+    public function decreaseQuantity($productID, $quantity) : void{
+        Product::decrement('StockQuantity',$quantity);
+    }
+    public function getCountQuantityOfProduct($productID): int{
+        return $this->find($productID)->variations
+            ->sum('StockQuantity');
     }
 }

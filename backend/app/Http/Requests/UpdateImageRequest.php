@@ -2,13 +2,14 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateVariantRequest extends FormRequest
+class UpdateImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +22,13 @@ class UpdateVariantRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
         return [
-            'VariantName' => 'string',
-            'StockQuantity' => 'numeric',
-            'Image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'ImageID' => 'required|exists:product_images,ImageID',
+            'Image' => 'image|mimes:jpg,jpeg,webp,png',
         ];
     }
     public function failedValidation(Validator $validator)

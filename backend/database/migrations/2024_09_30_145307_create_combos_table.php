@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('Cb_Sale');
             $table->integer('Cb_PriceAfterSale');
             $table->string('Cb_ImageUrl')->nullable(); // not checked
-            $table->unsignedBigInteger('CategoryID');  // foreign key
+            $table->unsignedInteger('CategoryID');  // foreign key
             $table->timestamps();
         });
     }

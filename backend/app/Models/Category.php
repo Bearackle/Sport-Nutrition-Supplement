@@ -15,6 +15,7 @@ class Category extends Model
     protected $fillable = ['CategoryID', 'CategoryName','ParentID'];
     protected $primaryKey = 'CategoryID';
     protected $table = 'categories';
+    public $timestamps = false;
     public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Product::class,'CategoryID','CategoryID');

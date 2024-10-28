@@ -9,9 +9,11 @@ use App\Http\Responses\ApiResponse;
 use App\Repositories\Product\ProductVariantRepository;
 use App\Repositories\Product\ProductVariantRepositoryInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
+use App\Traits\ProductStockChecking;
 
 class ProductVariantService implements ProductVariantServiceInterface
 {
+    use ProductStockChecking;
     protected ProductVariantRepositoryInterface $productVariantRepository;
     protected ImageProductServiceInterface $imageProductService;
     public function __construct(ProductVariantRepositoryInterface $productVariantRepository, ImageProductServiceInterface $imageProductService){
@@ -29,26 +31,24 @@ class ProductVariantService implements ProductVariantServiceInterface
         $result = $this->productVariantRepository->create($productVariant);
         $this->imageProductService->addImageVariants($productVariant['ProductID'], $result['VariantID']
             ,$productVariant['Image']);
-        event(new ProductVariantCreated($result));
+        $this->createdProductVariant($productVariant['ProductID'],$productVariant['StockQuantity']);
     }
-    public function updateProductVariant(array $productVariant): bool
+    public function updateProductVariant(array $productVariant): void
     {
-        $resultDb =  $this->productVariantRepository->update($productVariant['ProductID'],$productVariant);
-        $resultImage = $this->imageProductService->updateUploadedImage($productVariant['ImageId'], $productVariant[
-            'Image']);
-        if(!$resultDb){
-            return false;
+        $variant = $this->productVariantRepository->find($productVariant['VariantID']);
+        if($variant['StockQuantity'] < $productVariant['StockQuantity']){
+            $this->deleteProductVariant($variant,$productVariant['StockQuantity'] - $variant['StockQuantity']);
         }
-        return true;
+        else {
+            $this->createdProductVariant($variant,$variant['StockQuantity'] - $productVariant['StockQuantity'] );
+        }
+        $this->productVariantRepository->update($productVariant['VariantID'],['ProductID' => $productVariant['ProductID']
+            ,'VariantName' => $productVariant['VariantName']]);
     }
-    public function deleteVariant($variantId): bool
+    public function deleteVariant($variantId): void
     {
         $variant = $this->productVariantRepository->find($variantId);
-        event(new ProductVariantDeleted($variant));
-        $result = $this->productVariantRepository->delete($variantId);
-        if(!$result){
-            return false;
-        }
-        return true;
+        $this->deleteProductVariant($variant['ProductID'],$variant['StockQuantity']);
+        $this->productVariantRepository->delete($variantId);
     }
 }

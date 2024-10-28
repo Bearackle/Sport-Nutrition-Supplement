@@ -33,4 +33,10 @@ class ProductVariantRepository extends BaseRepository implements ProductVariantR
         $query->whereNotNull('VariantID');}])
             ->get();
     }
+    public function increaseStock($productVariantsID,$stockQuantity) : void {
+        $this->find($productVariantsID)->increment('StockQuantity',$stockQuantity);
+    }
+    public function decreaseStock($productVariantsID,$stockQuantity) : void {
+        $this->find($productVariantsID)->decrement('StockQuantity',$stockQuantity);
+    }
 }

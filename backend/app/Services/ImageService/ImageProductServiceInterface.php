@@ -13,4 +13,5 @@ interface ImageProductServiceInterface
     public function uploadToCloudinary($image);
     public function deleteImage($image);
     public function extract_public_id($image_url);
+    public function getImageData($image_id);
 }

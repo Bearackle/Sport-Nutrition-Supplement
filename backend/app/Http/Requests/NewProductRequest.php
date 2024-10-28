@@ -25,11 +25,11 @@ class NewProductRequest extends FormRequest
             'StockQuantity' => 'required | numeric',
             'CategoryID' => 'required',
             'BrandID' => 'required',
-            'Images[]' => 'image|mimes:jpg, jpeg, png, webp',
-            'Variants' => 'array',
-            'Variants.*.VariantName' => 'string',
-            'Variants.*.StockQuantity' => 'numeric',
-            'Variants.*.Image' => 'image|mimes:jpg,webp, jpeg, png'
+            'Images[]' => 'image|array|mimes:jpg, jpeg,webp, png'
+//            'Variants' => 'array',
+//            'Variants.*.VariantName' => 'string',
+//            'Variants.*.StockQuantity' => 'numeric',
+//            'Variants.*.Image' => 'image|mimes:jpg,webp, jpeg, png'
         ];
     }
     public function failedValidation(Validator $validator)

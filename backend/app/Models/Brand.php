@@ -16,7 +16,9 @@ class Brand extends Model
     protected $table = 'brands';
     protected $fillable = ['BrandName'];
     protected $primaryKey = 'BrandID';
-    public function product(){
+    public $timestamps = false;
+    public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
         return $this->hasMany('Product','BrandID','BrandID');
     }
 }

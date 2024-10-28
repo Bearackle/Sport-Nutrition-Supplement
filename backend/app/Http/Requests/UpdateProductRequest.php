@@ -26,16 +26,15 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ProductName' => 'required | string',
-            'Description' => 'required | string',
+            'ProductID' => 'exists:products,ProductID',
+            'ProductName' => 'string',
+            'Description' => 'string',
             'Short_Description' => 'string',
-            'Price' => 'required | numeric',
-            'Sale' => 'required | numeric',
-            'StockQuantity' => 'required | numeric',
-            'CategoryID' => 'required',
-            'BrandID' => 'required',
-            'ImageID' => 'array',
-            'Images[]' => 'image|mimes:jpg, jpeg, png, webp',
+            'Price' => 'numeric',
+            'Sale' => 'numeric',
+            'StockQuantity' => 'numeric',
+            'CategoryID' => 'numeric',
+            'BrandID' => 'numeric',
         ];
     }
     public function failedValidation(Validator $validator)
