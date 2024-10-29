@@ -7,7 +7,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { useRouter } from "next/navigation";
-import { IProductCategory, productCategories } from "@/data/category";
+import { productCategories } from "@/data/category";
+import { TParamsCategory } from "@/types/category";
 
 type TProps = {
   categoryId: string;
@@ -19,9 +20,9 @@ export const ProductDetailBreadcrumb = ({ categoryId, name }: TProps) => {
 
   const findParentCategory = (
     categoryId: string,
-    categories: IProductCategory[],
-    parent: IProductCategory | null = null,
-  ): IProductCategory | null => {
+    categories: TParamsCategory[],
+    parent: TParamsCategory | null = null,
+  ): TParamsCategory | null => {
     for (const category of categories) {
       if (category.id === categoryId) {
         return parent;
@@ -42,8 +43,8 @@ export const ProductDetailBreadcrumb = ({ categoryId, name }: TProps) => {
 
   const findCategoryById = (
     categoryId: string,
-    categories: IProductCategory[],
-  ): IProductCategory | null => {
+    categories: TParamsCategory[],
+  ): TParamsCategory | null => {
     for (const category of categories) {
       if (category.id === categoryId) {
         return category;

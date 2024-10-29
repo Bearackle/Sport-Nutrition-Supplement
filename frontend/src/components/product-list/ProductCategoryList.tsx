@@ -1,26 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { StaticImageData } from "next/image";
 import { usePathname } from "next/navigation";
 import ProductCategory from "./ProductCategory";
 import { productCategories } from "@/data/category";
-
-interface IProductCategory {
-  id: string;
-  label: string;
-  icon: string | StaticImageData;
-  amount?: number;
-  children?: {
-    id: string;
-    label: string;
-    icon: string | StaticImageData;
-  }[];
-}
+import { TParamsCategoryWithAmount } from "@/types/category";
 
 const ProductCategoryList = () => {
   const pathname = usePathname();
-  let categories: IProductCategory[] = [];
+  let categories: TParamsCategoryWithAmount[] = [];
   if (pathname === "/products/all") {
     categories = productCategories.slice(0, -2);
   } else {

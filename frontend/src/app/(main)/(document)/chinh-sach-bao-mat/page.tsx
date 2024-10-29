@@ -1,6 +1,4 @@
 import { cn } from "@/lib/utils";
-import checkIcon from "/public/check-icon.svg";
-import Image from "next/image";
 
 export default function page() {
   return (

@@ -1,5 +1,3 @@
-import { StaticImageData } from "next/image";
-
 // ** Import images
 import allAccessories from "/public/categories/all-accessories.svg";
 import allDiet from "/public/categories/all-diet.webp";
@@ -44,19 +42,9 @@ import workout from "/public/categories/workout.svg";
 import zma from "/public/categories/zma.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
+import { TParamsCategory } from "@/types/category";
 
-export interface IProductCategory {
-  id: string;
-  label: string;
-  icon: string | StaticImageData;
-  children?: {
-    id: string;
-    label: string;
-    icon: string | StaticImageData;
-  }[];
-}
-
-export const productCategories: Array<IProductCategory> = [
+export const productCategories: Array<TParamsCategory> = [
   {
     id: "daily-deal",
     label: "GIÁ SIÊU ƯU ĐÃI",

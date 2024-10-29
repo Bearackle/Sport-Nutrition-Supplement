@@ -98,6 +98,7 @@ const data = {
 
 const page = ({ params }: { params: { id: string } }) => {
   console.log(params.id);
+
   const productOverviewProps = {
     id: data.id,
     image: data.image,
