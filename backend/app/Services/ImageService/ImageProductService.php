@@ -86,6 +86,7 @@ class ImageProductService implements ImageProductServiceInterface{
     }
     public function deleteImage($image) : void {
         cloudinary()->destroy($image['PublicId']);
+        $image->delete();
     }
     public function extract_public_id($image_url) : string{
         $last_backslash = strrpos($image_url,'/');
@@ -95,7 +96,7 @@ class ImageProductService implements ImageProductServiceInterface{
 
     public function getImageData($image_id)
     {
-        $this->productImageRepository->find($image_id);
+       return $this->productImageRepository->find($image_id);
     }
 }
 

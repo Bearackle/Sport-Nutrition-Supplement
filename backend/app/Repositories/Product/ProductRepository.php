@@ -16,13 +16,13 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getHotProductByEachCategory(){
         return; //
     }
-    public function getAllAvailableProducts(): \Illuminate\Database\Eloquent\Collection
+    public function getAllAvailableProducts(): \Illuminate\Database\Eloquent\Builder
     {
-        return (new \App\Models\Product)->whereNot('StockQuantity',0)
+        return (new \App\Models\Product)
             ->orderBy('updated_at','desc')
             ->with(['images' => function ($query) {
                 $query->whereNull('VariantID')->where('IsPrimary',1);
-            }])->get();
+            }]);
     }
     public function getTop10ProductHighestSale(): \Illuminate\Database\Eloquent\Collection
     {
@@ -51,9 +51,9 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             $query->whereNull('VariantID');
         },'variations'])->find($id);
     }
-    public function filterer(ProductFilter $filter): \Illuminate\Database\Eloquent\Collection
+    public function filterer(ProductFilter $filter)
     {
-        return Product::Filter($filter)->get();
+        return Product::Filter($filter);
     }
 
     public function increaseQuantity($productID, $quantity) : void

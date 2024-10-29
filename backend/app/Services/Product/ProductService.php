@@ -10,15 +10,21 @@ use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
 use App\Traits\ProductStockChecking;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class ProductService implements ProductServiceInterface{
     use ProductStockChecking;
     protected ProductRepositoryInterface $productRepository;
     protected ProductVariantServiceInterface $productVariantService;
-    public function __construct(ProductRepositoryInterface $productRepository,
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function __construct(ProductRepositoryInterface     $productRepository,
                                 ProductVariantServiceInterface $productVariantService,){
         $this->productRepository = $productRepository;
         $this->productVariantService = $productVariantService;
+        $this->setDependency();
     }
     public function getProducts(){
        return $this->productRepository->getAllAvailableProducts();
@@ -33,7 +39,6 @@ class ProductService implements ProductServiceInterface{
     public function insertNewProduct(array $product){
         $product['PriceAfterSale'] = $this->calculatedPrice($product['Price'],$product['Sale']);
         return $this->productRepository->create($product);
-        //event(new ProductCreated($result));
     }
     public function updateProduct($id, array $product) : bool
     {
@@ -51,7 +56,7 @@ class ProductService implements ProductServiceInterface{
         $result = $this->productRepository->delete($id);
         return $result ??= null;
     }
-    public function filter(ProductFilter $filters): \Illuminate\Database\Eloquent\Collection
+    public function filter(ProductFilter $filters)
     {
         return $this->productRepository->filterer($filters);
     }

@@ -12,7 +12,25 @@ class CategoryController
         $this->categoryService = $categoryService;
     }
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/categories/",
+     *     summary="tìm cây category",
+     *     tags={"Category"},
+     *     description="trả về cây category gồm loại cha, loại con",
+     *     @OA\Response(response=200,description="Thành công",
+     *               @OA\JsonContent(
+     *               type="object",
+     *               @OA\Property(property="success", type="boolean", example=true),
+     *               @OA\Property(property="message", type="string", example="Tìm cây category thành công")
+     *           )),
+     *     @OA\Response(response=400,description="Thất bại",
+     *              @OA\JsonContent(
+     *               type="object",
+     *               @OA\Property(property="success", type="boolean", example=false),
+     *               @OA\Property(property="message", type="string", example="Tạo sản phẩm thành công")
+     *           )
+     *        )
+     *     )
      */
     public function index()
     {
@@ -21,6 +39,23 @@ class CategoryController
     public function getTopProductsByCategory(){
         return $this->categoryService->getTopProductCategories();
     }
+
+    /**
+     * @OA\Get(
+     *     path="/api/categories/{id}/children",
+     *     summary="Lấy category con",
+     *     description="Lấy category con của category có {id}",
+     *     tags={"Category"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="id của category cha",
+     *         @OA\Schema(type="integer")
+     *          ),
+     *     @OA\Response(response=200,description="Thành công")
+     * )
+     */
     public function ChildrenCategories($id){
         return $this->categoryService->getChildrenCategories($id);
     }

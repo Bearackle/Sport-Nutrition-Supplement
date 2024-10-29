@@ -19,7 +19,7 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
     }
     public function getCartItems($cart_id)
     {
-        return (new \App\Models\ShoppingCart)->with('products','variants','combos')
+        return (new \App\Models\ShoppingCart)->with('variants','combos')
             ->find($cart_id);
     }
 }

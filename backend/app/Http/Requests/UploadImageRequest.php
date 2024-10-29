@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 
 class UploadImageRequest extends FormRequest
 {
@@ -11,7 +15,7 @@ class UploadImageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +26,16 @@ class UploadImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ProductID' => 'required|numeric',
-            'VariantID' => 'numeric',
-            'Images' => 'image|mimes:jpg, jpeg, png, webp'
+            'Images[]' => 'array|image|mimes:jpg, jpeg, png, webp'
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(response()->json(
+            [
+                'error' => $errors,
+                'status_code' => 422,
+            ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

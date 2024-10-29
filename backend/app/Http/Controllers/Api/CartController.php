@@ -48,7 +48,7 @@ class CartController extends Controller
     {
         $request->validate([
             'cartid' => 'required|exists:Shopping_carts,CartID',]);
-        return $this->cartService->getItems($request->get('cartid'));
+        return new ApiResponse(200,$this->cartService->getItems($request->get('cartid'))->toArray());
     }
 
     /**

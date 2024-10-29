@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ProductID' => 'exists:products,ProductID',
+//            'ProductID' => 'exists:products,ProductID',
             'ProductName' => 'string',
             'Description' => 'string',
             'Short_Description' => 'string',
