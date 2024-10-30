@@ -58,10 +58,11 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
 
     public function increaseQuantity($productID, $quantity) : void
     {
-        Product::increment('StockQuantity',$quantity);
+        (new \App\Models\Product)->where('ProductID',$productID)
+            ->increment('StockQuantity',$quantity);
     }
     public function decreaseQuantity($productID, $quantity) : void{
-        Product::decrement('StockQuantity',$quantity);
+        (new \App\Models\Product)->where('ProductID',$productID)->decrement('StockQuantity',$quantity);
     }
     public function getCountQuantityOfProduct($productID): int{
         return $this->find($productID)->variations

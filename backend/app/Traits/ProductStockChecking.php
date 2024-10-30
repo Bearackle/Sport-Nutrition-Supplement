@@ -24,16 +24,16 @@ trait ProductStockChecking
         return $countProducts < $quantity;
     }
     public function createdProductVariant($productVariant, $quantity) : void{
-        $this->productRepository->increaseQuantity($productVariant['ProductID'], $quantity);
+        $this->productRepository->increaseQuantity($productVariant->ProductID, $quantity);
     }
     public function updateVariantStock($productVariant, $quantity) : void{
-        $countProduct = abs($productVariant - $quantity);
-        if($productVariant->StockQuantity > $quantity){
-            $this->productVariantRepository->increaseStock($productVariant, $countProduct);
+        $countProduct = abs($productVariant->StockQuantity - $quantity);
+        if($productVariant->StockQuantity < $quantity){
+            $this->productVariantRepository->increaseStock($productVariant->VariantID, $countProduct);
             $this->createdProductVariant($productVariant, $countProduct);
         }
         else {
-            $this->productVariantRepository->decreaseStock($productVariant, $countProduct);
+            $this->productVariantRepository->decreaseStock($productVariant->VariantID, $countProduct);
             $this->deleteProductVariant($productVariant, $countProduct);
         }
     }

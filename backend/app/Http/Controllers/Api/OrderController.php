@@ -19,7 +19,7 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->orderService->getOrderofUser($request->userid);
+        return $this->orderService->getOrderofUser($request->input('userid'));
     }
     /**
      * Store a newly created resource in storage.

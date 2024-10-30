@@ -203,11 +203,11 @@ class ProductController
      *              @OA\Property(property="ProductName", type="string", example="whey protein"),
      *              @OA\Property(property="Short_description", type="string", example="...."),
      *              @OA\Property(property="Description", type="string", example="..."),
-     *              @OA\Property (property="Price", type="int32", example="100000"),
-     *              @OA\Property (property="Sale", type="int32", example="10"),
-     *              @OA\Property (property="StockQuantity", type="int32",example="100"),
-     *              @OA\Property (property="CategoryID" ,type="int32",example="1"),
-     *              @OA\Property (property="BrandID", type="int32", example="1")
+     *              @OA\Property (property="Price", type="integer", example=100000),
+     *              @OA\Property (property="Sale", type="integer", example=10),
+     *              @OA\Property (property="StockQuantity", type="integer",example=100),
+     *              @OA\Property (property="CategoryID" ,type="=integer",example=1),
+     *              @OA\Property (property="BrandID", type="integer", example=1)
      *          )
      *     ),
      *    @OA\Response(response=200,description="Cập nhật sản phẩm thành công"),
@@ -218,7 +218,6 @@ class ProductController
     public function update(UpdateProductRequest $request,string $id): ApiResponse
     {
         $dataToTrans = $request->validated();
-        dd($dataToTrans);
         $result = $this->productService->updateProduct($id,$dataToTrans);
         if($result){
             return new ApiResponse(200,['message' => 'Product updated successfully']);
@@ -284,38 +283,48 @@ class ProductController
     }
     /**
      * @throws ApiError
+     * /**
+     * /**
      * @OA\Patch(
-     *     path="/api/products/{id}/image",
-     *     tags={"Product"},
-     *     description="Cập nhật ảnh sản phẩm",
-     *     summary="Cập nhật 1 ảnh của sản phẩm",
-     *     @OA\Parameter (
-     *         in="path",
-     *         name="id",
-     *         required=true
-     *     ),
-     *         @OA\RequestBody(
-     *            required=true,
-     *            @OA\MediaType(
-     *                mediaType="multipart/form-data",
-     *                @OA\Schema(
-     *                    required={"ImageID","Image"},
-     *                    @OA\Property (property="ImageID", type="integer",example="1",description="Nhập id của ảnh"),
-     *                    @OA\Property(property="Image", type="string",
-     *                               format="binary",
-     *                                description="File ảnh của sản phẩm (1 file)")
-     *                )
-     *            )
-     *        ),
-     *     @OA\Response(response=200,description="update ảnh thành công"),
-     *     @OA\Response(response=400, description="update ảnh sản phẩm thất bại")
-     * )
-     */
+     *      path="/api/products/image/{id}",
+     *      tags={"Product"},
+     *      description="Cập nhật ảnh sản phẩm",
+     *      summary="Cập nhật 1 ảnh của sản phẩm",
+     *      @OA\Parameter (
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(type="integer"),
+     *      ),
+     *      @OA\RequestBody(
+     *           required=true,
+     *           @OA\MediaType(
+     *               mediaType="multipart/form-data",
+     *               @OA\Schema(
+     *                   required={"Image"},
+     *                   @OA\Property(
+     *                       property="Image",
+     *                       type="string",
+     *                       format="binary",
+     *                       description="File ảnh của sản phẩm (1 ảnh)"
+     *                   )
+     *               )
+     *           )
+     *       ),
+     *      @OA\Response(response=200, description="update ảnh thành công"),
+     *      @OA\Response(response=400, description="update ảnh sản phẩm thất bại"),
+     *      @OA\Header(
+     *          header="Content-Type",
+     *          @OA\Schema(type="string", default="multipart/form-data")
+     *      )
+     *  )
+     * /
+     **/
     public function updateImage(UpdateImageRequest $request,string $id)  : void    {
-        $this->imageProductService->updateUploadedImage($request->input('ImageID'),
-            $request->file('Image'));
+        dd($request->all(),$id);
+        $this->imageProductService->updateUploadedImage($id,
+            $request->file('image'));
     }
-
     /**
      * @OA\Delete(
      *     path="/api/products/image/{image_id}",
@@ -336,6 +345,5 @@ class ProductController
     {
         $image = $this->imageProductService->getImageData($image_id);
         $this->imageProductService->deleteImage($image);
-
     }
 }

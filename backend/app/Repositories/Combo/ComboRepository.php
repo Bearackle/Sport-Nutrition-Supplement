@@ -23,4 +23,9 @@ class ComboRepository extends BaseRepository implements ComboRepositoryInterface
         return (new \App\Models\Combo)->where("ComboID","=",$category_id)
             ->get();
     }
+
+    public function getComboProducts($combo_id)
+    {
+        return Combo::with('variants')->find($combo_id);
+    }
 }

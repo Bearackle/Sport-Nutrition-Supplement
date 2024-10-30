@@ -27,8 +27,7 @@ class UpdateImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'ImageID' => 'required|exists:product_images,ImageID',
-            'Image' => 'image|mimes:jpg,jpeg,webp,png',
+            'Image' => 'required|image|mimes:jpg,jpeg,webp,png',
         ];
     }
     public function failedValidation(Validator $validator)

@@ -27,8 +27,8 @@ class UpdateVariantRequest extends FormRequest
     {
         return [
             'VariantName' => 'string',
-            'StockQuantity' => 'numeric',
-            'Image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'ProductID' => 'numeric',
+            'StockQuantity' => 'required|numeric',
         ];
     }
     public function failedValidation(Validator $validator)

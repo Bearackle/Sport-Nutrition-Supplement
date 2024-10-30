@@ -10,6 +10,169 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/brands/all": {
+            "get": {
+                "tags": [
+                    "Brand"
+                ],
+                "summary": "Tất cả nhãn hiệu",
+                "description": "Lấy tất cả nhãn hiệu",
+                "operationId": "60b4d070ef168f82d245b0a68e3bf721",
+                "responses": {
+                    "200": {
+                        "description": "Lấy thành công"
+                    },
+                    "400": {
+                        "description": "Lấy thất bại"
+                    }
+                }
+            }
+        },
+        "/api/cart/{id}": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "id của giỏ hàng",
+                "description": "Lấy id của giỏ hàng bằng id của user",
+                "operationId": "4d80ffaf3eefcfe37f9f1e97b1457eaf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của user",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm thông tin giỏ hàng thành công"
+                    },
+                    "400": {
+                        "description": "Tìm thông tin giỏ hàng thất bại"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/cart/new": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Tạo giỏ hàng",
+                "description": "Tạo giỏ hàng mới cho user, lưu ý mỗi user chỉ có 1 giỏ hàng",
+                "operationId": "dcd5e8845838826de0ecec206c878c77",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "UserID": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tạo giỏ hàng thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/cart/item": {
+            "post": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "Thêm sản phẩm vào giỏ hàng",
+                "description": "Thêm sản phẩm vào giỏ hàng, lưu ý khi thêm product thì combo có thể để null hoặc không liệt kê vào request, tương tự với combo",
+                "operationId": "2ba6ff7ae7387ddb657c16965741daa8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "CartID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ProductID": {
+                                        "type": "integer",
+                                        "example": 30,
+                                        "nullable": true
+                                    },
+                                    "VariantID": {
+                                        "type": "integer",
+                                        "example": 13,
+                                        "nullable": true
+                                    },
+                                    "ComboID": {
+                                        "type": "integer",
+                                        "example": null,
+                                        "nullable": true
+                                    },
+                                    "Quantity": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm vào giỏ hàng thành công"
+                    },
+                    "422": {
+                        "description": "Sản phẩm đã tồn tại"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/cart/all/{id}": {
+            "get": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "sản phẩm trong giỏ hàng",
+                "description": "Tìm thông tin toàn bộ sản phẩm có trong giỏ hàng",
+                "operationId": "316e0dd826e9dde45378091cd27a60d2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của giỏ hàng",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm sản phẩm thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
         "/api/categories/": {
             "get": {
                 "tags": [
@@ -84,6 +247,205 @@
                 "responses": {
                     "200": {
                         "description": "Thành công"
+                    }
+                }
+            }
+        },
+        "/api/combo/create": {
+            "post": {
+                "tags": [
+                    "Combo"
+                ],
+                "summary": "Tạo combo",
+                "description": "Tạo combo mới với ảnh",
+                "operationId": "ccbb32065afaa93805583dd933a770a9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "ComboName",
+                                    "Description",
+                                    "Price",
+                                    "Cb_Sale",
+                                    "Image",
+                                    "CategoryID"
+                                ],
+                                "properties": {
+                                    "ComboName": {
+                                        "type": "string",
+                                        "example": "Combo Dark Test + Vitamin D3 220 viên - Combo Tăng Test, Tăng Đề Kháng"
+                                    },
+                                    "Description": {
+                                        "type": "string",
+                                        "example": "ombo bao gồm :Znutrition Dark Test - Tăng Testosterone mạnh mẽ Nature Made Vitamin D3 2000iu - 220 Viên"
+                                    },
+                                    "Price": {
+                                        "type": "integer",
+                                        "example": 14000000
+                                    },
+                                    "Cb_Sale": {
+                                        "type": "integer",
+                                        "example": 15
+                                    },
+                                    "CategoryID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "Image": {
+                                        "description": "Ảnh combo (1 ảnh)",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tạo combo thành công"
+                    },
+                    "500": {
+                        "description": "Tạo combo thất bại"
+                    }
+                }
+            }
+        },
+        "/api/combo/add": {
+            "post": {
+                "tags": [
+                    "Combo"
+                ],
+                "summary": "Thêm sản phẩm",
+                "description": "Thêm sản phẩm vào combo",
+                "operationId": "b21da60f9a913299aa7e7489eb81b347",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ComboID",
+                                    "ProductID",
+                                    "VariantID",
+                                    "Quantity"
+                                ],
+                                "properties": {
+                                    "ComboID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ProductID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "VariantID": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "Quantity": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm sản phẩm thành công"
+                    },
+                    "500": {
+                        "description": "Thêm sản phẩm thất bại"
+                    }
+                }
+            }
+        },
+        "/api/combo/{id}": {
+            "get": {
+                "tags": [
+                    "Combo"
+                ],
+                "summary": "Tìm thông tin combo",
+                "description": "Tìm thông tin chi tiết combo có {id}",
+                "operationId": "aa2616f4261d4e80148c0b84d71f51eb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của combo",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm thấy combo"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/combo/{id}/products": {
+            "get": {
+                "tags": [
+                    "Combo"
+                ],
+                "summary": "thông tin sản phẩm trong combo",
+                "description": "Tìm thông tin sản phẩm thuộc combo",
+                "operationId": "525cb9c18641abf897ebad6bee1047d1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của combo cần tìm sản phẩm",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm sản phẩm thành công"
+                    },
+                    "400": {
+                        "description": "Tìm sản phẩm thất bại"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/combo/{combo_id}": {
+            "delete": {
+                "tags": [
+                    "Combo"
+                ],
+                "summary": "Xóa combo có {id}",
+                "description": "xóa combo",
+                "operationId": "15b466f8c6f14da6e500364c107ec666",
+                "parameters": [
+                    {
+                        "name": "combo_id",
+                        "in": "path",
+                        "description": "combo_id  cần xóa",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa thành công"
+                    },
+                    "400": {
+                        "description": "Xóa thất bại"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
                     }
                 }
             }
@@ -395,24 +757,24 @@
                                         "example": "..."
                                     },
                                     "Price": {
-                                        "type": "int32",
-                                        "example": "100000"
+                                        "type": "integer",
+                                        "example": 100000
                                     },
                                     "Sale": {
-                                        "type": "int32",
-                                        "example": "10"
+                                        "type": "integer",
+                                        "example": 10
                                     },
                                     "StockQuantity": {
-                                        "type": "int32",
-                                        "example": "100"
+                                        "type": "integer",
+                                        "example": 100
                                     },
                                     "CategoryID": {
-                                        "type": "int32",
-                                        "example": "1"
+                                        "type": "=integer",
+                                        "example": 1
                                     },
                                     "BrandID": {
-                                        "type": "int32",
-                                        "example": "1"
+                                        "type": "integer",
+                                        "example": 1
                                     }
                                 },
                                 "type": "object"
@@ -474,19 +836,24 @@
                         "description": "Tải ảnh lên thất bại"
                     }
                 }
-            },
+            }
+        },
+        "/api/products/image/{id}": {
             "patch": {
                 "tags": [
                     "Product"
                 ],
                 "summary": "Cập nhật 1 ảnh của sản phẩm",
                 "description": "Cập nhật ảnh sản phẩm",
-                "operationId": "8ceafe43aa04f6655fa67134baeb635b",
+                "operationId": "ddc155b5f54fa0ad20bad81d6c0e0362",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "required": true
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "requestBody": {
@@ -495,17 +862,11 @@
                         "multipart/form-data": {
                             "schema": {
                                 "required": [
-                                    "ImageID",
                                     "Image"
                                 ],
                                 "properties": {
-                                    "ImageID": {
-                                        "description": "Nhập id của ảnh",
-                                        "type": "integer",
-                                        "example": "1"
-                                    },
                                     "Image": {
-                                        "description": "File ảnh của sản phẩm (1 file)",
+                                        "description": "File ảnh của sản phẩm (1 ảnh)",
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -547,6 +908,202 @@
                     },
                     "400": {
                         "description": "Xóa ảnh thất bại"
+                    }
+                }
+            }
+        },
+        "/api/products/{id}/variants": {
+            "get": {
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "Tìm mùi vị của sản phẩm",
+                "operationId": "980bb81304dedea55e4352ca4888d2eb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "mã sản phẩm",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm mùi vị thành công"
+                    },
+                    "400": {
+                        "description": "Tìm mùi vị thất bại"
+                    }
+                }
+            }
+        },
+        "/api/products/variants": {
+            "post": {
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "Tạo thêm mùi vị",
+                "description": "Tạo mùi vị cho sản phẩm, yêu cầu có ảnh",
+                "operationId": "9cba641a43dc51401220ad2910c28a09",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "VariantName": {
+                                        "description": "Tên mùi vị",
+                                        "type": "string",
+                                        "example": "Milk Tea Flavor"
+                                    },
+                                    "ProductID": {
+                                        "description": "Mã sản phẩm",
+                                        "format": "int32",
+                                        "example": "1"
+                                    },
+                                    "StockQuantity": {
+                                        "description": "Số lượng sản phẩm",
+                                        "format": "int32",
+                                        "example": "40"
+                                    },
+                                    "Image": {
+                                        "description": "File ảnh mùi vị",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tạo mùi vị thành công"
+                    },
+                    "400": {
+                        "description": "Tạo mùi vị thất bại"
+                    }
+                }
+            }
+        },
+        "/api/products/variants/{id}": {
+            "delete": {
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "xóa mùi vị",
+                "description": "Xóa một mùi vị có {id}",
+                "operationId": "a49dd4d50c0a3cdf6dd84fd36c0b08d4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của mùi  vị",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "xóa thành công"
+                    },
+                    "400": {
+                        "description": "xóa thất bại"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "Cập nhật thông tin mùi vị",
+                "description": "Cập nhật thông tin mùi vị có {id}",
+                "operationId": "617bba168c269a952ee31826b1b2c317",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id mùi vị",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "VariantName",
+                                    "ProductID",
+                                    "StockQuantity"
+                                ],
+                                "properties": {
+                                    "VariantName": {
+                                        "type": "string",
+                                        "example": "chocola"
+                                    },
+                                    "ProductID": {
+                                        "type": "integer"
+                                    },
+                                    "StockQuantity": {
+                                        "type": "integer",
+                                        "example": 10
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "cập nhật thành công"
+                    },
+                    "400": {
+                        "description": "cập nhật thất bại"
+                    }
+                }
+            }
+        },
+        "/api/products/variants/image/{image_id}": {
+            "patch": {
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "cập nhập hình ảnh mùi vị",
+                "description": "Cập nhật hình ảnh mùi vị có image_id",
+                "operationId": "50f1438bb28ecfeded0a419c29eb48f2",
+                "parameters": [
+                    {
+                        "name": "image_id",
+                        "in": "path",
+                        "description": "image id của mùi vị",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart-formdata": {
+                            "schema": {
+                                "properties": {
+                                    "Image": {
+                                        "description": "Ảnh thay thế",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật ảnh thành công"
+                    },
+                    "400": {
+                        "description": "Cập nhật ảnh thất bại"
                     }
                 }
             }
@@ -670,8 +1227,20 @@
     },
     "tags": [
         {
+            "name": "Brand",
+            "description": "Brand"
+        },
+        {
+            "name": "Cart",
+            "description": "Cart"
+        },
+        {
             "name": "Category",
             "description": "Category"
+        },
+        {
+            "name": "Combo",
+            "description": "Combo"
         },
         {
             "name": "Product",
@@ -680,6 +1249,10 @@
         {
             "name": "Collection",
             "description": "Collection"
+        },
+        {
+            "name": "Variant",
+            "description": "Variant"
         },
         {
             "name": "User",

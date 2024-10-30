@@ -2,6 +2,7 @@
 
 namespace App\Services\Combo;
 
+use App\Http\Resources\CombosLandingMask;
 use App\Repositories\Combo\ComboProductRepositoryInterface;
 use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Services\ImageService\ImageProductService;
@@ -37,11 +38,10 @@ class ComboServcie implements ComboServiceInterface
     /**
      * @throws ApiError
      */
-    public function createCombo(array $combo , $image) : void
+    public function createCombo(array $combo)
     {
        $combo['Cb_PriceAfterSale'] = $combo['Price'] * (1 - ($combo['Cb_Sale'])/100);
-       $created_combo = $this->combo_repository->create($combo);
-       $this->image_product_service->addImageCombo($created_combo['ComboID'],$combo['Image']);
+        return $this->combo_repository->create($combo);
     }
     public function addProductCombo(array $product): void
     {
@@ -54,5 +54,10 @@ class ComboServcie implements ComboServiceInterface
         $this->combo_repository->delete($combo_id);
         $combo_img['PublicId']  = $this->image_product_service->extract_public_id($combo['Cb_ImageUrl']);
         $this->image_product_service->deleteImage($combo_img);
+    }
+
+    public function getComboProducts($id)
+    {
+       return $this->combo_repository->getComboProducts($id)->with('variants.product')->get();
     }
 }

@@ -45,13 +45,13 @@ Route::group([
     Route::patch('/{id}',[ProductController::class,'update']);
     //image product
     Route::post('/{id}/image',[ProductController::class,'uploadImage']);
-    Route::patch('/{id}/image',[ProductController::class,'updateImage']);
+    Route::patch('/image/{id}',[ProductController::class,'updateImage']);
     Route::delete('/image/{image_id}',[ProductController::class,'destroyImage']);
     // variants
     Route::get('/{id}/variants',[ProductVariantController::class,'VariantsOfProduct']);
     Route::post('/variants',[ProductVariantController::class,'store']);
-    Route::put('/variants/{id}',[ProductVariantController::class,'update']);
-    Route::put('/variants/images/{image_id}',[ProductVariantController::class,'updateImage']);
+    Route::patch('/variants/{id}',[ProductVariantController::class,'update']);
+    Route::patch('/variants/image/{image_id}',[ProductVariantController::class,'updateImage']);
     Route::delete('/variants/{id}',[ProductVariantController::class,'destroy']);
 });
 
@@ -72,6 +72,7 @@ Route::group([
 ],function(){
     Route::get('/{id}',[ComboController::class,'show']);
     Route::get('/all',[ComboController::class,'index']);
+    Route::get('/{id}/products', [ComboController::class,'showProductsOfCombo']);
     Route::post('create',[ComboController::class,'store']);
     Route::post('add',[ComboController::class,'add']);
     Route::delete('/{id}',[ComboController::class,'destroy']);
@@ -80,7 +81,7 @@ Route::group([
 Route::group([
     'prefix' => 'cart'],
     function() {
-        Route::get('all', [CartController::class, 'show']);
+        Route::get('all/{id}', [CartController::class, 'show']);
         Route::get('/{id}', [CartController::class, 'index']);
         Route::post('new', [CartController::class, 'newCart']);
         Route::post('item',[CartController::class,'store']);;

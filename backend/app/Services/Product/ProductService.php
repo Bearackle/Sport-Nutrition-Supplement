@@ -6,6 +6,7 @@ use App\Events\ProductCreated;
 use App\Events\ProductDeleted;
 use App\Filters\ProductFilter;
 use App\Http\Responses\ApiResponse;
+use App\Models\Product;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
@@ -40,14 +41,15 @@ class ProductService implements ProductServiceInterface{
         $product['PriceAfterSale'] = $this->calculatedPrice($product['Price'],$product['Sale']);
         return $this->productRepository->create($product);
     }
-    public function updateProduct($id, array $product) : bool
+    public function updateProduct($id, array $product) :bool | Product
     {
-        $isAllowed = $this->updatedProductStock($id, $product['StockQuantity']);
-        if(!$isAllowed) {
-            return false;
+        if(array_key_exists('StockQuantity', $product)){
+            $isAllowed = $this->updatedProductStock($id, $product['StockQuantity']);
+            if(!$isAllowed) {
+                return false;
+            }
         }
-        $this->productRepository->update($id, $product);
-        return true;
+        return $this->productRepository->update($id, $product);
     }
     public function deleteProduct($id): bool
     {

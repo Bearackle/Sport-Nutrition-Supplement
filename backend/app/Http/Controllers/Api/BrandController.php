@@ -13,7 +13,14 @@ class BrandController extends Controller
         $this->brandServcie = $brandServcie;
     }
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/brands/all",
+     *     tags={"Brand"},
+     *     summary="Tất cả nhãn hiệu",
+     *     description="Lấy tất cả nhãn hiệu",
+     *   @OA\Response(response=200, description="Lấy thành công"),
+     *   @OA\Response(response=400, description="Lấy thất bại")
+     * )
      */
     public function index()
     {

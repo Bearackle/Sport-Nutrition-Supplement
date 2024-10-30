@@ -8,7 +8,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 
-class NewCartItems extends FormRequest
+class NewCartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,21 +26,9 @@ class NewCartItems extends FormRequest
     public function rules(): array
     {
         return [
-            'CartID' => 'required | exists:shopping_carts,CartID',
-            'ProductID' => 'nullable|exists:products,ProductID',
-            'VariantID' => 'nullable|exists:product_variants,VariantID|unique:cart_items,VariantID',
-            'ComboID' => 'nullable|exists:combos,ComboID|unique:cart_items,ComboID',
-            'Quantity' => 'required | integer',
+            'UserID' => 'required|exists:users,userid|unique:shopping_carts,UserID',
         ];
     }
-    public function messages() : array
-    {
-       return [
-           'VariantID.unique' => 'Variant ID already exists',
-           'ComboID.unique' => 'Combo ID already exists',
-       ];
-    }
-
     public function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();

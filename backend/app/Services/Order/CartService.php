@@ -26,17 +26,10 @@ class CartService implements CartServiceInterface
            return $shopping_cart->shopping_cart;
     }
     public function getItems($cart_id){
-//       return $this->cartRepository->getCartItems($cart_id)->with(['products' => function($query){
-//           $query->select('products.ProductID','ProductName','PriceAfterSale');
-//       },'products.images' => function($query) {$query->where('IsPrimary', true)->where('VariantID',null);}
-//           ,'variants'=> function($query){
-//               $query->select('product_variants.VariantID','product_variants.ProductID','VariantName');
-//       }, 'products.variations.image',
-//           'combos' => function ($query) {
-//                $query->select('combos.ComboID', 'ComboName', 'Cb_PriceAfterSale','Cb_ImageUrl');
-//        }])->get();
         return $this->cartRepository->getCartItems($cart_id)->with(['variants' => function ($query) {
-                $query->with('product','image');
+                $query->with(['product'=> function ($product) {
+                    $product->select("ProductID","ProductName","PriceAfterSale");
+                },'image'])->select("product_variants.VariantID","VariantName");
             }, 'combos' => function ($combo) {
                 $combo->select('combos.ComboID', 'ComboName', 'Cb_PriceAfterSale','Cb_ImageUrl');
        }])->get();

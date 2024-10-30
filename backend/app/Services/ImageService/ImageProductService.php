@@ -93,7 +93,6 @@ class ImageProductService implements ImageProductServiceInterface{
         $last_dot = strrpos($image_url,'.');
         return substr($image_url, $last_backslash+1,$last_dot-$last_backslash-1);
     }
-
     public function getImageData($image_id)
     {
        return $this->productImageRepository->find($image_id);

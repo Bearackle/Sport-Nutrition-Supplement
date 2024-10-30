@@ -27,8 +27,8 @@ class NewProductVariants extends FormRequest
     public function rules(): array
     {
         return [
-            'VariantName' => 'string',
-            'StockQuantity' => 'integer',
+            'VariantName' => 'required|string',
+            'StockQuantity' => 'required|integer',
             'ProductID' => 'required|integer',
             'Image' => 'image|mimes:jpg,webp,jpeg,png| max:2048',
         ];

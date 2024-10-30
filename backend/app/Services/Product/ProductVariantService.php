@@ -6,6 +6,7 @@ use App\Events\ImageDeleted;
 use App\Events\ProductVariantCreated;
 use App\Events\ProductVariantDeleted;
 use App\Http\Responses\ApiResponse;
+use App\Models\ProductVariant;
 use App\Repositories\Product\ProductVariantRepository;
 use App\Repositories\Product\ProductVariantRepositoryInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
@@ -32,19 +33,18 @@ class ProductVariantService implements ProductVariantServiceInterface
     public function getVariantsData($productID){
         return $this->productVariantRepository->getVariantsDataWithImage($productID);
     }
-    public function insertProductVariant(array $productVariant): void
+    public function insertProductVariant(array $productVariant)
     {
         $result = $this->productVariantRepository->create($productVariant);
-        $this->imageProductService->addImageVariants($productVariant['ProductID'], $result['VariantID']
-            ,$productVariant['Image']);
         $this->createdProductVariant($productVariant,$productVariant['StockQuantity']);
+        return $result;
     }
-    public function updateProductVariant(array $productVariant): void
+    public function updateProductVariant($id, array $productVariant): bool | ProductVariant
     {
-        $variant = $this->productVariantRepository->find($productVariant['VariantID']);
-        $this->updateVariantStock($variant,$variant['StockQuantity']);
-        $this->productVariantRepository->update($productVariant['VariantID'],['ProductID' => $productVariant['ProductID']
-            ,'VariantName' => $productVariant['VariantName']]);
+        $variant = $this->productVariantRepository->find($id);
+        $this->updateVariantStock($variant,$productVariant['StockQuantity']);
+        unset($productVariant['StockQuantity']);
+        return $this->productVariantRepository->update($id,$productVariant);
     }
     public function deleteVariant($variantId): void
     {
