@@ -29,7 +29,7 @@ const couponData = {
     "🔅Áp dụng đơn > 399k",
   ],
   conditionUrl: "#",
-  code: "36A666",
+  code: "UNKNOWNCOUPON",
 };
 
 export default function Home() {
