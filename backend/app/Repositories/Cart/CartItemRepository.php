@@ -7,29 +7,33 @@ use App\Repositories\BaseRepository;
 use App\Repositories\Cart\CartItemRepositoryInterface;
 
 class CartItemRepository extends BaseRepository implements CartItemRepositoryInterface{
-    public function getModel(){
+    public function getModel(): string
+    {
         return CartItem::class;
     }
-    public function getAllInsideCart($cartID){
-        return CartItem::select('CartItemID','Quantity')
-        ->where('CartID',$cartID)
-        ->get();
-    }
-    public function getProductByCartID($cartID){
-        return CartItem::select('ProductID','VariantID','Quantity')  // variant only go with product
-        ->where('CartID',$cartID)
-        ->whereNotNull('ProductID')
-        ->get();
-    }
-    public function getComboByCartID($cartID){
-        return CartItem::select('ComboID','Quantity')
-        ->where('CartID',$cartID)
-        ->whereNotNull('ComboID')
-        ->get();
-    }
-    public function emptyCart($cart_id): ?bool
+    public function getAllInsideCart($cartId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\CartItem)->where('CartID',$cart_id)
+        return (new \App\Models\CartItem)->select('cart_item_id','quantity')
+        ->where('cart_id',$cartId)
+        ->get();
+    }
+    public function getProductByCartID($cartId): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\CartItem)->select('product_id','variant_id','quantity')  // variant only go with product
+        ->where('cart_id',$cartId)
+        ->whereNotNull('product_id')
+        ->get();
+    }
+    public function getComboByCartID($cartId): \Illuminate\Database\Eloquent\Collection
+    {
+        return (new \App\Models\CartItem)->select('combo_id','quantity')
+        ->where('cart_id',$cartId)
+        ->whereNotNull('combo_id')
+        ->get();
+    }
+    public function emptyCart($cartId): ?bool
+    {
+        return (new \App\Models\CartItem)->where('cart_id',$cartId)
             ->delete();
     }
 }

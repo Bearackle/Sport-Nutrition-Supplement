@@ -11,34 +11,34 @@ class ProductVariantRepository extends BaseRepository implements ProductVariantR
     {
         return ProductVariant::class;
     }
-    public function getVariantAvailableForProduct($productID): \Illuminate\Database\Eloquent\Collection
+    public function getVariantAvailableForProduct($productId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\ProductVariant)->where('ProductID',$productID)
-            ->where('StockQuantity', '>','0')
+        return (new \App\Models\ProductVariant)->where('product_id',$productId)
+            ->where('stock_quantity', '>','0')
             ->get();
     }
-    public function findVariantByNameAndProduct($variantName,$productID): \Illuminate\Database\Eloquent\Collection
+    public function findVariantByNameAndProduct($variantName,$productId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\ProductVariant)->where('ProductID',$productID)
-        ->where('VariantName',$variantName)
+        return (new \App\Models\ProductVariant)->where('product_id',$productId)
+        ->where('variant_name',$variantName)
         ->get();
     }
-    public function getImageProductVariant($productVariantsID){
-        return (new \App\Models\ProductVariant)->find($productVariantsID)->image;
+    public function getImageProductVariant($productVariantsId){
+        return (new \App\Models\ProductVariant)->find($productVariantsId)->image;
     }
-    public function getVariantsDataWithImage($productID): \Illuminate\Database\Eloquent\Collection
+    public function getVariantsDataWithImage($productId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\ProductVariant)->where('ProductID',$productID)
+        return (new \App\Models\ProductVariant)->where('product_id',$productId)
             ->with(['image' =>function($query){
-        $query->whereNotNull('VariantID');}])
+        $query->whereNotNull('variant_id');}])
             ->get();
     }
     public function increaseStock($productVariantID,$stockQuantity) : void {
-        (new \App\Models\ProductVariant)->where('VariantID', $productVariantID)
-            ->increment('StockQuantity',$stockQuantity);
+        (new \App\Models\ProductVariant)->where('variant_id', $productVariantID)
+            ->increment('stock_quantity',$stockQuantity);
     }
-    public function decreaseStock($productVariantID,$stockQuantity) : void {
-        (new \App\Models\ProductVariant)->where('VariantID' ,$productVariantID)
-            ->decrement('StockQuantity',$stockQuantity);
+    public function decreaseStock($productVariantId,$stockQuantity) : void {
+        (new \App\Models\ProductVariant)->where('variant_id' ,$productVariantId)
+            ->decrement('stock_quantity',$stockQuantity);
     }
 }

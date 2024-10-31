@@ -10,24 +10,24 @@ class CategoryRepository extends BaseRepository implements CategoryRepositoryInt
     {
         return Category::class;
     }
-    public function getChildrenCategory($categoryID): \Illuminate\Database\Eloquent\Collection
+    public function getChildrenCategory($categoryId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Category)->where('ParentID',$categoryID)->get();
+        return (new \App\Models\Category)->where('parent_id',$categoryId)->get();
     }
     public function getCategoryIDByName($categoryName){
-        return (new \App\Models\Category)->select('CategoryID')->
-        where('CategoryName',$categoryName)
+        return (new \App\Models\Category)->select('category_id')->
+        where('category_name',$categoryName)
         ->first();
     }
-    public function getAllChildrenCategoryID($parentid): \Illuminate\Database\Eloquent\Collection
+    public function getAllChildrenCategoryID($parentId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Category)->select('CategoryID')
-        ->where('ParentID',$parentid)
+        return (new \App\Models\Category)->select('category_id')
+        ->where('parent_id',$parentId)
         ->get();
     }
-    public function TraceCategories() : \Illuminate\Database\Eloquent\Collection
+    public function traceCategories() : \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Category)->whereNull('ParentID')
+        return (new \App\Models\Category)->whereNull('parent_id')
             ->with('children')->get();
     }
     public function getSomeProductsByEachCategory(): \Illuminate\Database\Eloquent\Collection

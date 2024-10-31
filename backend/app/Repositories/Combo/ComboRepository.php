@@ -9,23 +9,23 @@ class ComboRepository extends BaseRepository implements ComboRepositoryInterface
     public function getModel() : string{
         return Combo::class;
     }
-    public function getComboIDByName($comboName): \Illuminate\Database\Eloquent\Collection
+    public function getComboIdByName($comboName): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Combo)->select('ComboID')
-        ->where('ComboName')
+        return (new \App\Models\Combo)->select('combo_id')
+        ->where('combo_name', $comboName)
         ->get();
     }
     public function searchCombo($searchString){
         //
     }
-    public function getComboOfCategory($category_id): \Illuminate\Database\Eloquent\Collection
+    public function getComboOfCategory($categoryId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Combo)->where("ComboID","=",$category_id)
+        return (new \App\Models\Combo)->where("category_id","=",$categoryId)
             ->get();
     }
 
-    public function getComboProducts($combo_id)
+    public function getComboProducts($comboId)
     {
-        return Combo::with('variants')->find($combo_id);
+        return Combo::with('variants')->find($comboId);
     }
 }

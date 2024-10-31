@@ -55,18 +55,18 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    protected $primaryKey = 'userid';
+    protected $primaryKey = 'user_id';
     public function shopping_cart(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(ShoppingCart::class,'UserID','userid');
+        return $this->hasOne(ShoppingCart::class,'user_id','user_id');
     }
     public function address(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('Address','UserID','userid');
+        return $this->hasMany(Address::class,'user_id','user_id');
     }
     public function order(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('Order','OrderID','userid');
+        return $this->hasMany(Order::class,'order_id','user_id');
     }
     public function tokens(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {

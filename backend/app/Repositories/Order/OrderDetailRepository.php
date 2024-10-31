@@ -10,24 +10,27 @@ class OrderDetailRepository extends BaseRepository implements OrderDetailReposit
     public function getModel(){
         return OrderDetail::class;
     }
-    public function getAllInsideOrder($orderID){
-        return OrderDetail::select('OrderDetailID')
-        ->where('OrderID',$orderID)
+    public function getAllInsideOrder($orderId): \Illuminate\Database\Eloquent\Collection
+    {
+        return OrderDetail::select('order_detail_id')
+        ->where('order_id',$orderId)
         ->get();
     }
-    public function getAllProducts($orderID){
-        return OrderDetail::select('ProductID','VariantID','Quantity','UnitPrice')
-        ->where('OrderID',$orderID)
-        ->whereNotNull('ProductID')
+    public function getAllProducts($orderId): \Illuminate\Database\Eloquent\Collection
+    {
+        return OrderDetail::select('product_id','variant_id','quantity','unit_price')
+        ->where('order_id',$orderId)
+        ->whereNotNull('product_id')
         ->get();
     }
-    public function getAllCombos($orderID){
-        return OrderDetail::select('ComboID','Quantity','UnitPrice')
-        ->where('OrderID',$orderID)
+    public function getAllCombos($orderId): \Illuminate\Database\Eloquent\Collection
+    {
+        return OrderDetail::select('combo_id','quantity','unit_price')
+        ->where('order_id',$orderId)
         ->get();
     }
-    public function TotalOrderDetailCost($orderID){
-        return OrderDetail::selectRaw('SUM( Quantity * UnitPrice ) as total')
+    public function TotalOrderDetailCost($orderId){
+        return OrderDetail::selectRaw('SUM( quantity * unit_price ) as total')
         ->first();
     }
 }

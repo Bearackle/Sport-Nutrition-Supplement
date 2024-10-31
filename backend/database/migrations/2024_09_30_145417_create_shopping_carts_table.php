@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shopping_carts', function (Blueprint $table) {
-            $table->id('CartID');
-            $table->unsignedBigInteger('UserID');
-            $table->dateTime('CreatedAt');
+            $table->id('cart_id');
+            $table->unsignedBigInteger('user_id');
+            $table->dateTime('created_at');
         });
     }
-
     /**
      * Reverse the migrations.
      */

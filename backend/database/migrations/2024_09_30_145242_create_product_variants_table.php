@@ -12,13 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_variants', function (Blueprint $table) {
-            $table->id('VariantID');
-            $table->unsignedBigInteger('ProductID');    // foreign key
-            $table->string('VariantName');
-            $table->integer('StockQuantity');
+            $table->id('variant_id');
+            $table->unsignedBigInteger('product_id');    // foreign key
+            $table->string('variant_name');
+            $table->integer('stock_quantity');
         });
     }
-
     /**
      * Reverse the migrations.
      */

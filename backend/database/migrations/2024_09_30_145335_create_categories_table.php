@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->increments('CategoryID');
-            $table->string('CategoryName');
-            $table->unsignedInteger('ParentID')->nullable(); // foreign key
+            $table->increments('category_id');
+            $table->string('category_name');
+            $table->unsignedInteger('parent_id')->nullable(); // foreign key
         });
     }
-
     /**
      * Reverse the migrations.
      */

@@ -16,7 +16,6 @@ use App\Http\Controllers\Api\CategoryController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
 Route::group([
     'prefix' => 'account'
 ],function(){
@@ -27,7 +26,6 @@ Route::group([
     Route::put('updatepassword',[UserController::class,'update'])
         ->middleware('auth:sanctum');
 });
-
 Route::group([
     'prefix' => 'collection'
 ],function(){
@@ -54,7 +52,6 @@ Route::group([
     Route::patch('/variants/image/{image_id}',[ProductVariantController::class,'updateImage']);
     Route::delete('/variants/{id}',[ProductVariantController::class,'destroy']);
 });
-
 Route::group([
     'prefix' => 'categories'
 ],function(){
@@ -77,7 +74,6 @@ Route::group([
     Route::post('add',[ComboController::class,'add']);
     Route::delete('/{id}',[ComboController::class,'destroy']);
 });
-
 Route::group([
     'prefix' => 'cart'],
     function() {
@@ -85,13 +81,13 @@ Route::group([
         Route::get('/{id}', [CartController::class, 'index']);
         Route::post('new', [CartController::class, 'newCart']);
         Route::post('item',[CartController::class,'store']);;
-        Route::delete('item',[CartController::class,'destroy']);
-        Route::put('item',[CartController::class,'update']);
+        Route::delete('item/{id}',[CartController::class,'destroy']);
+        Route::patch('item/{id}',[CartController::class,'update']);
     });
 Route::group([
     'prefix' => 'order'],function(){
     Route::get('all',[OrderController::class,'index']);
-    Route::get('/',[OrderController::class,'show']);
+    Route::get('/{order_id}',[OrderController::class,'show']);
     Route::post('create',[OrderController::class,'store']);
     Route::put('status',[OrderController::class,'update']);
     Route::delete('/',[OrderController::class,'destroy'] );
@@ -108,7 +104,6 @@ Route::group([
     Route::post('/',[AddressController::class,'store']);
     Route::delete('/',[AddressController::class,'destroy']);
 });
-
 Route::group([
     'prefix' => 'review'
 ], function(){

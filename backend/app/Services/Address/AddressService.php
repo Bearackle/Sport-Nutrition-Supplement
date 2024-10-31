@@ -6,30 +6,30 @@ use App\Repositories\Address\AddressRepositoryInterface;
 
 class AddressService implements AddressServiceInterface
 {
-    protected AddressRepositoryInterface $address_repository;
-    public function __construct(AddressRepositoryInterface $address_repository)
+    protected AddressRepositoryInterface $addressRepository;
+    public function __construct(AddressRepositoryInterface $addressRepository)
     {
-        $this->address_repository = $address_repository;
+        $this->addressRepository = $addressRepository;
     }
 
     public function createAddress(array $data) :  void
     {
-        $this->address_repository->create($data);
+        $this->addressRepository->create($data);
     }
     public function deleteAddress($id) :  void
     {
-        $this->address_repository->delete($id);
+        $this->addressRepository->delete($id);
     }
-    public function getDefaultAddress($userid)
+    public function getDefaultAddress($userId)
     {
-       return $this->address_repository->getAddressesUser($userid)->first();
+       return $this->addressRepository->getAddressesUser($userId)->first();
     }
-    public function getAllAddresses($userid){
-        return $this->address_repository->getAddressesUser($userid);
+    public function getAllAddresses($userId){
+        return $this->addressRepository->getAddressesUser($userId);
     }
 
-    public function getAddressDetail($address_id)
+    public function getAddressDetail($addressId)
     {
-       return $this->address_repository->find($address_id)->AddressDetail;
+       return $this->addressRepository->find($addressId)->address_detail;
     }
 }

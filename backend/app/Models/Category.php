@@ -12,24 +12,24 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['CategoryID', 'CategoryName','ParentID'];
-    protected $primaryKey = 'CategoryID';
+    protected $fillable = ['category_name','parent_id'];
+    protected $primaryKey = 'category_id';
     protected $table = 'categories';
     public $timestamps = false;
-    public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Product::class,'CategoryID','CategoryID');
+        return $this->hasMany(Product::class,'category_id','category_id');
     }
     public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Category::class,'ParentID','CategoryID');
+        return $this->belongsTo(Category::class,'parent_id','category_id');
     }
     public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Category::class,'ParentID','CategoryID');
+        return $this->hasMany(Category::class,'parent_id','category_id');
     }
-    public function combo(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function combos(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Combo::class,'CategoryID','CategoryID');
+        return $this->hasMany(Combo::class,'category_id','category_id');
     }
 }

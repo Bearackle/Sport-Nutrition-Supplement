@@ -2,6 +2,9 @@
 
 namespace App\Models\ImageLinkModels;
 
+use App\Models\Combo;
+use App\Models\Product;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -16,18 +19,18 @@ class RatingImages extends Model
 {
     use HasFactory;
     protected $table = 'rating_images';
-    protected $fillable = ['Rt_ImageID','ReviewID','ProductID','ComboID','Rt_ImageURL'];
-    protected $primaryKey = 'Rt_ImageID';
-    public function Review(): BelongsTo
+    protected $fillable = ['rating_image_id','review_id','product_id','combo_id','rating_image_url'];
+    protected $primaryKey = 'rating_image_id';
+    public function review(): BelongsTo
     {
-        return $this->belongsTo('App\Models\ReviewModels\Review','ReviewID','ReviewID');
+        return $this->belongsTo(Review::class,'review_id','review_id');
     }
-    public function Product(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo('App\Models\ProductModels\Product','ProductID','ProductID');
+        return $this->belongsTo(Product::class,'product_id','product_id');
     }
-    public function Combo(): BelongsTo
+    public function combo(): BelongsTo
     {
-        return $this->belongsTo('App\Models\ComboModels\Combo','ComboID','ComboID');
+        return $this->belongsTo(Combo::class, 'combo_id','combo_id');
     }
 }

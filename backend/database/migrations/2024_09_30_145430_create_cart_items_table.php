@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('cart_items', function (Blueprint $table) {
-            $table->id('CartItemID');
-            $table->unsignedBigInteger('CartID'); //FK to phopping_cart
-            $table->unsignedBigInteger('ProductID')->nullable(); // FK to product
-            $table->unsignedBigInteger('VariantID')->nullable(); // FK to product_variant
-            $table->unsignedBigInteger('ComboID')->nullable(); // FK to combos
-            $table->integer('Quantity');
+            $table->id('cart_item_id');
+            $table->unsignedBigInteger('cart_id'); // FK to shopping_cart
+            $table->unsignedBigInteger('product_id')->nullable(); // FK to product
+            $table->unsignedBigInteger('variant_id')->nullable(); // FK to product_variant
+            $table->unsignedBigInteger('combo_id')->nullable(); // FK to combos
+            $table->integer('quantity');
         });
     }
-
     /**
      * Reverse the migrations.
      */

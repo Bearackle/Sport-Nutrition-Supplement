@@ -13,7 +13,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return Product::class;
     }
-    public function getHotProductByEachCategory(){
+    public function getHotProductByEachCategory()
+    {
         return; //
     }
     public function getAllAvailableProducts(): \Illuminate\Database\Eloquent\Builder
@@ -21,16 +22,16 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         return (new \App\Models\Product)
             ->orderBy('updated_at','desc')
             ->with(['images' => function ($query) {
-                $query->whereNull('VariantID')->where('IsPrimary',1);
+                $query->whereNull('variant_id')->where('is_primary',1);
             }]);
     }
     public function getTop10ProductHighestSale(): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Product)->orderBy('Sale','desc')->take(10)->get();
+        return (new \App\Models\Product)->orderBy('sale','desc')->take(10)->get();
     }
-    public function getProductByCategories($categoryID): \Illuminate\Database\Eloquent\Collection
+    public function getProductByCategories($categoryId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Product)->where('CategoryID',$categoryID)
+        return (new \App\Models\Product)->where('category_id',$categoryId)
         ->get();
     }
     public function searchProduct($string): void
@@ -39,33 +40,33 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
     public function getProductByBrand($brand): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Product)->where('BrandID',$brand)->get();
+        return (new \App\Models\Product)->where('brand_id',$brand)->get();
     }
     public function getProductByPriceRange($range): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Product)->where('PriceAfterSale',[$range['minPrice'],$range['maxPrice']])->get();
+        return (new \App\Models\Product)->where('price_after_sale',[$range['minPrice'],$range['maxPrice']])->get();
     }
     public function getProductData($id)
     {
         return (new \App\Models\Product)->with(['images' => function ($query) {
-            $query->whereNull('VariantID');
-        },'variations'])->find($id);
+            $query->whereNull('variant_id');
+        },'variants'])->find($id);
     }
     public function filterer(ProductFilter $filter)
     {
         return Product::Filter($filter);
     }
 
-    public function increaseQuantity($productID, $quantity) : void
+    public function increaseQuantity($productId, $quantity) : void
     {
-        (new \App\Models\Product)->where('ProductID',$productID)
-            ->increment('StockQuantity',$quantity);
+        (new \App\Models\Product)->where('product_id',$productId)
+            ->increment('stock_quantity',$quantity);
     }
-    public function decreaseQuantity($productID, $quantity) : void{
-        (new \App\Models\Product)->where('ProductID',$productID)->decrement('StockQuantity',$quantity);
+    public function decreaseQuantity($productId, $quantity) : void{
+        (new \App\Models\Product)->where('product_id',$productId)->decrement('stock_quantity',$quantity);
     }
     public function getCountQuantityOfProduct($productID): int{
-        return $this->find($productID)->variations
-            ->sum('StockQuantity');
+        return $this->find($productID)->variants
+            ->sum('stock_quantity');
     }
 }

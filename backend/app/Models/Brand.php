@@ -14,11 +14,11 @@ class Brand extends Model
 {
     use HasFactory;
     protected $table = 'brands';
-    protected $fillable = ['BrandName'];
-    protected $primaryKey = 'BrandID';
+    protected $fillable = ['brand_name'];
+    protected $primaryKey = 'brand_id';
     public $timestamps = false;
-    public function product(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany('Product','BrandID','BrandID');
+        return $this->hasMany('products','brand_id','brand_id');
     }
 }

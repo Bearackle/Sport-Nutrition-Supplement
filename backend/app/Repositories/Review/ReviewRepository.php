@@ -11,26 +11,26 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
     public function getModel() :string{
         return Review::class;
     }
-    public function getAllReviewsByProduct($productid): \Illuminate\Database\Eloquent\Collection
+    public function getAllReviewsByProduct($productId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Review)->where('ProductID', $productid)
+        return (new \App\Models\Review)->where('product_id', $productId)
             ->orderBy('created_at', 'desc')
             ->with('images')
             ->get();
     }
-    public function getAllReivewsByCombo($comboid): \Illuminate\Database\Eloquent\Collection
+    public function getAllReivewsByCombo($comboId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Review)->where('ComboID',$comboid)
+        return (new \App\Models\Review)->where('combo_id',$comboId)
             ->orderBy('created_at', 'desc')
             ->with('images')
             ->get();
     }
-    public function calculateAverageRatingsOfProduct($productid){
-        return Review::where('ProductID',$productid)
-        ->avg('Rating');
+    public function calculateAverageRatingsOfProduct($productId){
+        return Review::where('product_id',$productId)
+        ->avg('rating');
     }
-    public function calculateAverageRatingsOfCombo($comboid){
-        return Review::where('ComboID',$comboid)
-        ->avg('Rating');
+    public function calculateAverageRatingsOfCombo($comboId){
+        return Review::where('combo_id',$comboId)
+        ->avg('rating');
     }
 }

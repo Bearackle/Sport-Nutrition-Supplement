@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->id('PaymentID');
-            $table->unsignedBigInteger('OrderID'); // FK to Orders
-            $table->string('PaymentMethod');
-            $table->string('PaymentStatus');
-            $table->dateTime('PaymentDate');
+            $table->id('payment_id');
+            $table->unsignedBigInteger('order_id'); // FK to orders
+            $table->string('payment_method');
+            $table->string('payment_status');
+            $table->dateTime('payment_date');
         });
     }
-
     /**
      * Reverse the migrations.
      */

@@ -12,12 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('addresses', function (Blueprint $table) {
-            $table->id('AddressID');
-            $table->unsignedBigInteger('UserID'); // FK to users
-            $table->text('Address_Detail');
+            $table->id('address_id');
+            $table->unsignedBigInteger('user_id'); // FK to users
+            $table->text('address_detail');
         });
     }
-
     /**
      * Reverse the migrations.
      */

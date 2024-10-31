@@ -16,22 +16,22 @@ class Review extends Model
 {
     use HasFactory;
     protected $table = 'reviews';
-    protected $primaryKey = 'ReviewID';
-    protected $fillable = ['UserID','ProductID','ComboID','Rating','Comment'];
+    protected $primaryKey = 'review_id';
+    protected $fillable = ['user_id','product_id','combo_id','rating','comment'];
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class,'UserID','userid');
+        return $this->belongsTo(User::class,'user_id','user_id');
     }
     public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Combo::class,'ComboID','ComboID');
+        return $this->belongsTo(Combo::class,'combo_id','combo_id');
     }
-    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class,'ProductID','ProductID');
+        return $this->belongsToMany(Product::class,'product_id','product_id');
     }
     public function images(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(RatingImages::class,'ReviewID','ReviewID');
+        return $this->hasMany(RatingImages::class,'review_id','review_id');
     }
 }

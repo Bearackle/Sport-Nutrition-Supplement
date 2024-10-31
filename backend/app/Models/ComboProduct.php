@@ -15,19 +15,19 @@ class ComboProduct extends Model
 {
     use HasFactory;
     protected $table = 'combo_products';
-    protected $fillable = ['ComboID','ProductID','VariantID','Quantity'];
-    protected $primaryKey = 'ComboProductID';
+    protected $fillable = ['combo_id','product_id','variant_id','quantity'];
+    protected $primaryKey = 'combo_product_id';
     public $timestamps = false;
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Product::class,'ProductID','ProductID');
+        return $this->belongsTo(Product::class,'product_id','product_id');
     }
     public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(ProductVariant::class,'VariantID','VariantID');
+        return $this->belongsTo(ProductVariant::class,'variant_id','variant_id');
     }
     public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Combo::class, 'ComboID', 'ComboID');
+        return $this->belongsTo(Combo::class, 'combo_id', 'combo_id');
     }
 }

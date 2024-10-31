@@ -6,5 +6,5 @@ use App\Repositories\Interfaces\RepositoryInterface;
 
 interface ProductImageRepositoryInterface extends RepositoryInterface
 {
-    public function deleteImageByProductID($productID);
+    public function deleteImageByProductID($productId);
 }

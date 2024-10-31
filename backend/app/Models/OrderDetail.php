@@ -13,19 +13,19 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetail extends Model
 {
     use HasFactory;
-    protected $fillable = ['OrderID','ProductID','VariantID','ComboID','Quantity','UnitPrice'];
-    protected $primaryKey = 'OrderDetailID';
+    protected $fillable = ['order_id','product_id','variant_id','combo_id','quantity','unit_price'];
+    protected $primaryKey = 'order_detail_id';
     protected $table = 'order_details';
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Product::class,'ProductID','ProductID');
+        return $this->belongsTo(Product::class,'product_id','product_id');
     }
     public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(ProductVariant::class,'VariantID','VariantID');
+        return $this->belongsTo(ProductVariant::class,'variant_id','variant_id');
     }
     public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Combo::class,'ComboID','ComboID');
+        return $this->belongsTo(Combo::class,'combo_id','combo_id');
     }
 }

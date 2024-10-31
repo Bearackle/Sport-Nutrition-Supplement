@@ -12,16 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('order_details', function (Blueprint $table) {
-            $table->id('OrderDetailID');
-            $table->unsignedBigInteger('OrderID'); // foreign key
-            $table->unsignedBigInteger('ProductID')->nullable(); // foreign key
-            $table->unsignedBigInteger('VariantID')->nullable(); // foreign key
-            $table->unsignedBigInteger('ComboID')->nullable();   // foreign key
-            $table->integer('Quantity'); 
-            $table->integer('UnitPrice');
+            $table->id('order_detail_id');
+            $table->unsignedBigInteger('order_id'); // foreign key
+            $table->unsignedBigInteger('product_id')->nullable(); // foreign key
+            $table->unsignedBigInteger('variant_id')->nullable(); // foreign key
+            $table->unsignedBigInteger('combo_id')->nullable();   // foreign key
+            $table->integer('quantity');
+            $table->integer('unit_price');
         });
     }
-
     /**
      * Reverse the migrations.
      */

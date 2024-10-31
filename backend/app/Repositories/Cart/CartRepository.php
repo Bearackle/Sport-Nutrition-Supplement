@@ -11,15 +11,14 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
     {
         return ShoppingCart::class;
     }
-    public function getCartIDByUser($userID): \Illuminate\Database\Eloquent\Collection
+    public function getCartByUser($userId) : ShoppingCart
     {
-        return (new \App\Models\ShoppingCart)->select('CartID')
-        ->where('UserID')
-        ->get();
+        return (new \App\Models\ShoppingCart)
+        ->where('user_id',$userId)->first();
     }
-    public function getCartItems($cart_id)
+    public function getCartItems($cartId)
     {
         return (new \App\Models\ShoppingCart)->with('variants','combos')
-            ->find($cart_id);
+            ->find($cartId);
     }
 }

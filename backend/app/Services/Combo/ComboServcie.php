@@ -24,9 +24,9 @@ class ComboServcie implements ComboServiceInterface
     {
         return $this->combo_repository->getAll();
     }
-    public function getComboOfCategory($category_id)
+    public function getComboOfCategory($categoryId)
     {
-        return $this->combo_repository->getComboOfCategory($category_id);
+        return $this->combo_repository->getComboOfCategory($categoryId);
     }
     public function getComboById($id){
         return $this->combo_repository->find($id);

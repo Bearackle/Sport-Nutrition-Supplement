@@ -12,20 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id('ProductID');
-            $table->string('ProductName');
-            $table->text('Description');
-            $table->text('Short_Description')->nullable();
-            $table->integer('Price');
-            $table->integer('Sale');
-            $table->integer('PriceAfterSale');
-            $table->integer('StockQuantity');
-            $table->unsignedInteger('CategoryID');  // foreign key
+            $table->id('product_id');
+            $table->string('product_name');
+            $table->text('description');
+            $table->text('short_description')->nullable();
+            $table->integer('price');
+            $table->integer('sale');
+            $table->integer('price_after_sale');
+            $table->integer('stock_quantity');
+            $table->unsignedInteger('category_id');  // foreign key
+            $table->unsignedInteger('brand_id');     // foreign key
             $table->timestamps();
-            $table->unsignedInteger('BrandID');     // foreign key
         });
     }
-
     /**
      * Reverse the migrations.
      */

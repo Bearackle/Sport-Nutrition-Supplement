@@ -34,7 +34,7 @@
                     "Cart"
                 ],
                 "summary": "id của giỏ hàng",
-                "description": "Lấy id của giỏ hàng bằng id của user",
+                "description": "Lấy thông tin giỏ hàng bằng id của user",
                 "operationId": "4d80ffaf3eefcfe37f9f1e97b1457eaf",
                 "parameters": [
                     {
@@ -166,6 +166,70 @@
                 "responses": {
                     "200": {
                         "description": "Tìm sản phẩm thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/cart/item/{item_id}": {
+            "delete": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "xóa sản phẩm",
+                "description": "Xóa sản phẩm có {item_id} khỏi giỏ hàng",
+                "operationId": "a662f581e6a1e2baa79a1537516bff16",
+                "parameters": [
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "item_id trong giỏ hàng",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa sản phẩm than công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Cart"
+                ],
+                "summary": "cập nhật số lượng sản phẩm",
+                "description": "cập nhật số lượng sản phẩm trong giỏ hàng",
+                "operationId": "011d455d5eea1848185e3330f127fa4a",
+                "parameters": [
+                    {
+                        "name": "item_id",
+                        "in": "path",
+                        "description": "id của phần tử trong giỏ hàng"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Quantity": {
+                                        "example": 20
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật sản phẩm thành công"
                     },
                     "500": {
                         "description": "Lỗi dịch vụ"
@@ -443,6 +507,204 @@
                     },
                     "400": {
                         "description": "Xóa thất bại"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/order/all/{user_id}": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Tìm tất cả đơn hàng",
+                "description": "Tất cả đơn hàng của người dùng",
+                "operationId": "cbd1453854ac5644e73d3b664918d7a6",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "path",
+                        "description": "id của người dùng"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lấy đơn hàng thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/order/create": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Tạo đơn hàng",
+                "description": "Tạo đơn hàng từ giỏ hàng của người dùng",
+                "operationId": "e884d3d33fe19a6dad7763eaf117f838",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "userid"
+                                ],
+                                "properties": {
+                                    "userid": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "goi hang can than"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tạo đơn hàng thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/order/{order_id}": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Tìm thông tin đơn hàng",
+                "description": "Tìm thông tin đơn hàng có {order_id}",
+                "operationId": "11341f7886e77691673b2f0cd3578760",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "path",
+                        "description": "nhập order_id của đơn hàng"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm thông tin thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Xóa đơn hàng",
+                "description": "Xóa đơn hàng có order_id",
+                "operationId": "072c013379abe75999023a4a2b0a5800",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "path",
+                        "description": "Nhập order_id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa đơn hàng thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/order/status/{order_id}": {
+            "patch": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Trạng thái đơn hàng",
+                "description": "Cập nhật trạng thái của đơn hàng có {order_id}",
+                "operationId": "aec8e9a95570e7f751773e220e800dbe",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "path",
+                        "description": "Nhập order_id",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "Status": {
+                                        "description": "Trạng thái đơn hàng"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật đơn hàng"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/order/payment": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Phương thức thanh toán",
+                "description": "Thêm phương thức thanh toán",
+                "operationId": "1d18037860c8c70efe98afea0272dbfa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "OrderID",
+                                    "PaymentMethod"
+                                ],
+                                "properties": {
+                                    "OrderID": {
+                                        "type": "integer",
+                                        "example": 17
+                                    },
+                                    "PaymentMethod": {
+                                        "type": "string",
+                                        "example": "VN_PAY"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm thành công"
                     },
                     "500": {
                         "description": "Lỗi dịch vụ"
@@ -1241,6 +1503,10 @@
         {
             "name": "Combo",
             "description": "Combo"
+        },
+        {
+            "name": "Order",
+            "description": "Order"
         },
         {
             "name": "Product",

@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('rating_images', function (Blueprint $table) {
-            $table->id('Rt_ImageID');
-            $table->unsignedInteger('ReviewID');
-            $table->unsignedInteger('ProductID')->nullable();
-            $table->unsignedInteger('ComboID')->nullable();
-            $table->string('Rt_ImageURL');
+            $table->id('rating_image_id'); // Đổi từ rt_image_id thành rating_image_id
+            $table->unsignedInteger('review_id');
+            $table->unsignedInteger('product_id')->nullable();
+            $table->unsignedInteger('combo_id')->nullable();
+            $table->string('rating_image_url'); // Đổi từ rt_image_url thành rating_image_url
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

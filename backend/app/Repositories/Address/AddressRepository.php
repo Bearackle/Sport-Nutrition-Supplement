@@ -11,8 +11,8 @@ class AddressRepository extends BaseRepository implements AddressRepositoryInter
         return Address::class;
     }
 
-    public function getAddressesUser($userid): \Illuminate\Database\Eloquent\Collection
+    public function getAddressesUser($userId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Address)->where('UserID',$userid)->orderBy('AddressID','DESC')->get();
+        return (new \App\Models\Address)->where('user_id',$userId)->orderBy('address_id','DESC')->get();
     }
 }

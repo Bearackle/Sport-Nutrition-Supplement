@@ -2,28 +2,30 @@
 
 namespace App\Services\Order;
 
+use App\DTOs\InputData\CartItemInputData;
+use App\DTOs\OutputData\ShoppingCartOutputData;
+use App\DTOs\OutputData\UserData\CartItemOutputData;
+use App\Models\ShoppingCart;
 use App\Repositories\Cart\CartItemRepositoryInterface;
 use App\Repositories\Cart\CartRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
-use App\Services\User\UserServiceInterface;
-
 class CartService implements CartServiceInterface
 {
 
     protected CartRepositoryInterface $cartRepository;
     protected CartItemRepositoryInterface $cartItemRepository;
-    protected UserRepositoryInterface $user_repository;
+    protected UserRepositoryInterface $userRepository;
     public function __construct(CartRepositoryInterface $cartRepository,
-                                CartItemRepositoryInterface $cartItemRepository, UserRepositoryInterface $user_repository)
+                                CartItemRepositoryInterface $cartItemRepository, UserRepositoryInterface $userRepository)
     {
         $this->cartRepository = $cartRepository;
         $this->cartItemRepository = $cartItemRepository;
-        $this->user_repository = $user_repository;
+        $this->userRepository = $userRepository;
     }
-    public function getCart($user_id)
+    public function getCart(\App\DTOs\InputData\ShoppingCartInputData $cart): ShoppingCartOutputData
     {
-           $shopping_cart =  $this->user_repository->find($user_id)->load('shopping_cart');
-           return $shopping_cart->shopping_cart;
+           $shoppingCart =  $this->cartRepository->getCartByUser($cart->user_id);
+           return ShoppingCartOutputData::from($shoppingCart);
     }
     public function getItems($cart_id){
         return $this->cartRepository->getCartItems($cart_id)->with(['variants' => function ($query) {
@@ -34,23 +36,22 @@ class CartService implements CartServiceInterface
                 $combo->select('combos.ComboID', 'ComboName', 'Cb_PriceAfterSale','Cb_ImageUrl');
        }])->get();
     }
-    public function createCart($user_id)
+    public function createCart(\App\DTOs\InputData\ShoppingCartInputData $cart): ShoppingCartOutputData
     {
-        $data['UserID'] = $user_id;
-        return $this->cartRepository->create($data);
+        return ShoppingCartOutputData::from($this->cartRepository->create($cart->all()));
     }
-    public function addCartItem(array $data)
+    public function addCartItem(CartItemInputData $cartItem): CartItemOutputData
     {
-        return $this->cartItemRepository->create($data);
+        return CartItemOutputData::from($this->cartItemRepository->create($cartItem->all()));
     }
-    public function deleteCartItem(array $data) : void
+    public function deleteCartItem(string $item_id) : void
     {
-        $this->cartItemRepository->delete($data['id']);
+        $this->cartItemRepository->delete($item_id);
     }
-    public function updateCartItemQuantity(array $cart_item) : void
+    public function updateCartItemQuantity(string $id,array $cart_item) : void
     {
         $data_to_update = ['Quantity' => $cart_item['Quantity']];
-        $this->cartItemRepository->update($cart_item['id'],$data_to_update);
+        $this->cartItemRepository->update($id,$data_to_update);
     }
     public function emptyCart($cart_id) : void
     {

@@ -13,11 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('payments', function (Blueprint $table) {
-            $table->tinyInteger('PaymentStatus')->default(\App\Enum\PaymentStatus::PENDING->value)->change();
-            $table->tinyInteger('PaymentMethod')->default(PaymentMethod::COD->value)->change();
+            $table->tinyInteger('payment_status')->default(\App\Enum\PaymentStatus::PENDING->value)->change(); // Chuyển thành snake_case
+            $table->tinyInteger('payment_method')->default(\App\Enum\PaymentMethod::COD->value)->change(); // Chuyển thành snake_case
         });
     }
-
     /**
      * Reverse the migrations.
      */

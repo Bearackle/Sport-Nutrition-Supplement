@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\CartItemInputData;
+use App\DTOs\InputData\ShoppingCartInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartIdRequest;
 use App\Http\Requests\NewCartItems;
@@ -9,8 +11,6 @@ use App\Http\Requests\NewCartRequest;
 use App\Http\Responses\ApiResponse;
 use App\Services\Order\CartServiceInterface;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
-use mysql_xdevapi\Collection;
 
 class CartController extends Controller
 {
@@ -23,7 +23,7 @@ class CartController extends Controller
      * @OA\Get(
      *     path="/api/cart/{id}",
      *     summary="id của giỏ hàng",
-     *     description="Lấy id của giỏ hàng bằng id của user",
+     *     description="Lấy thông tin giỏ hàng bằng id của user",
      *     tags={"Cart"},
      *     @OA\Parameter(
      *         name="id",
@@ -36,11 +36,11 @@ class CartController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function index(string $id)
+    public function index(string $user_id)
     {
-        return $this->cartService->getCart($id);
+        $cart = ShoppingCartInputData::from(['user_id' => $user_id]);
+        return $this->cartService->getCart($cart);
     }
-
     /**
      * @OA\Post(
      *     path="/api/cart/new",
@@ -58,10 +58,11 @@ class CartController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ"),
      * )
      */
-    public function newCart(NewCartRequest $request): ApiResponse
+    public function newCart(Request $request): ApiResponse
     {
-        $this->cartService->createCart($request->get('UserID'));
-        return ApiResponse::success('created successful');
+        $cart = ShoppingCartInputData::validateAndCreate($request->all());
+        $cartOutput = $this->cartService->createCart($cart);
+        return new ApiResponse(200, [$cartOutput]);
     }
     /**
      * @OA\Post(
@@ -85,10 +86,11 @@ class CartController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function store(NewCartItems $request) : ApiResponse
+    public function store(Request $request) : ApiResponse
     {
-        $this->cartService->addCartItem($request->validated());
-        return ApiResponse::success('create successful');
+        $cartItem = CartItemInputData::validateAndCreate($request->all());
+        $cartItemAdded = $this->cartService->addCartItem($cartItem);
+        return new ApiResponse (200,[$cartItemAdded]);
     }
     /**
      * @OA\Get(
@@ -110,27 +112,54 @@ class CartController extends Controller
     {
         return new ApiResponse(200,$this->cartService->getItems($id)->toArray());
     }
-
     /**
-     * Show the form for editing the specified resource.
+     * @OA\Patch(
+     *     path="/api/cart/item/{item_id}",
+     *     description="cập nhật số lượng sản phẩm trong giỏ hàng",
+     *     summary="cập nhật số lượng sản phẩm",
+     *     tags={"Cart"},
+     *     @OA\Parameter (
+     *         in="path",
+     *         name="item_id",
+     *         description="id của phần tử trong giỏ hàng",
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property (property="Quantity", example=20)
+     *          )
+     *     ),
+     *     @OA\Response(response=200, description="Cập nhật sản phẩm thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(CartIdRequest $request) : ApiResponse
+    public function update(Request $request,string $id) : ApiResponse
     {
         $request->validate([
             'Quantity' => 'required|numeric']);
-        $this->cartService->updateCartItemQuantity($request->all());
+        $this->cartService->updateCartItemQuantity($id,$request->all());
         return ApiResponse::success('update successful');
     }
-
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/cart/item/{item_id}",
+     *     tags={"Cart"},
+     *     description="Xóa sản phẩm có {item_id} khỏi giỏ hàng",
+     *     summary="xóa sản phẩm",
+     *     @OA\Parameter (
+     *         in="path",
+     *         description="item_id trong giỏ hàng",
+     *         required=true,
+     *         name="item_id"
+     *     ),
+     *     @OA\Response(response=200, description="Xóa sản phẩm than công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
-    public function destroy(CartIdRequest $request) : ApiResponse
+    public function destroy(string $item_id) : ApiResponse
     {
-        $this->cartService->deleteCartItem($request->all());
+        $this->cartService->deleteCartItem($item_id);
         return ApiResponse::success('deleted successfully');
     }
 }

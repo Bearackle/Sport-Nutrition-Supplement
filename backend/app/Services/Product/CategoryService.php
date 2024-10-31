@@ -12,7 +12,7 @@ class CategoryService implements CategoryServiceInterface{
     }
     public function getCategoryTrace()
     {
-        return $this->categoryRepository->TraceCategories();
+        return $this->categoryRepository->traceCategories();
     }
     public function getTopProductCategories(): \Illuminate\Database\Eloquent\Collection
     {

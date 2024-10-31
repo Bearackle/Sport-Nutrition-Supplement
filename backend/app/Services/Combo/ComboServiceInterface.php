@@ -5,11 +5,11 @@ namespace App\Services\Combo;
 interface ComboServiceInterface
 {
     public function getAllCombos();
-    public function getComboOfCategory($category_id);
+    public function getComboOfCategory($categoryId);
     public function getComboById($id);
     public function getComboProducts($id);
-    public function updatePriceCombo($comboID,array $price);
+    public function updatePriceCombo($comboId,array $price);
     public function createCombo(array $combo);
     public function addProductCombo(array $product);
-    public function destroyCombo($combo_id);
+    public function destroyCombo($comboId);
 }

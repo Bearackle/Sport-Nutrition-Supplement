@@ -12,24 +12,24 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     {
         return Order::class;
     }
-    public function getAllOrdersByUserID($userID): \Illuminate\Database\Eloquent\Collection
+    public function getAllOrdersByUserID($userId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Order)->where('UserID',$userID)->
-        OrderBy('OrderDate','desc')
+        return (new \App\Models\Order)->where('user_id',$userId)->
+        OrderBy('order_date','desc')
         ->get();
     }
-    public function getLatestOrder($userID){
-        return Order::where('UserID',$userID)->
-        OrderBy('OrderDate','desc')
+    public function getLatestOrder($userId){
+        return Order::where('user_id',$userId)->
+        OrderBy('order_date','desc')
         ->first();
     }
-    public function getStatusOrder($orderID){
-        return Order::select('OrderID','Status')
-        ->where('orderID',$orderID)
+    public function getStatusOrder($orderId){
+        return Order::select('order_id','status')
+        ->where('order_id',$orderId)
         ->get();
     }
     public function getOrderByDateRange($range){
-        return Order::whereBetween('OrderDate',[$range['start_date'],$range['end_date']])
+        return Order::whereBetween('order_date',[$range['start_date'],$range['end_date']])
         ->get();
     }
 }

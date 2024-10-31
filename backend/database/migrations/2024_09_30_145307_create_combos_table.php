@@ -12,17 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('combos', function (Blueprint $table) {
-            $table->id('ComboID');
-            $table->string('ComboName');
-            $table->text('Description');
-            $table->integer('Price');
-            $table->integer('Cb_Sale');
-            $table->integer('Cb_PriceAfterSale');
-            $table->string('Cb_ImageUrl')->nullable(); // not checked
-            $table->unsignedInteger('CategoryID');  // foreign key
+            $table->id('combo_id');
+            $table->string('combo_name');
+            $table->text('description');
+            $table->integer('price');
+            $table->integer('combo_sale');            // đã chuyển từ cb_sale thành combo_sale
+            $table->integer('combo_price_after_sale'); // đã chuyển từ cb_priceAfterSale thành combo_price_after_sale
+            $table->string('combo_image_url')->nullable(); // đã chuyển từ cb_ImageUrl thành combo_image_url
+            $table->unsignedInteger('category_id');   // foreign key
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

@@ -11,19 +11,19 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     public function getModel(){
         return Payment::class;
     }
-    public function getPaymentByOrderID($orderID): \Illuminate\Database\Eloquent\Collection
+    public function getPaymentByOrderID($orderId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Payment)->where('OrderID',$orderID)
+        return (new \App\Models\Payment)->where('order_id',$orderId)
         ->get();
     }
-    public function getPaymentByUserID($userID)
+    public function getPaymentByUserID($userId)
     {
         // TODO: Implement getPaymentByUserID() method.
     }
     public function getPaymentWithStatus(PaymentStatus $paymentStatus): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Payment)->where('Status' ,$paymentStatus->value)
-            ->orderBy('PaymentDate', 'DESC')
+        return (new \App\Models\Payment)->where('status' ,$paymentStatus->value)
+            ->orderBy('payment_date', 'DESC')
             ->get();
     }
 }

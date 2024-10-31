@@ -17,27 +17,27 @@ class ProductVariant extends Model
 {
     use HasFactory;
     protected $table = 'product_variants';
-    protected $fillable = ['ProductID','VariantName','StockQuantity'];
-    protected $primaryKey = 'VariantID';
+    protected $fillable = ['product_id','variant_name','stock_quantity'];
+    protected $primaryKey = 'variant_id';
     public $timestamps = false;
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Product::class,'ProductID','ProductID');
+        return $this->belongsTo(Product::class,'product_id','product_id');
     }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Combo::class,'ComboProducts','VariantID','ComboID');
+        return $this->belongsToMany(Combo::class,'combo_products','variant_id','combo_id');
     }
     public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(ShoppingCart::class,'CartItems','VariantID','CartID');
+        return $this->belongsToMany(ShoppingCart::class,'cart_items','variant_id','cart_id');
     }
     public function image(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
-        return $this->hasOne(ProductImages::class,'VariantID','VariantID');
+        return $this->hasOne(ProductImages::class,'variant_id','variant_id');
     }
     public function order(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Order::class, 'order_details','VariantID','OrderID');
+        return $this->belongsToMany(Order::class, 'order_details','variant_id','order_id');
     }
 }

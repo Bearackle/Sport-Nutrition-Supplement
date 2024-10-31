@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('combo_products', function (Blueprint $table) {
-            $table->id('ComboProductID');
-            $table->unsignedBigInteger('ComboID'); // foreign key
-            $table->unsignedBigInteger('ProductID'); // foreign key
-            $table->unsignedBigInteger('VariantID')->nullable(); // foreign key
-            $table->integer('Quantity');
+            $table->id('combo_product_id');
+            $table->unsignedBigInteger('combo_id'); // foreign key
+            $table->unsignedBigInteger('product_id'); // foreign key
+            $table->unsignedBigInteger('variant_id')->nullable(); // foreign key
+            $table->integer('quantity');
         });
     }
-
     /**
      * Reverse the migrations.
      */

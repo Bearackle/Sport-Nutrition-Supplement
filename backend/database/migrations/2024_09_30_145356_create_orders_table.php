@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id('OrderID');
-            $table->unsignedBigInteger('UserID');
-            $table->dateTime('OrderDate');
-            $table->integer('TotalAmount');
-            $table->text('Note')->nullable();
-            $table->string('Status');
+            $table->id('order_id');
+            $table->unsignedBigInteger('user_id');
+            $table->dateTime('order_date');
+            $table->integer('total_amount');
+            $table->text('note')->nullable();
+            $table->string('status');
         });
     }
-
     /**
      * Reverse the migrations.
      */

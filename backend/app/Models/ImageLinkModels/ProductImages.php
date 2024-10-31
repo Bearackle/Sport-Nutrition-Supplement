@@ -16,14 +16,14 @@ class ProductImages extends Model
 {
     use HasFactory;
     protected $table = 'product_images';
-    protected $fillable = ['ImageID','ProductID','VariantID','ImageURL','IsPrimary','PublicId'];
-    protected $primaryKey = 'ImageID';
+    protected $fillable = ['image_id','product_id','variant_id','image_url','is_primary','public_id'];
+    protected $primaryKey = 'image_id';
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Product::class,'ProductID','ProductID');
+        return $this->belongsTo(Product::class,'product_id','product_id');
     }
     public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(ProductVariant::class,'VariantID','VariantID');
+        return $this->belongsTo(ProductVariant::class,'variant_id','variant_id');
     }
 }

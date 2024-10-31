@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Model;
 class Address extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'AddressID';
-    protected $fillable = ['UserID','AddressDetail'];
+    protected $primaryKey = 'address_id';
+    protected $fillable = ['user_id','address_detail'];
     protected $table = 'addresses';
     public $timestamps = false;
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(User::class,'UserID','userid');
+        return $this->belongsTo(User::class,'user_id','user_ids');
     }
 }

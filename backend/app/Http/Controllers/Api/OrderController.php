@@ -15,45 +15,141 @@ class OrderController extends Controller
         $this->orderService = $orderService;
     }
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/order/all/{user_id}",
+     *     description="Tất cả đơn hàng của người dùng",
+     *     summary="Tìm tất cả đơn hàng",
+     *     tags={"Order"},
+     *     @OA\Parameter (
+     *         name="user_id",
+     *         in="path",
+     *         description="id của người dùng",
+     *     ),
+     *     @OA\Response(response=200,description="Lấy đơn hàng thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
-    public function index(Request $request)
+    public function index(string $userid)
     {
-        return $this->orderService->getOrderofUser($request->input('userid'));
+        return $this->orderService->getOrderofUser($userid);
     }
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/order/create",
+     *     description="Tạo đơn hàng từ giỏ hàng của người dùng",
+     *     tags={"Order"},
+     *     summary="Tạo đơn hàng",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *              required={"userid"},
+     *              @OA\Property (property="userid", type="integer", example=1),
+     *              @OA\Property (property="message", type="string", example="goi hang can than")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Tạo đơn hàng thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
     public function store(Request $request): void
     {
         $this->orderService->createOrder($request->userid, $request->message);
     }
+    /**
+     * @OA\Get(
+     *     path="/api/order/{order_id}",
+     *     description="Tìm thông tin đơn hàng có {order_id}",
+     *     tags={"Order"},
+     *     summary="Tìm thông tin đơn hàng",
+     *     @OA\Parameter (
+     *         name="order_id",
+     *         in="path",
+     *         description="nhập order_id của đơn hàng"
+     *     ),
+     *     @OA\Response(response=200, description="Tìm thông tin thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
+     */
+    public function show(string $order_id)
+    {
+        return $this->orderService->getOrderData($order_id);
+    }
+    /**
+     * @OA\Patch(
+     *     path="/api/order/status/{order_id}",
+     *     description="Cập nhật trạng thái của đơn hàng có {order_id}",
+     *     tags={"Order"},
+     *     summary="Trạng thái đơn hàng",
+     *     @OA\Parameter (
+     *         name="order_id",
+     *         in="path",
+     *         description="Nhập order_id",
+     *         required=true
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property (property="Status", description="Trạng thái đơn hàng")
+     *         ),
+     *     ),
+     *     @OA\Response(response=200, description="Cập nhật đơn hàng"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
+     */
+    public function update(Request $request,string $order_id): void
+    {
+        $this->orderService->updateOrderStatus($order_id, $request->input('Status'));
+    }
 
     /**
-     * Display the specified resource.
+     * @OA\Delete(
+     *     path="/api/order/{order_id}",
+     *     description="Xóa đơn hàng có order_id",
+     *     tags={"Order"},
+     *     summary="Xóa đơn hàng",
+     *     @OA\Parameter (
+     *         name="order_id",
+     *         in="path",
+     *         required=true,
+     *         description="Nhập order_id",
+     *     ),
+     *     @OA\Response(response=200, description="Xóa đơn hàng thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
-    public function show(Request $order_id)
+    public function destroy(string $order_id) : void
     {
-        return $this->orderService->destroyOrder($order_id);
-    }
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request): void
-    {
-        $this->orderService->updateOrderStatus($request->OrderID, $request->Status);
+        $this->orderService->destroyOrder($order_id);
     }
 
-    /**s
-     * Remove the specified resource from storage.
+    /**
+     * @OA\Post(
+     *     path="/api/order/payment",
+     *     summary="Phương thức thanh toán",
+     *     description="Thêm phương thức thanh toán",
+     *     tags={"Order"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              required={"OrderID","PaymentMethod"},
+     *              @OA\Property(property="OrderID", type="integer", example=17),
+     *              @OA\Property (property="PaymentMethod", type="string", example="VN_PAY")
+     *          )
+     *     ),
+     *     @OA\Response(response=200, description="Thêm phương thức thanh toán thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
-    public function destroy(Request $request) : void
-    {
-        $this->orderService->destroyOrder($request->id);
-    }
     public function addPayment(Request $request) : void{
         $this->orderService->addPaymentMethod($request->all());
     }
+
+    /**
+     *
+     */
     public function addAddress(Request $request) : void{
         $this->orderService->addAddress($request->all());
     }

@@ -107,7 +107,6 @@ class ComboController extends Controller
     {
        return new ApiResponse(200,[$this->comboService->getComboById($id)]);
     }
-
     /**
      * @OA\Get(
      *     path="/api/combo/{id}/products",

@@ -12,16 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_images', function (Blueprint $table) {
-            $table->id('ImageID');
-            $table->unsignedBigInteger('ProductID');
-            $table->unsignedBigInteger('VariantID')->nullable();
-            $table->string('ImageURL')->nullable();
-            $table->boolean('IsPrimary');
-            $table->string('PublicId');
+            $table->id('image_id');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('variant_id')->nullable();
+            $table->string('image_url')->nullable();
+            $table->boolean('is_primary');
+            $table->string('public_id');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
