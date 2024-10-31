@@ -85,7 +85,11 @@ export const OrderProductCard = ({ handleCheckboxClick }: TProps) => {
           className={cn("max-h-20 max-w-20 object-contain")}
         />
       </Link>
-      <div className={cn("flex flex-auto items-center justify-between")}>
+      <div
+        className={cn(
+          "flex flex-wrap items-center justify-between md:flex-auto",
+        )}
+      >
         <div
           className={cn(
             "flex shrink-0 basis-full flex-col gap-y-1 md:basis-[17.5rem]",
@@ -95,11 +99,14 @@ export const OrderProductCard = ({ handleCheckboxClick }: TProps) => {
             href={`product/1`}
             className={cn("line-clamp-3 text-[0.9375rem] leading-[1.21]")}
           >
+            Nutrex Plant Protein - Protein Thực Vật (1.2 LBS) Nutrex Plant
+            Protein - Protein Thực Vật (1.2 LBS) Nutrex Plant Protein - Protein
+            Thực Vật (1.2 LBS) Nutrex Plant Protein - Protein Thực Vật (1.2 LBS)
             Nutrex Plant Protein - Protein Thực Vật (1.2 LBS)
           </Link>
           <span
             className={cn(
-              "text-[0.875rem] font-normal leading-[1.21] text-[#657384]",
+              "line-clamp-1 text-[0.875rem] font-normal leading-[1.21] text-[#657384]",
             )}
           >
             CINNAMO COOKIES
@@ -107,7 +114,7 @@ export const OrderProductCard = ({ handleCheckboxClick }: TProps) => {
         </div>
         <div
           className={cn(
-            "flex flex-wrap lg:ml-4 lg:flex-col lg:items-end lg:text-right",
+            "flex flex-wrap items-baseline gap-x-2 md:flex-col lg:ml-4 lg:items-end lg:text-right",
           )}
         >
           <span
@@ -190,30 +197,36 @@ export const OrderProductCard = ({ handleCheckboxClick }: TProps) => {
           </div>
         </div>
       </div>
-      <button
-        type="button"
-        aria-haspopup="dialog"
-        aria-expanded="false"
-        aria-controls="radix-:r2:"
-        data-state="closed"
-        className="omd:ml-4 text-gray-6 [&amp;:not(:disabled)]:hover:opacity-75 [&amp;:not(:disabled)]:active:opacity-100 ml-3 h-10 shrink-0 p-[3px] disabled:cursor-not-allowed disabled:opacity-50"
+      <div
+        className={cn(
+          "relative ml-3 mt-[1.5rem] flex shrink-0 items-center justify-center self-start p-0.5 md:ml-4",
+        )}
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="h-[18px] w-[18px]"
+        <button
+          type="button"
+          aria-haspopup="dialog"
+          aria-expanded="false"
+          aria-controls="radix-:r2:"
+          data-state="closed"
+          className="text-gray-6 [&amp;:not(:disabled)]:hover:opacity-75 [&amp;:not(:disabled)]:active:opacity-100 h-10 shrink-0 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <path
-            d="M2.91602 7.03125L4.16144 22.0657C4.25069 23.1499 5.17422 24 6.26256 24H17.7378C18.8261 24 19.7497 23.1499 19.8389 22.0657L21.0843 7.03125H2.91602ZM8.48387 21.1875C8.11581 21.1875 7.80616 20.9012 7.78281 20.5283L7.07969 9.18455C7.05564 8.79661 7.3502 8.46291 7.73748 8.43886C8.13916 8.41069 8.45847 8.70872 8.48317 9.09666L9.1863 20.4404C9.21119 20.8421 8.89333 21.1875 8.48387 21.1875ZM12.7033 20.4844C12.7033 20.873 12.3888 21.1875 12.0002 21.1875C11.6115 21.1875 11.297 20.873 11.297 20.4844V9.14062C11.297 8.75198 11.6115 8.4375 12.0002 8.4375C12.3888 8.4375 12.7033 8.75198 12.7033 9.14062V20.4844ZM16.9206 9.18459L16.2175 20.5283C16.1944 20.8974 15.8867 21.205 15.4718 21.1861C15.0845 21.1621 14.79 20.8284 14.814 20.4405L15.5171 9.0967C15.5412 8.70877 15.8811 8.42653 16.2628 8.43891C16.6501 8.46295 16.9447 8.79666 16.9206 9.18459Z"
-            fill="currentColor"
-          ></path>
-          <path
-            d="M21.1406 2.8125H16.9219V2.10938C16.9219 0.946219 15.9757 0 14.8125 0H9.1875C8.02434 0 7.07812 0.946219 7.07812 2.10938V2.8125H2.85938C2.0827 2.8125 1.45312 3.44208 1.45312 4.21875C1.45312 4.99533 2.0827 5.625 2.85938 5.625C9.32653 5.625 14.6737 5.625 21.1406 5.625C21.9173 5.625 22.5469 4.99533 22.5469 4.21875C22.5469 3.44208 21.9173 2.8125 21.1406 2.8125ZM15.5156 2.8125H8.48438V2.10938C8.48438 1.72144 8.79956 1.40625 9.1875 1.40625H14.8125C15.2004 1.40625 15.5156 1.72144 15.5156 2.10938V2.8125Z"
-            fill="currentColor"
-          ></path>
-        </svg>
-      </button>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-[18px] w-[18px]"
+          >
+            <path
+              d="M2.91602 7.03125L4.16144 22.0657C4.25069 23.1499 5.17422 24 6.26256 24H17.7378C18.8261 24 19.7497 23.1499 19.8389 22.0657L21.0843 7.03125H2.91602ZM8.48387 21.1875C8.11581 21.1875 7.80616 20.9012 7.78281 20.5283L7.07969 9.18455C7.05564 8.79661 7.3502 8.46291 7.73748 8.43886C8.13916 8.41069 8.45847 8.70872 8.48317 9.09666L9.1863 20.4404C9.21119 20.8421 8.89333 21.1875 8.48387 21.1875ZM12.7033 20.4844C12.7033 20.873 12.3888 21.1875 12.0002 21.1875C11.6115 21.1875 11.297 20.873 11.297 20.4844V9.14062C11.297 8.75198 11.6115 8.4375 12.0002 8.4375C12.3888 8.4375 12.7033 8.75198 12.7033 9.14062V20.4844ZM16.9206 9.18459L16.2175 20.5283C16.1944 20.8974 15.8867 21.205 15.4718 21.1861C15.0845 21.1621 14.79 20.8284 14.814 20.4405L15.5171 9.0967C15.5412 8.70877 15.8811 8.42653 16.2628 8.43891C16.6501 8.46295 16.9447 8.79666 16.9206 9.18459Z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M21.1406 2.8125H16.9219V2.10938C16.9219 0.946219 15.9757 0 14.8125 0H9.1875C8.02434 0 7.07812 0.946219 7.07812 2.10938V2.8125H2.85938C2.0827 2.8125 1.45312 3.44208 1.45312 4.21875C1.45312 4.99533 2.0827 5.625 2.85938 5.625C9.32653 5.625 14.6737 5.625 21.1406 5.625C21.9173 5.625 22.5469 4.99533 22.5469 4.21875C22.5469 3.44208 21.9173 2.8125 21.1406 2.8125ZM15.5156 2.8125H8.48438V2.10938C8.48438 1.72144 8.79956 1.40625 9.1875 1.40625H14.8125C15.2004 1.40625 15.5156 1.72144 15.5156 2.10938V2.8125Z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };
