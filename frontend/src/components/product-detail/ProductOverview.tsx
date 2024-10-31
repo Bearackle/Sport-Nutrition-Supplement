@@ -42,20 +42,8 @@ export const ProductOverview = ({
   variants,
   shortDescription,
 }: TProps) => {
-  console.log(
-    id,
-    image,
-    name,
-    brand,
-    rating,
-    price,
-    priceAfterDiscount,
-    discount,
-    promotionInformation,
-    variants,
-    shortDescription,
-  );
   const [quantity, setQuantity] = useState(1);
+  const [currentVariant, setCurrentVariant] = useState(variants[0]);
 
   const handleMinusButton = () => {
     if (quantity === 1) return;
@@ -74,8 +62,11 @@ export const ProductOverview = ({
       setQuantity(999);
     }
   }, [quantity]);
+
+  console.log(document.querySelector('input[name="variant"]:checked'));
   return (
     <div
+      id={id}
       className={cn(
         "mx-auto mt-4 flex w-[95%] flex-col justify-between gap-y-6 overflow-hidden rounded-[0.75rem] bg-white p-8",
         "lg:flex-row",
@@ -232,13 +223,16 @@ export const ProductOverview = ({
                   type="radio"
                   value={variant.id}
                   defaultChecked={index === 0}
-                  className={cn("peer hidden")}
+                  onClick={() => setCurrentVariant(variant)}
+                  className={cn("hidden")}
                 />
                 <label
                   htmlFor={variant.id}
                   className={cn(
-                    "inline-flex cursor-pointer flex-row items-center justify-center rounded-[1.25rem] border border-solid border-[#8C8F8D] px-3 py-2 text-[0.875rem] font-bold leading-[1.21] text-[#8C8F8D] transition-all duration-100",
-                    "peer-checked:border-[#1F5ADD] peer-checked:bg-[#1F5ADD]/10 peer-checked:text-[#1F5ADD]",
+                    "inline-flex cursor-pointer flex-row items-center justify-center rounded-[1.25rem] border border-solid px-3 py-2 text-[0.875rem] font-bold leading-[1.21] transition-all duration-100",
+                    currentVariant.id === variant.id
+                      ? "border-[#1F5ADD] bg-[#1F5ADD]/10 text-[#1F5ADD]"
+                      : "border-[#8C8F8D] text-[#8C8F8D]",
                   )}
                 >
                   {variant.name}
@@ -331,6 +325,11 @@ export const ProductOverview = ({
               </svg>
             </button>
           </div>
+          <p
+            className={cn(
+              "text-[0.875rem] font-normal leading-[1.21] text-[#8C8F8D]",
+            )}
+          >{`Tồn kho: ${currentVariant.stockQuantity}`}</p>
         </div>
 
         {/*Add to Cart*/}
