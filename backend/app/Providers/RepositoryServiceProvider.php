@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\ImageLinkModels\ImageDescription;
 use App\Repositories\Address\AddressRepository;
 use App\Repositories\Address\AddressRepositoryInterface;
 use App\Repositories\Brand\BrandRepository;
@@ -16,6 +17,8 @@ use App\Repositories\Combo\ComboProductRepository;
 use App\Repositories\Combo\ComboProductRepositoryInterface;
 use App\Repositories\Combo\ComboRepository;
 use App\Repositories\Combo\ComboRepositoryInterface;
+use App\Repositories\Image\DescriptionImageRepository;
+use App\Repositories\Image\DescriptionImageRepositoryInterface;
 use App\Repositories\Image\ProductImageRepository;
 use App\Repositories\Image\ProductImageRepositoryInterface;
 use App\Repositories\Image\RatingImageRepository;
@@ -59,6 +62,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductImageRepositoryInterface::class,ProductImageRepository::class);
         $this->app->bind(AddressRepositoryInterface::class, AddressRepository::class);
         $this->app->bind(RatingImageRepositoryInterface::class, RatingImageRepository::class);
+        $this->app->bind(DescriptionImageRepositoryInterface::class , DescriptionImageRepository::class);
     }
 
     /**

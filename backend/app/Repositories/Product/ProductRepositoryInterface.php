@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\RepositoryInterface;
 interface ProductRepositoryInterface extends RepositoryInterface{
     public function getHotProductByEachCategory();
     public function getTop10ProductHighestSale();
-    public function getProductByCategories($categoryId);
+    public function getProductsByCategories($categoryId);
     public function getProductByBrand($brand);
     public function searchProduct($productName);
     public function getProductByPriceRange($range); // minPrice, maxPrice

@@ -704,7 +704,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Thêm thành công"
+                        "description": "Thêm phương thức thanh toán thành công"
                     },
                     "500": {
                         "description": "Lỗi dịch vụ"

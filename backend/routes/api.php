@@ -21,8 +21,7 @@ Route::group([
 ],function(){
     Route::post('login',[UserController::class,'login'])->name('login');
     Route::post('register',[UserController::class,'register']);
-    Route::get('profile',[UserController::class,'show'])
-        ->middleware('auth:sanctum');
+    Route::get('profile',[UserController::class,'show'])->middleware('auth:sanctum');
     Route::put('updatepassword',[UserController::class,'update'])
         ->middleware('auth:sanctum');
 });
@@ -51,6 +50,13 @@ Route::group([
     Route::patch('/variants/{id}',[ProductVariantController::class,'update']);
     Route::patch('/variants/image/{image_id}',[ProductVariantController::class,'updateImage']);
     Route::delete('/variants/{id}',[ProductVariantController::class,'destroy']);
+});
+Route::group([
+    'prefix' => 'description-image'
+],function (){
+    Route::post('/', [ProductController::class, 'uploadDescriptionImage']);
+    Route::get('/', [ProductController::class, 'getAllDescriptionImages']);
+    Route::delete('/{id}',[ProductController::class, 'destroyDescriptionImage']);
 });
 Route::group([
     'prefix' => 'categories'

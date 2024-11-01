@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Product;
+use App\Policies\ProductPolicy;
 use Illuminate\Support\Facades\DB;
 use Laravel\Sanctum\Sanctum;
 use Illuminate\Support\ServiceProvider;
@@ -14,9 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-
     }
-
     /**
      * Bootstrap any application services.
      */

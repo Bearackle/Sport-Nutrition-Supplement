@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\ProductIntputData;
+use App\DTOs\InputData\VariantInputData;
 use App\Filters\ProductFilter;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\NewProductRequest;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -10,21 +13,28 @@ use App\Http\Requests\UploadImageRequest;
 use App\Http\Resources\ProductLandingMask;
 use App\Http\Resources\ProductResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Product;
 use App\Services\ImageService\ImageProductService;
 use App\Services\Product\ProductServiceInterface;
 use App\Services\Product\ProductVariantServiceInterface;
 use Cloudinary\Api\Exception\ApiError;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
-class ProductController
+class ProductController extends Controller
 {
+    use AuthorizesRequests;
     protected ProductServiceInterface $productService;
     protected ProductVariantServiceInterface $productVariantService;
     protected ImageProductService $imageProductService;
 
-    public function __construct(ProductServiceInterface $productService,ProductVariantServiceInterface $productVariantService,
-                                ImageProductService $imageProductService){
+    /**
+     * @throws AuthorizationException
+     */
+    public function __construct(ProductServiceInterface $productService, ProductVariantServiceInterface $productVariantService,
+                                ImageProductService     $imageProductService){
         $this->productService = $productService;
         $this->productVariantService = $productVariantService;
         $this->imageProductService = $imageProductService;
@@ -108,6 +118,7 @@ class ProductController
     /**
      * Store a newly created resource in storage.
      * @throws ApiError
+     * @throws AuthorizationException
      * @OA\Post(
      *      path="/api/products/create",
      *      summary="Tạo một sản phẩm",
@@ -146,15 +157,15 @@ class ProductController
      *              @OA\Property(property="message", type="string", example="Tạo sản phẩm thất bại")
      *          ))
      *  )
- **/
+     **/
     public function store(NewProductRequest $request) : ApiResponse
     {
-        $dataProductToTrans = $request->validated();
-        $responseProduct = $this->productService->insertNewProduct($dataProductToTrans);
-        $this->imageProductService->addImagesProduct($responseProduct['ProductID'],$request->file('Images'));
+        //$this->authorize('create', Product::class);
+        $product = ProductIntputData::from($request->input());
+        $product_created = $this->productService->insertNewProduct($product);
+        $this->imageProductService->addImagesProduct($product_created->product_id,$request->file('image'));
         //add default variant utility
-        $this->productVariantService->insertProductVariant(['ProductID' => $responseProduct['ProductID'],
-            'VariantName' => 'tasteless', 'StockQuantity' => $responseProduct['StockQuantity'],'Image' => $request->file('Images')[0]]);
+        $this->productVariantService->insertDefaultTaste(VariantInputData::from($product_created));
         if($responseProduct){
             return new ApiResponse(200,['message' => 'Product added successfully']);
         }
@@ -345,5 +356,19 @@ class ProductController
     {
         $image = $this->imageProductService->getImageData($image_id);
         $this->imageProductService->deleteImage($image);
+    }
+    /**
+     * @throws ApiError
+     */
+    public function uploadDescriptionImage(Request $image) : void
+    {
+        $this->imageProductService->addImageDescription($image);
+    }
+    public function getAllDescriptionImages(){
+        return $this->imageProductService->getDescriptionsImage();
+    }
+    public function destroyDescriptionImage(string $imageId): void
+    {
+        $this->imageProductService->deleteDescriptionsImage($imageId);
     }
 }

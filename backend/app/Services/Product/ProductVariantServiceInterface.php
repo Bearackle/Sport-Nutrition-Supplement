@@ -2,10 +2,14 @@
 
 namespace App\Services\Product;
 
+use App\DTOs\InputData\ProductIntputData;
+use App\DTOs\InputData\VariantInputData;
+
 interface ProductVariantServiceInterface{
-    public function getAllProductVariants($productID);
-    public function getVariantsData($productID);
-    public function insertProductVariant( array $productVariant);
-    public function updateProductVariant($id,array $productVariant);
-    public function deleteVariant($variantId);
+    public function getAllProductVariants(ProductIntputData $product);
+    public function getVariantsData(ProductIntputData $product);
+    public function insertProductVariant(VariantInputData $variant);
+    public function insertDefaultTaste(VariantInputData $variant);
+    public function updateProductVariant(VariantInputData $variant);
+    public function deleteVariant(VariantInputData $variant);
 }

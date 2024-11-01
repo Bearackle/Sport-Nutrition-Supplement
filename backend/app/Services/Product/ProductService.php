@@ -2,14 +2,12 @@
 
 namespace App\Services\Product;
 
-use App\Events\ProductCreated;
-use App\Events\ProductDeleted;
+use App\DTOs\InputData\ProductIntputData;
+use App\DTOs\OutputData\AdminData\ProductOutputData;
+use App\DTOs\OutputData\UserData\UserProductOutputData;
 use App\Filters\ProductFilter;
-use App\Http\Responses\ApiResponse;
 use App\Models\Product;
 use App\Repositories\Product\ProductRepositoryInterface;
-use App\Repositories\Category\CategoryRepositoryInterface;
-use App\Services\ImageService\ImageProductServiceInterface;
 use App\Traits\ProductStockChecking;
 use Illuminate\Contracts\Container\BindingResolutionException;
 
@@ -21,7 +19,7 @@ class ProductService implements ProductServiceInterface{
     /**
      * @throws BindingResolutionException
      */
-    public function __construct(ProductRepositoryInterface     $productRepository,
+    public function __construct(ProductRepositoryInterface $productRepository,
                                 ProductVariantServiceInterface $productVariantService,){
         $this->productRepository = $productRepository;
         $this->productVariantService = $productVariantService;
@@ -30,43 +28,42 @@ class ProductService implements ProductServiceInterface{
     public function getProducts(){
        return $this->productRepository->getAllAvailableProducts();
     }
-    public function getHotProductBySale(){
-        return $this->productRepository->getTop10ProductHighestSale();
-    }
-    public function getProductDetail($id)
+    public function getHotProductBySale(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
-        return $this->productRepository->getProductData($id);
+        return ProductOutputData::collect($this->productRepository->getTop10ProductHighestSale());
     }
-    public function insertNewProduct(array $product){
-        $product['PriceAfterSale'] = $this->calculatedPrice($product['Price'],$product['Sale']);
-        return $this->productRepository->create($product);
-    }
-    public function updateProduct($id, array $product) :bool | Product
+    public function getProductDetail(ProductIntputData $product) : ProductOutputData
     {
-        if(array_key_exists('StockQuantity', $product)){
-            $isAllowed = $this->updatedProductStock($id, $product['StockQuantity']);
+        return ProductOutputData::from($this->productRepository->getProductData($product->product_id));
+    }
+    public function insertNewProduct(ProductIntputData $product): ProductOutputData {
+        $product['price_after_sale'] = $this->calculatedPrice($product['price'],$product['sale']);
+        return ProductOutputData::from($this->productRepository->create($product));
+    }
+    public function updateProduct(ProductIntputData $product) : bool | ProductOutputData
+    {
+        if(property_exists($product, 'stock_quantity')){
+            $isAllowed = $this->updatedProductStock($product->product_id, $product->stock_quantity);
             if(!$isAllowed) {
                 return false;
             }
         }
-        return $this->productRepository->update($id, $product);
+        return ProductOutputData::from($this->productRepository->update($product->product_id, $product));
     }
-    public function deleteProduct($id): bool
+    public function deleteProduct(ProductIntputData $product) : bool
     {
-        $product = $this->productRepository->find($id);
-        event(new ProductDeleted($product));
-        $result = $this->productRepository->delete($id);
-        return $result ??= null;
+        // event(new ProductDeleted($product));
+        return $this->productRepository->delete($product->product_id);
     }
     public function filter(ProductFilter $filters)
     {
         return $this->productRepository->filterer($filters);
     }
-    public function getCategoryProduct($id){
-        return $this->productRepository->getProductByCategories($id);
+    public function getCategoryProduct(ProductIntputData $product) {
+        return $this->productRepository->getProductsByCategories($product->category_id);
     }
-    public function getModelProduct($id){
-        return $this->productRepository->find($id);
+    public function getModelProduct(ProductIntputData $product) {
+        return $this->productRepository->find($product->product_id);
     }
     public function calculatedPrice($price,$sale) : int{
             return $price * ((100.0-$sale)/100.0);

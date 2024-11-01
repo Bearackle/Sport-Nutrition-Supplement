@@ -3,17 +3,20 @@
 namespace App\Services\ImageService;
 
 use App\Repositories\Combo\ComboRepositoryInterface;
+use App\Repositories\Image\DescriptionImageRepositoryInterface;
 use App\Repositories\Image\ProductImageRepositoryInterface;
 use Cloudinary\Api\Exception\ApiError;
 
 class ImageProductService implements ImageProductServiceInterface{
     protected ProductImageRepositoryInterface $productImageRepository;
     protected ComboRepositoryInterface $comboRepository;
+    protected DescriptionImageRepositoryInterface $descriptionImageRepository;
     public function __construct(ProductImageRepositoryInterface $productImageRepository,
-    ComboRepositoryInterface $comboRepository)
+    ComboRepositoryInterface $comboRepository, DescriptionImageRepositoryInterface $descriptionImageRepository)
     {
         $this->productImageRepository = $productImageRepository;
         $this->comboRepository = $comboRepository;
+        $this->descriptionImageRepository = $descriptionImageRepository;
     }
     /**
      * @throws ApiError
@@ -41,10 +44,10 @@ class ImageProductService implements ImageProductServiceInterface{
         $isFirst = true;
         foreach ($images as $image) {
             $dataUploaded = $this->uploadToCloudinary($image);
-            $this->productImageRepository->create(['ProductID' => $productId,
-                'ImageURL' => $dataUploaded['Url'],
-                'PublicId' => $dataUploaded['PublicId'],
-                'IsPrimary' => $isFirst]);
+            $this->productImageRepository->create(['product_id' => $productId,
+                'image_url' => $dataUploaded['url'],
+                'public_id' => $dataUploaded['public_id'],
+                'is_primary' => $isFirst]);
             $isFirst = false;
         }
         return true;
@@ -70,8 +73,8 @@ class ImageProductService implements ImageProductServiceInterface{
     public function uploadToCloudinary($image): array
     {
        $uploaded =  cloudinary() ->upload($image->getRealPath());
-       return ['Url' => $uploaded->getSecurePath(),
-           'PublicId' => $uploaded->getPublicId()];
+       return ['image_url' => $uploaded->getSecurePath(),
+           'public_id' => $uploaded->getPublicId()];
     }
     /**
      * @throws ApiError
@@ -85,7 +88,7 @@ class ImageProductService implements ImageProductServiceInterface{
         ]);
     }
     public function deleteImage($image) : void {
-        cloudinary()->destroy($image['PublicId']);
+        cloudinary()->destroy($image['public_id']);
         $image->delete();
     }
     public function extract_public_id($image_url) : string{
@@ -96,6 +99,26 @@ class ImageProductService implements ImageProductServiceInterface{
     public function getImageData($image_id)
     {
        return $this->productImageRepository->find($image_id);
+    }
+
+    /**
+     * @throws ApiError
+     */
+    public function addImageDescription($image): void
+    {
+        $image_data = $this->uploadToCloudinary($image);
+        $this->descriptionImageRepository->create($image_data);
+    }
+
+    public function getDescriptionsImage()
+    {
+        return $this->descriptionImageRepository->getAll();
+    }
+
+    public function deleteDescriptionsImage($imageId) : void
+    {
+        $image = $this->descriptionImageRepository->find($imageId)->delete();
+        $this->deleteImage($image);
     }
 }
 

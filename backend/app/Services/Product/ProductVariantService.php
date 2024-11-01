@@ -2,6 +2,8 @@
 
 namespace App\Services\Product;
 
+use App\DTOs\InputData\ProductIntputData;
+use App\DTOs\InputData\VariantInputData;
 use App\Events\ImageDeleted;
 use App\Events\ProductVariantCreated;
 use App\Events\ProductVariantDeleted;
@@ -27,18 +29,24 @@ class ProductVariantService implements ProductVariantServiceInterface
         $this->imageProductService = $imageProductService;
         $this->setDependency();
     }
-    public function getAllProductVariants($productID){
-        return $this->productVariantRepository->getVariantAvailableForProduct($productID);
+    public function getAllProductVariants(ProductIntputData $product){
+        return $this->productVariantRepository->getVariantAvailableForProduct($product->product_id);
     }
-    public function getVariantsData($productID){
-        return $this->productVariantRepository->getVariantsDataWithImage($productID);
+    public function getVariantsData(ProductIntputData $product){
+        return $this->productVariantRepository->getVariantsDataWithImage($product->product_id);
     }
-    public function insertProductVariant(array $productVariant)
+    public function insertProductVariant(VariantInputData $variant)
     {
-        $result = $this->productVariantRepository->create($productVariant);
-        $this->createdProductVariant($productVariant,$productVariant['StockQuantity']);
-        return $result;
+        $variant_created = $this->productVariantRepository->create($variant);
+        $this->createdProductVariant($variant_created,$variant->stock_quantity);
+        return $variant_created;
     }
+    public function insertDefaultTaste(VariantInputData $variant)
+    {
+        $variant->variant_name = 'tasteless';
+        $this->productVariantRepository->create($variant);
+    }
+
     public function updateProductVariant($id, array $productVariant): bool | ProductVariant
     {
         $variant = $this->productVariantRepository->find($id);
