@@ -1,7 +1,5 @@
 "use client";
-import React from "react";
-import { cn } from "@/lib/utils";
-import { usePathname } from "next/navigation";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,33 +7,36 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
 // ** Import Icons
-import profileIcon from "/public/profile-icon.png";
-import billIcon from "/public/bill-icon.png";
+import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
-import Image from "next/image";
+import orderIcon from "/public/order-icon.png";
+import profileIcon from "/public/profile-icon.png";
 
 const routeMap: Record<string, string> = {
-  "/user/information": "Thông tin cá nhân",
-  "/user/bill-history": "Lịch sử đơn hàng",
-  "/user/address": "Quản lý sổ địa chỉ",
+  "/user/profile": "Thông tin cá nhân",
+  "/user/order-history": "Lịch sử đơn hàng",
+  "/user/addresses": "Quản lý sổ địa chỉ",
 };
 
 const tabs = [
   {
-    href: "/user/information",
+    href: "/user/profile",
     label: "Thông tin cá nhân",
     icon: profileIcon,
   },
   {
-    href: "/user/bill-history",
+    href: "/user/order-history",
     label: "Lịch sử đơn hàng",
-    icon: billIcon,
+    icon: orderIcon,
   },
   {
-    href: "/user/address",
+    href: "/user/addresses",
     label: "Quản lý sổ địa chỉ",
     icon: locationIcon,
   },
@@ -47,35 +48,7 @@ export default function UserLayout({
   children: React.ReactNode;
 }>) {
   const pathname = usePathname();
-
-  const stringToColor = (string: string) => {
-    let hash = 0;
-    let i;
-
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = "#";
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-
-    return color;
-  };
-
-  const getContrastingColor = (hex: string): string => {
-    hex = hex.replace(/^#/, "");
-    const r = parseInt(hex.substring(0, 2), 16);
-    const g = parseInt(hex.substring(2, 4), 16);
-    const b = parseInt(hex.substring(4, 6), 16);
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    return luminance > 0.5 ? "#000000" : "#FFFFFF";
-  };
+  const router = useRouter();
 
   const stringAvatar = (name: string) => {
     return {
@@ -93,7 +66,7 @@ export default function UserLayout({
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/user/information">Người dùng</BreadcrumbLink>
+            <BreadcrumbLink href="/user/profile">Người dùng</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>{routeMap[pathname]}</BreadcrumbItem>
@@ -121,7 +94,7 @@ export default function UserLayout({
               }}
             >
               <AvatarFallback
-                className={cn("text-[1.25rem]")}
+                className={cn("text-[1.375rem]")}
                 style={{ color: `${stringAvatar("Lê Quốc Hưng").textColor}` }}
               >
                 {stringAvatar("Lê Quốc Hưng").children}
@@ -142,20 +115,73 @@ export default function UserLayout({
             className={cn("mt-5 w-full divide-y rounded-[0.625rem] bg-white")}
           >
             {tabs.map((tab, index) => (
-              <div
+              <button
                 key={index}
-                className={cn("relative flex flex-row items-center p-3")}
+                onClick={() => router.push(tab.href)}
+                className={cn("relative flex w-full flex-row items-center p-3")}
               >
                 <Image
                   src={tab.icon}
                   alt={tab.label}
                   className={cn("size-8")}
                 />
-                <span className={cn("", pathname === tab.href ? "" : "")}>
+                <div
+                  className={cn(
+                    "ml-4 text-[0.875rem] font-medium",
+                    pathname === tab.href ? "text-[#1250DC]" : "text-[#333]",
+                  )}
+                >
                   {tab.label}
-                </span>
-              </div>
+                </div>
+                <div className={cn("absolute right-[5%]")}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.75}
+                    stroke="currentColor"
+                    className={cn(
+                      "size-6",
+                      pathname === tab.href
+                        ? "stroke-[#1250DC]"
+                        : "stroke-[#333]",
+                    )}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
+                </div>
+              </button>
             ))}
+            <button
+              className={cn("relative flex w-full flex-row items-center p-3")}
+            >
+              <Image src={exitIcon} alt="Log out" className={cn("size-8")} />
+              <div
+                className={cn("ml-4 text-[0.875rem] font-medium text-[#333]")}
+              >
+                Đăng xuất
+              </div>
+              <div className={cn("absolute right-[5%]")}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.75}
+                  stroke="#333"
+                  className={cn("size-6")}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </div>
+            </button>
           </div>
         </div>
         <div className={cn("w-[55rem]")}>{children}</div>

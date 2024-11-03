@@ -2,14 +2,14 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 
 // ** Import images
-import arrow from "/public/arrow.svg";
 import { productCategories } from "@/data/category";
+import arrow from "/public/arrow.svg";
 
 const SideBar = () => {
   return (
     <div
       className={cn(
-        "sticky top-8 z-[1] hidden h-[37.75rem] w-[20rem] rounded-2xl bg-white xl:block",
+        "sticky top-32 z-[1] hidden h-[37.75rem] w-[20rem] rounded-2xl bg-white xl:block",
       )}
     >
       <div className="relative">

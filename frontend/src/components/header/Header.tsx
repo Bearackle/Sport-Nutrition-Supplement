@@ -15,7 +15,7 @@ import trackingIcon from "/public/tracking-icon.svg";
 export const Header = () => {
   return (
     <header
-      className="pb-2 xl:pb-0"
+      className="sticky top-0 z-[1000] w-full pb-2 xl:pb-0"
       style={{
         background:
           "linear-gradient(180deg, rgba(63,133,233,1) 0%, rgba(48,116,225,1) 50%, rgba(37,105,222,1) 100%)",
@@ -38,19 +38,19 @@ export const Header = () => {
           href="/"
           className={cn(
             "mx-auto flex flex-row items-center xl:mx-0",
-            "xs:-translate-x-6 -translate-x-4 xl:-translate-x-0",
+            "-translate-x-4 xs:-translate-x-6 xl:-translate-x-0",
           )}
           title="4H Store"
         >
           <Image
             src={logo}
             alt="logo"
-            className="xs:size-16 size-12 xl:size-20"
+            className="size-12 xs:size-16 xl:size-20"
           />
           <p
             className={cn(
               nunito.className,
-              "xs:text-[0.75rem] xs:max-w-[15rem] max-w-[10rem] text-center text-[0.5rem] font-extrabold uppercase text-white",
+              "max-w-[10rem] text-center text-[0.5rem] font-extrabold uppercase text-white xs:max-w-[15rem] xs:text-[0.75rem]",
             )}
           >
             Thực phẩm dinh dưỡng thể thao sport nutrition supplement
@@ -87,23 +87,26 @@ export const Header = () => {
           </p>
         </Link>
         <div className="hidden xl:block">
-          <button className="flex flex-row items-center gap-2 rounded-[3.125rem] bg-[#1250DC] px-4 py-2">
+          <Link
+            href="/cart"
+            className="flex flex-row items-center gap-2 rounded-[3.125rem] bg-[#1250DC] px-4 py-2"
+          >
             <Image src={cartIcon} alt="" className="size-7" />
             <p className="text-center text-[0.875rem] font-semibold tracking-[0.025rem] text-white">
               Giỏ hàng
             </p>
-          </button>
+          </Link>
         </div>
-        <div className="xs:gap-4 absolute right-[4%] flex flex-row items-center gap-1 xl:hidden">
+        <div className="absolute right-[4%] flex flex-row items-center gap-1 xs:gap-4 xl:hidden">
           <Link href="login" className="flex flex-row items-center gap-2">
-            <Image src={accountIcon} alt="" className="xs:size-7 size-5" />
+            <Image src={accountIcon} alt="" className="size-5 xs:size-7" />
             <p className="hidden text-center text-[0.875rem] font-semibold text-white lg:block">
               Đăng nhập
             </p>
           </Link>
           <div>
             <button className="flex flex-row items-center gap-2 rounded-[3.125rem] px-4 py-2 lg:bg-[#1250DC]">
-              <Image src={cartIcon} alt="" className="xs:size-7 size-5" />
+              <Image src={cartIcon} alt="" className="size-5 xs:size-7" />
               <p className="hidden text-center text-[0.875rem] font-semibold tracking-[0.025rem] text-white lg:block">
                 Giỏ hàng
               </p>

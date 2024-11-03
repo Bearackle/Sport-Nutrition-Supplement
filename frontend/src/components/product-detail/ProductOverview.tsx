@@ -1,12 +1,12 @@
 "use client";
-import { cn, formatPrice } from "@/lib/utils";
-import { Rating } from "@mui/material";
-import Link from "next/link";
-import Image from "next/image";
-import giftIcon from "/public/gift-icon.svg";
-import { useEffect, useState } from "react";
 import { CustomCarousel } from "@/components/common/CustomCarousel";
 import { CarouselItem } from "@/components/ui/carousel";
+import { cn, formatPrice } from "@/lib/utils";
+import { Rating } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import giftIcon from "/public/gift-icon.svg";
 
 type TProps = {
   id: string;
@@ -62,8 +62,6 @@ export const ProductOverview = ({
       setQuantity(999);
     }
   }, [quantity]);
-
-  console.log(document.querySelector('input[name="variant"]:checked'));
   return (
     <div
       id={id}

@@ -15,9 +15,9 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
 
 // ** Import images
+import { productCategories } from "@/data/category";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import accountIcon from "/public/account-icon.svg";
-import { productCategories } from "@/data/category";
 
 const MobileNavBar = () => {
   return (
