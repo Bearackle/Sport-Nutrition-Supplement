@@ -26,12 +26,7 @@ class ComboRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "ComboName" => "required",
-            "Description" => "required",
-            "Price" => "required|numeric",
-            "Cb_Sale" => "required|numeric",
-            "CategoryID" => "required",
-            "Image" => "required|image|mimes:jpeg,png,jpg,webp|max:2048",
+            "image" => "required|image|mimes:jpeg,png,jpg,webp|max:2048",
         ];
     }
     public function failedValidation(Validator $validator)

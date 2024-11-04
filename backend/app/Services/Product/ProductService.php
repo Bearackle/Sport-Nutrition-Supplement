@@ -3,10 +3,8 @@
 namespace App\Services\Product;
 
 use App\DTOs\InputData\ProductIntputData;
-use App\DTOs\OutputData\AdminData\ProductOutputData;
-use App\DTOs\OutputData\UserData\UserProductOutputData;
+use App\DTOs\OutputData\ProductOutputData;
 use App\Filters\ProductFilter;
-use App\Models\Product;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Traits\ProductStockChecking;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -25,7 +23,8 @@ class ProductService implements ProductServiceInterface{
         $this->productVariantService = $productVariantService;
         $this->setDependency();
     }
-    public function getProducts(){
+    public function getProducts()
+    {
        return $this->productRepository->getAllAvailableProducts();
     }
     public function getHotProductBySale(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
@@ -37,22 +36,21 @@ class ProductService implements ProductServiceInterface{
         return ProductOutputData::from($this->productRepository->getProductData($product->product_id));
     }
     public function insertNewProduct(ProductIntputData $product): ProductOutputData {
-        $product['price_after_sale'] = $this->calculatedPrice($product['price'],$product['sale']);
-        return ProductOutputData::from($this->productRepository->create($product));
+        $product->price_after_sale = $this->calculatedPrice($product->price,$product->sale);
+        return ProductOutputData::from($this->productRepository->create($product->toArray()));
     }
     public function updateProduct(ProductIntputData $product) : bool | ProductOutputData
     {
-        if(property_exists($product, 'stock_quantity')){
+        if($product->has('stock_quantity')){
             $isAllowed = $this->updatedProductStock($product->product_id, $product->stock_quantity);
             if(!$isAllowed) {
                 return false;
             }
         }
-        return ProductOutputData::from($this->productRepository->update($product->product_id, $product));
+        return ProductOutputData::from($this->productRepository->update($product->product_id, $product->toArray()));
     }
     public function deleteProduct(ProductIntputData $product) : bool
     {
-        // event(new ProductDeleted($product));
         return $this->productRepository->delete($product->product_id);
     }
     public function filter(ProductFilter $filters)

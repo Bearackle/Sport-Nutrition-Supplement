@@ -13,7 +13,7 @@ class ProductPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasRole('admin');
     }
     /**
      * Determine whether the user can view the model.
@@ -22,28 +22,30 @@ class ProductPolicy
     {
         return true;
     }
+    public function viewFullDetail(User $user, Product $product): bool{
+        return $user->hasRole('admin');
+    }
     /**
      * Determine whether the user can create models.
      */
     public function create(User $user): bool
     {
-        return (bool) $user->is_admin;
+        return $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Product $product): bool
+    public function update(User $user): bool
     {
-        return $user->is_admin;
+        return $user->hasRole('admin');
     }
-
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Product $product): bool
+    public function delete(User $user): bool
     {
-        return $user->is_admin;
+        return $user->hasRole('admin');
     }
 
     /**
@@ -51,7 +53,7 @@ class ProductPolicy
      */
     public function restore(User $user, Product $product): bool
     {
-        return $user->is_admin;
+        return $user->hasRole('admin');
     }
 
     /**
@@ -59,6 +61,6 @@ class ProductPolicy
      */
     public function forceDelete(User $user, Product $product): bool
     {
-        return $user->is_admin;
+        return $user->hasRole('admin');
     }
 }

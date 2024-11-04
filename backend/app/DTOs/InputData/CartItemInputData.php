@@ -2,6 +2,7 @@
 
 namespace App\DTOs\InputData;
 
+use Illuminate\Support\Optional;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Unique;
 use Spatie\LaravelData\Data;
@@ -19,4 +20,8 @@ class CartItemInputData extends Data
         public ?int $combo_id,
         public int $quantity
     ){}
+    public function has(string $propertyName): bool
+    {
+        return isset($this->{$propertyName}) && !($this->{$propertyName} instanceof Optional);
+    }
 }

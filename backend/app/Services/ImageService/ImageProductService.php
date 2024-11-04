@@ -28,9 +28,9 @@ class ImageProductService implements ImageProductServiceInterface{
         }
             $dataUploaded = $this->uploadToCloudinary($image);
             $this->productImageRepository->create(
-                ['ProductID' => $productId,
-                'VariantID'=> $variantId,'ImageURL'=> $dataUploaded['Url'],
-                    'IsPrimary'=> true,'PublicId' => $dataUploaded['PublicId'],]);
+                ['product_id' => $productId,
+                'variant_id'=> $variantId,'image_url'=> $dataUploaded['image_url'],
+                    'is_primary'=> true,'public_id' => $dataUploaded['public_id'],]);
         return true;
     }
     /**
@@ -45,7 +45,7 @@ class ImageProductService implements ImageProductServiceInterface{
         foreach ($images as $image) {
             $dataUploaded = $this->uploadToCloudinary($image);
             $this->productImageRepository->create(['product_id' => $productId,
-                'image_url' => $dataUploaded['url'],
+                'image_url' => $dataUploaded['image_url'],
                 'public_id' => $dataUploaded['public_id'],
                 'is_primary' => $isFirst]);
             $isFirst = false;
@@ -63,7 +63,7 @@ class ImageProductService implements ImageProductServiceInterface{
         }
         $dataUpdated = $this->uploadToCloudinary($imageCombo);
         $this->comboRepository->update($comboID,
-            ['Cb_ImageURL' => $dataUpdated['Url']]);
+            ['combo_image_url' => $dataUpdated['image_url']]);
         return true;
     }
 
@@ -83,7 +83,7 @@ class ImageProductService implements ImageProductServiceInterface{
     {
         $img = $this->productImageRepository->find($imageId);
         $result = cloudinary()->upload($image->getRealPath(),[
-            'public_id' => $img['PublicId'],
+            'public_id' => $img['public_id'],
             'overwrite' => true,
         ]);
     }
@@ -100,7 +100,6 @@ class ImageProductService implements ImageProductServiceInterface{
     {
        return $this->productImageRepository->find($image_id);
     }
-
     /**
      * @throws ApiError
      */

@@ -2,14 +2,17 @@
 
 namespace App\Services\Combo;
 
+use App\DTOs\InputData\ComboInputData;
+use App\DTOs\InputData\ComboProductInputData;
+
 interface ComboServiceInterface
 {
     public function getAllCombos();
     public function getComboOfCategory($categoryId);
-    public function getComboById($id);
-    public function getComboProducts($id);
-    public function updatePriceCombo($comboId,array $price);
-    public function createCombo(array $combo);
-    public function addProductCombo(array $product);
-    public function destroyCombo($comboId);
+    public function getComboById(ComboInputData $combo);
+    public function getComboProducts(ComboInputData $combo);
+    public function updatePriceCombo(ComboInputData $combo);
+    public function createCombo(ComboInputData $combo);
+    public function addProductCombo(ComboProductInputData $comboProduct);
+    public function destroyCombo(ComboInputData $combo);
 }

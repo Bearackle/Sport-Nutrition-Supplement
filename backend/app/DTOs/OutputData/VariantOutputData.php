@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DTOs\OutputData\AdminData;
+namespace App\DTOs\OutputData;
 
 
 use Spatie\LaravelData\Data;

@@ -2,9 +2,15 @@
 
 namespace App\Services\Order;
 
+use App\DTOs\InputData\AddressInputData;
+use App\DTOs\InputData\OrderInputData;
+use App\DTOs\InputData\PaymentInputData;
+use App\DTOs\InputData\ShippingMethodInputData;
+use App\DTOs\InputData\UserInputData;
 use App\Enum\OrderStatus;
 use App\Enum\ShipMethod;
 use App\Events\addShippingCharges;
+use App\Models\Address;
 use App\Repositories\Address\AddressRepositoryInterface;
 use App\Repositories\Cart\CartRepositoryInterface;
 use App\Repositories\Order\OrderDetailRepositoryInterface;
@@ -34,90 +40,86 @@ class OrderService implements OrderServiceInterface
         $this->address_repository = $address_repository;
         $this->address_service  = $address_service;
     }
-    public function getOrderData($order_id)
+    public function getOrderData(OrderInputData $order)
     {
-        return $this->order_repository->find($order_id);
+        return $this->order_repository->find($order->order_id);
     }
-    public function createOrder($userid, string $message)
+    public function createOrder(UserInputData $user, string $message)
     {
-        $cart_id = $this->cart_service->getCart($userid);
-        $items = $this->cart_repository->getCartItems($cart_id)->first();
+        $cart = $this->cart_service->getCart($user);
+        $items = $this->cart_repository->getCartItems($cart->cart_id);
         $total_amount = $this->totalAmount($items->products, $items->combos);
-        $new_order_make = ['UserID' => $userid,
-            'TotalAmount' => $total_amount,
-            'Status' => OrderStatus::PENDING,
-            'Note' => $message];
+        $new_order_make = ['user_id' => $user->user_id,
+            'total_amount' => $total_amount,
+            'status' => OrderStatus::PENDING,
+            'note' => $message];
         $new_order = $this->order_repository->create($new_order_make);
         $this->createOrderItems($new_order,$items);
         return $new_order->OrderID;
     }
-    public function updateOrderStatus($order_id, string $status): void
+    public function updateOrderStatus(OrderInputData $order): void
     {
-        $status_data = OrderStatus::equals($status);
-        $this->order_repository->update($order_id, ['Status' => $status_data->value]);
+        $status_data = OrderStatus::equals($order->status);
+        $this->order_repository->update($order->order_id, ['status' => $status_data->value]);
     }
-    public function destroyOrder($id) : void
+    public function destroyOrder(OrderInputData $order) : void
     {
-        $order = $this->order_repository->find($id);
+        $order = $this->order_repository->find($order->order_id);
         $order->products()->detach();
         $order->combos()->detach();
-        $this->order_repository->delete($id);
+        $order->delete();
     }
     private function totalAmount($product , $combo) : int
     {
         $sum = 0;
         foreach( $product as $item){
-            $sum += $item['PriceAfterSale'] * $item->pivot->Quantity;
+            $sum += $item['price_after_sale'] * $item->pivot->quantity;
         }
         foreach( $combo as $item){
-            $sum+= $item['Cb_PriceAfterSale'] * $item->pivot->Quantity;
+            $sum+= $item['combo_price_after_sale'] * $item->pivot->quantity;
         }
         return $sum;
     }
     private function createOrderItems($order,$items) : void
     {
         foreach($items->products as $product) {
-            $order->products()->attach($product->ProductID,
-                ['VariantID' => null, 'Quantity' => $product->pivot->Quantity,
-                    'UnitPrice' => $product->PriceAfterSale]);
+            $order->products()->attach($product->product_id,
+                ['variant_id' => null,
+                    'quantity' => $product->pivot->quantity,
+                    'unit_price' => $product->price_after_sale]);
         }
         foreach($items->variants as $variant){
               $order->products()->updateExistingPivot
-              ($variant->ProductID,['VariantID' => $variant->VariantID]);
+              ($variant->product_id,['variant_id' => $variant->variant_id]);
         }
         foreach($items->combos as $combo){
-            $order->combos()->attach($combo->ComboID,
-                ['UnitPrice' => $combo->PriceAfterSale,'Quantity' => $combo->pivot->Quantity]);
+            $order->combos()->attach($combo->combo_id,
+                ['unit_price' => $combo->combo_price_after_sale,'quantity' => $combo->pivot->quantity]);
         }
     }
-    public function getOrderofUser($user_id)
+    public function getOrderofUser(UserInputData $user)
     {
-        $orders = $this->order_repository->getAllOrdersByUserID($user_id);
+        $orders = $this->order_repository->getAllOrdersByUserID($user->user_id);
         foreach($orders as $order){
-            $order->Status = OrderStatus::tryFrom($order['Status'])->label();
+            $order->Status = OrderStatus::tryFrom($order['status'])->label();
         }
         return $orders;
     }
-    public function addAddress(array $data_address) : void
+    public function addAddress(OrderInputData $order,AddressInputData $address) : void
     {
-        $address['OrderID'] = $data_address['OrderID'];
-        $address['UserID'] = $this->order_repository->find($data_address['OrderID'])->user->userid;
-        unset($data_address['OrderID']);
-        if(array_key_exists('AddressID',$data_address)){
-            $address['AddressDetail'] = $this->address_service->getAddressDetail($data_address['AddressID']);
-        } else {
-            $address['AddressDetail'] = implode(' ,',$data_address);
-            $this->address_service->createAddress($address);
+        $order_data = $this->order_repository->find($order->user_id);
+        if($address->has('address_id')){
+            $address->address_detail = $this->address_service->getAddressDetail($address->address_id);
         }
-       $this->order_repository->update($address['OrderID'],['AddressDetail' => $address['AddressDetail']]);
+        $this->order_repository->update($order_data->order_id,['address_detail' => $address->address_detail]);
     }
-    public function addPaymentMethod(array $data_method): void
+    public function addPaymentMethod(PaymentInputData $payment): void
     {
-        $this->payment_service->addPaymentMethod($data_method);
+        $this->payment_service->addPaymentMethod($payment);
     }
-    public function addShippingMethod(array $data_method) : void
+    public function addShippingMethod(ShippingMethodInputData $ship) : void
     {
-        $this->order_repository->update($data_method['OrderID'],['ShipmentCharges' => ShipMethod::equals($data_method['ShipmentCharges'])->value]);
-        event(new addShippingCharges($this->order_repository->find($data_method['OrderID']),ShipMethod::equals($data_method['ShipmentCharges'])));
+        $this->order_repository->update($ship->order_id,['ShipmentCharges' => $ship->method->value]);
+        event(new addShippingCharges($this->order_repository->find($ship->order_id),ShipMethod::equals($ship->method->value)));
     }
 }

@@ -25,7 +25,7 @@ class updateTotalAmount
      */
     public function handle(addShippingCharges $event): void
     {
-        $this->order_repository->find($event->order->OrderID)->
-            increment('TotalAmount',$event->method->value);
+        $this->order_repository->find($event->order->order_id)->
+            increment('total_amount',$event->method->value);
     }
 }

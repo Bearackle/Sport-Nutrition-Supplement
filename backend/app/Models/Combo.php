@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Scopes\CombosDataScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,5 +40,9 @@ class Combo extends Model
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class,'category_id','category_id');
+    }
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new CombosDataScope());
     }
 }

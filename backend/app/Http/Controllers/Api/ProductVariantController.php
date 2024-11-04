@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\VariantInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewProductVariants;
 use App\Http\Requests\UpdateImageRequest;
@@ -10,10 +11,13 @@ use App\Http\Responses\ApiResponse;
 use App\Models\ProductVariant;
 use App\Services\ImageService\ImageProductServiceInterface;
 use App\Services\Product\ProductVariantServiceInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class ProductVariantController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -48,6 +52,7 @@ class ProductVariantController extends Controller
     {
         return $this->productVariantService->getVariantsData($id);
     }
+
     /**
      * @OA\Post(
      *     path="/api/products/variants",
@@ -69,14 +74,18 @@ class ProductVariantController extends Controller
      *     @OA\Response(response=201,description="Tạo mùi vị thành công"),
      *     @OA\Response(response=400, description="Tạo mùi vị thất bại")
      * )
+     * @throws AuthorizationException
      */
     public function store(NewProductVariants $request) : ApiResponse
     {
-        $new_variant = $this->productVariantService->insertProductVariant($request->validated());
-        $this->imageProductService->addImageVariants($new_variant['ProductID'], $new_variant['VariantID']
-            ,$request->file('Image'));
+        $this->authorize('create', ProductVariant::class);
+        $new_variant = $this->productVariantService->insertProductVariant(
+            VariantInputData::validateAndCreate($request->validated()));
+        $this->imageProductService->addImageVariants($new_variant->product_id, $new_variant->variant_id
+            ,$request->file('image'));
         return new ApiResponse(201,[$new_variant]);
     }
+
     /**
      * @OA\Patch(
      *     path="/api/products/variants/{id}",
@@ -102,10 +111,12 @@ class ProductVariantController extends Controller
      *     @OA\Response(response=200,description="cập nhật thành công"),
      *     @OA\Response(response=400, description="cập nhật thất bại")
      * )
+     * @throws AuthorizationException
      */
     public function update(UpdateVariantRequest $request, string $id) : ApiResponse
     {
-        $result = $this->productVariantService->updateProductVariant($id, $request->validated());
+       // $this->authorize('update', ProductVariant::class);
+        $result = $this->productVariantService->updateProductVariant(VariantInputData::from($request->validated(),['variant_id' => $id]));
         if(!$result){
             return new ApiResponse(400,['message' =>'Fail update']);
         }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\ImageLinkModels\ProductImages;
 use App\Observers\ProductStockQuantityObserver;
 use App\Traits\ProductStockChecking;
+use App\Traits\Scopes\VariantDataScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -39,5 +40,9 @@ class ProductVariant extends Model
     public function order(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Order::class, 'order_details','variant_id','order_id');
+    }
+    protected static function booted() : void
+    {
+        static::addGlobalScope(new VariantDataScope);
     }
 }

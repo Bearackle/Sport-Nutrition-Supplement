@@ -2,6 +2,10 @@
 
 namespace App\Services\Combo;
 
+use App\DTOs\InputData\ComboInputData;
+use App\DTOs\InputData\ComboProductInputData;
+use App\DTOs\OutputData\ComboOutputData;
+use App\DTOs\OutputData\VariantOutputData;
 use App\Http\Resources\CombosLandingMask;
 use App\Repositories\Combo\ComboProductRepositoryInterface;
 use App\Repositories\Combo\ComboRepositoryInterface;
@@ -20,44 +24,44 @@ class ComboServcie implements ComboServiceInterface
         $this->combo_product_repository = $combo_product_repository;
         $this->image_product_service = $image_product_service;
     }
-    public function getAllCombos()
+    public function getAllCombos(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
-        return $this->combo_repository->getAll();
+        return ComboOutputData::collect($this->combo_repository->getAll());
     }
-    public function getComboOfCategory($categoryId)
+    public function getComboOfCategory($categoryId): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
-        return $this->combo_repository->getComboOfCategory($categoryId);
+        return ComboOutputData::collect($this->combo_repository->getComboOfCategory($categoryId));
     }
-    public function getComboById($id){
-        return $this->combo_repository->find($id);
-    }
-    public function updatePriceCombo($comboID, array $price) : void
+    public function getComboById(ComboInputData $combo): ComboOutputData
     {
-        $this->combo_repository->update($comboID, $price);
+        return ComboOutputData::from($this->combo_repository->find($combo->combo_id));
+    }
+    public function updatePriceCombo(ComboInputData $combo): ComboOutputData
+    {
+        return ComboOutputData::from($this->combo_repository->update($combo->combo_id,
+            ['price' => $combo->price, 'sale' => $combo->combo_sale]));
     }
     /**
-     * @throws ApiError
      */
-    public function createCombo(array $combo)
+    public function createCombo(ComboInputData $combo): ComboOutputData
     {
-       $combo['Cb_PriceAfterSale'] = $combo['Price'] * (1 - ($combo['Cb_Sale'])/100);
-        return $this->combo_repository->create($combo);
+       $combo->combo_price_after_sale = $combo->price * (1 - ($combo->combo_sale)/100);
+        return ComboOutputData::from($this->combo_repository->create($combo));
     }
-    public function addProductCombo(array $product): void
+    public function addProductCombo(ComboProductInputData $comboProduct): VariantOutputData
     {
-        $this->combo_product_repository->create($product);
+        return VariantOutputData::from($this->combo_product_repository->create($comboProduct->toArray())->variant);
     }
-    public function destroyCombo($combo_id) : void
+    public function destroyCombo(ComboInputData $combo) : void
     {
-        $combo =  $this->combo_repository->find($combo_id);
-        $combo->products()->detach();
-        $this->combo_repository->delete($combo_id);
-        $combo_img['PublicId']  = $this->image_product_service->extract_public_id($combo['Cb_ImageUrl']);
+        $combo_to_destroy =  $this->combo_repository->find($combo->combo_id);
+        $combo_to_destroy->products()->detach();
+        $this->combo_repository->delete($combo->combo_id);
+        $combo_img['public_id']  = $this->image_product_service->extract_public_id($combo['combo_image_url']);
         $this->image_product_service->deleteImage($combo_img);
     }
-
-    public function getComboProducts($id)
+    public function getComboProducts(ComboInputData $combo)
     {
-       return $this->combo_repository->getComboProducts($id)->with('variants.product')->get();
+       return $this->combo_repository->getComboProducts($combo->combo_id)->with('variants.product')->get();
     }
 }

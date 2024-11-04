@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\ImageData;
 use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\InputData\VariantInputData;
 use App\Filters\ProductFilter;
@@ -13,6 +14,7 @@ use App\Http\Requests\UploadImageRequest;
 use App\Http\Resources\ProductLandingMask;
 use App\Http\Resources\ProductResource;
 use App\Http\Responses\ApiResponse;
+use App\Http\Tranformers\ProductTransformer;
 use App\Models\Product;
 use App\Services\ImageService\ImageProductService;
 use App\Services\Product\ProductServiceInterface;
@@ -22,6 +24,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
+use Spatie\Fractal\Fractal;
 
 class ProductController extends Controller
 {
@@ -31,7 +34,6 @@ class ProductController extends Controller
     protected ImageProductService $imageProductService;
 
     /**
-     * @throws AuthorizationException
      */
     public function __construct(ProductServiceInterface $productService, ProductVariantServiceInterface $productVariantService,
                                 ImageProductService     $imageProductService){
@@ -123,6 +125,7 @@ class ProductController extends Controller
      *      path="/api/products/create",
      *      summary="Tạo một sản phẩm",
      *      tags={"Product"},
+     *      security={{ "sanctum": {}}},
      *      description="Tạo sản phẩm mới gửi cùng với ảnh, lưu ý hành động này cũng sinh ra một variant mặc định tasteless",
      *      operationId="store",
      *      @OA\RequestBody(
@@ -130,17 +133,16 @@ class ProductController extends Controller
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",
      *              @OA\Schema(
-     *                  required={"ProductName","Description","Price","Sale","StockQuantity","CategoryID", "BrandID","Images[]"},
-     *                  @OA\Property(property="ProductName", format="name", example="Ostrovit Micellar Casein - 700 grams", description="Tên sản phẩm"),
-     *                  @OA\Property(property="Description", example="sản phẩm số 1", description="Mô tả sản phẩm (được lưu trữ dạng html trong database)"),
-     *                  @OA\Property(property="Price", format="int32", description="Giá gốc của sản phẩm",example="100000"),
-     *                  @OA\Property(property="Sale", format="int32", description="tỷ lệ sale sản phẩm", example="10"),
-     *                  @OA\Property(property="StockQuantity", format="int32", description="Số lượng sản phẩm (tổng tất cả các variant)",example="9"),
-     *                  @OA\Property(property="CategoryID", description="Mã loại sản phẩm", format="int32",example="1"),
-     *                  @OA\Property(property="BrandID", description="Mã nhãn hiệu", format="int32",example="1"),
-     *                  @OA\Property(property="Images[]", type="array",
-     *                              @OA\Items(type="string", format="binary"),
-     *                              description="File ảnh của sản phẩm (4 ảnh)")
+     *                  required={"ProductName","description","Price","Sale","StockQuantity","CategoryID", "BrandID","Images[]"},
+     *                  @OA\Property(property="productName", format="name", example="Ostrovit Micellar Casein - 700 grams", description="Tên sản phẩm"),
+     *                  @OA\Property(property="description", example="sản phẩm số 1", description="Mô tả sản phẩm (được lưu trữ dạng html trong database)"),
+     *                  @OA\Property(property="price", format="int32", description="Giá gốc của sản phẩm",example="100000"),
+     *                  @OA\Property(property="sale", format="int32", description="tỷ lệ sale sản phẩm", example="10"),
+     *                  @OA\Property(property="stockQuantity", format="int32", description="Số lượng sản phẩm (tổng tất cả các variant)",example="9"),
+     *                  @OA\Property(property="categoryId", description="Mã loại sản phẩm", format="int32",example="1"),
+     *                  @OA\Property(property="brandId", description="Mã nhãn hiệu", format="int32",example="1"),
+     *                  @OA\Property(property="image", type="string", format="binary",
+     *                              description="File ảnh của sản phẩm (4 ảnh) phải thuộc các định dạng: .jqg, .webp, .png")
      *              )
      *          )
      *      ),
@@ -158,15 +160,14 @@ class ProductController extends Controller
      *          ))
      *  )
      **/
-    public function store(NewProductRequest $request) : ApiResponse
+    public function store(Request $request) : ApiResponse
     {
-        //$this->authorize('create', Product::class);
-        $product = ProductIntputData::from($request->input());
+        $this->authorize('create', Product::class);
+        $product = ProductIntputData::validateAndCreate($request->input());
         $product_created = $this->productService->insertNewProduct($product);
-        $this->imageProductService->addImagesProduct($product_created->product_id,$request->file('image'));
-        //add default variant utility
+        $this->imageProductService->addImagesProduct($product_created->product_id,[ImageData::validateAndCreate($request->file('image'))]);
         $this->productVariantService->insertDefaultTaste(VariantInputData::from($product_created));
-        if($responseProduct){
+        if($product_created){
             return new ApiResponse(200,['message' => 'Product added successfully']);
         }
         return new ApiResponse(200,['message' => 'Product not added']);
@@ -191,7 +192,8 @@ class ProductController extends Controller
      **/
     public function show(string $id) : ApiResponse
     {
-         $data = $this->productService->getProductDetail($id);
+         $product = $this->productService->getProductDetail(ProductIntputData::from(['product_id' => $id]));
+         $data = new ProductResource($product);
          return new ApiResponse(200,[$data]);
     }
     /**
@@ -211,25 +213,28 @@ class ProductController extends Controller
      *          required=true,
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property(property="ProductName", type="string", example="whey protein"),
-     *              @OA\Property(property="Short_description", type="string", example="...."),
-     *              @OA\Property(property="Description", type="string", example="..."),
-     *              @OA\Property (property="Price", type="integer", example=100000),
-     *              @OA\Property (property="Sale", type="integer", example=10),
-     *              @OA\Property (property="StockQuantity", type="integer",example=100),
-     *              @OA\Property (property="CategoryID" ,type="=integer",example=1),
-     *              @OA\Property (property="BrandID", type="integer", example=1)
+     *              @OA\Property(property="productName", type="string", example="whey protein"),
+     *              @OA\Property(property="shortDescription", type="string", example="...."),
+     *              @OA\Property(property="description", type="string", example="..."),
+     *              @OA\Property (property="price", type="integer", example=100000),
+     *              @OA\Property (property="sale", type="integer", example=10),
+     *              @OA\Property (property="stockQuantity", type="integer",example=100),
+     *              @OA\Property (property="categoryId" ,type="=integer",example=1),
+     *              @OA\Property (property="brandId", type="integer", example=1)
      *          )
      *     ),
      *    @OA\Response(response=200,description="Cập nhật sản phẩm thành công"),
      *    @OA\Response(response=400,description="Cập nhật sản phẩm thất bại")
      * )
      *
+     * @throws AuthorizationException
      */
-    public function update(UpdateProductRequest $request,string $id): ApiResponse
+    public function update(Request $request,string $id): ApiResponse
     {
-        $dataToTrans = $request->validated();
-        $result = $this->productService->updateProduct($id,$dataToTrans);
+        $this->authorize('update',Product::class);
+        $product = ProductIntputData::factory()->alwaysValidate()
+            ->from(['product_id' => $id],$request->all());
+        $result = $this->productService->updateProduct($product);
         if($result){
             return new ApiResponse(200,['message' => 'Product updated successfully']);
         }
@@ -251,17 +256,21 @@ class ProductController extends Controller
      *     @OA\Response(response=200,description="xóa sản phẩm thành công"),
      *     @OA\Response(response=400, description="xóa sản phẩm thất bại")
      * )
+     * @throws AuthorizationException
      */
     public function destroy(string $id): ApiResponse
     {
-        $result = $this->productService->deleteProduct($id);
-        if($result){
+        $this->authorize('delete', Product::class);
+        $is_success = $this->productService->deleteProduct(ProductIntputData::validateAndCreate(['product_id' => $id]));
+        if($is_success){
             return new ApiResponse(200,['message' => 'Product deleted successfully']);
         }
         return new ApiResponse(200,['message' => 'Product not deleted']);
     }
+
     /**
      * @throws ApiError
+     * @throws AuthorizationException
      * @OA\Post(
      *     path="/api/products/{id}/image",
      *     tags={"Product"},
@@ -290,10 +299,12 @@ class ProductController extends Controller
      */
     public function uploadImage(UploadImageRequest $request,string $id) : void
     {
+        $this->authorize('update',Product::class);
         $this->imageProductService->addImagesProduct($id, $request->file('Images'));
     }
     /**
      * @throws ApiError
+     * @throws AuthorizationException
      * /**
      * /**
      * @OA\Patch(
@@ -332,7 +343,7 @@ class ProductController extends Controller
      * /
      **/
     public function updateImage(UpdateImageRequest $request,string $id)  : void    {
-        dd($request->all(),$id);
+        $this->authorize('update',Product::class);
         $this->imageProductService->updateUploadedImage($id,
             $request->file('image'));
     }
@@ -351,24 +362,59 @@ class ProductController extends Controller
      *     @OA\Response(response=200, description="Xóa ảnh thành công"),
      *     @OA\Response(response=400, description="Xóa ảnh thất bại"),
      * )
+     * @throws AuthorizationException
      */
     public function destroyImage(string $image_id) : void
     {
+        $this->authorize('delete',Product::class);
         $image = $this->imageProductService->getImageData($image_id);
         $this->imageProductService->deleteImage($image);
     }
     /**
      * @throws ApiError
+     * @throws AuthorizationException
+     * @OA\Post(
+     *     path="/api/description-image",
+     *     tags={"Description-image"},
+     *     security={{ "sanctum": {}}},
+     *     description="tạo ảnh mô tả sản phẩm mới, mỗi sản phẩm có thể có 3 (tiêu chuẩn) hoặc nhiều hơn",
+     *     summary="Tạo ảnh mô tả sản phẩm",
+     *     @OA\RequestBody(
+     *         required=true,
+     *          @OA\MediaType(
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                  required={"image"},
+     *                  @OA\Property (property="image",type="string",format="binary",
+     *                               description="File ảnh mô tả của sản phẩm, lưu ý chỉ nhận 1 file"))
+     *          )
+     *     ),
+     * @OA\Response(response=200, description="upload ảnh thành công"),
+     * @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
-    public function uploadDescriptionImage(Request $image) : void
+    public function uploadDescriptionImage(Request $request) : void
     {
-        $this->imageProductService->addImageDescription($image);
+        $this->authorize('create',Product::class);
+        $request->validate(['
+        image' => 'required|array|png,jpg,webp']);
+        $this->imageProductService->addImageDescription($request->file('image'));
     }
-    public function getAllDescriptionImages(){
-        return $this->imageProductService->getDescriptionsImage();
+    /**
+     * @throws AuthorizationException
+     */
+    public function getAllDescriptionImages(): ApiResponse
+    {
+        $this->authorize('viewAny',Product::class);
+        return new ApiResponse(200,[$this->imageProductService->getDescriptionsImage()]);
     }
+
+    /**
+     * @throws AuthorizationException
+     */
     public function destroyDescriptionImage(string $imageId): void
     {
+        $this->authorize('delete',Product::class);
         $this->imageProductService->deleteDescriptionsImage($imageId);
     }
 }

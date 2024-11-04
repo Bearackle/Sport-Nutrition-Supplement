@@ -23,14 +23,14 @@ class categories_table_default_data extends Seeder
                                 7 => ['Creatine','Caffeine','Beta Alanine','Citrulline','Arginine','Taurine','Các Đơn Chất Khác'],];
         foreach($parent_categories as $category){
             (new \App\Models\Category)->create([
-                'CategoryName' => $category,
+                'category_name' => $category,
             ]);
         }
         foreach($children_categories as $index => $p_category){
             foreach($p_category  as $c_category) {
                 (new \App\Models\Category)->create([
-                    'CategoryName' => $c_category,
-                    'ParentID' => $index
+                    'category_name' => $c_category,
+                    'parent_id' => $index
                 ]);
             }
         }

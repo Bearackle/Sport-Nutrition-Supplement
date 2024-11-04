@@ -27,10 +27,10 @@ class NewProductVariants extends FormRequest
     public function rules(): array
     {
         return [
-            'VariantName' => 'required|string',
-            'StockQuantity' => 'required|integer',
-            'ProductID' => 'required|integer',
-            'Image' => 'image|mimes:jpg,webp,jpeg,png| max:2048',
+            'variantName' => 'required|string',
+            'stockQuantity' => 'required|integer',
+            'productId' => 'required|integer',
+            'image' => 'image|mimes:jpg,webp,jpeg,png| max:2048',
         ];
     }
     public function failedValidation(Validator $validator)

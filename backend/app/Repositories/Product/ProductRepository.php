@@ -20,7 +20,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getAllAvailableProducts(): \Illuminate\Database\Eloquent\Builder
     {
         return (new \App\Models\Product)
-            ->orderBy('updated_at','desc')
+            ->orderBy('updated_at','DESC')
             ->with(['images' => function ($query) {
                 $query->whereNull('variant_id')->where('is_primary',1);
             }]);
@@ -48,9 +48,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
     public function getProductData($id)
     {
-        return (new \App\Models\Product)->with(['images' => function ($query) {
-            $query->whereNull('variant_id');
-        },'variants'])->find($id);
+//        with(['images' => function ($query) {
+//            $query->whereNull('variant_id');
+//        },'variants'])
+        return (new \App\Models\Product)->find($id);
     }
     public function filterer(ProductFilter $filter)
     {

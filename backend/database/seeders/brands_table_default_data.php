@@ -37,7 +37,7 @@ class brands_table_default_data extends Seeder
         ];
         foreach ($brand_data as $brand) {
             (new \App\Models\Brand())->create([
-                'BrandName' => $brand,
+                'brand_name' => $brand,
             ]);
         }
     }

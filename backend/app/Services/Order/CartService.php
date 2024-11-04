@@ -3,8 +3,10 @@
 namespace App\Services\Order;
 
 use App\DTOs\InputData\CartItemInputData;
+use App\DTOs\InputData\ShoppingCartInputData;
+use App\DTOs\InputData\UserInputData;
+use App\DTOs\OutputData\CartItemOutputData;
 use App\DTOs\OutputData\ShoppingCartOutputData;
-use App\DTOs\OutputData\UserData\CartItemOutputData;
 use App\Models\ShoppingCart;
 use App\Repositories\Cart\CartItemRepositoryInterface;
 use App\Repositories\Cart\CartRepositoryInterface;
@@ -22,13 +24,13 @@ class CartService implements CartServiceInterface
         $this->cartItemRepository = $cartItemRepository;
         $this->userRepository = $userRepository;
     }
-    public function getCart(\App\DTOs\InputData\ShoppingCartInputData $cart): ShoppingCartOutputData
+    public function getCart(UserInputData $user): ShoppingCartOutputData
     {
-           $shoppingCart =  $this->cartRepository->getCartByUser($cart->user_id);
+           $shoppingCart =  $this->cartRepository->getCartByUser($user->user_id);
            return ShoppingCartOutputData::from($shoppingCart);
     }
-    public function getItems($cart_id){
-        return $this->cartRepository->getCartItems($cart_id)->with(['variants' => function ($query) {
+    public function getItems(ShoppingCartInputData $cart): ShoppingCartOutputData {
+        return $this->cartRepository->getCartItems($cart->cart_id)->with(['variants' => function ($query) {
                 $query->with(['product'=> function ($product) {
                     $product->select("ProductID","ProductName","PriceAfterSale");
                 },'image'])->select("product_variants.VariantID","VariantName");
@@ -44,17 +46,16 @@ class CartService implements CartServiceInterface
     {
         return CartItemOutputData::from($this->cartItemRepository->create($cartItem->all()));
     }
-    public function deleteCartItem(string $item_id) : void
+    public function deleteCartItem(CartItemInputData $cartItem) : void
     {
-        $this->cartItemRepository->delete($item_id);
+        $this->cartItemRepository->delete($cartItem->cart_id);
     }
-    public function updateCartItemQuantity(string $id,array $cart_item) : void
+    public function updateCartItemQuantity(CartItemInputData $cartItem): CartItemOutputData
     {
-        $data_to_update = ['Quantity' => $cart_item['Quantity']];
-        $this->cartItemRepository->update($id,$data_to_update);
+        return CartItemOutputData::from($this->cartItemRepository->update($cartItem->cart_id,['quantity' => $cartItem->quantity]));
     }
-    public function emptyCart($cart_id) : void
+    public function emptyCart(ShoppingCartInputData $cart) : void
     {
-        $this->cartItemRepository->emptyCart($cart_id);
+        $this->cartItemRepository->emptyCart($cart->cart_id);
     }
 }

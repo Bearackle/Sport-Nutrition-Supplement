@@ -1,8 +1,10 @@
 <?php
 
-namespace App\DTOs\OutputData\AdminData;
+namespace App\DTOs\OutputData;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Optional;
+use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Data;
 
 class ProductOutputData extends Data
@@ -17,4 +19,6 @@ class ProductOutputData extends Data
     public int $stock_quantity;
     public int $category_id;
     public int $brand_id;
+    #[LoadRelation]
+    public Collection $images; // ten thuoc tinh phai trung voi relation
 }

@@ -23,27 +23,27 @@ trait ProductStockChecking
         $countProducts = $this->productRepository->getCountQuantityOfProduct($productId);
         return $countProducts < $quantity;
     }
-    public function createdProductVariant($productVariant, $quantity) : void{
-        $this->productRepository->increaseQuantity($productVariant->ProductID, $quantity);
+    public function createdProductVariant($productVariant, $quantity) : void {
+        $this->productRepository->increaseQuantity($productVariant->product_id, $quantity);
     }
     public function updateVariantStock($productVariant, $quantity) : void{
-        $countProduct = abs($productVariant->StockQuantity - $quantity);
-        if($productVariant->StockQuantity < $quantity){
-            $this->productVariantRepository->increaseStock($productVariant->VariantID, $countProduct);
+        $countProduct = abs($productVariant->stock_quantity - $quantity);
+        if($productVariant->stock_quantity < $quantity){
+            $this->productVariantRepository->increaseStock($productVariant->variant_id, $countProduct);
             $this->createdProductVariant($productVariant, $countProduct);
         }
         else {
-            $this->productVariantRepository->decreaseStock($productVariant->VariantID, $countProduct);
+            $this->productVariantRepository->decreaseStock($productVariant->variant_id, $countProduct);
             $this->deleteProductVariant($productVariant, $countProduct);
         }
     }
     public function deleteProductVariant($productVariant ,$quantity) : void {
-        $this->productRepository->decreaseQuantity($productVariant['ProductID'], $quantity);
+        $this->productRepository->decreaseQuantity($productVariant->product_id, $quantity);
     }
-    public function soldProductVariants($variantID, $quantity) : void {
-        $variant = $this->productVariantRepository->find($variantID);
-        $this->productRepository->decreaseQuantity($variant['ProductID'], $quantity);
-        $this->productVariantRepository->decreaseStock($variant['ProductID'], $variant['StockQuantity']);
+    public function soldProductVariants($variantId, $quantity) : void {
+        $variant = $this->productVariantRepository->find($variantId);
+        $this->productRepository->decreaseQuantity($variant->product_id, $quantity);
+        $this->productVariantRepository->decreaseStock($variant->product_id, $variant->stock_quantity);
     }
     public function soldProduct($productId, $quantity) : void {
         $this->productRepository->increaseQuantity($productId, $quantity);

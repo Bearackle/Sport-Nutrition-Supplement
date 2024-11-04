@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\ComboInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ComboRequest;
 use App\Http\Requests\NewProductCombo;
@@ -58,10 +59,10 @@ class ComboController extends Controller
      */
     public function store(ComboRequest $request) : ApiResponse
     {
-        $data_to_trans = $request->validated();
-        $created_combo = $this->comboService->createCombo($data_to_trans);
-        $this->imageProductService->addImageCombo($created_combo['ComboID'],$request->file('Image'));
-        return new ApiResponse(200,[$this->comboService->getComboById($created_combo->ComboID)]);
+        $data = ComboInputData::from($request->all());
+        $created_combo = $this->comboService->createCombo($data);
+        $this->imageProductService->addImageCombo($created_combo['combo_id'],$request->file('image'));
+        return new ApiResponse(200,[$this->comboService->getComboById($created_combo->comb_id)]);
     }
     /**
      * @OA\Post(

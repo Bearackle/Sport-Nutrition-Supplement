@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\ImageLinkModels\ProductImages;
 use App\Models\ImageLinkModels\RatingImages;
 use App\Traits\ProductStockChecking;
+use App\Traits\Scopes\ProductDataScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -57,5 +58,9 @@ class Product extends Model
     }
     public function scopeFilter($query, $filters){
         return $filters->apply($query);
+    }
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new ProductDataScope());
     }
 }

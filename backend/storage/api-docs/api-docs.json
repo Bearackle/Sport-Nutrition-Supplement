@@ -826,7 +826,7 @@
                             "schema": {
                                 "required": [
                                     "ProductName",
-                                    "Description",
+                                    "description",
                                     "Price",
                                     "Sale",
                                     "StockQuantity",
@@ -835,47 +835,44 @@
                                     "Images[]"
                                 ],
                                 "properties": {
-                                    "ProductName": {
+                                    "productName": {
                                         "description": "Tên sản phẩm",
                                         "format": "name",
                                         "example": "Ostrovit Micellar Casein - 700 grams"
                                     },
-                                    "Description": {
+                                    "description": {
                                         "description": "Mô tả sản phẩm (được lưu trữ dạng html trong database)",
                                         "example": "sản phẩm số 1"
                                     },
-                                    "Price": {
+                                    "price": {
                                         "description": "Giá gốc của sản phẩm",
                                         "format": "int32",
                                         "example": "100000"
                                     },
-                                    "Sale": {
+                                    "sale": {
                                         "description": "tỷ lệ sale sản phẩm",
                                         "format": "int32",
                                         "example": "10"
                                     },
-                                    "StockQuantity": {
+                                    "stockQuantity": {
                                         "description": "Số lượng sản phẩm (tổng tất cả các variant)",
                                         "format": "int32",
                                         "example": "9"
                                     },
-                                    "CategoryID": {
+                                    "categoryId": {
                                         "description": "Mã loại sản phẩm",
                                         "format": "int32",
                                         "example": "1"
                                     },
-                                    "BrandID": {
+                                    "brandId": {
                                         "description": "Mã nhãn hiệu",
                                         "format": "int32",
                                         "example": "1"
                                     },
-                                    "Images[]": {
-                                        "description": "File ảnh của sản phẩm (4 ảnh)",
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "format": "binary"
-                                        }
+                                    "image": {
+                                        "description": "File ảnh của sản phẩm (4 ảnh) phải thuộc các định dạng: .jqg, .webp, .png",
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -924,7 +921,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/products/{id}": {
@@ -1006,35 +1008,35 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "ProductName": {
+                                    "productName": {
                                         "type": "string",
                                         "example": "whey protein"
                                     },
-                                    "Short_description": {
+                                    "shortDescription": {
                                         "type": "string",
                                         "example": "...."
                                     },
-                                    "Description": {
+                                    "description": {
                                         "type": "string",
                                         "example": "..."
                                     },
-                                    "Price": {
+                                    "price": {
                                         "type": "integer",
                                         "example": 100000
                                     },
-                                    "Sale": {
+                                    "sale": {
                                         "type": "integer",
                                         "example": 10
                                     },
-                                    "StockQuantity": {
+                                    "stockQuantity": {
                                         "type": "integer",
                                         "example": 100
                                     },
-                                    "CategoryID": {
+                                    "categoryId": {
                                         "type": "=integer",
                                         "example": 1
                                     },
-                                    "BrandID": {
+                                    "brandId": {
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -1172,6 +1174,49 @@
                         "description": "Xóa ảnh thất bại"
                     }
                 }
+            }
+        },
+        "/api/description-image": {
+            "post": {
+                "tags": [
+                    "Description-image"
+                ],
+                "summary": "Tạo ảnh mô tả sản phẩm",
+                "description": "tạo ảnh mô tả sản phẩm mới, mỗi sản phẩm có thể có 3 (tiêu chuẩn) hoặc nhiều hơn",
+                "operationId": "34b8c90a5da7cedc2a03a56c0bc2e709",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "image"
+                                ],
+                                "properties": {
+                                    "image": {
+                                        "description": "File ảnh mô tả của sản phẩm, lưu ý chỉ nhận 1 file",
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "upload ảnh thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
             }
         },
         "/api/products/{id}/variants": {
@@ -1517,12 +1562,31 @@
             "description": "Collection"
         },
         {
+            "name": "Description-image",
+            "description": "Description-image"
+        },
+        {
             "name": "Variant",
             "description": "Variant"
         },
         {
             "name": "User",
             "description": "User"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
         }
     ]
 }

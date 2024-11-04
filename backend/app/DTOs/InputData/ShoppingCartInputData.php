@@ -2,6 +2,7 @@
 
 namespace App\DTOs\InputData;
 use DateTime;
+use Illuminate\Support\Optional;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Exists;
 use Spatie\LaravelData\Attributes\Validation\Unique;
@@ -19,4 +20,9 @@ class ShoppingCartInputData extends Data
         #[WithCast(DateTimeInterfaceCast::class)]
         public ?DateTime $created_at
     ){}
+
+    public function has(string $propertyName): bool
+    {
+        return isset($this->{$propertyName}) && !($this->{$propertyName} instanceof Optional);
+    }
 }

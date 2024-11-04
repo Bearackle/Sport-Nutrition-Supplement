@@ -2,6 +2,8 @@
 
 namespace App\Services\Order;
 
+use App\DTOs\InputData\OrderInputData;
+use App\DTOs\InputData\PaymentInputData;
 use App\Enum\PaymentMethod;
 use App\Enum\PaymentStatus;
 use App\Repositories\Payment\PaymentRepositoryInterface;
@@ -12,18 +14,17 @@ class PaymentService implements PaymentServiceInterface
     public function __construct(PaymentRepositoryInterface $paymentRepository){
         $this->paymentRepository = $paymentRepository;
     }
-    public function addPaymentMethod(array $data): void
+    public function addPaymentMethod(PaymentInputData $payment): void
     {
-        $data['Status'] = PaymentStatus::PENDING->value;
-        $data['PaymentMethod'] = PaymentMethod::equals($data['PaymentMethod'])->value;
-        $this->paymentRepository->create($data);
+        $payment->payment_status = PaymentStatus::PENDING;
+        $this->paymentRepository->create($payment->toArray());
     }
     public function getPayments()
     {
 
     }
 
-    public function getPayment($order_id)
+    public function getPayment(OrderInputData $order)
     {
     }
 }

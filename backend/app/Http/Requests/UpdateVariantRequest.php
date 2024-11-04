@@ -26,9 +26,9 @@ class UpdateVariantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'VariantName' => 'string',
-            'ProductID' => 'numeric',
-            'StockQuantity' => 'required|numeric',
+            'variantName' => 'string',
+            'productID' => 'numeric',
+            'stockQuantity' => 'required|numeric',
         ];
     }
     public function failedValidation(Validator $validator)

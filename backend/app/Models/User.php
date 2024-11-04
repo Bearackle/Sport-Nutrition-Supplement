@@ -11,6 +11,8 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use phpDocumentor\Reflection\Types\Boolean;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * User
@@ -19,6 +21,7 @@ use Illuminate\Database\Eloquent\Builder;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.

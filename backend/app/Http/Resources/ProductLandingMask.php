@@ -15,12 +15,12 @@ class ProductLandingMask extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'ProductID' => $this->ProductID,
-            'ProductName' => $this->ProductName,
-            'Price'=> $this->Price,
-            'Sale' => $this->Sale,
-            'PriceAfterSale' => $this->PriceAfterSale,
-            'Images[]' => $this->images
+            'productId' => $this->product_id,
+            'productName' => $this->product_name,
+            'price'=> $this->price,
+            'sale' => $this->sale,
+            'priceAfterSale' => $this->price_after_sale,
+            'image' => $this->images
         ];
     }
 }

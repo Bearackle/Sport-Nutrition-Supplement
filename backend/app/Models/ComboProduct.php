@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\Scopes\ComboProductData;
+use App\Traits\Scopes\ComboProductDataScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,5 +31,9 @@ class ComboProduct extends Model
     public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Combo::class, 'combo_id', 'combo_id');
+    }
+    protected static function booted(): void
+    {
+        static::addGlobalScope(ComboProductDataScope::class);
     }
 }

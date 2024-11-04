@@ -17,7 +17,7 @@ class NewProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'image|array|mimes:jpg, jpeg,webp, png'
+            'image' => 'image|mimes:jpg, jpeg,webp, png'
         ];
     }
     public function failedValidation(Validator $validator)
