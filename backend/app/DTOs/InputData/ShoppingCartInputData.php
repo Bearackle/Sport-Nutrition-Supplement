@@ -16,7 +16,7 @@ class ShoppingCartInputData extends Data
     public function __construct(
         public ?int $cart_id,
         #[Exists('users','user_id'),Unique('shopping_carts','user_id'),MapInputName(CamelCaseMapper::class)]
-        public int $user_id,
+        public ?int $user_id,
         #[WithCast(DateTimeInterfaceCast::class)]
         public ?DateTime $created_at
     ){}

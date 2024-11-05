@@ -15,7 +15,7 @@ class Combo extends Model
 {
     use HasFactory;
     protected $fillable = ['combo_name','description','price','combo_sale','combo_price_after_sale','combo_image_url','category_id'];
-    protected $primaryKey = 'ComboID';
+    protected $primaryKey = 'combo_id';
     protected $table = 'combos';
     public function orders(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
@@ -23,11 +23,13 @@ class Combo extends Model
     }
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class,'combo_products','combo_id','product_id');
+        return $this->belongsToMany(Product::class,'combo_products','combo_id','product_id_fk')
+            ->withPivot('quantity');
     }
     public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(ProductVariant::class,'combo_products','combo_id','variant_id');
+        return $this->belongsToMany(ProductVariant::class, 'combo_products', 'combo_id', 'variant_id_fk')
+            ->withPivot('quantity');
     }
     public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

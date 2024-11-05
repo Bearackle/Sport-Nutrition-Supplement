@@ -2,24 +2,24 @@
 
 namespace App\Policies;
 
-use App\Models\ProductVariant;
+use App\Models\Combo;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ProductVariantPolicy
+class ComboPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ProductVariant $productVariant): bool
+    public function view(User $user, Combo $combo): bool
     {
         return true;
     }
@@ -35,7 +35,7 @@ class ProductVariantPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): bool
+    public function update(User $user, Combo $combo): bool
     {
         return $user->hasRole('admin');
     }
@@ -43,7 +43,7 @@ class ProductVariantPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ProductVariant $productVariant): bool
+    public function delete(User $user): bool
     {
         return $user->hasRole('admin');
     }
@@ -51,7 +51,7 @@ class ProductVariantPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ProductVariant $productVariant): bool
+    public function restore(User $user, Combo $combo): bool
     {
         return $user->hasRole('admin');
     }
@@ -59,7 +59,7 @@ class ProductVariantPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ProductVariant $productVariant): bool
+    public function forceDelete(User $user, Combo $combo): bool
     {
         return $user->hasRole('admin');
     }

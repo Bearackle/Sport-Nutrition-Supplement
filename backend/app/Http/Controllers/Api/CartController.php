@@ -4,21 +4,29 @@ namespace App\Http\Controllers\Api;
 
 use App\DTOs\InputData\CartItemInputData;
 use App\DTOs\InputData\ShoppingCartInputData;
+use App\DTOs\InputData\UserInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CartIdRequest;
 use App\Http\Requests\NewCartItems;
 use App\Http\Requests\NewCartRequest;
+use App\Http\Resources\CartItemResource;
+use App\Http\Resources\ShoppingCartResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\ShoppingCart;
 use App\Services\Order\CartServiceInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+    use AuthorizesRequests;
     protected CartServiceInterface $cartService;
     public function __construct(CartServiceInterface $cartService)
     {
         $this->cartService = $cartService;
     }
+
     /**
      * @OA\Get(
      *     path="/api/cart/{id}",
@@ -35,11 +43,13 @@ class CartController extends Controller
      *     @OA\Response(response=400, description="Tìm thông tin giỏ hàng thất bại"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
-    public function index(string $user_id)
+    public function index(string $user_id): ShoppingCartResource
     {
-        $cart = ShoppingCartInputData::from(['user_id' => $user_id]);
-        return $this->cartService->getCart($cart);
+        $this->authorize('view', ShoppingCart::class);
+        $user = UserInputData::from(['user_id' => $user_id]);
+        return new ShoppingCartResource($this->cartService->getCart($user));
     }
     /**
      * @OA\Post(
@@ -62,7 +72,7 @@ class CartController extends Controller
     {
         $cart = ShoppingCartInputData::validateAndCreate($request->all());
         $cartOutput = $this->cartService->createCart($cart);
-        return new ApiResponse(200, [$cartOutput]);
+        return new ApiResponse(200, [new ShoppingCartResource($cartOutput)]);
     }
     /**
      * @OA\Post(
@@ -88,9 +98,9 @@ class CartController extends Controller
      */
     public function store(Request $request) : ApiResponse
     {
-        $cartItem = CartItemInputData::validateAndCreate($request->all());
+        $cartItem = CartItemInputData::validateAndCreate($request->input());
         $cartItemAdded = $this->cartService->addCartItem($cartItem);
-        return new ApiResponse (200,[$cartItemAdded]);
+        return new ApiResponse (200,[new CartItemResource($cartItemAdded)]);
     }
     /**
      * @OA\Get(
@@ -110,7 +120,7 @@ class CartController extends Controller
      */
     public function show(string $id): ApiResponse
     {
-        return new ApiResponse(200,$this->cartService->getItems($id)->toArray());
+        return new ApiResponse(200,$this->cartService->getItems(ShoppingCartInputData::from(['cart_id' => $id])));
     }
     /**
      * @OA\Patch(
@@ -159,7 +169,7 @@ class CartController extends Controller
      */
     public function destroy(string $item_id) : ApiResponse
     {
-        $this->cartService->deleteCartItem($item_id);
+        $this->cartService->deleteCartItem(CartItemInputData::from(['cart_item_id' => $item_id]));
         return ApiResponse::success('deleted successfully');
     }
 }

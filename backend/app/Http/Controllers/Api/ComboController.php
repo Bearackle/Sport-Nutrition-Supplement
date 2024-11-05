@@ -3,21 +3,29 @@
 namespace App\Http\Controllers\Api;
 
 use App\DTOs\InputData\ComboInputData;
+use App\DTOs\InputData\ComboProductInputData;
+use App\DTOs\InputData\ImageData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ComboRequest;
 use App\Http\Requests\NewProductCombo;
 use App\Http\Requests\NewProductRequest;
+use App\Http\Resources\ComboProductResource;
 use App\Http\Resources\ComboResource;
 use App\Http\Resources\CombosLandingMask;
+use App\Http\Resources\ProductResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Combo;
 use App\Repositories\Combo\ComboRepository;
 use App\Services\Combo\ComboServiceInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isEmpty;
 
 class ComboController extends Controller
 {
+    use AuthorizesRequests;
     protected ComboServiceInterface $comboService;
     protected ImageProductServiceInterface $imageProductService;
     public function __construct(ComboServiceInterface $comboService, ImageProductServiceInterface $imageProductService){
@@ -29,9 +37,10 @@ class ComboController extends Controller
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        $combos = $this->comboService->getAllCombos()->paginate(10);
+        $combos = $this->comboService->getAllCombos();
         return CombosLandingMask::collection($combos);
     }
+
     /**
      * @OA\Post(
      *     path="/api/combo/create",
@@ -56,13 +65,15 @@ class ComboController extends Controller
      *     @OA\Response(response=200, description="Tạo combo thành công"),
      *     @OA\Response(response=500, description="Tạo combo thất bại")
      * )
+     * @throws AuthorizationException
      */
-    public function store(ComboRequest $request) : ApiResponse
+    public function store(Request $request) : ApiResponse
     {
-        $data = ComboInputData::from($request->all());
-        $created_combo = $this->comboService->createCombo($data);
-        $this->imageProductService->addImageCombo($created_combo['combo_id'],$request->file('image'));
-        return new ApiResponse(200,[$this->comboService->getComboById($created_combo->comb_id)]);
+        $this->authorize('create', Combo::class);
+        $combo = ComboInputData::validateAndCreate($request->input());
+        $created_combo = $this->comboService->createCombo($combo);
+        $this->imageProductService->addImageCombo($created_combo->combo_id, ImageData::validateAndCreate(['image' => $request->file('image')])->image);
+        return new ApiResponse(200,[new ComboResource($this->comboService->getComboById(ComboInputData::from(['combo_id' => $created_combo->combo_id])))]);
     }
     /**
      * @OA\Post(
@@ -84,9 +95,13 @@ class ComboController extends Controller
      *     @OA\Response(response=200, description="Thêm sản phẩm thành công"),
      *     @OA\Response(response=500, description="Thêm sản phẩm thất bại")
      * )
+     * @throws AuthorizationException
      */
-    public function add(NewProductCombo $request) : void{
-        $this->comboService->addProductCombo($request->validated());
+    public function add(Request $request): ApiResponse
+    {
+        $this->authorize('create', Combo::class);
+        $product = $this->comboService->addProductCombo(ComboProductInputData::validateAndCreate($request->input()));
+        return new ApiResponse(200, [new ComboProductResource($product)]);
     }
     /**
      * @OA\Get(
@@ -106,7 +121,8 @@ class ComboController extends Controller
      */
     public function show(string $id) : ApiResponse
     {
-       return new ApiResponse(200,[$this->comboService->getComboById($id)]);
+        $combo = $this->comboService->getComboById(ComboInputData::validateAndCreate(['combo_id' => $id]));
+       return new ApiResponse(200,[new ComboResource($combo)]);
     }
     /**
      * @OA\Get(
@@ -125,9 +141,11 @@ class ComboController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function showProductsOfCombo($id) : ApiResponse {
-        return new ApiResponse(200,[$this->comboService->getComboProducts($id)]);
+    public function showProductsOfCombo(string $comboId) : ApiResponse {
+        $products = $this->comboService->getComboProducts(ComboInputData::validateAndCreate(['combo_id' => $comboId]));
+        return new ApiResponse(200,[new ComboResource($products)]);
     }
+
     /**
      * @OA\Delete (
      *     path="/api/combo/{combo_id}",
@@ -144,9 +162,11 @@ class ComboController extends Controller
      *     @OA\Response(response=400, description="Xóa thất bại"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
     public function destroy(string $id) : void
     {
-        $this->comboService->destroyCombo($id);
+        $this->authorize('delete', Combo::class);
+        $this->comboService->destroyCombo(ComboInputData::validateAndCreate(['combo_id' => $id]));
     }
 }

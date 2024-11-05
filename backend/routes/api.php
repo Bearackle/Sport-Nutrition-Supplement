@@ -42,11 +42,12 @@ Route::group([
     Route::delete('/{id}',[ProductController::class,'destroy'])->middleware('auth:sanctum');
     Route::patch('/{id}',[ProductController::class,'update'])->middleware('auth:sanctum');
     //image product
-    Route::post('/{id}/image',[ProductController::class,'uploadImage']);
-    Route::patch('/image/{id}',[ProductController::class,'updateImage']);
-    Route::delete('/image/{image_id}',[ProductController::class,'destroyImage']);
+    Route::post('/{id}/image',[ProductController::class,'uploadImage'])->middleware('auth:sanctum');
+    Route::patch('/image/{id}',[ProductController::class,'updateImage'])->middleware('auth:sanctum');
+    Route::delete('/image/{image_id}',[ProductController::class,'destroyImage'])->middleware('auth:sanctum');
     // variants
     Route::get('/{id}/variants',[ProductVariantController::class,'VariantsOfProduct']);
+    Route::get('admin/{id}/variants',[ProductVariantController::class,'VariantsOfProduct'])->middleware('auth:sanctum');
 });
 //variant management
 Route::group([
@@ -61,9 +62,9 @@ Route::group([
 Route::group([
     'prefix' => 'description-image'
 ],function (){
-    Route::post('/', [ProductController::class, 'uploadDescriptionImage']);
-    Route::get('/', [ProductController::class, 'getAllDescriptionImages']);
-    Route::delete('/{id}',[ProductController::class, 'destroyDescriptionImage']);
+    Route::post('/', [ProductController::class, 'uploadDescriptionImage'])->middleware('auth:sanctum');
+    Route::get('/', [ProductController::class, 'getAllDescriptionImages'])->middleware('auth:sanctum');
+    Route::delete('/{id}',[ProductController::class, 'destroyDescriptionImage'])->middleware('auth:sanctum');
 })->middleware('auth:sanctum');
 Route::group([
     'prefix' => 'categories'
@@ -90,12 +91,12 @@ Route::group([
 Route::group([
     'prefix' => 'cart'],
     function() {
-        Route::get('all/{id}', [CartController::class, 'show']);
-        Route::get('/{id}', [CartController::class, 'index']);
-        Route::post('new', [CartController::class, 'newCart']);
-        Route::post('item',[CartController::class,'store']);;
-        Route::delete('item/{id}',[CartController::class,'destroy']);
-        Route::patch('item/{id}',[CartController::class,'update']);
+        Route::get('all/{id}', [CartController::class, 'show'])->middleware('auth:sanctum');
+        Route::get('/{id}', [CartController::class, 'index'])->middleware('auth:sanctum');
+        Route::post('new', [CartController::class, 'newCart'])->middleware('auth:sanctum');
+        Route::post('item',[CartController::class,'store'])->middleware('auth:sanctum');;
+        Route::delete('item/{id}',[CartController::class,'destroy'])->middleware('auth:sanctum');
+        Route::patch('item/{id}',[CartController::class,'update'])->middleware('auth:sanctum');
     });
 Route::group([
     'prefix' => 'order'],function(){

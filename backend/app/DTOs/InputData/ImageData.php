@@ -14,5 +14,5 @@ use Spatie\LaravelData\Mappers\CamelCaseMapper;
 class ImageData extends Data
 {
     #[Image, Mimes(['jpeg', 'png','webp'])]
-   public UploadedFile $image;
+    public UploadedFile $image;
 }

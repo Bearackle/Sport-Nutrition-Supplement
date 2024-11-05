@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\CategoryResource;
 use Illuminate\Http\Request;
 use App\Services\Product\CategoryServiceInterface;
 
@@ -34,7 +35,7 @@ class CategoryController
      */
     public function index()
     {
-        return $this->categoryService->getCategoryTrace();
+        return CategoryResource::collection($this->categoryService->getCategoryTrace());
     }
     public function getTopProductsByCategory(){
         return $this->categoryService->getTopProductCategories();

@@ -13,7 +13,7 @@ class ShoppingCartOutputData extends Data
 {
        public function __construct(
            public int $cart_id,
-        public int $user_id,
-        #[WithCast(DateTimeInterfaceCast::class), MapInputName(CamelCaseMapper::class)]
-        public ?\DateTime $created_at){}
+            public int $user_id,
+            #[WithCast(DateTimeInterfaceCast::class), MapInputName(CamelCaseMapper::class)]
+            public ?\DateTime $created_at){}
 }

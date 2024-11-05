@@ -5,6 +5,7 @@ namespace App\Services\Combo;
 use App\DTOs\InputData\ComboInputData;
 use App\DTOs\InputData\ComboProductInputData;
 use App\DTOs\OutputData\ComboOutputData;
+use App\DTOs\OutputData\ComboProductOutputData;
 use App\DTOs\OutputData\VariantOutputData;
 use App\Http\Resources\CombosLandingMask;
 use App\Repositories\Combo\ComboProductRepositoryInterface;
@@ -24,9 +25,9 @@ class ComboServcie implements ComboServiceInterface
         $this->combo_product_repository = $combo_product_repository;
         $this->image_product_service = $image_product_service;
     }
-    public function getAllCombos(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
+    public function getAllCombos()
     {
-        return ComboOutputData::collect($this->combo_repository->getAll());
+        return $this->combo_repository->getAll()->paginate(10);
     }
     public function getComboOfCategory($categoryId): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
@@ -46,22 +47,24 @@ class ComboServcie implements ComboServiceInterface
     public function createCombo(ComboInputData $combo): ComboOutputData
     {
        $combo->combo_price_after_sale = $combo->price * (1 - ($combo->combo_sale)/100);
-        return ComboOutputData::from($this->combo_repository->create($combo));
+       return ComboOutputData::from($this->combo_repository->create($combo->toArray()));
     }
-    public function addProductCombo(ComboProductInputData $comboProduct): VariantOutputData
+    public function addProductCombo(ComboProductInputData $comboProduct): ComboProductOutputData
     {
-        return VariantOutputData::from($this->combo_product_repository->create($comboProduct->toArray())->variant);
+        return ComboProductOutputData::from($this->combo_product_repository
+            ->create($comboProduct->toArray()));
     }
     public function destroyCombo(ComboInputData $combo) : void
     {
         $combo_to_destroy =  $this->combo_repository->find($combo->combo_id);
         $combo_to_destroy->products()->detach();
-        $this->combo_repository->delete($combo->combo_id);
-        $combo_img['public_id']  = $this->image_product_service->extract_public_id($combo['combo_image_url']);
+        $combo_img['public_id']  = $this->image_product_service->extract_public_id($combo_to_destroy->combo_image_url);
         $this->image_product_service->deleteImage($combo_img);
+        $this->combo_repository->delete($combo->combo_id);
     }
     public function getComboProducts(ComboInputData $combo)
     {
-       return $this->combo_repository->getComboProducts($combo->combo_id)->with('variants.product')->get();
+       return $this->combo_repository
+                   ->getComboProducts($combo->combo_id);
     }
 }

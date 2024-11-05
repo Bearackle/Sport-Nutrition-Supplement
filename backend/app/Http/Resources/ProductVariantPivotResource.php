@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductLandingMask extends JsonResource
+class ProductVariantPivotResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,11 @@ class ProductLandingMask extends JsonResource
     {
         return [
             'productId' => $this->product_id,
-            'productName' => $this->product_name,
-            'price'=> $this->price,
-            'sale' => $this->sale,
-            'priceAfterSale' => $this->price_after_sale,
-            'image' => ImageResource::collection($this->images)
+            'productName' => $this->product->product_name,
+            'price_after_sale' => $this->product->price_after_sale,
+            'variantId' => $this->variant_id,
+            'variantName' => $this->variant_name,
+            'quantity' => $this->pivot->quantity,
         ];
     }
 }

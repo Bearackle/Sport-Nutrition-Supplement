@@ -25,8 +25,10 @@ class ProductVariantService implements ProductVariantServiceInterface
     public function getAllProductVariants(ProductIntputData $product){
         return $this->productVariantRepository->getVariantAvailableForProduct($product->product_id);
     }
-    public function getVariantsData(ProductIntputData $product){
-        return $this->productVariantRepository->getVariantsDataWithImage($product->product_id);
+    public function getVariantsData(ProductIntputData $product): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
+    {
+        return VariantOutputData::collect(
+            $this->productVariantRepository->getVariantsDataWithImage($product->product_id));
     }
     public function insertProductVariant(VariantInputData $variant) : VariantOutputData
     {
@@ -41,7 +43,6 @@ class ProductVariantService implements ProductVariantServiceInterface
     }
     public function updateProductVariant(VariantInputData $variant): bool | VariantOutputData
     {
-
         $variant_to_update = $this->productVariantRepository->find($variant->variant_id);
         $this->updateVariantStock($variant_to_update, $variant->stock_quantity);
         unset($variant->stock_quantity);
@@ -50,7 +51,7 @@ class ProductVariantService implements ProductVariantServiceInterface
     public function deleteVariant(VariantInputData $variant) : bool
     {
         $variant_to_delete = $this->productVariantRepository->find($variant->variant_id);
-        $this->deleteProductVariant($variant_to_delete,$variant->stock_quantity);
+        $this->deleteProductVariant($variant_to_delete,$variant_to_delete->stock_quantity);
         return $this->productVariantRepository->delete($variant->variant_id);
     }
 }

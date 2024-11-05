@@ -88,7 +88,7 @@ class ImageProductService implements ImageProductServiceInterface{
         ]);
     }
     public function deleteImage($image) : void {
-        cloudinary()->destroy($image['public_id']);
+        cloudinary()->destroy($image->public_id);
         $image->delete();
     }
     public function extract_public_id($image_url) : string{
@@ -111,13 +111,14 @@ class ImageProductService implements ImageProductServiceInterface{
 
     public function getDescriptionsImage()
     {
-        return $this->descriptionImageRepository->getAll();
+        return $this->descriptionImageRepository->getAll()->sortByDesc('created_at');
     }
 
     public function deleteDescriptionsImage($imageId) : void
     {
-        $image = $this->descriptionImageRepository->find($imageId)->delete();
+        $image = $this->descriptionImageRepository->find($imageId);
         $this->deleteImage($image);
+        $image->delete();
     }
 }
 

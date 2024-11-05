@@ -4,12 +4,9 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\LaravelData\Optional;
+use Illuminate\Support\Optional;
 
-/**
- * @property mixed $ProductID
- */
-class ProductResource extends JsonResource
+class VariantResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,17 +16,11 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'variantId' =>  $this->variant_id,
             'productId' => $this->product_id,
-            'ProductName' => $this->product_name,
-            'description' => $this->description,
-            'shortDescription' => $this->short_description,
-            'price'=> $this->price,
-            'sale' => $this->sale,
-            'priceAfterSale' => $this->price_after_sale,
+            'variantName' => $this->variant_name,
             'stockQuantity' => $this->has('stock_quantity') ? $this->stock_quantity : null,
-            'category_id' => $this->category_id,
-            'brand_id' => $this->brand_id,
-            'images' => ImageResource::collection($this->images)
+            'image' => $this->has('image') ? new ImageResource($this->image) : null,
         ];
     }
     public function has(string $propertyName): bool

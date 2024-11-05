@@ -17,21 +17,21 @@ class ComboProduct extends Model
 {
     use HasFactory;
     protected $table = 'combo_products';
-    protected $fillable = ['combo_id','product_id','variant_id','quantity'];
+    protected $fillable = ['combo_id','product_id_fk','variant_id_fk','quantity'];
     protected $primaryKey = 'combo_product_id';
     public $timestamps = false;
-    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Product::class,'product_id','product_id');
-    }
-    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(ProductVariant::class,'variant_id','variant_id');
-    }
-    public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Combo::class, 'combo_id', 'combo_id');
-    }
+//    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(Product::class,'product_id','product_id');
+//    }
+//    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(ProductVariant::class,'variant_id','variant_id');
+//    }
+//    public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(Combo::class, 'combo_id', 'combo_id');
+//    }
     protected static function booted(): void
     {
         static::addGlobalScope(ComboProductDataScope::class);

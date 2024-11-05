@@ -2,26 +2,29 @@
 
 namespace App\Policies;
 
-use App\Models\ProductVariant;
+use App\Models\ShoppingCart;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class ProductVariantPolicy
+class ShoppingCartPolicy
 {
+    /**
+     * Determine whether the user can view any models.
+     */
     /**
      * Determine whether the user can view any models.
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasRole('user');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, ProductVariant $productVariant): bool
+    public function view(User $user): bool
     {
-        return true;
+        return $user->hasRole('user') || $user->hasRole('admin');
     }
 
     /**
@@ -29,7 +32,7 @@ class ProductVariantPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('user') || $user->hasRole('admin');
     }
 
     /**
@@ -37,21 +40,21 @@ class ProductVariantPolicy
      */
     public function update(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('user');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, ProductVariant $productVariant): bool
+    public function delete(User $user): bool
     {
-        return $user->hasRole('admin');
+        return $user->hasRole('user') || $user->hasRole('admin');
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, ProductVariant $productVariant): bool
+    public function restore(User $user, ShoppingCart $shoppingCart): bool
     {
         return $user->hasRole('admin');
     }
@@ -59,7 +62,7 @@ class ProductVariantPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, ProductVariant $productVariant): bool
+    public function forceDelete(User $user, ShoppingCart $shoppingCart): bool
     {
         return $user->hasRole('admin');
     }

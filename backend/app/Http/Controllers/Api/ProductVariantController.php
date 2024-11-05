@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\ImageData;
+use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\InputData\VariantInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewProductVariants;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Requests\UpdateVariantRequest;
+use App\Http\Resources\VariantResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\ProductVariant;
 use App\Services\ImageService\ImageProductServiceInterface;
@@ -48,9 +51,11 @@ class ProductVariantController extends Controller
      *     @OA\Response(response=400, description="Tìm mùi vị thất bại"),
      * )
      */
-    public function VariantsOfProduct($id)
+    public function VariantsOfProduct($id): ApiResponse
     {
-        return $this->productVariantService->getVariantsData($id);
+        $data_variants = $this->productVariantService->getVariantsData(
+            ProductIntputData::validateAndCreate(['product_id' => $id]));
+        return new ApiResponse(200, [VariantResource::collection($data_variants)]);
     }
 
     /**
@@ -79,8 +84,7 @@ class ProductVariantController extends Controller
     public function store(NewProductVariants $request) : ApiResponse
     {
         $this->authorize('create', ProductVariant::class);
-        $new_variant = $this->productVariantService->insertProductVariant(
-            VariantInputData::validateAndCreate($request->validated()));
+        $new_variant = $this->productVariantService->insertProductVariant(VariantInputData::validateAndCreate($request->validated()));
         $this->imageProductService->addImageVariants($new_variant->product_id, $new_variant->variant_id
             ,$request->file('image'));
         return new ApiResponse(201,[$new_variant]);
@@ -113,16 +117,16 @@ class ProductVariantController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function update(UpdateVariantRequest $request, string $id) : ApiResponse
+    public function update(Request $request, string $id) : ApiResponse
     {
-       // $this->authorize('update', ProductVariant::class);
-        $result = $this->productVariantService->updateProductVariant(VariantInputData::from($request->validated(),['variant_id' => $id]));
-        if(!$result){
-            return new ApiResponse(400,['message' =>'Fail update']);
+        $this->authorize('update', ProductVariant::class);
+        $variant_updated = $this->productVariantService->updateProductVariant(VariantInputData::factory()->alwaysValidate()
+            ->from($request->input(),['variant_id' => $id]));
+        if(!$variant_updated){
+            return new ApiResponse(400,[],"fail updated");
         }
-        return new ApiResponse(200,['message' =>'Update success']);
+        return new ApiResponse(200,[new VariantResource($variant_updated)]);
     }
-
     /**
      * @OA\Patch(
      *     path="/api/products/variants/image/{image_id}",
@@ -148,9 +152,9 @@ class ProductVariantController extends Controller
      *     @OA\Response(response=400, description="Cập nhật ảnh thất bại")
      * )
      */
-    public function updateImage(UpdateImageRequest $request,string $id) : void {
+    public function updateImage(Request $request,string $id) : void {
         $this->imageProductService->updateUploadedImage($id,
-            $request->file('Image'));
+            ImageData::validateAndCreate(['image' => $request->file('image')])->image);
     }
     /**
      * @OA\Delete(
@@ -165,12 +169,13 @@ class ProductVariantController extends Controller
      *         description="id của mùi  vị"
      *     ),
      *     @OA\Response(response=200, description="xóa thành công"),
-     *     @OA\Response(response=400, description="xóa thất bại")
+     *     @OA\Response(response=400, description="xóa thất bại"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
     public function destroy($id) : ApiResponse
     {
-        $result = $this->productVariantService->deleteVariant($id);
+        $result = $this->productVariantService->deleteVariant(VariantInputData::validateAndCreate(['variant_id' => $id]));
         if($result){
             return new ApiResponse(200,['message' =>'Delete success']);
         }

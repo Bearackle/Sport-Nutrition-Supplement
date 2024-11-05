@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductLandingMask extends JsonResource
+class ComboProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,11 @@ class ProductLandingMask extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'comboProductId' => $this->combo_product_id,
+            'comboId' => $this->combo_id,
             'productId' => $this->product_id,
-            'productName' => $this->product_name,
-            'price'=> $this->price,
-            'sale' => $this->sale,
-            'priceAfterSale' => $this->price_after_sale,
-            'image' => ImageResource::collection($this->images)
+            'variantId' => $this->variant_id,
+            'quantity' => $this->quantity
         ];
     }
 }

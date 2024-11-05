@@ -48,10 +48,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
     public function getProductData($id)
     {
-//        with(['images' => function ($query) {
-//            $query->whereNull('variant_id');
-//        },'variants'])
-        return (new \App\Models\Product)->find($id);
+        return (new \App\Models\Product)->
+        with(['images' => function ($query) {
+            $query->whereNull('variant_id');
+        },'variants'])->find($id);
     }
     public function filterer(ProductFilter $filter)
     {
@@ -64,7 +64,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
             ->increment('stock_quantity',$quantity);
     }
     public function decreaseQuantity($productId, $quantity) : void{
-        (new \App\Models\Product)->where('product_id',$productId)->decrement('stock_quantity',$quantity);
+        (new \App\Models\Product)->where('product_id',$productId)
+            ->decrement('stock_quantity',$quantity);
     }
     public function getCountQuantityOfProduct($productID): int{
         return $this->find($productID)->variants

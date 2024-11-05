@@ -16,9 +16,12 @@ class ProductOutputData extends Data
     public int $price;
     public int $sale;
     public int $price_after_sale;
-    public int $stock_quantity;
-    public int $category_id;
+    public int|Optional $stock_quantity;
     public int $brand_id;
-    #[LoadRelation]
+    public int $category_id;
     public Collection $images; // ten thuoc tinh phai trung voi relation
+    public function has(string $propertyName): bool
+    {
+        return isset($this->{$propertyName}) && !($this->{$propertyName} instanceof \Spatie\LaravelData\Optional);
+    }
 }

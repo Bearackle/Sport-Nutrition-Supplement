@@ -25,7 +25,7 @@ class ProductService implements ProductServiceInterface{
     }
     public function getProducts()
     {
-       return $this->productRepository->getAllAvailableProducts();
+       return $this->productRepository->getAllAvailableProducts()->paginate(10);
     }
     public function getHotProductBySale(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
@@ -51,7 +51,12 @@ class ProductService implements ProductServiceInterface{
     }
     public function deleteProduct(ProductIntputData $product) : bool
     {
-        return $this->productRepository->delete($product->product_id);
+        $product =$this->productRepository->find($product->product_id);
+        $product->stock_quantity = -1; // coi như bị xóa, sẽ xử lý sau
+        $product->save();
+        $product->variants()->update(['stock_quantity' => -1]); // cập nhật quantity của các variants của product
+        //return $this->productRepository->delete($product); xử ly sau
+        return true;
     }
     public function filter(ProductFilter $filters)
     {

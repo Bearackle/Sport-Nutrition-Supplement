@@ -870,7 +870,7 @@
                                         "example": "1"
                                     },
                                     "image": {
-                                        "description": "File ảnh của sản phẩm (4 ảnh) phải thuộc các định dạng: .jqg, .webp, .png",
+                                        "description": "File ảnh của sản phẩm (1 ảnh) phải thuộc các định dạng: .jqg, .webp, .png",
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -1078,8 +1078,8 @@
                         "multipart/form-data": {
                             "schema": {
                                 "properties": {
-                                    "Images[]": {
-                                        "description": "File ảnh của sản phẩm (tùy ý)",
+                                    "image": {
+                                        "description": "File ảnh của sản phẩm (1 ảnh)",
                                         "type": "array",
                                         "items": {
                                             "type": "string",
@@ -1177,6 +1177,22 @@
             }
         },
         "/api/description-image": {
+            "get": {
+                "tags": [
+                    "Description-image"
+                ],
+                "summary": "Tìm ảnh mô tả sản phẩm",
+                "description": "Tìm toàn bộ ảnh description",
+                "operationId": "de102ac7eb9656e47f4b60428e1d8171",
+                "responses": {
+                    "200": {
+                        "description": "Tìm ảnh thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            },
             "post": {
                 "tags": [
                     "Description-image"
@@ -1217,6 +1233,32 @@
                         "sanctum": []
                     }
                 ]
+            }
+        },
+        "/api/description-image/{id}": {
+            "delete": {
+                "tags": [
+                    "Description-image"
+                ],
+                "summary": "xóa ảnh mô tả sản phẩm",
+                "description": "Xóa 1 ảnh mô tả sản phẩm",
+                "operationId": "4bff71b4840ea79e34060a9315ffd773",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Xóa ảnh mô tả sản phẩm",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa ảnh thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
             }
         },
         "/api/products/{id}/variants": {
