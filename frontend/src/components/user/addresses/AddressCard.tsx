@@ -1,5 +1,6 @@
 import { formatPhoneNumber } from "@/lib/utils";
 import { TParamsAddress } from "@/types/address-list";
+import EditAddressModal from "@/components/user/addresses/EditAddressModal";
 
 type TProps = {
   address: TParamsAddress;
@@ -17,7 +18,7 @@ const AddressCard = ({ address }: TProps) => {
         <div className="font-normal text-[#8C8F8D]">{address.address}</div>
       </div>
       <div className="flex flex-row items-center gap-2 text-[0.875rem] leading-[1.21]">
-        <button className="text-[#1250DC]">Sửa</button>
+        <EditAddressModal address={address} />
         <div className="h-6 w-px bg-black"></div>
         <button className="text-[#C11616]">Xóa</button>
       </div>

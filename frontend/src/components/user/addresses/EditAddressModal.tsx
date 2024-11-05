@@ -29,14 +29,8 @@ type TProps = {
 };
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Họ và tên không được để trống" }),
-  phone: z
-    .string()
-    .min(1, { message: "Số điện thoại không được để trống" })
-    .regex(/^(0)(3|5|7|8|9)+([0-9]{8})$/, {
-      message: "Số điện thoại không hợp lệ",
-    })
-    .max(10, { message: "Số điện thoại không hợp lệ" }),
+  name: z.string().optional(),
+  phone: z.string().optional(),
   address: z.string().min(1, { message: "Địa chỉ không được để trống" }),
 });
 
@@ -51,18 +45,26 @@ const EditAddressModal = ({ address }: TProps) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const iframe = document.createElement("iframe");
+    iframe.setAttribute("src", "data:text/plain,");
+    document.documentElement.appendChild(iframe);
+    if (confirm("Bạn có chắc chắn muốn sửa địa chỉ này?")) {
+      // Do something with the form values.
+    } else {
+      // Do something else.
+    }
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
   return (
     <Dialog>
-      <DialogTrigger className="text-[0.9375rem] font-medium text-[#1250DC]">
-        Thêm địa chỉ
+      <DialogTrigger className="font-normal leading-[1.21] text-[#1250DC]">
+        Sửa
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Thêm địa chỉ</DialogTitle>
+          <DialogTitle>Sửa địa chỉ</DialogTitle>
           <DialogDescription>
             Thêm địa chỉ cho đơn hàng của bạn.
           </DialogDescription>
@@ -72,6 +74,7 @@ const EditAddressModal = ({ address }: TProps) => {
             <FormField
               control={form.control}
               name="name"
+              disabled={true}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Họ và tên</FormLabel>
@@ -85,6 +88,7 @@ const EditAddressModal = ({ address }: TProps) => {
             <FormField
               control={form.control}
               name="phone"
+              disabled={true}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số điện thoại</FormLabel>
@@ -119,7 +123,12 @@ const EditAddressModal = ({ address }: TProps) => {
                   </Button>
                 </DialogClose>
               </DialogFooter>
-              <Button type="submit">Submit</Button>
+              <Button
+                type="submit"
+                className="bg-[#1250DC] hover:bg-[#1250DC]/[0.9]"
+              >
+                Xác nhận
+              </Button>
             </div>
           </form>
         </Form>

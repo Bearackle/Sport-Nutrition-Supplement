@@ -24,14 +24,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Họ và tên không được để trống" }),
-  phone: z
-    .string()
-    .min(1, { message: "Số điện thoại không được để trống" })
-    .regex(/^(0)(3|5|7|8|9)+([0-9]{8})$/, {
-      message: "Số điện thoại không hợp lệ",
-    })
-    .max(10, { message: "Số điện thoại không hợp lệ" }),
+  name: z.string().optional(),
+  phone: z.string().optional(),
   address: z.string().min(1, { message: "Địa chỉ không được để trống" }),
 });
 
@@ -39,8 +33,8 @@ const AddAddressModal = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      phone: "",
+      name: "Lê Quốc Hưng",
+      phone: "0999555666",
       address: "",
     },
   });
@@ -67,6 +61,7 @@ const AddAddressModal = () => {
             <FormField
               control={form.control}
               name="name"
+              disabled={true}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Họ và tên</FormLabel>
@@ -80,6 +75,7 @@ const AddAddressModal = () => {
             <FormField
               control={form.control}
               name="phone"
+              disabled={true}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Số điện thoại</FormLabel>
@@ -98,7 +94,7 @@ const AddAddressModal = () => {
                   <FormLabel>Địa chỉ</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="35/22 Đ. Số 9, Hiệp Bình Phước, Thủ Đức, TP.HCM"
+                      placeholder="Số nhà + Tên đường, Phường / Xã, Tỉnh / Thành phố"
                       {...field}
                     />
                   </FormControl>
@@ -114,7 +110,12 @@ const AddAddressModal = () => {
                   </Button>
                 </DialogClose>
               </DialogFooter>
-              <Button type="submit">Submit</Button>
+              <Button
+                type="submit"
+                className="bg-[#1250DC] hover:bg-[#1250DC]/[0.9]"
+              >
+                Xác nhận
+              </Button>
             </div>
           </form>
         </Form>

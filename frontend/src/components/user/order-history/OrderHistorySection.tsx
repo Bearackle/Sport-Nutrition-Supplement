@@ -12,7 +12,7 @@ const data: TParamsOrderHistory | null = [
         productName: "Nutrex Plant Protein - Protein Thực Vật (1.2 LBS)",
         variant: "Chocolate",
         productImage:
-          "https://s3-alpha-sig.figma.com/img/12e6/74fb/2c212ef3f0d69e729019abe60b526a57?Expires=1730678400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aSngsLJXe0muWkDFSQczpu5oMZXnLNW145ATlBBGZLKBFdKD~pJeY-VX8FxKbxly50Lnw5pSO1AQms4RuWx5nQeP5vc0dX0JziKaY~ZsVZFZRkN-1WyAf-qdHMeADG8zXEncbD5nzPf~96Ud70~-jZDulc-hAzv8QDYCYYMZfA8rox5ZBK4z3EvXrlMbpbCD4assDIz~ZX3~XtUqhMQc29SZ8rCcNB-F~MPvpF0Tmq7IVYMlfd-mcJUCYaHwuI3zixn0C6csOLleVozu5d0szMYDZBrEDFXaiQW-4~mwlEQUK5HsvvELY3ZRvue9douWsBDuMvgoEDR7kY5E8JUdhw__",
+          "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
         quantity: 1,
         price: 1579000,
       },
@@ -21,7 +21,7 @@ const data: TParamsOrderHistory | null = [
         productName: "Nutrex Plant Protein - Protein Thực Vật (1.2 LBS)",
         variant: "Cream",
         productImage:
-          "https://s3-alpha-sig.figma.com/img/12e6/74fb/2c212ef3f0d69e729019abe60b526a57?Expires=1730678400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aSngsLJXe0muWkDFSQczpu5oMZXnLNW145ATlBBGZLKBFdKD~pJeY-VX8FxKbxly50Lnw5pSO1AQms4RuWx5nQeP5vc0dX0JziKaY~ZsVZFZRkN-1WyAf-qdHMeADG8zXEncbD5nzPf~96Ud70~-jZDulc-hAzv8QDYCYYMZfA8rox5ZBK4z3EvXrlMbpbCD4assDIz~ZX3~XtUqhMQc29SZ8rCcNB-F~MPvpF0Tmq7IVYMlfd-mcJUCYaHwuI3zixn0C6csOLleVozu5d0szMYDZBrEDFXaiQW-4~mwlEQUK5HsvvELY3ZRvue9douWsBDuMvgoEDR7kY5E8JUdhw__",
+          "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
         quantity: 3,
         price: 1579000,
       },
