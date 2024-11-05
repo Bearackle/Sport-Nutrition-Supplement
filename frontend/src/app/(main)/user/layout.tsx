@@ -58,29 +58,40 @@ export default function UserLayout({
     };
   };
   return (
-    <div className={cn("mx-auto w-full max-w-[75rem] py-12")}>
-      <Breadcrumb className="px-[0.625rem]">
+    <div
+      className={cn(
+        "mx-auto w-full max-w-[95%] py-12 xl:max-w-[75rem]",
+        "text-[16px] md:text-[10px] lg:text-[13px] xl:text-[16px]",
+      )}
+    >
+      <Breadcrumb className="px-[0.625em]">
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/">Trang chủ</BreadcrumbLink>
+            <BreadcrumbLink href="/" className="text-[0.875em]">
+              Trang chủ
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink href="/user/profile">Người dùng</BreadcrumbLink>
+            <BreadcrumbLink href="/user/profile" className="text-[0.875em]">
+              Người dùng
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>{routeMap[pathname]}</BreadcrumbItem>
+          <BreadcrumbItem className="text-[0.875em]">
+            {routeMap[pathname]}
+          </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
       <div
         className={cn(
-          "mt-4 flex flex-row items-start justify-between px-[0.625rem]",
+          "mt-4 flex flex-row items-start justify-between px-[0.625em]",
         )}
       >
-        <div className={cn("w-[17.75rem]")}>
+        <div className={cn("w-[17.75em]")}>
           <div
             className={cn(
-              "flex h-[11rem] w-full flex-col items-center justify-center rounded-[0.625rem]",
+              "flex h-[11em] w-full flex-col items-center justify-center rounded-[0.625em]",
             )}
             style={{
               background:
@@ -88,13 +99,13 @@ export default function UserLayout({
             }}
           >
             <Avatar
-              className={cn("size-16")}
+              className={cn("size-[4em]")}
               style={{
                 backgroundColor: `${stringAvatar("Lê Quốc Hưng").bgColor}`,
               }}
             >
               <AvatarFallback
-                className={cn("text-[1.375rem]")}
+                className={cn("text-[1.375em]")}
                 style={{ color: `${stringAvatar("Lê Quốc Hưng").textColor}` }}
               >
                 {stringAvatar("Lê Quốc Hưng").children}
@@ -102,32 +113,36 @@ export default function UserLayout({
             </Avatar>
             <p
               className={cn(
-                "mb-1 mt-1.5 text-[0.9375rem] capitalize leading-[1.21] text-white",
+                "mb-[0.25em] mt-[0.375em] text-[0.9375em] capitalize leading-[1.21] text-white",
               )}
             >
               Lê Quốc Hưng
             </p>
-            <p className={cn("text-[0.875rem] leading-[1.21] text-white")}>
+            <p className={cn("text-[0.875em] leading-[1.21] text-white")}>
               0999555666
             </p>
           </div>
           <div
-            className={cn("mt-5 w-full divide-y rounded-[0.625rem] bg-white")}
+            className={cn(
+              "mt-[1.25em] w-full divide-y rounded-[0.625em] bg-white",
+            )}
           >
             {tabs.map((tab, index) => (
               <button
                 key={index}
                 onClick={() => router.push(tab.href)}
-                className={cn("relative flex w-full flex-row items-center p-3")}
+                className={cn(
+                  "relative flex w-full flex-row items-center p-[0.75em]",
+                )}
               >
                 <Image
                   src={tab.icon}
                   alt={tab.label}
-                  className={cn("size-8")}
+                  className={cn("size-[2em]")}
                 />
                 <div
                   className={cn(
-                    "ml-4 text-[0.875rem] font-medium",
+                    "ml-[1em] text-[0.875em] font-medium",
                     pathname === tab.href ? "text-[#1250DC]" : "text-[#333]",
                   )}
                 >
@@ -141,7 +156,7 @@ export default function UserLayout({
                     strokeWidth={1.75}
                     stroke="currentColor"
                     className={cn(
-                      "size-6",
+                      "size-[1.5em]",
                       pathname === tab.href
                         ? "stroke-[#1250DC]"
                         : "stroke-[#333]",
@@ -157,11 +172,19 @@ export default function UserLayout({
               </button>
             ))}
             <button
-              className={cn("relative flex w-full flex-row items-center p-3")}
+              className={cn(
+                "relative flex w-full flex-row items-center p-[0.75em]",
+              )}
             >
-              <Image src={exitIcon} alt="Log out" className={cn("size-8")} />
+              <Image
+                src={exitIcon}
+                alt="Log out"
+                className={cn("size-[2em]")}
+              />
               <div
-                className={cn("ml-4 text-[0.875rem] font-medium text-[#333]")}
+                className={cn(
+                  "ml-[1em] text-[0.875em] font-medium text-[#333]",
+                )}
               >
                 Đăng xuất
               </div>
@@ -172,7 +195,7 @@ export default function UserLayout({
                   viewBox="0 0 24 24"
                   strokeWidth={1.75}
                   stroke="#333"
-                  className={cn("size-6")}
+                  className={cn("size-[1.5em]")}
                 >
                   <path
                     strokeLinecap="round"
@@ -184,7 +207,7 @@ export default function UserLayout({
             </button>
           </div>
         </div>
-        <div className={cn("w-[55rem]")}>{children}</div>
+        <div className={cn("w-[55em]")}>{children}</div>
       </div>
     </div>
   );

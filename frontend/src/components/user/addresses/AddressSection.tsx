@@ -22,13 +22,13 @@ const data: TParamsAddressList | null = [
 const AddressSection = () => {
   if (!data[0]) {
     return (
-      <div className="mt-3 flex h-[30rem] w-full flex-col items-center justify-center gap-2 rounded-[0.625rem] bg-white">
+      <div className="mt-[0.75em] flex h-[30em] w-full flex-col items-center justify-center gap-[0.5em] rounded-[0.625em] bg-white">
         <Image
           src={noAddress}
           alt="no address"
-          className="size-[7.5rem] opacity-70"
+          className="size-[7.5em] opacity-70"
         />
-        <p className="text-center text-[1.25rem] font-bold text-[#4a4f63]">
+        <p className="text-center text-[1.25em] font-bold text-[#4a4f63]">
           Bạn chưa thêm địa chỉ nào
         </p>
 
@@ -37,7 +37,7 @@ const AddressSection = () => {
     );
   }
   return (
-    <div className="mt-3 min-h-[30rem] w-full divide-y rounded-[0.625rem] bg-white">
+    <div className="mt-[0.75em] min-h-[30em] w-full divide-y rounded-[0.625em] bg-white">
       {data.map((address) => (
         <AddressCard key={address.id} address={address} />
       ))}

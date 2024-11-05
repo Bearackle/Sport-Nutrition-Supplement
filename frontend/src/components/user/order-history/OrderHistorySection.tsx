@@ -35,27 +35,27 @@ const data: TParamsOrderHistory | null = [
 const OrderHistorySection = () => {
   if (!data[0]) {
     return (
-      <div className="mt-3 flex h-[30rem] w-full flex-col items-center justify-center gap-2 rounded-[0.625rem] bg-white">
+      <div className="mt-[0.75em] flex h-[30em] w-full flex-col items-center justify-center gap-[0.5em] rounded-[0.625em] bg-white">
         <Image
           src={emptyBox}
           alt="empty box"
-          className="size-[10rem] opacity-70"
+          className="size-[10em] opacity-70"
         />
-        <p className="text-center text-[1.25rem] font-bold text-[#4a4f63]">
+        <p className="text-center text-[1.25em] font-bold text-[#4a4f63]">
           Bạn chưa có đơn hàng nào
         </p>
       </div>
     );
   }
   return (
-    <div className="mt-3 min-h-[30rem] w-full rounded-[0.625rem] bg-white">
-      <div className="flex w-full flex-row items-center justify-between border-b-[2px] border-solid px-4 py-3 text-center text-base leading-[1.21] text-[#333]">
-        <div className="shrink-0 basis-[27.5rem]">Sản phẩm</div>
-        <div className="shrink-0 basis-[7rem]">Ngày đặt hàng</div>
-        <div className="shrink-0 basis-[6.875rem]">Tổng tiền</div>
-        <div className="shrink-0 basis-[8rem]">Trạng thái</div>
+    <div className="mt-[0.75em] min-h-[30em] w-full rounded-[0.625em] bg-white">
+      <div className="flex w-full flex-row items-center justify-between border-b-[0.125em] border-solid px-[1em] py-[0.75em] text-center text-[1em] leading-[1.21] text-[#333]">
+        <div className="shrink-0 basis-[27.5em]">Sản phẩm</div>
+        <div className="shrink-0 basis-[7em]">Ngày đặt hàng</div>
+        <div className="shrink-0 basis-[6.875em]">Tổng tiền</div>
+        <div className="shrink-0 basis-[8em]">Trạng thái</div>
       </div>
-      <div className="divide-y px-4">
+      <div className="divide-y px-[1em]">
         <OrderCard order={data[0]} />
         <OrderCard order={data[0]} />
       </div>

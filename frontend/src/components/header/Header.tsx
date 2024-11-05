@@ -15,7 +15,7 @@ import trackingIcon from "/public/tracking-icon.svg";
 export const Header = () => {
   return (
     <header
-      className="sticky top-0 z-[1000] w-full pb-2 xl:pb-0"
+      className="sticky top-0 z-[49] w-full pb-2 xl:pb-0"
       style={{
         background:
           "linear-gradient(180deg, rgba(63,133,233,1) 0%, rgba(48,116,225,1) 50%, rgba(37,105,222,1) 100%)",

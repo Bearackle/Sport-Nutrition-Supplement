@@ -4,23 +4,23 @@ import Link from "next/link";
 
 export default function Page() {
   return (
-    <div className={cn("w-full rounded-[0.625rem] bg-white pb-10")}>
+    <div className={cn("w-full rounded-[0.625em] bg-white pb-[2.5em]")}>
       <div
         className={cn(
-          "w-full border-b-[2px] border-solid border-[#EDF0F3] pb-4 pl-8 pt-6 text-base font-bold leading-[1.21]",
+          "w-full border-b-[0.125em] border-solid border-[#EDF0F3] pb-[1em] pl-[2em] pt-[1.5em] text-base font-bold leading-[1.21]",
         )}
       >
         Thông tin cá nhân
       </div>
-      <div className="flex w-full flex-col items-center pt-4">
+      <div className="flex w-full flex-col items-center pt-[1em]">
         <Avatar
-          className={cn("size-[5.625rem]")}
+          className={cn("size-[5.625em]")}
           style={{
             backgroundColor: `${stringToColor("Lê Quốc Hưng")}`,
           }}
         >
           <AvatarFallback
-            className={cn("text-[1.75rem]")}
+            className={cn("text-[1.75em]")}
             style={{
               color: `${getContrastingColor(stringToColor("Lê Quốc Hưng"))}`,
             }}
@@ -28,23 +28,29 @@ export default function Page() {
             {`${"Lê Quốc Hưng".split(" ")[0][0]}${"Lê Quốc Hưng".split(" ")[1][0]}`}
           </AvatarFallback>
         </Avatar>
-        <div className="mt-4 w-[20.375rem] divide-y text-[0.875rem] leading-[1.21] text-[#333]">
-          <div className={cn("flex w-full flex-row justify-between py-3.5")}>
+        <div className="mt-[1em] w-[20.375em] divide-y text-[0.875em] leading-[1.21] text-[#333]">
+          <div
+            className={cn("flex w-full flex-row justify-between py-[0.875em]")}
+          >
             <span>Họ và tên</span>
             <span>Lê Quốc Hưng</span>
           </div>
-          <div className={cn("flex w-full flex-row justify-between py-3.5")}>
+          <div
+            className={cn("flex w-full flex-row justify-between py-[0.875em]")}
+          >
             <span>Số điện thoại</span>
             <span>0969696969</span>
           </div>
-          <div className={cn("flex w-full flex-row justify-between py-3.5")}>
+          <div
+            className={cn("flex w-full flex-row justify-between py-[0.875em]")}
+          >
             <span>Email</span>
             <span>quochung@gmail.com</span>
           </div>
         </div>
         <Link
           href="/change-password"
-          className="mx-auto mt-14 rounded-[1.25rem] bg-[#004FFF]/[0.23] px-10 py-3 text-base font-bold leading-[1.21] text-[#1F5ADD] transition-all duration-200 hover:bg-[#004FFF]/[0.3]"
+          className="mx-auto mt-[3.5em] rounded-[1.25em] bg-[#004FFF]/[0.23] px-[2.5em] py-[0.75em] text-[1em] font-bold leading-[1.21] text-[#1F5ADD] transition-all duration-200 hover:bg-[#004FFF]/[0.3]"
         >
           Đổi mật khẩu
         </Link>

@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { TParamsAddress } from "@/types/address-list";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -62,24 +63,41 @@ const EditAddressModal = ({ address }: TProps) => {
       <DialogTrigger className="font-normal leading-[1.21] text-[#1250DC]">
         Sửa
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent
+        className={cn(
+          "p-6 md:p-4 lg:p-5 xl:p-6",
+          "max-w-lg md:max-w-sm lg:max-w-md xl:max-w-lg",
+          "gap-4 md:gap-2 lg:gap-3 xl:gap-4",
+        )}
+      >
         <DialogHeader>
-          <DialogTitle>Sửa địa chỉ</DialogTitle>
-          <DialogDescription>
-            Thêm địa chỉ cho đơn hàng của bạn.
+          <DialogTitle className="text-[1.125rem] leading-none md:text-[0.703125rem] lg:text-[0.9140625rem] xl:text-[1.125rem]">
+            Sửa địa chỉ
+          </DialogTitle>
+          <DialogDescription className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+            Thay đổi địa chỉ cho đơn hàng của bạn.
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-[0.5em]"
+          >
             <FormField
               control={form.control}
               name="name"
               disabled={true}
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Họ và tên</FormLabel>
+                <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
+                  <FormLabel className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+                    Họ và tên
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="Nguyễn Văn A" {...field} />
+                    <Input
+                      placeholder="Nguyễn Văn A"
+                      className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -90,10 +108,16 @@ const EditAddressModal = ({ address }: TProps) => {
               name="phone"
               disabled={true}
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Số điện thoại</FormLabel>
+                <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
+                  <FormLabel className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+                    Số điện thoại
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="08xxxxxxxx" {...field} />
+                    <Input
+                      placeholder="08xxxxxxxx"
+                      className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,11 +127,14 @@ const EditAddressModal = ({ address }: TProps) => {
               control={form.control}
               name="address"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Địa chỉ</FormLabel>
+                <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
+                  <FormLabel className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+                    Địa chỉ
+                  </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="35/22 Đ. Số 9, Hiệp Bình Phước, Thủ Đức, TP.HCM"
+                      className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]"
                       {...field}
                     />
                   </FormControl>
@@ -115,17 +142,35 @@ const EditAddressModal = ({ address }: TProps) => {
                 </FormItem>
               )}
             />
-            <div className="flex flex-row items-center justify-end gap-4">
+            <div
+              className={cn(
+                "flex flex-row items-center justify-end",
+                "gap-4 md:gap-2 lg:gap-3 xl:gap-4",
+              )}
+            >
               <DialogFooter className="sm:justify-start">
                 <DialogClose asChild>
-                  <Button type="button" variant="secondary">
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    className={cn(
+                      "text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]",
+                      "leading-[1.25rem] md:leading-[0.78125rem] lg:leading-[1.015625rem] xl:leading-[1.25rem]",
+                      "px-4 py-2 md:px-3 md:py-0.5 lg:py-1.5 xl:px-4 xl:py-2.5",
+                    )}
+                  >
                     Hủy
                   </Button>
                 </DialogClose>
               </DialogFooter>
               <Button
                 type="submit"
-                className="bg-[#1250DC] hover:bg-[#1250DC]/[0.9]"
+                className={cn(
+                  "bg-[#1250DC] hover:bg-[#1250DC]/[0.9]",
+                  "text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]",
+                  "leading-[1.25rem] md:leading-[0.78125rem] lg:leading-[1.015625rem] xl:leading-[1.25rem]",
+                  "px-4 py-2 md:px-3 md:py-0.5 lg:py-1.5 xl:px-4 xl:py-2.5",
+                )}
               >
                 Xác nhận
               </Button>
