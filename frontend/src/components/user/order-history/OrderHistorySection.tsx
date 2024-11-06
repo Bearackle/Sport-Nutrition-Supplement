@@ -49,7 +49,7 @@ const OrderHistorySection = () => {
   }
   return (
     <div className="mt-[0.75em] min-h-[30em] w-full rounded-[0.625em] bg-white">
-      <div className="flex w-full flex-row items-center justify-between border-b-[0.125em] border-solid px-[1em] py-[0.75em] text-center text-[1em] leading-[1.21] text-[#333]">
+      <div className="hidden w-full flex-row items-center justify-between border-b-[0.125em] border-solid px-[1em] py-[0.75em] text-center text-[1em] leading-[1.21] text-[#333] md:flex">
         <div className="shrink-0 basis-[27.5em]">Sản phẩm</div>
         <div className="shrink-0 basis-[7em]">Ngày đặt hàng</div>
         <div className="shrink-0 basis-[6.875em]">Tổng tiền</div>

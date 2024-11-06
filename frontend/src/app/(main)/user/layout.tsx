@@ -64,7 +64,7 @@ export default function UserLayout({
         "text-[16px] md:text-[10px] lg:text-[13px] xl:text-[16px]",
       )}
     >
-      <Breadcrumb className="px-[0.625em]">
+      <Breadcrumb className="md:px-[4.5%] xl:px-[0.625em]">
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink href="/" className="text-[0.875em]">
@@ -85,10 +85,10 @@ export default function UserLayout({
       </Breadcrumb>
       <div
         className={cn(
-          "mt-4 flex flex-row items-start justify-between px-[0.625em]",
+          "mt-4 flex flex-col items-start justify-between gap-y-4 px-[0.625em] md:flex-row md:justify-evenly xl:justify-between",
         )}
       >
-        <div className={cn("w-[17.75em]")}>
+        <div className={cn("w-full md:w-[17.75em]")}>
           <div
             className={cn(
               "flex h-[11em] w-full flex-col items-center justify-center rounded-[0.625em]",
@@ -207,7 +207,7 @@ export default function UserLayout({
             </button>
           </div>
         </div>
-        <div className={cn("w-[55em]")}>{children}</div>
+        <div className={cn("w-full md:w-[55em]")}>{children}</div>
       </div>
     </div>
   );

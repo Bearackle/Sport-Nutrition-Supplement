@@ -8,7 +8,7 @@ import ProductCard from "./ProductCard";
 const data = Array.from({ length: 11 }, (_, i) => ({
   id: i,
   image:
-    "https://s3-alpha-sig.figma.com/img/12e6/74fb/2c212ef3f0d69e729019abe60b526a57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=B6mHWBTG3mHNsoTIAaP310gqNaPysqZkXT1fA~Mg9PxuFG7UqLCXHDjyJKpCagoAcLs5FAOpiVYwZ0J--OS1jdiST1GBU5cdVSOUbn7h6xrcY-66N5UZLI3wKiecbwzL-TTC8nKJ32YLquSk4ZOKkWMcf-XY2e6ufTsGWQwLbintnBtC~vJtai8WtPFJz7SHB7b6LLH~cr7jFc832dhC48wstb6Z8id-EhocAXO-yDzHLHlEou~-7ShD5~AFl5zjDFhwRaD6GS9gpXGlVkkLQWzfbaDooav87G7~xUe~q3anIiuCn4cM6uhJYctJeOT3Bm2KP1KhMAP9tAypFF2AiA__",
+    "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
   name: "RULE 1 PROTEIN (ĐỎ) WHEY ISOLATE TĂNG CƠ BẮP - 5 LBS",
   rating: 4,
   price: 1950000,

@@ -11,8 +11,8 @@ type TProps = {
 const OrderCard = ({ order }: TProps) => {
   const [showAll, setShowAll] = useState(false);
   return (
-    <div className="flex w-full flex-row items-start justify-between py-[1em] text-[#333]">
-      <div className="flex shrink-0 basis-[27.5em] flex-col gap-[1em]">
+    <div className="flex w-full flex-col items-start justify-between py-[1em] text-[#333] md:flex-row">
+      <div className="flex w-full shrink-0 flex-col gap-[1em] md:w-auto md:basis-[27.5em]">
         {order.products
           .slice(0, showAll ? order.products.length : 1)
           .map((product, index) => (
@@ -62,7 +62,7 @@ const OrderCard = ({ order }: TProps) => {
           </button>
         )}
       </div>
-      <div className="shrink-0 basis-[7em] text-center">
+      <div className="w-full shrink-0 text-center md:w-auto md:basis-[7em]">
         <div className="text-[0.9375em]">
           {getVietnameseDate(order.orderDate)}
         </div>
@@ -70,10 +70,10 @@ const OrderCard = ({ order }: TProps) => {
           {getVietnameseTime(order.orderDate)}
         </div>
       </div>
-      <div className="shrink-0 basis-[6.875em] text-center">
+      <div className="w-full shrink-0 text-center md:w-auto md:basis-[6.875em]">
         {formatPrice(order.totalAmount)}
       </div>
-      <div className="shrink-0 basis-[8em] text-center text-[0.9375em]">
+      <div className="w-full shrink-0 text-center text-[0.9375em] md:w-auto md:basis-[8em]">
         {order.status}
       </div>
     </div>

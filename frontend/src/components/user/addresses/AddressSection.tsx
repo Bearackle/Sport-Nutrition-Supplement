@@ -5,18 +5,18 @@ import AddressCard from "./AddressCard";
 import noAddress from "/public/no-address.png";
 
 const data: TParamsAddressList | null = [
-  {
-    id: 1,
-    name: "Nguyễn Văn A",
-    phone: "0333303802",
-    address: "123 Đường ABC, Quận XYZ, TP.HCM",
-  },
-  {
-    id: 2,
-    name: "Nguyễn Văn A",
-    phone: "0333303802",
-    address: "123 Đường ABC, Quận XYZ, TP.HCM",
-  },
+  // {
+  //   id: 1,
+  //   name: "Nguyễn Văn A",
+  //   phone: "0333303802",
+  //   address: "123 Đường ABC, Quận XYZ, TP.HCM",
+  // },
+  // {
+  //   id: 2,
+  //   name: "Nguyễn Văn A",
+  //   phone: "0333303802",
+  //   address: "123 Đường ABC, Quận XYZ, TP.HCM",
+  // },
 ];
 
 const AddressSection = () => {

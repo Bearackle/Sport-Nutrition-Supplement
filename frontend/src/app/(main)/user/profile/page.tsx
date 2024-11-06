@@ -7,7 +7,7 @@ export default function Page() {
     <div className={cn("w-full rounded-[0.625em] bg-white pb-[2.5em]")}>
       <div
         className={cn(
-          "w-full border-b-[0.125em] border-solid border-[#EDF0F3] pb-[1em] pl-[2em] pt-[1.5em] text-base font-bold leading-[1.21]",
+          "w-full border-b-[0.125em] border-solid border-[#EDF0F3] pb-[1em] pl-[2em] pt-[1.5em] text-[1em] font-bold leading-[1.21]",
         )}
       >
         Thông tin cá nhân

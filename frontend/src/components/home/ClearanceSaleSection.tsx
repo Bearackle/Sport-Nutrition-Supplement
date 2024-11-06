@@ -10,7 +10,7 @@ import arrow from "/public/arrow.svg";
 const data1 = Array.from({ length: 8 }, (_, i) => ({
   id: i,
   image:
-    "https://s3-alpha-sig.figma.com/img/12e6/74fb/2c212ef3f0d69e729019abe60b526a57?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=B6mHWBTG3mHNsoTIAaP310gqNaPysqZkXT1fA~Mg9PxuFG7UqLCXHDjyJKpCagoAcLs5FAOpiVYwZ0J--OS1jdiST1GBU5cdVSOUbn7h6xrcY-66N5UZLI3wKiecbwzL-TTC8nKJ32YLquSk4ZOKkWMcf-XY2e6ufTsGWQwLbintnBtC~vJtai8WtPFJz7SHB7b6LLH~cr7jFc832dhC48wstb6Z8id-EhocAXO-yDzHLHlEou~-7ShD5~AFl5zjDFhwRaD6GS9gpXGlVkkLQWzfbaDooav87G7~xUe~q3anIiuCn4cM6uhJYctJeOT3Bm2KP1KhMAP9tAypFF2AiA__",
+    "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
   name: "RULE 1 PROTEIN (ĐỎ) WHEY ISOLATE TĂNG CƠ BẮP - 5 LBS",
   rating: 4,
   price: 1950000,
@@ -21,7 +21,7 @@ const data1 = Array.from({ length: 8 }, (_, i) => ({
 const data2 = Array.from({ length: 8 }, (_, i) => ({
   id: i,
   image:
-    "https://s3-alpha-sig.figma.com/img/059c/7008/39f77b67fd56fbeb5c7b5da01b8e87f4?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=A7TXXEyDVhX-WLkaIdNnnHI-mUgxlP75AyTTyBK1gErvQW6dm61g5Z3dhoTTjbQfVm98RCwtctdrHHNnWNsvBFFBATACm7XcofWYIUYTxzx0AXw6DEEPJPDRpUiKPlrtRZ~vcDvEe7qsY-rjwI7rzQRXiuhA9xPPxn6bKlDegEn0r3P7fR4i86QxrkN1gzVOKAwUL0WQsLXKfKl698DgQchEElE5FiBOzurxh4EGPKgHJHBXtn8j88ZGqzziNCGdBGLhbuF3RWNlianmB3Sy-8A7VKvkLB7HAKhfkkFvegf6mQreu05~8H7Ey7HNv~a89FBzRLxAEry~e7QzUORrIQ__",
+    "https://bizweb.dktcdn.net/thumb/grande/100/398/814/products/z5892281336181-febfe30290debf1f356aa951ca51abc4.jpg?v=1727944519513",
   name: "RULE 1 PROTEIN (ĐỎ) WHEY ISOLATE TĂNG CƠ BẮP - 5 LBS",
   rating: 4,
   price: 1950000,

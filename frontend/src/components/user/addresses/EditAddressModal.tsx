@@ -46,14 +46,7 @@ const EditAddressModal = ({ address }: TProps) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const iframe = document.createElement("iframe");
-    iframe.setAttribute("src", "data:text/plain,");
-    document.documentElement.appendChild(iframe);
-    if (confirm("Bạn có chắc chắn muốn sửa địa chỉ này?")) {
-      // Do something with the form values.
-    } else {
-      // Do something else.
-    }
+    console.log("Submit");
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
@@ -74,7 +67,7 @@ const EditAddressModal = ({ address }: TProps) => {
           <DialogTitle className="text-[1.125rem] leading-none md:text-[0.703125rem] lg:text-[0.9140625rem] xl:text-[1.125rem]">
             Sửa địa chỉ
           </DialogTitle>
-          <DialogDescription className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+          <DialogDescription className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
             Thay đổi địa chỉ cho đơn hàng của bạn.
           </DialogDescription>
         </DialogHeader>
@@ -89,13 +82,13 @@ const EditAddressModal = ({ address }: TProps) => {
               disabled={true}
               render={({ field }) => (
                 <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
-                  <FormLabel className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+                  <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
                     Họ và tên
                   </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Nguyễn Văn A"
-                      className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]"
+                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
                       {...field}
                     />
                   </FormControl>
@@ -109,13 +102,13 @@ const EditAddressModal = ({ address }: TProps) => {
               disabled={true}
               render={({ field }) => (
                 <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
-                  <FormLabel className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+                  <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
                     Số điện thoại
                   </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="08xxxxxxxx"
-                      className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]"
+                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
                       {...field}
                     />
                   </FormControl>
@@ -128,13 +121,13 @@ const EditAddressModal = ({ address }: TProps) => {
               name="address"
               render={({ field }) => (
                 <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
-                  <FormLabel className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]">
+                  <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
                     Địa chỉ
                   </FormLabel>
                   <FormControl>
                     <Input
                       placeholder="35/22 Đ. Số 9, Hiệp Bình Phước, Thủ Đức, TP.HCM"
-                      className="text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]"
+                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
                       {...field}
                     />
                   </FormControl>
@@ -154,7 +147,7 @@ const EditAddressModal = ({ address }: TProps) => {
                     type="button"
                     variant="secondary"
                     className={cn(
-                      "text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]",
+                      "text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]",
                       "leading-[1.25rem] md:leading-[0.78125rem] lg:leading-[1.015625rem] xl:leading-[1.25rem]",
                       "px-4 py-2 md:px-3 md:py-0.5 lg:py-1.5 xl:px-4 xl:py-2.5",
                     )}
@@ -162,18 +155,20 @@ const EditAddressModal = ({ address }: TProps) => {
                     Hủy
                   </Button>
                 </DialogClose>
+                <DialogClose asChild>
+                  <Button
+                    type="submit"
+                    className={cn(
+                      "bg-[#1250DC] hover:bg-[#1250DC]/[0.9]",
+                      "text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]",
+                      "leading-[1.25rem] md:leading-[0.78125rem] lg:leading-[1.015625rem] xl:leading-[1.25rem]",
+                      "px-4 py-2 md:px-3 md:py-0.5 lg:py-1.5 xl:px-4 xl:py-2.5",
+                    )}
+                  >
+                    Xác nhận
+                  </Button>
+                </DialogClose>
               </DialogFooter>
-              <Button
-                type="submit"
-                className={cn(
-                  "bg-[#1250DC] hover:bg-[#1250DC]/[0.9]",
-                  "text-[0.875rem] md:text-[0.546875rem] lg:text-[0.7109375rem] xl:text-[0.875rem]",
-                  "leading-[1.25rem] md:leading-[0.78125rem] lg:leading-[1.015625rem] xl:leading-[1.25rem]",
-                  "px-4 py-2 md:px-3 md:py-0.5 lg:py-1.5 xl:px-4 xl:py-2.5",
-                )}
-              >
-                Xác nhận
-              </Button>
             </div>
           </form>
         </Form>

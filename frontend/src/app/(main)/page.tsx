@@ -40,12 +40,19 @@ export default function Home() {
         <div className="w-[90%] space-y-7 overflow-hidden ml:w-[52.5rem]">
           <div
             className={cn(
-              "flex w-full flex-row items-center justify-evenly rounded-[0.9375rem] bg-white xl:h-[27.5rem]",
+              "grid w-full grid-cols-4 grid-rows-4 gap-4 rounded-[0.9375rem] bg-white p-4 sm:grid-cols-6 xl:h-[27.5rem]",
             )}
           >
+            <Link href="#" className="col-span-4 row-span-4 rounded-[0.625rem]">
+              <Image
+                src={cafeMocha}
+                alt="banner"
+                className="h-full w-full rounded-[0.625rem] object-cover"
+              />
+            </Link>
             <Link
               href="#"
-              className="w-full rounded-[0.625rem] xl:h-[25.875rem] xl:w-[31.25rem]"
+              className="col-span-2 col-start-5 row-span-2 hidden rounded-[0.625rem] sm:block"
             >
               <Image
                 src={cafeMocha}
@@ -53,22 +60,16 @@ export default function Home() {
                 className="h-full w-full rounded-[0.625rem] object-cover"
               />
             </Link>
-            <div className="hidden w-[18.75rem] flex-col gap-[0.875rem] xl:flex">
-              <Link href="#" className="h-[12.5rem] w-full rounded-[0.625rem]">
-                <Image
-                  src={cafeMocha}
-                  alt="banner"
-                  className="h-full w-full rounded-[0.625rem] object-cover"
-                />
-              </Link>
-              <Link href="#" className="h-[12.5rem] w-full rounded-[0.625rem]">
-                <Image
-                  src={cafeMocha}
-                  alt="banner"
-                  className="h-full w-full rounded-[0.625rem] object-cover"
-                />
-              </Link>
-            </div>
+            <Link
+              href="#"
+              className="col-span-2 col-start-5 row-span-2 row-start-3 hidden rounded-[0.625rem] sm:block"
+            >
+              <Image
+                src={cafeMocha}
+                alt="banner"
+                className="h-full w-full rounded-[0.625rem] object-cover"
+              />
+            </Link>
           </div>
           <CategoryBar />
           <div className="flex w-full flex-row items-center gap-4 overflow-x-scroll ml:justify-between ml:overflow-hidden xl:h-[7.375rem]">
