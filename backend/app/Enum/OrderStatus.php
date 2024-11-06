@@ -28,4 +28,5 @@ public static function equals(string $label): OrderStatus
     };
     return OrderStatus::tryFrom($value);
 }
+
 }

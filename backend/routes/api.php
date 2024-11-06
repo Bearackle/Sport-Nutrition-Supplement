@@ -81,9 +81,8 @@ Route::group([
 Route::group([
     'prefix' => 'combo'
 ],function(){
-    Route::get('/{id}',[ComboController::class,'show']);
     Route::get('/all',[ComboController::class,'index']);
-    Route::get('/{id}/products', [ComboController::class,'showProductsOfCombo']);
+    Route::get('/{id}',[ComboController::class,'show']);
     Route::post('create',[ComboController::class,'store'])->middleware('auth:sanctum');
     Route::post('add',[ComboController::class,'add'])->middleware('auth:sanctum');
     Route::delete('/{id}',[ComboController::class,'destroy'])->middleware('auth:sanctum');
@@ -103,8 +102,8 @@ Route::group([
     Route::get('all',[OrderController::class,'index']);
     Route::get('/{order_id}',[OrderController::class,'show']);
     Route::post('create',[OrderController::class,'store']);
-    Route::put('status',[OrderController::class,'update']);
-    Route::delete('/',[OrderController::class,'destroy'] );
+    Route::patch('status/{id}',[OrderController::class,'update']);
+    Route::delete('/{id}',[OrderController::class,'destroy'] );
     Route::post('payment',[OrderController::class,'addPayment']);
     Route::post('address',[OrderController::class,'addAddress']);
     Route::post('ship', [OrderController::class,'addShipping']);
@@ -113,10 +112,10 @@ Route::group([
 Route::group([
     'prefix' => 'address'
 ], function(){
-    Route::get('/',[AddressController::class,'show']);
-    Route::get('default',[AddressController::class,'defaultAddress']);
-    Route::post('/',[AddressController::class,'store']);
-    Route::delete('/',[AddressController::class,'destroy']);
+    Route::get('/',[AddressController::class,'show'])->middleware('auth:sanctum');
+    Route::get('default',[AddressController::class,'defaultAddress'])->middleware('auth:sanctum');
+    Route::post('/',[AddressController::class,'store'])->middleware('auth:sanctum');
+    Route::delete('/{id}',[AddressController::class,'destroy'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'review'

@@ -15,7 +15,7 @@ class CombosLandingMask extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "comb_id" => $this->combo_id,
+            "comboId" => $this->combo_id,
             "comboName" => $this->combo_name,
             "price"     => $this->price,
             "comboSale"   => $this->combo_sale,

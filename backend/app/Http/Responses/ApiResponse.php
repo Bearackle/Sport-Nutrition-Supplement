@@ -31,4 +31,8 @@ class ApiResponse implements Responsable
     {
         return new static(200, ['message' => $message]);
     }
+    public static function fail(string $message): static
+    {
+        return new static(400, ['message' => $message]);
+    }
 }

@@ -25,9 +25,9 @@ class ComboServcie implements ComboServiceInterface
         $this->combo_product_repository = $combo_product_repository;
         $this->image_product_service = $image_product_service;
     }
-    public function getAllCombos()
+    public function getAllCombos(): \Illuminate\Contracts\Pagination\Paginator
     {
-        return $this->combo_repository->getAll()->paginate(10);
+        return $this->combo_repository->getAvailableCombos();
     }
     public function getComboOfCategory($categoryId): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
@@ -58,13 +58,12 @@ class ComboServcie implements ComboServiceInterface
     {
         $combo_to_destroy =  $this->combo_repository->find($combo->combo_id);
         $combo_to_destroy->products()->detach();
-        $combo_img['public_id']  = $this->image_product_service->extract_public_id($combo_to_destroy->combo_image_url);
-        $this->image_product_service->deleteImage($combo_img);
+        $this->image_product_service->deleteComboImage($combo_to_destroy);
         $this->combo_repository->delete($combo->combo_id);
     }
-    public function getComboProducts(ComboInputData $combo)
+    public function getComboWithProducts(ComboInputData $combo)
     {
        return $this->combo_repository
-                   ->getComboProducts($combo->combo_id);
+                   ->getComboWithProducts($combo->combo_id);
     }
 }

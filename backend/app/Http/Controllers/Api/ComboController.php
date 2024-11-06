@@ -13,6 +13,7 @@ use App\Http\Resources\ComboProductResource;
 use App\Http\Resources\ComboResource;
 use App\Http\Resources\CombosLandingMask;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductVariantPivotResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Combo;
 use App\Repositories\Combo\ComboRepository;
@@ -121,31 +122,9 @@ class ComboController extends Controller
      */
     public function show(string $id) : ApiResponse
     {
-        $combo = $this->comboService->getComboById(ComboInputData::validateAndCreate(['combo_id' => $id]));
-       return new ApiResponse(200,[new ComboResource($combo)]);
+        $combo_products = $this->comboService->getComboWithProducts(ComboInputData::validateAndCreate(['combo_id' => $id]));
+        return new ApiResponse(200,[new ComboResource($combo_products)]);
     }
-    /**
-     * @OA\Get(
-     *     path="/api/combo/{id}/products",
-     *     tags={"Combo"},
-     *     description="Tìm thông tin sản phẩm thuộc combo",
-     *     summary="thông tin sản phẩm trong combo",
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         description="id của combo cần tìm sản phẩm",
-     *     ),
-     *     @OA\Response(response=200, description="Tìm sản phẩm thành công"),
-     *     @OA\Response(response=400, description="Tìm sản phẩm thất bại"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
-     * )
-     */
-    public function showProductsOfCombo(string $comboId) : ApiResponse {
-        $products = $this->comboService->getComboProducts(ComboInputData::validateAndCreate(['combo_id' => $comboId]));
-        return new ApiResponse(200,[new ComboResource($products)]);
-    }
-
     /**
      * @OA\Delete (
      *     path="/api/combo/{combo_id}",

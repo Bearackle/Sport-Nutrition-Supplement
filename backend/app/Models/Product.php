@@ -36,10 +36,6 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class,'order_details','product_id','order_id');
     }
-    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(ShoppingCart::class,'Cart_Items','product_id','cart_id');
-    }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Combo::class,'combo_products','product_id','combo_id');

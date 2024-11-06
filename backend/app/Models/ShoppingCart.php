@@ -23,17 +23,17 @@ class ShoppingCart extends Model
     }
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class,'cart_items','cart_id','product_id')
+        return $this->belongsToMany(Product::class,'cart_items','cart_id','product_id_fk')
             ->withPivot('quantity');
     }
     public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(ProductVariant::class,'cart_items','cart_id','variant_id')
+        return $this->belongsToMany(ProductVariant::class,'cart_items','cart_id','variant_id_fk')
             ->withPivot('quantity');
     }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Combo::class,'cart_items','cart_id','combo_id')
+        return $this->belongsToMany(Combo::class,'cart_items','cart_id','combo_id_fk')
             ->withPivot('quantity');
     }
 }

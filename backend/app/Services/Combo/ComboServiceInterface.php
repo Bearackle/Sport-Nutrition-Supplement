@@ -10,7 +10,7 @@ interface ComboServiceInterface
     public function getAllCombos();
     public function getComboOfCategory($categoryId);
     public function getComboById(ComboInputData $combo);
-    public function getComboProducts(ComboInputData $combo);
+    public function getComboWithProducts(ComboInputData $combo);
     public function updatePriceCombo(ComboInputData $combo);
     public function createCombo(ComboInputData $combo);
     public function addProductCombo(ComboProductInputData $comboProduct);

@@ -25,11 +25,15 @@ class ComboRepository extends BaseRepository implements ComboRepositoryInterface
             ->get();
     }
 
-    public function getComboProducts($comboId)
+    public function getComboWithProducts($comboId)
     {
         return Combo::with(['variants' => function($variant){
             $variant->with('product');
         }])
               ->find($comboId);
+    }
+    public function getAvailableCombos(): \Illuminate\Contracts\Pagination\Paginator
+    {
+        return (new \App\Models\Combo)->simplePaginate(10);
     }
 }

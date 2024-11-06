@@ -16,9 +16,9 @@ interface OrderServiceInterface
     public function getOrderData(OrderInputData $order);
     public function getOrderofUser(UserInputData $user);
     public function createOrder(UserInputData $user, string $message);
-    public function updateOrderStatus(OrderInputData $order);
+    public function updateOrder(OrderInputData $order);
     public function destroyOrder(OrderInputData $order);
     public function addAddress(OrderInputData $order, AddressInputData $address);
     public function addPaymentMethod(PaymentInputData $payment);
-    public function addShippingMethod(ShippingMethodInputData $ship);
+    public function addShippingMethod(OrderInputData $order, ShippingMethodInputData $ship);
 }

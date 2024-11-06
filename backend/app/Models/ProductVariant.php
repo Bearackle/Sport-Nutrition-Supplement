@@ -30,10 +30,10 @@ class ProductVariant extends Model
 //        return $this->belongsToMany(Combo::class,'combo_products','variant_id','combo_id')
 //            ->withPivot('quantity');
 //    }
-    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(ShoppingCart::class,'cart_items','variant_id','cart_id');
-    }
+//    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+//    {
+//        return $this->belongsToMany(ShoppingCart::class,'cart_items','variant_id_fk','cart_id');
+//    }
     public function image(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(ProductImages::class,'variant_id','variant_id');

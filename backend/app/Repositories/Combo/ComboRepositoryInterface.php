@@ -8,5 +8,5 @@ interface ComboRepositoryInterface extends RepositoryInterface{
     public function getComboIdByName($comboName);
     public function searchCombo($searchString);
     public function getComboOfCategory($categoryId);
-    public function getComboProducts($comboId);
+    public function getComboWithProducts($comboId);
 }

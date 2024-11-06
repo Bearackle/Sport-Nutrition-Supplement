@@ -6,7 +6,7 @@ enum ShipMethod : int
 {
     case TPHCM = 45000;
     case VN = 65000;
-    public function is(PaymentStatus $value) :bool
+    public function is(ShipMethod $value) :bool
     {
         return $this->value == $value;
     }

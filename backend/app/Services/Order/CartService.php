@@ -29,15 +29,8 @@ class CartService implements CartServiceInterface
            $shoppingCart =  $this->cartRepository->getCartByUser($user->user_id);
            return ShoppingCartOutputData::from($shoppingCart);
     }
-    public function getItems(ShoppingCartInputData $cart): ShoppingCartOutputData {
-        return $this->cartRepository->getCartItems($cart->cart_id)->with(['variants'
-        => function ($query) {
-                $query->with(['product'=> function ($product) {
-                    $product->select("products.product_id","products.product_name","price_after_sale");
-                },'image'])->select("product_variants.variant_id","variant_name");
-            }, 'combos' => function ($combo) {
-                $combo->select('combos.combo_id', 'combo_name', 'combo_price_after_sale','combo_image_url');
-       }])->get();
+    public function getItems(ShoppingCartInputData $cart){
+        return $this->cartRepository->getCartItems($cart->cart_id);
     }
     public function createCart(\App\DTOs\InputData\ShoppingCartInputData $cart): ShoppingCartOutputData
     {
@@ -51,9 +44,13 @@ class CartService implements CartServiceInterface
     {
         $this->cartItemRepository->delete($cartItem->cart_item_id);
     }
-    public function updateCartItemQuantity(CartItemInputData $cartItem): CartItemOutputData
+    public function updateCartItemQuantity(CartItemInputData $cartItem): CartItemOutputData | bool
     {
-        return CartItemOutputData::from($this->cartItemRepository->update($cartItem->cart_id,['quantity' => $cartItem->quantity]));
+        $cartItemUpdated = $this->cartItemRepository->update($cartItem->cart_item_id,['quantity' => $cartItem->quantity]);
+        if(!$cartItemUpdated){
+            return false;
+        }
+        return CartItemOutputData::from($cartItemUpdated);
     }
     public function emptyCart(ShoppingCartInputData $cart) : void
     {

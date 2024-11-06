@@ -2,10 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\AddressInputData;
+use App\DTOs\InputData\OrderInputData;
+use App\DTOs\InputData\PaymentInputData;
+use App\DTOs\InputData\ShippingMethodInputData;
+use App\DTOs\InputData\UserInputData;
+use App\DTOs\OutputData\OrderOutputData;
+use App\Enum\OrderStatus;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderResource;
+use App\Http\Responses\ApiResponse;
+use App\Models\Address;
 use App\Services\Order\OrderService;
 use App\Services\Order\OrderServiceInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class OrderController extends Controller
 {
@@ -29,9 +40,9 @@ class OrderController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function index(string $userid)
+    public function index(string $userId)
     {
-        return $this->orderService->getOrderofUser($userid);
+        return $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => $userId]));
     }
     /**
      * @OA\Post(
@@ -52,9 +63,11 @@ class OrderController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function store(Request $request): void
+    public function store(Request $request): ApiResponse
     {
-        $this->orderService->createOrder($request->userid, $request->message);
+        $order = $this->orderService->createOrder(UserInputData::validateAndCreate(['user_id' => $request->input('userId')])
+        ,$request->input('message'));
+        return new ApiResponse(200,[new OrderResource($order)]);
     }
     /**
      * @OA\Get(
@@ -71,9 +84,11 @@ class OrderController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function show(string $order_id)
+    public function show(string $order_id): ApiResponse
     {
-        return $this->orderService->getOrderData($order_id);
+        $order =  $this->orderService->getOrderData(
+            OrderInputData::validateAndCreate(['order_id' => $order_id]));
+        return new ApiResponse(200,[new OrderResource($order)]);
     }
     /**
      * @OA\Patch(
@@ -98,11 +113,12 @@ class OrderController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function update(Request $request,string $order_id): void
+    public function update(Request $request,string $order_id): ApiResponse
     {
-        $this->orderService->updateOrderStatus($order_id, $request->input('Status'));
+        $order = OrderInputData::factory()->alwaysValidate()->from(['order_id' => $order_id],$request->input());
+        $orderUpdated = $this->orderService->updateOrder($order);
+        return new ApiResponse(200,[new OrderResource($orderUpdated)]);
     }
-
     /**
      * @OA\Delete(
      *     path="/api/order/{order_id}",
@@ -119,11 +135,11 @@ class OrderController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function destroy(string $order_id) : void
+    public function destroy(string $order_id) : ApiResponse
     {
-        $this->orderService->destroyOrder($order_id);
+        $this->orderService->destroyOrder(OrderInputData::validateAndCreate(['order_id' => $order_id]));
+        return ApiResponse::success('delete order successful');
     }
-
     /**
      * @OA\Post(
      *     path="/api/order/payment",
@@ -144,16 +160,20 @@ class OrderController extends Controller
      * )
      */
     public function addPayment(Request $request) : void{
-        $this->orderService->addPaymentMethod($request->all());
+        $this->orderService->addPaymentMethod(PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
     }
-
     /**
      *
      */
-    public function addAddress(Request $request) : void{
-        $this->orderService->addAddress($request->all());
+    public function addAddress(Request $request) : ApiResponse
+    {
+        $order = $this->orderService->addAddress(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]),
+        AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
+        return new ApiResponse(200, [new OrderResource($order)]);
     }
-    public function addShipping(Request $request) : void{
-        $this->orderService->addShippingMethod($request->all());
+    public function addShipping(Request $request) : ApiResponse {
+        $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]),
+        ShippingMethodInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
+        return new ApiResponse(200, [new OrderResource($order)]);
     }
 }

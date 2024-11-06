@@ -18,7 +18,9 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
     }
     public function getCartItems($cartId)
     {
-        return (new \App\Models\ShoppingCart)->with('variants','combos')
-            ->find($cartId);
+        return ShoppingCart::with(['variants' => function ($variant) {
+            $variant->with('product');
+            }]
+            ,'combos')->find($cartId);
     }
 }

@@ -31,10 +31,6 @@ class Combo extends Model
         return $this->belongsToMany(ProductVariant::class, 'combo_products', 'combo_id', 'variant_id_fk')
             ->withPivot('quantity');
     }
-    public function carts(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
-    {
-        return $this->belongsToMany(ShoppingCart::class,'cart_items','combo_id','cart_id');
-    }
     public function reviews(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Review::class,'combo_id','combo_id');

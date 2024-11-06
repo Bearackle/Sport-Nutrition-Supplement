@@ -13,24 +13,24 @@ use Illuminate\Database\Eloquent\Builder;
 class CartItem extends Model
 {
     use HasFactory;
-    protected $fillable = ['cart_id','product_id','variant_id','combo_id','quantity'];
+    protected $fillable = ['cart_id','product_id_fk','variant_id_fk','combo_id_fk','quantity'];
     protected $primaryKey = 'cart_item_id';
     protected $table = 'cart_items';
     public $timestamps = false;
-    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Product::class,'product_id','product_id');
-    }
-    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(ProductVariant::class,'variant_id','variant_id');
-    }
-    public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Combo::class,'combo_id','combo_id');
-    }
-    public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(ShoppingCart::class,'cart_id','cart_id');
-    }
+//    public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(Product::class,'product_id_fk','product_id');
+//    }
+//    public function variant(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(ProductVariant::class,'variant_id_fk','variant_id');
+//    }
+//    public function combo(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(Combo::class,'combo_id_fk','combo_id');
+//    }
+//    public function cart(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+//    {
+//        return $this->belongsTo(ShoppingCart::class,'cart_id','cart_id');
+//    }
 }

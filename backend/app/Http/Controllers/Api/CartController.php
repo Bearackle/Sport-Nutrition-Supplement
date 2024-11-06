@@ -10,6 +10,7 @@ use App\Http\Requests\CartIdRequest;
 use App\Http\Requests\NewCartItems;
 use App\Http\Requests\NewCartRequest;
 use App\Http\Resources\CartItemResource;
+use App\Http\Resources\CartItemsResource;
 use App\Http\Resources\ShoppingCartResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\ShoppingCart;
@@ -120,7 +121,8 @@ class CartController extends Controller
      */
     public function show(string $id): ApiResponse
     {
-        return new ApiResponse(200,$this->cartService->getItems(ShoppingCartInputData::from(['cart_id' => $id])));
+        $cartWithItems = $this->cartService->getItems(ShoppingCartInputData::from(['cart_id' => $id]));
+        return new ApiResponse(200,[new CartItemsResource($cartWithItems)]);
     }
     /**
      * @OA\Patch(
@@ -137,7 +139,7 @@ class CartController extends Controller
      *         required=true,
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property (property="Quantity", example=20)
+     *              @OA\Property (property="quantity", example=20)
      *          )
      *     ),
      *     @OA\Response(response=200, description="Cập nhật sản phẩm thành công"),
@@ -146,10 +148,13 @@ class CartController extends Controller
      */
     public function update(Request $request,string $id) : ApiResponse
     {
-        $request->validate([
-            'Quantity' => 'required|numeric']);
-        $this->cartService->updateCartItemQuantity($id,$request->all());
-        return ApiResponse::success('update successful');
+        $cartItemtoUpdate = CartItemInputData::factory()->alwaysValidate()->from(['cart_item_id' => $id], $request->input());
+        $cartItemUpdated = $this->cartService->updateCartItemQuantity($cartItemtoUpdate);
+        if($cartItemUpdated){
+            return new ApiResponse(200,[new CartItemResource($cartItemUpdated)]);
+        }
+        else
+            return ApiResponse::fail("update failed :(");
     }
     /**
      * @OA\Delete(

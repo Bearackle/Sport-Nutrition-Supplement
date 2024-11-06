@@ -91,6 +91,11 @@ class ImageProductService implements ImageProductServiceInterface{
         cloudinary()->destroy($image->public_id);
         $image->delete();
     }
+    public function deleteComboImage($combo): void
+    {
+        $publicId = $this->extract_public_id($combo->combo_image_url);
+        cloudinary()->destroy($publicId);
+    }
     public function extract_public_id($image_url) : string{
         $last_backslash = strrpos($image_url,'/');
         $last_dot = strrpos($image_url,'.');

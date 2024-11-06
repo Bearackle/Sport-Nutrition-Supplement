@@ -7,6 +7,7 @@ use App\DTOs\InputData\OrderInputData;
 use App\DTOs\InputData\PaymentInputData;
 use App\DTOs\InputData\ShippingMethodInputData;
 use App\DTOs\InputData\UserInputData;
+use App\DTOs\OutputData\OrderOutputData;
 use App\Enum\OrderStatus;
 use App\Enum\ShipMethod;
 use App\Events\addShippingCharges;
@@ -40,27 +41,30 @@ class OrderService implements OrderServiceInterface
         $this->address_repository = $address_repository;
         $this->address_service  = $address_service;
     }
-    public function getOrderData(OrderInputData $order)
+    public function getOrderData(OrderInputData $order) : OrderOutputData
     {
-        return $this->order_repository->find($order->order_id);
+        return OrderOutputData::from($this->order_repository->find($order->order_id));
     }
-    public function createOrder(UserInputData $user, string $message)
+    public function createOrder(UserInputData $user, string $message) : OrderOutputData
     {
         $cart = $this->cart_service->getCart($user);
         $items = $this->cart_repository->getCartItems($cart->cart_id);
-        $total_amount = $this->totalAmount($items->products, $items->combos);
+        $total_amount = $this->totalAmount($items->variants, $items->combos);
         $new_order_make = ['user_id' => $user->user_id,
             'total_amount' => $total_amount,
             'status' => OrderStatus::PENDING,
             'note' => $message];
         $new_order = $this->order_repository->create($new_order_make);
         $this->createOrderItems($new_order,$items);
-        return $new_order->OrderID;
+        return OrderOutputData::from($new_order);
     }
-    public function updateOrderStatus(OrderInputData $order): void
+    public function updateOrder(OrderInputData $order)
     {
-        $status_data = OrderStatus::equals($order->status);
-        $this->order_repository->update($order->order_id, ['status' => $status_data->value]);
+        $orderUpdated = $this->order_repository->update($order->order_id, $order->toArray());
+        if(!$orderUpdated){
+            return false;
+        }
+        return OrderOutputData::from($orderUpdated);
     }
     public function destroyOrder(OrderInputData $order) : void
     {
@@ -69,14 +73,14 @@ class OrderService implements OrderServiceInterface
         $order->combos()->detach();
         $order->delete();
     }
-    private function totalAmount($product , $combo) : int
+    private function totalAmount($products , $combo) : int
     {
         $sum = 0;
-        foreach( $product as $item){
-            $sum += $item['price_after_sale'] * $item->pivot->quantity;
+        foreach( $products as $item){
+            $sum += $item->product->price_after_sale * $item->pivot->quantity;
         }
         foreach( $combo as $item){
-            $sum+= $item['combo_price_after_sale'] * $item->pivot->quantity;
+            $sum+= $item->combo_price_after_sale * $item->pivot->quantity;
         }
         return $sum;
     }
@@ -105,21 +109,23 @@ class OrderService implements OrderServiceInterface
         }
         return $orders;
     }
-    public function addAddress(OrderInputData $order,AddressInputData $address) : void
+    public function addAddress(OrderInputData $order,AddressInputData $address) : OrderOutputData
     {
-        $order_data = $this->order_repository->find($order->user_id);
         if($address->has('address_id')){
-            $address->address_detail = $this->address_service->getAddressDetail($address->address_id);
+            $addressData = $this->address_service->getAddressDetail($address)->address_detail;
+        } else {
+            $addressData = $address->address_detail;
         }
-        $this->order_repository->update($order_data->order_id,['address_detail' => $address->address_detail]);
+        return OrderOutputData::from($this->order_repository->update($order->order_id,['address_detail' => $addressData]));
     }
     public function addPaymentMethod(PaymentInputData $payment): void
     {
         $this->payment_service->addPaymentMethod($payment);
     }
-    public function addShippingMethod(ShippingMethodInputData $ship) : void
+    public function addShippingMethod(OrderInputData $order, ShippingMethodInputData $ship) : void
     {
-        $this->order_repository->update($ship->order_id,['ShipmentCharges' => $ship->method->value]);
-        event(new addShippingCharges($this->order_repository->find($ship->order_id),ShipMethod::equals($ship->method->value)));
+        $this->order_repository->update($order->order_id,['shipment_charges' => $ship->method->value]);
+        event(new addShippingCharges($this->order_repository->find($ship->order_id),
+            ShipMethod::equals($ship->method->value)));
     }
 }

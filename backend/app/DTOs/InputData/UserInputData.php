@@ -12,8 +12,7 @@ use Spatie\LaravelData\Optional;
 class UserInputData extends Data
 {
     #[Exists('users, user_id')]
-    public int|Optional $user_id;
-
+    public int $user_id;
     public function has(string $propertyName): bool
     {
         return isset($this->{$propertyName}) && !($this->{$propertyName} instanceof \Illuminate\Support\Optional);
