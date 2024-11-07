@@ -9,9 +9,12 @@ use App\DTOs\InputData\ShippingMethodInputData;
 use App\DTOs\InputData\UserInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\PaymentResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Order;
+use App\Models\User;
 use App\Services\Order\OrderServiceInterface;
+use App\Services\Order\PaymentServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
@@ -21,9 +24,11 @@ class OrderController extends Controller
 {
     use AuthorizesRequests;
     protected OrderServiceInterface $orderService;
-    public function __construct(OrderServiceInterface $orderService)
+    protected PaymentServiceInterface $paymentService;
+    public function __construct(OrderServiceInterface $orderService, PaymentServiceInterface $paymentService)
     {
         $this->orderService = $orderService;
+        $this->paymentService = $paymentService;
     }
     /**
      * @OA\Get(
@@ -39,7 +44,9 @@ class OrderController extends Controller
     public function index(): ApiResponse
     {
         $this->authorize('viewAny', Order::class);
-        $orders = $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => auth()->user()->user_id]));
+        /**@var User $user**/
+        $user = auth()->user();
+        $orders = $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => $user->user_id]));
         return new ApiResponse(200,[OrderResource::collection($orders)]);
     }
     /**
@@ -63,8 +70,10 @@ class OrderController extends Controller
     public function store(Request $request): ApiResponse
     {
         $this->authorize('create', Order::class);
+        /**@var User $user**/
+        $user = auth()->user();
         $order = $this->orderService->createOrder(
-            UserInputData::validateAndCreate(['user_id' => auth()->user()->user_id])
+            UserInputData::validateAndCreate(['user_id' => $user->user_id])
         ,$request->input('message'));
         return new ApiResponse(200,[new OrderResource($order)]);
     }
@@ -164,9 +173,35 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function addPayment(Request $request) : void{
+    public function addPayment(Request $request): ApiResponse
+    {
         $this->authorize('create' , Order::class);
-        $this->orderService->addPaymentMethod(PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
+        $payment = $this->orderService->addPaymentMethod(PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
+        return new ApiResponse(200, [new PaymentResource($payment)]);
+    }
+
+    /**
+     * @throws AuthorizationException
+     * @OA\Get(
+     *    path="/api/order/payment/{order_id}",
+     *    tags={"Order"},
+     *    summary="Thông tin thanh toán",
+     *    description="Tìm thông tin thanh toán của người dùng",
+     *    @OA\Parameter (
+     *        in="path",
+     *        name="order_id",
+     *        required=true,
+     *        description="mã đơn hàng",
+     *    ),
+     *    @OA\Response(response=200, description="Tìm thành công"),
+     *    @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
+     */
+    public function getOrderPayments(string $orderId): ApiResponse
+    {
+        $this->authorize('viewAny', Order::class);
+        $payment = $this->paymentService->getPayment(OrderInputData::validateAndCreate(['order_id' => $orderId]));
+        return new ApiResponse(200, [new PaymentResource($payment)]);
     }
     /**
      * @OA\Post(

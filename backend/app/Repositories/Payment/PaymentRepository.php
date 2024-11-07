@@ -11,10 +11,10 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     public function getModel(){
         return Payment::class;
     }
-    public function getPaymentByOrderID($orderId): \Illuminate\Database\Eloquent\Collection
+    public function getPaymentByOrderID($orderId)
     {
         return (new \App\Models\Payment)->where('order_id',$orderId)
-        ->get();
+        ->first();
     }
     public function getPaymentByUserID($userId)
     {

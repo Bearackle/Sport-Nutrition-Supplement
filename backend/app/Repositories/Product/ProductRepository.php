@@ -29,10 +29,10 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return (new \App\Models\Product)->orderBy('sale','desc')->take(10)->get();
     }
-    public function getProductsByCategories($categoryId): \Illuminate\Database\Eloquent\Collection
+    public function getProductsByCategories($categoryId): \Illuminate\Database\Eloquent\Builder
     {
         return (new \App\Models\Product)->where('category_id',$categoryId)
-        ->get();
+            ->with('images');
     }
     public function searchProduct($string): void
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\CategoryInputData;
 use App\DTOs\InputData\ImageData;
 use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\InputData\VariantInputData;
@@ -99,8 +100,10 @@ class ProductController extends Controller
      * @OA\Response(response=400,description="Không tìm thấy sản phẩm")
      * )
      */
-    public function CategoryProduct($id){
-        return $this->productService->getCategoryProduct($id);
+    public function CategoryProduct($id): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    {
+        $products = $this->productService->getCategoryProduct(CategoryInputData::from(['category_id' => $id]));
+        return ProductResource::collection($products);
     }
     /**
      * @OA\Get(
@@ -126,7 +129,6 @@ class ProductController extends Controller
      *      path="/api/products/create",
      *      summary="Tạo một sản phẩm",
      *      tags={"Product"},
-     *      security={{ "sanctum": {}}},
      *      description="Tạo sản phẩm mới gửi cùng với ảnh, lưu ý hành động này cũng sinh ra một variant mặc định tasteless",
      *      operationId="store",
      *      @OA\RequestBody(
@@ -134,7 +136,6 @@ class ProductController extends Controller
      *          @OA\MediaType(
      *              mediaType="multipart/form-data",
      *              @OA\Schema(
-     *                  required={"ProductName","description","Price","Sale","StockQuantity","CategoryID", "BrandID","Images[]"},
      *                  @OA\Property(property="productName", format="name", example="Ostrovit Micellar Casein - 700 grams", description="Tên sản phẩm"),
      *                  @OA\Property(property="description", example="sản phẩm số 1", description="Mô tả sản phẩm (được lưu trữ dạng html trong database)"),
      *                  @OA\Property(property="price", format="int32", description="Giá gốc của sản phẩm",example="100000"),
@@ -147,18 +148,8 @@ class ProductController extends Controller
      *              )
      *          )
      *      ),
-     *      @OA\Response(response=200, description="Tạo sản phẩm thành công",
-     *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="success", type="boolean", example=false),
-     *              @OA\Property(property="message", type="string", example="Tạo sản phẩm thành công")
-     *          )),
-     *      @OA\Response(response=400, description="Tạo sản phẩm thất bại",
-     *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="fail", type="boolean", example=false),
-     *              @OA\Property(property="message", type="string", example="Tạo sản phẩm thất bại")
-     *          ))
+     *      @OA\Response(response=200, description="Tạo sản phẩm thành công"),
+     *      @OA\Response(response=400, description="Tạo sản phẩm thất bại")
      *  )
      **/
     public function store(Request $request) : ApiResponse
@@ -168,10 +159,7 @@ class ProductController extends Controller
         $product_created = $this->productService->insertNewProduct($product);
         $this->imageProductService->addImagesProduct($product_created->product_id,[ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
         $this->productVariantService->insertDefaultTaste(VariantInputData::from($product_created));
-        if($product_created){
-            return new ApiResponse(200,['message' => 'Product added successfully']);
-        }
-        return new ApiResponse(200,['message' => 'Product not added']);
+        return new ApiResponse(200,['message' => 'Product added successfully']);
     }
     /**
      *
@@ -187,13 +175,28 @@ class ProductController extends Controller
      *         description="id của sản phẩm cần tìm",
      *         @OA\Schema(type="integer"),
      *     ),
+     *     @OA\Parameter(
+     *           name="Accept",
+     *           in="header",
+     *           required=true,
+     *           @OA\Schema(type="string", default="application/json"),
+     *           description="Chấp nhận response dưới dạng JSON"
+     *       ),
      * @OA\Response(response=200, description="Success"),
-     * @OA\Response(response=400,description="Fail to get")
+     * @OA\Response(response=400,description="Fail to get"),
+     * @OA\Response(
+     *           response=422,
+     *           description="Sai định dạng yêu cầu",
+     *           @OA\MediaType(
+     *               mediaType="application/json",
+     *               @OA\Schema(type="object")
+     *           )
+     *       ),
      * )
      **/
     public function show(string $id) : ApiResponse
     {
-         $product = $this->productService->getProductDetail(ProductIntputData::from(['product_id' => $id]));
+         $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
          $data = new ProductResource($product);
          return new ApiResponse(200,[$data]);
     }

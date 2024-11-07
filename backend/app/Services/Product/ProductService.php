@@ -2,9 +2,11 @@
 
 namespace App\Services\Product;
 
+use App\DTOs\InputData\CategoryInputData;
 use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\OutputData\ProductOutputData;
 use App\Filters\ProductFilter;
+use App\Models\Category;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Traits\ProductStockChecking;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -62,8 +64,9 @@ class ProductService implements ProductServiceInterface{
     {
         return $this->productRepository->filterer($filters);
     }
-    public function getCategoryProduct(ProductIntputData $product) {
-        return $this->productRepository->getProductsByCategories($product->category_id);
+    public function getCategoryProduct(CategoryInputData $category)
+    {
+        return $this->productRepository->getProductsByCategories($category->category_id)->paginate(10);
     }
     public function getModelProduct(ProductIntputData $product) {
         return $this->productRepository->find($product->product_id);

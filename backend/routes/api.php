@@ -90,7 +90,7 @@ Route::group([
 Route::group([
     'prefix' => 'cart'],
     function() {
-        Route::get('all/{id}', [CartController::class, 'show'])->middleware('auth:sanctum');
+        Route::get('all', [CartController::class, 'show'])->middleware('auth:sanctum');
         Route::get('/', [CartController::class, 'index'])->middleware('auth:sanctum');
         Route::post('new', [CartController::class, 'newCart'])->middleware('auth:sanctum');
         Route::post('item',[CartController::class,'store'])->middleware('auth:sanctum');;
@@ -104,6 +104,7 @@ Route::group([
     Route::post('create',[OrderController::class,'store'])->middleware('auth:sanctum');
     Route::patch('status/{id}',[OrderController::class,'update'])->middleware('auth:sanctum');
     Route::delete('/{id}',[OrderController::class,'destroy'] )->middleware('auth:sanctum');
+    Route::get('payment/{id}',[OrderController::class,'getOrderPayments'])->middleware('auth:sanctum');
     Route::post('payment',[OrderController::class,'addPayment'])->middleware('auth:sanctum');
     Route::post('address',[OrderController::class,'addAddress'])->middleware('auth:sanctum');
     Route::post('ship', [OrderController::class,'addShipping'])->middleware('auth:sanctum');

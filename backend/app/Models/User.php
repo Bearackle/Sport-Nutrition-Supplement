@@ -17,6 +17,7 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * User
  * @mixin Builder
+ * @property int $user_id
 */
 class User extends Authenticatable
 {
