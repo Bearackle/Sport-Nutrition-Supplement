@@ -142,7 +142,7 @@ const EditAddressModal = ({ address }: TProps) => {
               )}
             >
               <DialogFooter className="sm:justify-start">
-                <DialogClose asChild>
+                <DialogClose className="flex flex-row gap-2">
                   <Button
                     type="button"
                     variant="secondary"
@@ -154,8 +154,6 @@ const EditAddressModal = ({ address }: TProps) => {
                   >
                     Hủy
                   </Button>
-                </DialogClose>
-                <DialogClose asChild>
                   <Button
                     type="submit"
                     className={cn(

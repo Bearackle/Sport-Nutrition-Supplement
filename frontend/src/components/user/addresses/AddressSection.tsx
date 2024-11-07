@@ -5,24 +5,24 @@ import AddressCard from "./AddressCard";
 import noAddress from "/public/no-address.png";
 
 const data: TParamsAddressList | null = [
-  // {
-  //   id: 1,
-  //   name: "Nguyễn Văn A",
-  //   phone: "0333303802",
-  //   address: "123 Đường ABC, Quận XYZ, TP.HCM",
-  // },
-  // {
-  //   id: 2,
-  //   name: "Nguyễn Văn A",
-  //   phone: "0333303802",
-  //   address: "123 Đường ABC, Quận XYZ, TP.HCM",
-  // },
+  {
+    id: 1,
+    name: "Nguyễn Văn A",
+    phone: "0333303802",
+    address: "123 Đường ABC, Quận XYZ, TP.HCM",
+  },
+  {
+    id: 2,
+    name: "Nguyễn Văn A",
+    phone: "0333303802",
+    address: "123 Đường ABC, Quận XYZ, TP.HCM",
+  },
 ];
 
 const AddressSection = () => {
   if (!data[0]) {
     return (
-      <div className="mt-[0.75em] flex h-[30em] w-full flex-col items-center justify-center gap-[0.5em] rounded-[0.625em] bg-white">
+      <div className="mt-[0.75em] flex h-[25em] w-full flex-col items-center justify-center gap-[0.5em] rounded-[0.625em] bg-white md:h-[30em]">
         <Image
           src={noAddress}
           alt="no address"
