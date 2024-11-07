@@ -7,19 +7,19 @@ use App\DTOs\InputData\OrderInputData;
 use App\DTOs\InputData\PaymentInputData;
 use App\DTOs\InputData\ShippingMethodInputData;
 use App\DTOs\InputData\UserInputData;
-use App\DTOs\OutputData\OrderOutputData;
-use App\Enum\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use App\Http\Responses\ApiResponse;
-use App\Models\Address;
-use App\Services\Order\OrderService;
+use App\Models\Order;
 use App\Services\Order\OrderServiceInterface;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class OrderController extends Controller
 {
+    use AuthorizesRequests;
     protected OrderServiceInterface $orderService;
     public function __construct(OrderServiceInterface $orderService)
     {
@@ -27,22 +27,20 @@ class OrderController extends Controller
     }
     /**
      * @OA\Get(
-     *     path="/api/order/all/{user_id}",
+     *     path="/api/order/all",
      *     description="Tất cả đơn hàng của người dùng",
      *     summary="Tìm tất cả đơn hàng",
      *     tags={"Order"},
-     *     @OA\Parameter (
-     *         name="user_id",
-     *         in="path",
-     *         description="id của người dùng",
-     *     ),
      *     @OA\Response(response=200,description="Lấy đơn hàng thành công"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
-    public function index(string $userId)
+    public function index(): ApiResponse
     {
-        return $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => $userId]));
+        $this->authorize('viewAny', Order::class);
+        $orders = $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => auth()->user()->user_id]));
+        return new ApiResponse(200,[OrderResource::collection($orders)]);
     }
     /**
      * @OA\Post(
@@ -54,18 +52,19 @@ class OrderController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *             type="object",
-     *              required={"userid"},
-     *              @OA\Property (property="userid", type="integer", example=1),
      *              @OA\Property (property="message", type="string", example="goi hang can than")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Tạo đơn hàng thành công"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
     public function store(Request $request): ApiResponse
     {
-        $order = $this->orderService->createOrder(UserInputData::validateAndCreate(['user_id' => $request->input('userId')])
+        $this->authorize('create', Order::class);
+        $order = $this->orderService->createOrder(
+            UserInputData::validateAndCreate(['user_id' => auth()->user()->user_id])
         ,$request->input('message'));
         return new ApiResponse(200,[new OrderResource($order)]);
     }
@@ -83,11 +82,12 @@ class OrderController extends Controller
      *     @OA\Response(response=200, description="Tìm thông tin thành công"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
     public function show(string $order_id): ApiResponse
     {
-        $order =  $this->orderService->getOrderData(
-            OrderInputData::validateAndCreate(['order_id' => $order_id]));
+        $this->authorize('view', Order::class);
+        $order =  $this->orderService->getOrderData(OrderInputData::validateAndCreate(['order_id' => $order_id]));
         return new ApiResponse(200,[new OrderResource($order)]);
     }
     /**
@@ -106,15 +106,17 @@ class OrderController extends Controller
      *         required=true,
      *         @OA\JsonContent(
      *              type="object",
-     *              @OA\Property (property="Status", description="Trạng thái đơn hàng")
+     *              @OA\Property (property="status", description="Trạng thái đơn hàng",example="SHIPPED")
      *         ),
      *     ),
      *     @OA\Response(response=200, description="Cập nhật đơn hàng"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
     public function update(Request $request,string $order_id): ApiResponse
     {
+        $this->authorize('update', Order::class);
         $order = OrderInputData::factory()->alwaysValidate()->from(['order_id' => $order_id],$request->input());
         $orderUpdated = $this->orderService->updateOrder($order);
         return new ApiResponse(200,[new OrderResource($orderUpdated)]);
@@ -134,9 +136,11 @@ class OrderController extends Controller
      *     @OA\Response(response=200, description="Xóa đơn hàng thành công"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
     public function destroy(string $order_id) : ApiResponse
     {
+        $this->authorize('delete', Order::class);
         $this->orderService->destroyOrder(OrderInputData::validateAndCreate(['order_id' => $order_id]));
         return ApiResponse::success('delete order successful');
     }
@@ -150,30 +154,74 @@ class OrderController extends Controller
      *         required=true,
      *          @OA\JsonContent(
      *              type="object",
-     *              required={"OrderID","PaymentMethod"},
-     *              @OA\Property(property="OrderID", type="integer", example=17),
-     *              @OA\Property (property="PaymentMethod", type="string", example="VN_PAY")
+     *              required={"orderId","paymentMethod"},
+     *              @OA\Property(property="orderId", type="integer", example=1),
+     *              @OA\Property (property="paymentMethod", type="string", example="VN_PAY")
      *          )
      *     ),
      *     @OA\Response(response=200, description="Thêm phương thức thanh toán thành công"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
+     * @throws AuthorizationException
      */
     public function addPayment(Request $request) : void{
+        $this->authorize('create' , Order::class);
         $this->orderService->addPaymentMethod(PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
     }
     /**
-     *
+     * @OA\Post(
+     *     path="/api/order/address",
+     *     summary="Thêm địa chỉ",
+     *     tags={"Order"},
+     *     description="Thêm địa chỉ cho ơn hàng",
+     *     @OA\RequestBody(
+     *          required=true,
+     *           @OA\JsonContent(
+     *               type="object",
+     *               required={"orderId","addressDetail"},
+     *               @OA\Property(property="orderId", type="integer", example=1),
+     *               @OA\Property (property="addressDetail", type="string", example="so 1...")
+     *           )
+     *      ),
+     *     @OA\Response(response=200, description="Thêm địa chỉ thành công"),
+     *     @OA\Response(response=400, description="Lỗi dịch vụ")
+     * )
+     * @throws AuthorizationException
      */
     public function addAddress(Request $request) : ApiResponse
     {
+        $this->authorize('create', Order::class);
         $order = $this->orderService->addAddress(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]),
         AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
         return new ApiResponse(200, [new OrderResource($order)]);
     }
-    public function addShipping(Request $request) : ApiResponse {
-        $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]),
-        ShippingMethodInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
-        return new ApiResponse(200, [new OrderResource($order)]);
+    /**
+     * @param Request $request
+     * @return ApiResponse
+     * @OA\Post(
+     *     path="/api/order/ship",
+     *     tags={"Order"},
+     *     description="Thêm phuơng thức vận chuyển cho đơn hàng",
+     *     summary="Thêm phương thức vận chuyển",
+     * @OA\RequestBody(
+     *           required=true,
+     *            @OA\JsonContent(
+     *                type="object",
+     *                required={"orderId","method"},
+     *                @OA\Property(property="orderId", type="integer", example=1),
+     *                @OA\Property (property="method", type="string", example="VN")
+     *            )
+     *       ),
+     * @OA\Response(response=200, description="Thêm thành công"),
+     * @OA\Response (response=500, description="Lỗi dịch vụ")
+     * )
+     * @throws AuthorizationException
+     */
+    public function addShipping(Request $request): ApiResponse
+    {
+        $this->authorize('create', Order::class);
+        $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
+        ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
+         return new ApiResponse(200, [new OrderResource($order)]);
     }
 }

@@ -91,7 +91,7 @@ Route::group([
     'prefix' => 'cart'],
     function() {
         Route::get('all/{id}', [CartController::class, 'show'])->middleware('auth:sanctum');
-        Route::get('/{id}', [CartController::class, 'index'])->middleware('auth:sanctum');
+        Route::get('/', [CartController::class, 'index'])->middleware('auth:sanctum');
         Route::post('new', [CartController::class, 'newCart'])->middleware('auth:sanctum');
         Route::post('item',[CartController::class,'store'])->middleware('auth:sanctum');;
         Route::delete('item/{id}',[CartController::class,'destroy'])->middleware('auth:sanctum');
@@ -99,14 +99,14 @@ Route::group([
     });
 Route::group([
     'prefix' => 'order'],function(){
-    Route::get('all',[OrderController::class,'index']);
-    Route::get('/{order_id}',[OrderController::class,'show']);
-    Route::post('create',[OrderController::class,'store']);
-    Route::patch('status/{id}',[OrderController::class,'update']);
-    Route::delete('/{id}',[OrderController::class,'destroy'] );
-    Route::post('payment',[OrderController::class,'addPayment']);
-    Route::post('address',[OrderController::class,'addAddress']);
-    Route::post('ship', [OrderController::class,'addShipping']);
+    Route::get('all',[OrderController::class,'index'])->middleware('auth:sanctum');
+    Route::get('/{order_id}',[OrderController::class,'show'])->middleware('auth:sanctum');
+    Route::post('create',[OrderController::class,'store'])->middleware('auth:sanctum');
+    Route::patch('status/{id}',[OrderController::class,'update'])->middleware('auth:sanctum');
+    Route::delete('/{id}',[OrderController::class,'destroy'] )->middleware('auth:sanctum');
+    Route::post('payment',[OrderController::class,'addPayment'])->middleware('auth:sanctum');
+    Route::post('address',[OrderController::class,'addAddress'])->middleware('auth:sanctum');
+    Route::post('ship', [OrderController::class,'addShipping'])->middleware('auth:sanctum');
 });
 
 Route::group([

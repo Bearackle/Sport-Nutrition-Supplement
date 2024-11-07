@@ -16,7 +16,6 @@ class ShoppingCartResource extends JsonResource
     {
         return [
             'cartId' => $this->cart_id,
-            'userId' => $this->user_id,
             'createdAt' => $this->created_at
         ];
     }

@@ -15,7 +15,7 @@ use Illuminate\Queue\SerializesModels;
 class addShippingCharges
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $order;
+    public Order $order;
     public ShipMethod $method;
     /**
      * Create a new event instance.

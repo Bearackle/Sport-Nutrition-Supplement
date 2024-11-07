@@ -8,10 +8,8 @@ use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\CamelCaseMapper;
 use Spatie\LaravelData\Optional;
 
-#[MapInputName(CamelCaseMapper::class)]
 class UserInputData extends Data
 {
-    #[Exists('users, user_id')]
     public int $user_id;
     public function has(string $propertyName): bool
     {

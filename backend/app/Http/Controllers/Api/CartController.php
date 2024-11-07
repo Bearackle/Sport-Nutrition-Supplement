@@ -6,9 +6,6 @@ use App\DTOs\InputData\CartItemInputData;
 use App\DTOs\InputData\ShoppingCartInputData;
 use App\DTOs\InputData\UserInputData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CartIdRequest;
-use App\Http\Requests\NewCartItems;
-use App\Http\Requests\NewCartRequest;
 use App\Http\Resources\CartItemResource;
 use App\Http\Resources\CartItemsResource;
 use App\Http\Resources\ShoppingCartResource;
@@ -18,6 +15,7 @@ use App\Services\Order\CartServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
@@ -31,25 +29,19 @@ class CartController extends Controller
     /**
      * @OA\Get(
      *     path="/api/cart/{id}",
-     *     summary="id của giỏ hàng",
-     *     description="Lấy thông tin giỏ hàng bằng id của user",
+     *     summary="lấy id của giỏ hàng",
+     *     description="Lấy thông tin giỏ hàng",
      *     tags={"Cart"},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="id của user",
-     *     ),
      *     @OA\Response(response=200, description="Tìm thông tin giỏ hàng thành công"),
      *     @OA\Response(response=400, description="Tìm thông tin giỏ hàng thất bại"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      * @throws AuthorizationException
      */
-    public function index(string $user_id): ShoppingCartResource
+    public function index(): ShoppingCartResource
     {
         $this->authorize('view', ShoppingCart::class);
-        $user = UserInputData::from(['user_id' => $user_id]);
+        $user = UserInputData::from(['user_id' => auth()->user()->user_id]);
         return new ShoppingCartResource($this->cartService->getCart($user));
     }
     /**
@@ -58,20 +50,13 @@ class CartController extends Controller
      *     tags={"Cart"},
      *     description="Tạo giỏ hàng mới cho user, lưu ý mỗi user chỉ có 1 giỏ hàng",
      *     summary="Tạo giỏ hàng",
-     *     @OA\RequestBody(
-     *         required=true,
-     *          @OA\JsonContent(
-     *              type="object",
-     *          @OA\Property (property="UserID", type="integer",example=2),
-     *          )
-     *     ),
      *     @OA\Response(response=200,description="Tạo giỏ hàng thành công"),
      *     @OA\Response(response=500, description="Lỗi dịch vụ"),
      * )
      */
-    public function newCart(Request $request): ApiResponse
+    public function newCart(): ApiResponse
     {
-        $cart = ShoppingCartInputData::validateAndCreate($request->all());
+        $cart = ShoppingCartInputData::validateAndCreate(['user_id' => auth()->user()->getAuthIdentifierName()]);
         $cartOutput = $this->cartService->createCart($cart);
         return new ApiResponse(200, [new ShoppingCartResource($cartOutput)]);
     }

@@ -58,7 +58,7 @@ class OrderService implements OrderServiceInterface
         $this->createOrderItems($new_order,$items);
         return OrderOutputData::from($new_order);
     }
-    public function updateOrder(OrderInputData $order)
+    public function updateOrder(OrderInputData $order): OrderOutputData| false
     {
         $orderUpdated = $this->order_repository->update($order->order_id, $order->toArray());
         if(!$orderUpdated){
@@ -101,13 +101,10 @@ class OrderService implements OrderServiceInterface
                 ['unit_price' => $combo->combo_price_after_sale,'quantity' => $combo->pivot->quantity]);
         }
     }
-    public function getOrderofUser(UserInputData $user)
+    public function getOrderofUser(UserInputData $user): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
         $orders = $this->order_repository->getAllOrdersByUserID($user->user_id);
-        foreach($orders as $order){
-            $order->Status = OrderStatus::tryFrom($order['status'])->label();
-        }
-        return $orders;
+        return OrderOutputData::collect($orders);
     }
     public function addAddress(OrderInputData $order,AddressInputData $address) : OrderOutputData
     {
@@ -122,10 +119,10 @@ class OrderService implements OrderServiceInterface
     {
         $this->payment_service->addPaymentMethod($payment);
     }
-    public function addShippingMethod(OrderInputData $order, ShippingMethodInputData $ship) : void
+    public function addShippingMethod(OrderInputData $order, ShippingMethodInputData $ship): OrderOutputData
     {
-        $this->order_repository->update($order->order_id,['shipment_charges' => $ship->method->value]);
-        event(new addShippingCharges($this->order_repository->find($ship->order_id),
-            ShipMethod::equals($ship->method->value)));
+        $order = $this->order_repository->update($order->order_id,['shipment_charges' => $ship->method->value]);
+        event(new addShippingCharges($this->order_repository->find($order->order_id), $ship->method));
+        return OrderOutputData::from($order);
     }
 }
