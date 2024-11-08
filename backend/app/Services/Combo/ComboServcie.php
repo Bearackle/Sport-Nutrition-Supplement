@@ -59,7 +59,7 @@ class ComboServcie implements ComboServiceInterface
         $combo_to_destroy =  $this->combo_repository->find($combo->combo_id);
         $combo_to_destroy->products()->detach();
         $this->image_product_service->deleteComboImage($combo_to_destroy);
-        $this->combo_repository->delete($combo->combo_id);
+        $this->combo_repository->update($combo->combo_id,['price' => -1]);
     }
     public function getComboWithProducts(ComboInputData $combo)
     {

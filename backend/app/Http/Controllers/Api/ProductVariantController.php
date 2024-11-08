@@ -7,10 +7,9 @@ use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\InputData\VariantInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\NewProductVariants;
-use App\Http\Requests\UpdateImageRequest;
-use App\Http\Requests\UpdateVariantRequest;
 use App\Http\Resources\VariantResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\Product;
 use App\Models\ProductVariant;
 use App\Services\ImageService\ImageProductServiceInterface;
 use App\Services\Product\ProductVariantServiceInterface;
@@ -36,6 +35,7 @@ class ProductVariantController extends Controller
     {
         //
     }
+
     /**
      * @OA\Get(
      *     path="/api/products/{id}/variants",
@@ -69,10 +69,10 @@ class ProductVariantController extends Controller
      *        @OA\MediaType(
      *            mediaType="multipart/form-data",
      *        @OA\Schema(
-     *            @OA\Property(property="VariantName",description="Tên mùi vị",type="string",example="Milk Tea Flavor"),
-     *            @OA\Property (property="ProductID", description="Mã sản phẩm",format="int32", example="1"),
-     *            @OA\Property (property="StockQuantity", description="Số lượng sản phẩm", format="int32", example="40"),
-     *            @OA\Property (property="Image", description="File ảnh mùi vị", type="string", format="binary")
+     *            @OA\Property(property="variantName",description="Tên mùi vị",type="string",example="Milk Tea Flavor"),
+     *            @OA\Property (property="productId", description="Mã sản phẩm",format="int32", example="1"),
+     *            @OA\Property (property="stockQuantity", description="Số lượng sản phẩm", format="int32", example="40"),
+     *            @OA\Property (property="image", description="File ảnh mùi vị", type="string", format="binary")
      *          )
      *        )
      *     ),
@@ -106,10 +106,9 @@ class ProductVariantController extends Controller
      *           required=true,
      *           @OA\JsonContent(
      *               type="object",
-     *               required={"VariantName","ProductID","StockQuantity"},
-     *               @OA\Property(property="VariantName", type="string", example="chocola"),
-     *               @OA\Property (property="ProductID", type="integer"),
-     *               @OA\Property (property="StockQuantity", type="integer", example=10)
+     *               @OA\Property(property="variantName", type="string", example="chocola"),
+     *               @OA\Property (property="productId", type="integer"),
+     *               @OA\Property (property="stockQuantity", type="integer", example=10)
      *           )
      *      ),
      *     @OA\Response(response=200,description="cập nhật thành công"),
@@ -144,7 +143,7 @@ class ProductVariantController extends Controller
      *         @OA\MediaType(
      *             mediaType="multipart-formdata",
      *          @OA\Schema(
-     *              @OA\Property(property="Image", type="string", format="binary", description="Ảnh thay thế")
+     *              @OA\Property(property="image", type="string", format="binary", description="Ảnh thay thế")
      *          ),
      *         )
      *     ),

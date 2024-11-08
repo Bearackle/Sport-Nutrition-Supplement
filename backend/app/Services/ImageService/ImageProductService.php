@@ -2,6 +2,8 @@
 
 namespace App\Services\ImageService;
 
+use App\Http\Resources\ImageResource;
+use App\Http\Responses\ApiResponse;
 use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Repositories\Image\DescriptionImageRepositoryInterface;
 use App\Repositories\Image\ProductImageRepositoryInterface;
@@ -108,10 +110,10 @@ class ImageProductService implements ImageProductServiceInterface{
     /**
      * @throws ApiError
      */
-    public function addImageDescription($image): void
+    public function addImageDescription($image)
     {
         $image_data = $this->uploadToCloudinary($image);
-        $this->descriptionImageRepository->create($image_data);
+        return $this->descriptionImageRepository->create($image_data);
     }
 
     public function getDescriptionsImage()

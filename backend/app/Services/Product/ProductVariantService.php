@@ -52,6 +52,6 @@ class ProductVariantService implements ProductVariantServiceInterface
     {
         $variant_to_delete = $this->productVariantRepository->find($variant->variant_id);
         $this->deleteProductVariant($variant_to_delete,$variant_to_delete->stock_quantity);
-        return $this->productVariantRepository->delete($variant->variant_id);
+        return $this->productVariantRepository->update($variant->variant_id,['stock_quantity'=> -1]);
     }
 }

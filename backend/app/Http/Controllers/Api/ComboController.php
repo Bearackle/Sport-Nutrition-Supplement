@@ -6,23 +6,16 @@ use App\DTOs\InputData\ComboInputData;
 use App\DTOs\InputData\ComboProductInputData;
 use App\DTOs\InputData\ImageData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ComboRequest;
-use App\Http\Requests\NewProductCombo;
-use App\Http\Requests\NewProductRequest;
 use App\Http\Resources\ComboProductResource;
 use App\Http\Resources\ComboResource;
 use App\Http\Resources\CombosLandingMask;
-use App\Http\Resources\ProductResource;
-use App\Http\Resources\ProductVariantPivotResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Combo;
-use App\Repositories\Combo\ComboRepository;
 use App\Services\Combo\ComboServiceInterface;
 use App\Services\ImageService\ImageProductServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
-use function PHPUnit\Framework\isEmpty;
 
 class ComboController extends Controller
 {
@@ -47,19 +40,18 @@ class ComboController extends Controller
      *     path="/api/combo/create",
      *     tags={"Combo"},
      *     summary="Tạo combo",
-     *     description="Tạo combo mới với ảnh",
+     *     description="Tạo combo mới cùng với ảnh",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *              @OA\Schema(
-     *                  required={"ComboName","Description","Price","Cb_Sale","Image","CategoryID"},
-     *                  @OA\Property (property="ComboName",type="string", example="Combo Dark Test + Vitamin D3 220 viên - Combo Tăng Test, Tăng Đề Kháng"),
-     *                  @OA\Property (property="Description",type="string", example="ombo bao gồm :Znutrition Dark Test - Tăng Testosterone mạnh mẽ Nature Made Vitamin D3 2000iu - 220 Viên"),
-     *                  @OA\Property (property="Price", type="integer", example=14000000),
-     *                  @OA\Property (property="Cb_Sale", type="integer", example=15),
-     *                  @OA\Property (property="CategoryID", type="integer", example=1),
-     *                  @OA\Property (property="Image", type="string", format="binary", description="Ảnh combo (1 ảnh)")
+     *                  @OA\Property (property="comboName",type="string", example="Combo Dark Test + Vitamin D3 220 viên - Combo Tăng Test, Tăng Đề Kháng"),
+     *                  @OA\Property (property="description",type="string", example="ombo bao gồm :Znutrition Dark Test - Tăng Testosterone mạnh mẽ Nature Made Vitamin D3 2000iu - 220 Viên"),
+     *                  @OA\Property (property="price", type="integer", example=14000000),
+     *                  @OA\Property (property="comboSale", type="integer", example=15),
+     *                  @OA\Property (property="categoryId", type="integer", example=1),
+     *                  @OA\Property (property="image", type="string", format="binary", description="Ảnh combo (1 ảnh)")
      *              )
      *         )
      *     ),
@@ -85,12 +77,11 @@ class ComboController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *          @OA\JsonContent(
-     *              required={"ComboID","ProductID","VariantID","Quantity"},
      *              type="object",
-     *              @OA\Property(property="ComboID", type="integer", example=1),
-     *              @OA\Property (property="ProductID",type="integer", example=1),
-     *              @OA\Property (property="VariantID", type="integer", example=1),
-     *              @OA\Property (property="Quantity", type="integer", example=1)
+     *              @OA\Property(property="comboId", type="integer", example=1),
+     *              @OA\Property (property="productId",type="integer", example=1),
+     *              @OA\Property (property="variantId", type="integer", example=1),
+     *              @OA\Property (property="quantity", type="integer", example=1)
      *          )
      *     ),
      *     @OA\Response(response=200, description="Thêm sản phẩm thành công"),
@@ -101,7 +92,8 @@ class ComboController extends Controller
     public function add(Request $request): ApiResponse
     {
         $this->authorize('create', Combo::class);
-        $product = $this->comboService->addProductCombo(ComboProductInputData::validateAndCreate($request->input()));
+        $product = ComboProductInputData::validateAndCreate($request->input());
+        $product = $this->comboService->addProductCombo($product);
         return new ApiResponse(200, [new ComboProductResource($product)]);
     }
     /**
@@ -135,7 +127,7 @@ class ComboController extends Controller
      *         in="path",
      *         name="combo_id",
      *         required=true,
-     *         description="combo_id  cần xóa"
+     *         description="comboId cần xóa"
      *     ),
      *     @OA\Response(response=200, description="Xóa thành công"),
      *     @OA\Response(response=400, description="Xóa thất bại"),
@@ -143,9 +135,10 @@ class ComboController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function destroy(string $id) : void
+    public function destroy(string $id) : ApiResponse
     {
         $this->authorize('delete', Combo::class);
         $this->comboService->destroyCombo(ComboInputData::validateAndCreate(['combo_id' => $id]));
+        return new ApiResponse(200,['message' => 'delete combo successfully']);
     }
 }

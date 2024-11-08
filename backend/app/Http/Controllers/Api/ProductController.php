@@ -8,15 +8,11 @@ use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\InputData\VariantInputData;
 use App\Filters\ProductFilter;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\NewProductRequest;
 use App\Http\Requests\UpdateImageRequest;
-use App\Http\Requests\UpdateProductRequest;
-use App\Http\Requests\UploadImageRequest;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\ProductLandingMask;
 use App\Http\Resources\ProductResource;
 use App\Http\Responses\ApiResponse;
-use App\Http\Tranformers\ProductTransformer;
 use App\Models\Product;
 use App\Services\ImageService\ImageProductService;
 use App\Services\Product\ProductServiceInterface;
@@ -24,9 +20,7 @@ use App\Services\Product\ProductVariantServiceInterface;
 use Cloudinary\Api\Exception\ApiError;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
-use Spatie\Fractal\Fractal;
 
 class ProductController extends Controller
 {
@@ -51,6 +45,7 @@ class ProductController extends Controller
      *     tags={"Product"},
      *     description="Lấy sản phẩm hot nhất hiển thị trên trang chủ",
      *     @OA\Response(response=200,description="Lấy sản phẩm thành công"),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu"),
      *     @OA\Response(response=400, description="Lỗi mạng")
      * )
      */
@@ -75,7 +70,8 @@ class ProductController extends Controller
      * })
      *     ),
      *     @OA\Response(response=200, description="Lọc thành công"),
-     *     @OA\Response(response=400, description="Lọc thất bại")
+     *     @OA\Response(response=400, description="Lọc thất bại"),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      **/
     public function filter(Request $request,ProductFilter $productFilter): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -97,7 +93,8 @@ class ProductController extends Controller
      *          @OA\Schema(type="integer")
      *     ),
      * @OA\Response(response=200,description="Lấy sản phẩm thành công"),
-     * @OA\Response(response=400,description="Không tìm thấy sản phẩm")
+     * @OA\Response(response=400,description="Không tìm thấy sản phẩm"),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
     public function CategoryProduct($id): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -112,7 +109,8 @@ class ProductController extends Controller
      *     tags={"Collection"},
      *     description="Lấy tất cả sản phẩm",
      *     @OA\Response(response=200, description="lấy sản phẩm thành công"),
-     *     @OA\Response(response=400, description="lấy sản phẩm thất bại")
+     *     @OA\Response(response=400, description="lấy sản phẩm thất bại"),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      **/
     public function allProducts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -149,7 +147,8 @@ class ProductController extends Controller
      *          )
      *      ),
      *      @OA\Response(response=200, description="Tạo sản phẩm thành công"),
-     *      @OA\Response(response=400, description="Tạo sản phẩm thất bại")
+     *      @OA\Response(response=400, description="Tạo sản phẩm thất bại"),
+     *       @OA\Response(response=422, description="Sai định dạng yêu cầu")
      *  )
      **/
     public function store(Request $request) : ApiResponse
@@ -162,7 +161,6 @@ class ProductController extends Controller
         return new ApiResponse(200,['message' => 'Product added successfully']);
     }
     /**
-     *
      * @OA\Get(
      *     path="/api/products/{id}",
      *     summary="Lấy thông tin sản phẩm",
@@ -175,23 +173,9 @@ class ProductController extends Controller
      *         description="id của sản phẩm cần tìm",
      *         @OA\Schema(type="integer"),
      *     ),
-     *     @OA\Parameter(
-     *           name="Accept",
-     *           in="header",
-     *           required=true,
-     *           @OA\Schema(type="string", default="application/json"),
-     *           description="Chấp nhận response dưới dạng JSON"
-     *       ),
      * @OA\Response(response=200, description="Success"),
      * @OA\Response(response=400,description="Fail to get"),
-     * @OA\Response(
-     *           response=422,
-     *           description="Sai định dạng yêu cầu",
-     *           @OA\MediaType(
-     *               mediaType="application/json",
-     *               @OA\Schema(type="object")
-     *           )
-     *       ),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      **/
     public function show(string $id) : ApiResponse
@@ -228,7 +212,8 @@ class ProductController extends Controller
      *          )
      *     ),
      *    @OA\Response(response=200,description="Cập nhật sản phẩm thành công"),
-     *    @OA\Response(response=400,description="Cập nhật sản phẩm thất bại")
+     *    @OA\Response(response=400,description="Cập nhật sản phẩm thất bại"),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      *
      * @throws AuthorizationException
@@ -257,7 +242,8 @@ class ProductController extends Controller
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(response=200,description="xóa sản phẩm thành công"),
-     *     @OA\Response(response=400, description="xóa sản phẩm thất bại")
+     *     @OA\Response(response=400, description="xóa sản phẩm thất bại"),
+     *      @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      * @throws AuthorizationException
      */
@@ -289,21 +275,21 @@ class ProductController extends Controller
      *           @OA\MediaType(
      *               mediaType="multipart/form-data",
      *               @OA\Schema(
-     *                   @OA\Property(property="image", type="array",
-     *                               @OA\Items(type="string", format="binary"),
-     *                               description="File ảnh của sản phẩm (1 ảnh)")
+     *                   @OA\Property(property="image", type="string", format="binary", description="File ảnh của sản phẩm (1 ảnh)")
      *               )
      *           )
      *       ),
      *     @OA\Response(response=200,description="Tải ảnh lên thành công"),
-     *     @OA\Response(response=400, description="Tải ảnh lên thất bại")
+     *     @OA\Response(response=400, description="Tải ảnh lên thất bại"),
+     *      @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
-    public function uploadImage(Request $request,string $id) : void
+    public function uploadImage(Request $request,string $id) : ApiResponse
     {
         $this->authorize('update',Product::class);
         $this->imageProductService->addImagesProduct($id,
             [ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
+        return new ApiResponse(200, ['message' => 'image add successfully']);
     }
     /**
      * @throws ApiError
@@ -326,9 +312,8 @@ class ProductController extends Controller
      *           @OA\MediaType(
      *               mediaType="multipart/form-data",
      *               @OA\Schema(
-     *                   required={"Image"},
      *                   @OA\Property(
-     *                       property="Image",
+     *                       property="image",
      *                       type="string",
      *                       format="binary",
      *                       description="File ảnh của sản phẩm (1 ảnh)"
@@ -341,37 +326,41 @@ class ProductController extends Controller
      *      @OA\Header(
      *          header="Content-Type",
      *          @OA\Schema(type="string", default="multipart/form-data")
-     *      )
+     *      ),
+     *      @OA\Response(response=422, description="Sai định dạng yêu cầu")
      *  )
      * /
      **/
-    public function updateImage(UpdateImageRequest $request,string $id)  : void    {
+    public function updateImage(UpdateImageRequest $request,string $id)  : ApiResponse    {
         $this->authorize('update',Product::class);
         $this->imageProductService->updateUploadedImage($id,
             ImageData::validateAndCreate(['image' => $request->file('image')])->image);
+        return new ApiResponse(200, ['message' => 'image update successully']);
     }
     /**
      * @OA\Delete(
-     *     path="/api/products/image/{image_id}",
+     *     path="/api/products/image/{id}",
      *     tags={"Product"},
      *     summary="Xóa ảnh sản phẩm",
      *     description="Xóa 1 ảnh sản phẩm xác định",
      *     @OA\Parameter(
      *         in="path",
-     *         name="image_id",
+     *         name="id",
      *         required=true,
      *         description="id của ảnh"
      *     ),
      *     @OA\Response(response=200, description="Xóa ảnh thành công"),
      *     @OA\Response(response=400, description="Xóa ảnh thất bại"),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      * @throws AuthorizationException
      */
-    public function destroyImage(string $image_id) : void
+    public function destroyImage(string $image_id) : ApiResponse
     {
         $this->authorize('delete',Product::class);
         $image = $this->imageProductService->getImageData($image_id);
         $this->imageProductService->deleteImage($image);
+        return new ApiResponse(200, ['message' => 'destroy image successfully']);
     }
     /**
      * @throws ApiError
@@ -393,13 +382,15 @@ class ProductController extends Controller
      *          )
      *     ),
      * @OA\Response(response=200, description="upload ảnh thành công"),
-     * @OA\Response(response=500, description="Lỗi dịch vụ")
+     * @OA\Response(response=500, description="Lỗi dịch vụ"),
+     *  @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
-    public function uploadDescriptionImage(Request $request) : void
+    public function uploadDescriptionImage(Request $request): ApiResponse
     {
         $this->authorize('create',Product::class);
-        $this->imageProductService->addImageDescription(ImageData::validateAndCreate(['image' => $request->file('image')])->image);
+        $image = $this->imageProductService->addImageDescription(ImageData::validateAndCreate(['image' => $request->file('image')])->image);
+        return new ApiResponse(200, [new ImageResource($image)]);
     }
     /**
      * @throws AuthorizationException
@@ -409,7 +400,8 @@ class ProductController extends Controller
      *     description="Tìm toàn bộ ảnh description",
      *     summary="Tìm ảnh mô tả sản phẩm",
      *   @OA\Response(response=200, description="Tìm ảnh thành công"),
-     *   @OA\Response(response=500, description="Lỗi dịch vụ")
+     *   @OA\Response(response=500, description="Lỗi dịch vụ"),
+     *    @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
     public function getAllDescriptionImages(): ApiResponse
@@ -419,7 +411,6 @@ class ProductController extends Controller
         $imagesResponse = ImageResource::collection($images);
         return new ApiResponse(200,[$imagesResponse]);
     }
-
     /**
      * @throws AuthorizationException
      * @OA\Delete(
@@ -434,12 +425,14 @@ class ProductController extends Controller
      *         description="Xóa ảnh mô tả sản phẩm"
      *      ),
      *     @OA\Response(response=200, description="Xóa ảnh thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=500, description="Lỗi dịch vụ"),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
-    public function destroyDescriptionImage(string $imageId): void
+    public function destroyDescriptionImage(string $imageId): ApiResponse
     {
         $this->authorize('delete',Product::class);
         $this->imageProductService->deleteDescriptionsImage($imageId);
+        return new ApiResponse(200,['message' => 'delete description image successfully']);
     }
 }

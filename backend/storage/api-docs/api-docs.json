@@ -289,43 +289,35 @@
                     "Combo"
                 ],
                 "summary": "Tạo combo",
-                "description": "Tạo combo mới với ảnh",
+                "description": "Tạo combo mới cùng với ảnh",
                 "operationId": "ccbb32065afaa93805583dd933a770a9",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "ComboName",
-                                    "Description",
-                                    "Price",
-                                    "Cb_Sale",
-                                    "Image",
-                                    "CategoryID"
-                                ],
                                 "properties": {
-                                    "ComboName": {
+                                    "comboName": {
                                         "type": "string",
                                         "example": "Combo Dark Test + Vitamin D3 220 viên - Combo Tăng Test, Tăng Đề Kháng"
                                     },
-                                    "Description": {
+                                    "description": {
                                         "type": "string",
                                         "example": "ombo bao gồm :Znutrition Dark Test - Tăng Testosterone mạnh mẽ Nature Made Vitamin D3 2000iu - 220 Viên"
                                     },
-                                    "Price": {
+                                    "price": {
                                         "type": "integer",
                                         "example": 14000000
                                     },
-                                    "Cb_Sale": {
+                                    "comboSale": {
                                         "type": "integer",
                                         "example": 15
                                     },
-                                    "CategoryID": {
+                                    "categoryId": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "Image": {
+                                    "image": {
                                         "description": "Ảnh combo (1 ảnh)",
                                         "type": "string",
                                         "format": "binary"
@@ -359,26 +351,20 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "ComboID",
-                                    "ProductID",
-                                    "VariantID",
-                                    "Quantity"
-                                ],
                                 "properties": {
-                                    "ComboID": {
+                                    "comboId": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "ProductID": {
+                                    "productId": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "VariantID": {
+                                    "variantId": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "Quantity": {
+                                    "quantity": {
                                         "type": "integer",
                                         "example": 1
                                     }
@@ -436,7 +422,7 @@
                     {
                         "name": "combo_id",
                         "in": "path",
-                        "description": "combo_id  cần xóa",
+                        "description": "comboId cần xóa",
                         "required": true
                     }
                 ],
@@ -760,6 +746,9 @@
                     "200": {
                         "description": "Lấy sản phẩm thành công"
                     },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    },
                     "400": {
                         "description": "Lỗi mạng"
                     }
@@ -796,6 +785,9 @@
                     },
                     "400": {
                         "description": "Lọc thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -825,6 +817,9 @@
                     },
                     "400": {
                         "description": "Không tìm thấy sản phẩm"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -843,6 +838,9 @@
                     },
                     "400": {
                         "description": "lấy sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -912,6 +910,9 @@
                     },
                     "400": {
                         "description": "Tạo sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -933,16 +934,6 @@
                         "schema": {
                             "type": "integer"
                         }
-                    },
-                    {
-                        "name": "Accept",
-                        "in": "header",
-                        "description": "Chấp nhận response dưới dạng JSON",
-                        "required": true,
-                        "schema": {
-                            "type": "string",
-                            "default": "application/json"
-                        }
                     }
                 ],
                 "responses": {
@@ -953,14 +944,7 @@
                         "description": "Fail to get"
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object"
-                                }
-                            }
-                        }
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             },
@@ -988,6 +972,9 @@
                     },
                     "400": {
                         "description": "xóa sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             },
@@ -1059,6 +1046,9 @@
                     },
                     "400": {
                         "description": "Cập nhật sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -1087,11 +1077,8 @@
                                 "properties": {
                                     "image": {
                                         "description": "File ảnh của sản phẩm (1 ảnh)",
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "format": "binary"
-                                        }
+                                        "type": "string",
+                                        "format": "binary"
                                     }
                                 },
                                 "type": "object"
@@ -1105,11 +1092,41 @@
                     },
                     "400": {
                         "description": "Tải ảnh lên thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
         },
         "/api/products/image/{id}": {
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Xóa ảnh sản phẩm",
+                "description": "Xóa 1 ảnh sản phẩm xác định",
+                "operationId": "cc0d84389a5c359725a0edc8f30d5924",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của ảnh",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa ảnh thành công"
+                    },
+                    "400": {
+                        "description": "Xóa ảnh thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    }
+                }
+            },
             "patch": {
                 "tags": [
                     "Product"
@@ -1132,11 +1149,8 @@
                     "content": {
                         "multipart/form-data": {
                             "schema": {
-                                "required": [
-                                    "Image"
-                                ],
                                 "properties": {
-                                    "Image": {
+                                    "image": {
                                         "description": "File ảnh của sản phẩm (1 ảnh)",
                                         "type": "string",
                                         "format": "binary"
@@ -1153,32 +1167,9 @@
                     },
                     "400": {
                         "description": "update ảnh sản phẩm thất bại"
-                    }
-                }
-            }
-        },
-        "/api/products/image/{image_id}": {
-            "delete": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Xóa ảnh sản phẩm",
-                "description": "Xóa 1 ảnh sản phẩm xác định",
-                "operationId": "bf039d4847ae66a2252ad1e1c243bd16",
-                "parameters": [
-                    {
-                        "name": "image_id",
-                        "in": "path",
-                        "description": "id của ảnh",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Xóa ảnh thành công"
                     },
-                    "400": {
-                        "description": "Xóa ảnh thất bại"
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -1197,6 +1188,9 @@
                     },
                     "500": {
                         "description": "Lỗi dịch vụ"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             },
@@ -1233,6 +1227,9 @@
                     },
                     "500": {
                         "description": "Lỗi dịch vụ"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 },
                 "security": [
@@ -1264,6 +1261,9 @@
                     },
                     "500": {
                         "description": "Lỗi dịch vụ"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
                     }
                 }
             }
@@ -1307,22 +1307,22 @@
                         "multipart/form-data": {
                             "schema": {
                                 "properties": {
-                                    "VariantName": {
+                                    "variantName": {
                                         "description": "Tên mùi vị",
                                         "type": "string",
                                         "example": "Milk Tea Flavor"
                                     },
-                                    "ProductID": {
+                                    "productId": {
                                         "description": "Mã sản phẩm",
                                         "format": "int32",
                                         "example": "1"
                                     },
-                                    "StockQuantity": {
+                                    "stockQuantity": {
                                         "description": "Số lượng sản phẩm",
                                         "format": "int32",
                                         "example": "40"
                                     },
-                                    "Image": {
+                                    "image": {
                                         "description": "File ảnh mùi vị",
                                         "type": "string",
                                         "format": "binary"
@@ -1391,20 +1391,15 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "VariantName",
-                                    "ProductID",
-                                    "StockQuantity"
-                                ],
                                 "properties": {
-                                    "VariantName": {
+                                    "variantName": {
                                         "type": "string",
                                         "example": "chocola"
                                     },
-                                    "ProductID": {
+                                    "productId": {
                                         "type": "integer"
                                     },
-                                    "StockQuantity": {
+                                    "stockQuantity": {
                                         "type": "integer",
                                         "example": 10
                                     }
@@ -1446,7 +1441,7 @@
                         "multipart-formdata": {
                             "schema": {
                                 "properties": {
-                                    "Image": {
+                                    "image": {
                                         "description": "Ảnh thay thế",
                                         "type": "string",
                                         "format": "binary"

@@ -13,8 +13,10 @@ class ComboProductInputData extends Data
 {
     public int|Optional $combo_product_id;
     public int|Optional $combo_id;
-    public int|Optional $product_id;
-    public int|Optional $variant_id;
+    #[MapInputName('productId')]
+    public int|Optional $product_id_fk;
+    #[MapInputName('variantId')]
+    public int|Optional $variant_id_fk;
     public int|Optional $quantity;
 
     public function has(string $propertyName): bool

@@ -29,11 +29,10 @@ class ComboRepository extends BaseRepository implements ComboRepositoryInterface
     {
         return Combo::with(['variants' => function($variant){
             $variant->with('product');
-        }])
-              ->find($comboId);
+        }])->find($comboId);
     }
     public function getAvailableCombos(): \Illuminate\Contracts\Pagination\Paginator
     {
-        return (new \App\Models\Combo)->simplePaginate(10);
+        return (new \App\Models\Combo)->where('price','>', 0 )->simplePaginate(10);
     }
 }
