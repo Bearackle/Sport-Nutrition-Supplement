@@ -121,10 +121,11 @@ Route::group([
 Route::group([
     'prefix' => 'review'
 ], function(){
-    Route::get('/', [ReviewController::class,'show']);
-    Route::post('/',[ReviewController::class,'store']);
-    Route::post('image',[ReviewController::class,'addImage']);
-    Route::put('/{id}',[ReviewController::class,'update']);
-    Route::delete('/{id}',[ReviewController::class,'destroy']);
-    Route::delete('image/{id}',[ReviewController::class,'destroyImage']);
+    Route::get('/product/{id}', [ReviewController::class,'showProductReview']);
+    Route::get('/combo/{id}', [ReviewController::class,'showComboReview']);
+    Route::post('/',[ReviewController::class,'store'])->middleware('auth:sanctum');
+    Route::post('image',[ReviewController::class,'addImage'])->middleware('auth:sanctum');
+    Route::patch('/{id}',[ReviewController::class,'update'])->middleware('auth:sanctum');
+    Route::delete('/{id}',[ReviewController::class,'destroy'])->middleware('auth:sanctum');
+    Route::delete('image/{id}',[ReviewController::class,'destroyImage'])->middleware('auth:sanctum');
 });

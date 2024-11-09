@@ -1462,6 +1462,67 @@
                 }
             }
         },
+        "/api/review": {
+            "post": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "tạo đánh giá",
+                "description": "tạo đánh giá sản phẩm",
+                "operationId": "d2ffbd380c3a706fe1cc8caddc2cc96f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "productId": {
+                                        "description": "Id sản phẩm",
+                                        "type": "integer",
+                                        "example": 17
+                                    },
+                                    "comboId": {
+                                        "description": "Id combo)",
+                                        "type": "integer",
+                                        "example": 7
+                                    },
+                                    "rating": {
+                                        "description": "điểm đánh giá",
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "comment": {
+                                        "description": "đánh giá",
+                                        "type": "string",
+                                        "example": "rất ngon"
+                                    },
+                                    "image": {
+                                        "description": "File ảnh đánh giá sản phẩm (một hoặc nhiều) phải thuộc các định dạng: .jqg, .webp, .png",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tạo sản phẩm thành công"
+                    },
+                    "400": {
+                        "description": "Tạo sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    }
+                }
+            }
+        },
         "account/register": {
             "post": {
                 "tags": [
@@ -1615,6 +1676,10 @@
         {
             "name": "Variant",
             "description": "Variant"
+        },
+        {
+            "name": "Review",
+            "description": "Review"
         },
         {
             "name": "User",

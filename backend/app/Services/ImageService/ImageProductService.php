@@ -7,18 +7,23 @@ use App\Http\Responses\ApiResponse;
 use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Repositories\Image\DescriptionImageRepositoryInterface;
 use App\Repositories\Image\ProductImageRepositoryInterface;
+use App\Repositories\Image\RatingImageRepository;
+use App\Repositories\Image\RatingImageRepositoryInterface;
 use Cloudinary\Api\Exception\ApiError;
 
 class ImageProductService implements ImageProductServiceInterface{
     protected ProductImageRepositoryInterface $productImageRepository;
     protected ComboRepositoryInterface $comboRepository;
     protected DescriptionImageRepositoryInterface $descriptionImageRepository;
+    protected RatingImageRepository $ratingImageRepository;
     public function __construct(ProductImageRepositoryInterface $productImageRepository,
-    ComboRepositoryInterface $comboRepository, DescriptionImageRepositoryInterface $descriptionImageRepository)
+    ComboRepositoryInterface $comboRepository, DescriptionImageRepositoryInterface $descriptionImageRepository,
+    RatingImageRepositoryInterface $ratingImageRepository)
     {
         $this->productImageRepository = $productImageRepository;
         $this->comboRepository = $comboRepository;
         $this->descriptionImageRepository = $descriptionImageRepository;
+        $this->ratingImageRepository = $ratingImageRepository;
     }
     /**
      * @throws ApiError
@@ -126,6 +131,24 @@ class ImageProductService implements ImageProductServiceInterface{
         $image = $this->descriptionImageRepository->find($imageId);
         $this->deleteImage($image);
         $image->delete();
+    }
+
+    /**
+     * @throws ApiError
+     */
+    public function addReviewImages($imageDatas): array
+    {
+        $ratingImageData = [];
+        foreach ($imageDatas as $imageData) {
+            $imageData = $this->uploadToCloudinary($imageData->image);
+            $ratingImageData[] = $imageData['image_url'];
+        }
+        return $ratingImageData;
+    }
+
+    public function deleteReviewImage($publicId): void
+    {
+        cloudinary()->destroy($publicId);
     }
 }
 

@@ -6,11 +6,11 @@ use App\Models\ImageLinkModels\RatingImages;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use mysql_xdevapi\Table;
 
 /**
  * Review
  * @mixin Builder
+ * @property int $user_id
  */
 class Review extends Model
 {

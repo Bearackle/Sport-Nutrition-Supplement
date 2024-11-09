@@ -2,11 +2,16 @@
 
 namespace App\Services\Review;
 
+use App\DTOs\InputData\ComboInputData;
+use App\DTOs\InputData\ImageData;
+use App\DTOs\InputData\ProductIntputData;
+use App\DTOs\InputData\ReviewInputData;
+use App\DTOs\OutputData\ReviewOutputData;
+use App\Models\Review;
+use App\Models\User;
 use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Repositories\Image\RatingImageRepositoryInterface;
-use App\Repositories\Product\ProductRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
-use App\Repositories\Reivew\ReviewRepository;
 use App\Repositories\Review\ReviewRepositoryInterface;
 use App\Services\ImageService\ImageProductService;
 use Cloudinary\Api\Exception\ApiError;
@@ -15,75 +20,83 @@ class ReviewService implements ReviewServiceInterface
 {
     protected ReviewRepositoryInterface $review_repository;
     protected RatingImageRepositoryInterface $rating_image_repository;
-    protected ImageProductService  $image_product_service;
+    protected ImageProductService  $imageProductService;
     protected ProductRepositoryInterface $product_repository;
     protected ComboRepositoryInterface $combo_repository;
     public function __construct(ReviewRepositoryInterface $review_repository, RatingImageRepositoryInterface $rating_image_repository,
-    ImageProductService $image_product_service, ProductRepositoryInterface $product_repository, ComboRepositoryInterface $combo_repository){
+    ImageProductService $imageProductService, ProductRepositoryInterface $product_repository, ComboRepositoryInterface $combo_repository){
         $this->review_repository = $review_repository;
         $this->rating_image_repository = $rating_image_repository;
-        $this->image_product_service = $image_product_service;
+        $this->imageProductService = $imageProductService;
         $this->product_repository = $product_repository;
         $this->combo_repository = $combo_repository;
     }
-
     /**
      * @throws ApiError
      */
-    public function addReview($userid, array $data) :  void
+    public function addReview(ReviewInputData $review): ReviewOutputData
     {
-        $data['UserID'] = $userid;
-        $review = $this->review_repository->create($data);
-        if(!empty($data['images'])){
-            $this->addImagetoReview($review->ReviewID, $data);}
+        $review = $this->review_repository->create($review->toArray());
+        return ReviewOutputData::from($review);
     }
 
-    public function getReviewsOfProduct($product_id)
+    public function getReviewsOfProduct(ProductIntputData $product)
     {
-        return $this->review_repository->getAllReviewsByProduct($product_id);
+        return $this->review_repository->getAllReviewsByProduct($product->product_id)->simplePaginate(5);
     }
-
-    public function getReviewsOfCombo($combo_id)
+    public function getReviewsOfCombo(ComboInputData $combo): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
-        return $this->review_repository->getAllReivewsByCombo($combo_id);
+        return $this->review_repository->getAllReviewsByCombo($combo->combo_id)->simplePaginate(5);
     }
-
-    /**
-     * @throws ApiError
-     */
-    public function addImagetoReview($review_id,array $data) : void
+    public function updateReview(ReviewInputData $review) : ReviewOutputData
     {
-        $images = $data['images'];
-        $data['ReviewID'] = $review_id;
-        unset($data['images']);
-        foreach($images as $image){
-            $data_image = $this->image_product_service->uploadToCloudinary($image);
-            $data['Rt_ImageURL'] = $data_image['Url'];
-            $this->rating_image_repository->create($data);
+        $updatedReview = $this->review_repository->update($review->review_id, ['comment' => $review->comment,
+            'rating' => $review->rating]);
+        return ReviewOutputData::from($updatedReview);
+    }
+    public function deleteReview(ReviewInputData $review): bool
+    {
+        $reviewModel = $this->findReviewModel($review);
+        foreach ($reviewModel->images as $image) {
+            $publicId = $this->imageProductService->extract_public_id($image->rating_image_url);
+            $this->imageProductService->deleteReviewImage($publicId);
         }
+        $reviewModel->images()->delete();
+        return $this->review_repository->delete($review->review_id);
     }
-
-    public function deleteImageOfReview($image_id)  : void
+    public function getReviewData(ReviewInputData $review)
     {
-        $image = $this->rating_image_repository->find($image_id);
-        $image['PublicId'] = $this->image_product_service->extract_public_id($image->Rt_ImageURL);
-        $this->image_product_service->deleteImage($image);
-        $this->rating_image_repository->delete($image_id);
+       return $this->review_repository->find($review->review_id);
     }
-    public function updateReview($review_id, array $data) : void
+    public function findReviewModel(ReviewInputData $review)
     {
-        $this->review_repository->update($review_id, ['Comment' => $data['Comment'],
-            'Rating' => $data['Rating']]);
+        return $this->review_repository->find($review->review_id);
     }
-
-    public function deleteReview($review_id): void
+    /**
+     * @param ReviewInputData $review
+     * @return bool
+     * @throws ApiError
+     * @var array<ImageData> $image
+     */
+    public function addImagestoReview(ReviewInputData $review, array $images) : bool
     {
-        $this->review_repository->delete($review_id);
+        $urls = $this->imageProductService->addReviewImages($images);
+        $imageReviewInput = $review->only('review_id','product_id','combo_id')->toArray();
+        foreach ($urls as $url) {
+            $imageReviewInput['rating_image_url'] = $url;
+            $this->rating_image_repository->create($imageReviewInput);
+        }
+        return true;
     }
-
-    public function getReviewData($review_id)
+    public function deleteImageReview($imageId): void
     {
-       return $this->review_repository->find($review_id);
-
+        $image = $this->rating_image_repository->find($imageId);
+        /**@var User $user**/
+        $user = auth()->user();
+        if($user->can('delete',$image->review)) {
+            $image = $this->rating_image_repository->find($imageId);
+            $this->imageProductService->deleteReviewImage($this->imageProductService->extract_public_id($image->rating_image_url));
+            $image->delete();
+        }
     }
 }

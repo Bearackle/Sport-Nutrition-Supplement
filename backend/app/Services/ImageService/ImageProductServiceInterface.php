@@ -17,4 +17,7 @@ interface ImageProductServiceInterface
     public function getImageData($image_id);
     public function getDescriptionsImage();
     public function deleteDescriptionsImage($imageId);
+    public function addReviewImages($imageDatas);
+    public function deleteReviewImage($publicId);
+
 }

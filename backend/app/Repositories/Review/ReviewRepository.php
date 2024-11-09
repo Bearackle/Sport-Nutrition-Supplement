@@ -11,26 +11,24 @@ class ReviewRepository extends BaseRepository implements ReviewRepositoryInterfa
     public function getModel() :string{
         return Review::class;
     }
-    public function getAllReviewsByProduct($productId): \Illuminate\Database\Eloquent\Collection
+    public function getAllReviewsByProduct($productId): \Illuminate\Database\Eloquent\Builder
     {
-        return (new \App\Models\Review)->where('product_id', $productId)
+        return (new Review)->where('product_id', $productId)
             ->orderBy('created_at', 'desc')
-            ->with('images')
-            ->get();
+            ->with(['images','user']);
     }
-    public function getAllReivewsByCombo($comboId): \Illuminate\Database\Eloquent\Collection
+    public function getAllReviewsByCombo($comboId): \Illuminate\Database\Eloquent\Builder
     {
-        return (new \App\Models\Review)->where('combo_id',$comboId)
+        return (new Review)->where('combo_id',$comboId)
             ->orderBy('created_at', 'desc')
-            ->with('images')
-            ->get();
+            ->with('images','user');
     }
     public function calculateAverageRatingsOfProduct($productId){
-        return Review::where('product_id',$productId)
+        return (new Review)->where('product_id',$productId)
         ->avg('rating');
     }
     public function calculateAverageRatingsOfCombo($comboId){
-        return Review::where('combo_id',$comboId)
+        return (new Review)->where('combo_id',$comboId)
         ->avg('rating');
     }
 }

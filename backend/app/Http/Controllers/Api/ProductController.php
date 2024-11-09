@@ -221,7 +221,8 @@ class ProductController extends Controller
     public function update(Request $request,string $id): ApiResponse
     {
         $this->authorize('update',Product::class);
-        $product = ProductIntputData::factory()->alwaysValidate()->from(['product_id' => $id],$request->all());
+        $product = ProductIntputData::factory()->alwaysValidate()->from(['product_id' => $id],
+            $request->all());
         $result = $this->productService->updateProduct($product);
         if($result){
             return new ApiResponse(200,['message' => 'Product updated successfully']);
