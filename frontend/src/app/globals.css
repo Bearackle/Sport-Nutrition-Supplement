@@ -83,6 +83,7 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -93,9 +94,97 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+
   /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
+  }
+
+  .term li::before {
+    content: "";
+    background-image: url("../../public/check-icon.svg");
+    @apply mr-1 inline-block size-4 translate-y-[2px];
+  }
+
+  input.\[appearance\:textfield\]::-webkit-outer-spin-button,
+  input.\[appearance\:textfield\]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+  }
+
+  .editor-rendered-content * {
+    @apply !leading-[1.21];
+  }
+
+  .editor-rendered-content *[id]::before {
+    @apply invisible -mt-24 block h-24;
+    content: "";
+  }
+
+  .editor-rendered-content h1 {
+    @apply text-4xl font-bold !text-[#399EEA];
+  }
+
+  .editor-rendered-content h2 {
+    @apply my-2 text-3xl font-bold text-[#399EEA];
+  }
+
+  .editor-rendered-content h3 {
+    @apply my-2 text-2xl font-bold;
+  }
+
+  /* .editor-rendered-content h4 {
+    @apply text-xl font-bold text-[#399EEA];
+  }
+
+  .editor-rendered-content h5 {
+    @apply text-lg font-bold text-[#399EEA];
+  }
+
+  .editor-rendered-content h6 {
+    @apply text-sm font-bold text-[#399EEA];
+  } */
+  .editor-rendered-content p {
+    @apply text-base;
+  }
+
+  .editor-rendered-content pre {
+    @apply text-base;
+  }
+
+  .editor-rendered-content strong {
+    @apply font-bold;
+  }
+
+  .editor-rendered-content em {
+    @apply italic;
+  }
+
+  .editor-rendered-content ul {
+    @apply ml-6 mt-2 list-disc space-y-2;
+  }
+
+  .editor-rendered-content ol {
+    @apply ml-16 list-decimal;
+  }
+
+  .editor-rendered-content ol li {
+    @apply pl-1;
+  }
+
+  .editor-rendered-content a {
+    @apply text-[#399EEA];
+  }
+
+  .editor-rendered-content img {
+    @apply mx-auto;
+  }
+
+  .text-blue-gradient {
+    background: -webkit-linear-gradient(#3f85e9, #242779);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }

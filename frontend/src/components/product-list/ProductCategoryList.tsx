@@ -1,28 +1,16 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { StaticImageData } from "next/image";
 import { usePathname } from "next/navigation";
-import { navList } from "../nav-bar/SideBar";
 import ProductCategory from "./ProductCategory";
-
-interface IProductCategory {
-  label: string;
-  icon: string | StaticImageData;
-  href: string;
-  amount?: number;
-  children?: {
-    label: string;
-    icon: string | StaticImageData;
-    href: string;
-  }[];
-}
+import { productCategories } from "@/data/category";
+import { TParamsCategoryWithAmount } from "@/types/category";
 
 const ProductCategoryList = () => {
   const pathname = usePathname();
-  let categories: IProductCategory[] = [];
-  if (pathname === "/collections/all") {
-    categories = navList.slice(0, -2);
+  let categories: TParamsCategoryWithAmount[] = [];
+  if (pathname === "/products/all") {
+    categories = productCategories.slice(0, -2);
   } else {
     // Call API to get categories
   }

@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { navList } from "./SideBar";
 
 // ** Import next
 import Image from "next/image";
@@ -16,6 +15,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
 
 // ** Import images
+import { productCategories } from "@/data/category";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import accountIcon from "/public/account-icon.svg";
 
@@ -24,7 +24,7 @@ const MobileNavBar = () => {
     <Sheet>
       <SheetTrigger
         className={cn(
-          "xs:size-6 absolute left-[4%] z-[4] block size-5 leading-[1.21] focus:outline-none",
+          "absolute left-[4%] z-[4] block size-5 leading-[1.21] focus:outline-none xs:size-6",
           "xl:hidden",
         )}
       >
@@ -58,12 +58,12 @@ const MobileNavBar = () => {
         </SheetHeader>
         <div>
           <ul>
-            {navList.map((nav, index) => (
+            {productCategories.map((nav, index) => (
               <li key={index}>
                 <Accordion type="single" collapsible className="w-full">
-                  {nav.href && (
+                  {!nav.children && (
                     <a
-                      href={nav.href}
+                      href={`/products/${nav.id}`}
                       className={cn(
                         "flex min-h-8 flex-row items-center gap-2 border-b border-solid border-[#333]/10 px-4 py-2 text-[0.875rem] font-semibold text-[#333333]",
                       )}
@@ -104,7 +104,7 @@ const MobileNavBar = () => {
                         {nav.children.map((childNav, index) => (
                           <a
                             key={index}
-                            href={nav.href}
+                            href={`/products/${childNav.id}`}
                             className={cn(
                               "flex min-h-8 flex-row items-center gap-2 px-4 py-2 text-[0.875rem] font-semibold text-[#333333]",
                             )}

@@ -72,14 +72,17 @@ export const Footer = () => {
                 <Image src={logo} alt="logo" className="size-32" />
               </Link>
               <p className={cn("text-[0.875rem] text-app-carbon")}>
-                <strong>Địa chỉ:</strong> 123 Nguyễn Thị Minh Khai, Quận 1,
-                TP.HCM
+                <strong>Địa chỉ:</strong> 35/22 Đ. Số 9, Hiệp Bình Phước, Thủ
+                Đức, TP.HCM
               </p>
               <p className={cn("text-[0.875rem] text-app-carbon")}>
                 <strong>Số điện thoại:</strong> 033 330 3802
               </p>
               <p className={cn("text-[0.875rem] text-app-carbon")}>
-                <strong>Email:</strong> 4hprotein@gmail.com
+                <strong>Email:</strong>{" "}
+                <Link href="mailto:4hprotein@gmail.com" target="_blank">
+                  4hprotein@gmail.com
+                </Link>
               </p>
             </div>
             <div className={cn("space-y-1")}>
@@ -87,7 +90,11 @@ export const Footer = () => {
                 Tổng đài hỗ trợ
               </h2>
               <p className={cn("text-[0.875rem]")}>
-                Hotline: <strong>033.330.3802</strong> (9h00 - 20h00)
+                Hotline:{" "}
+                <strong>
+                  <Link href="tel:0333303802">033.330.3802</Link>
+                </strong>{" "}
+                (9h00 - 20h00)
               </p>
             </div>
           </div>
@@ -98,13 +105,15 @@ export const Footer = () => {
               </h2>
               <ul className={cn("space-y-1 text-[0.875rem]")}>
                 <li>
-                  <Link href="#">Hướng dẫn mua hàng</Link>
+                  <Link href="/huong-dan-mua-hang">Hướng dẫn mua hàng</Link>
                 </li>
                 <li>
-                  <Link href="#">Hướng dẫn thanh toán</Link>
+                  <Link href="/huong-dan-thanh-toan">Hướng dẫn thanh toán</Link>
                 </li>
                 <li>
-                  <Link href="#">Hướng dẫn đổi trả hàng, hoàn tiền</Link>
+                  <Link href="/chinh-sach-doi-tra-hang-hoan-tien">
+                    Hướng dẫn đổi trả hàng, hoàn tiền
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -114,24 +123,37 @@ export const Footer = () => {
               </h2>
               <ul className={cn("space-y-1 text-[0.875rem]")}>
                 <li>
-                  <Link href="#">Quy định sử dụng</Link>
+                  <Link href="/quy-dinh-su-dung">Quy định sử dụng</Link>
                 </li>
                 <li>
-                  <Link href="#">Chính sách Vận Chuyển</Link>
+                  <Link href="/chinh-sach-van-chuyen">
+                    Chính sách Vận Chuyển
+                  </Link>
                 </li>
                 <li>
-                  <Link href="#">Chính sách Bảo Mật</Link>
+                  <Link href="/chinh-sach-bao-mat">Chính sách Bảo Mật</Link>
                 </li>
                 <li>
-                  <Link href="#">Chính sách Đổi Trả Hàng</Link>
+                  <Link href="/chinh-sach-doi-tra-hang-hoan-tien">
+                    Chính sách Đổi Trả Hàng
+                  </Link>
                 </li>
                 <li>
-                  <Link href="#">
+                  <Link href="/chinh-sach-bao-ve-thong-tin-ca-nhan-cua-nguoi-tieu-dung">
                     Chính sách bảo vệ thông tin cá nhân của người tiêu dùng
                   </Link>
                 </li>
               </ul>
             </div>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d823.7710163395219!2d106.71607878361843!3d10.846668895395966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175287146c555bd%3A0x9e16535d9b4b11fc!2zMzUvMjIgxJAuIFPhu5EgOSwgSGnhu4dwIELDrG5oIFBoxrDhu5tjLCBUaOG7pyDEkOG7qWMsIEjhu5MgQ2jDrSBNaW5oLCBWaWV0bmFt!5e0!3m2!1sen!2s!4v1729355971661!5m2!1sen!2s"
+              allowFullScreen={false}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              className={cn(
+                "mx-auto aspect-[8/5] w-[90%] xs:mx-0 lg:w-[25rem]",
+              )}
+            ></iframe>
           </div>
         </div>
         <div className={cn("my-8 h-px w-full bg-[#333]")}></div>

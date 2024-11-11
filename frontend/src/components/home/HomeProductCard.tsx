@@ -1,7 +1,9 @@
+"use client";
 import { cn, formatPrice } from "@/lib/utils";
 import { Rating } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import blueCheck from "/public/blue-check.svg";
 
 type TProps = {
@@ -25,6 +27,7 @@ const HomeProductCard = ({
   discount,
   priceAfterDiscount,
 }: TProps) => {
+  const router = useRouter();
   return (
     <div
       id={id.toString()}
@@ -40,7 +43,7 @@ const HomeProductCard = ({
         />
       </div>
       <div>
-        <Link href={"#"} className="space-y-1">
+        <Link href={"/product/1"} className="space-y-1">
           <div
             className={cn(
               "flex flex-row items-center gap-2 text-[0.6rem] font-bold uppercase !no-underline ml:text-[0.625rem]",
@@ -70,7 +73,10 @@ const HomeProductCard = ({
         </p>
         <div className="rounded-full bg-[#C11616] p-1 text-[0.625rem] font-bold text-white">{`-${discount}%`}</div>
       </div>
-      <button className="text-normal w-full rounded-full bg-[#1F5ADD] py-3 leading-[1.21] text-white transition-all duration-300 hover:bg-[#2c6af0]">
+      <button
+        onClick={() => router.push("/product/1")}
+        className="text-normal w-full rounded-full bg-[#1F5ADD] py-3 leading-[1.21] text-white transition-all duration-300 hover:bg-[#2c6af0]"
+      >
         Chọn mua
       </button>
     </div>
