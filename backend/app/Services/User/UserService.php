@@ -25,7 +25,7 @@ class UserService implements UserServiceInterface
         $userData['password'] = bcrypt($userData['password']);
         $userData['is_admin'] = false;
         $userRegisterd = $this->userRepository->create($userData);
-     //   $userRegisterd->assginRole('user');
+        $userRegisterd->assginRole('user');
         $success['name'] = $userRegisterd->name;
         $success['token'] = $userRegisterd->createToken('access_token')->plainTextToken;
         $success['message'] = 'Register successfully';

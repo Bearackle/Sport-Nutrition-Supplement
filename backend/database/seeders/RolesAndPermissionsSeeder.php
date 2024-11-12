@@ -52,9 +52,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $user = Role::create(['name' => 'user']);
         $user->givePermissionTo(['view products','view product reviews','cancel own order','place order',
             'write product review','view own orders','edit user', 'add item','update cart stock','view cart','remove item']);
-        $admin_account = (new \App\Models\User)->find(2);
+        $admin_account = (new \App\Models\User)->find(1);
         $admin_account->assignRole('admin');
-        $user_defaul = User::find(1);
-        $user_defaul->assignRole('user');
     }
 }
