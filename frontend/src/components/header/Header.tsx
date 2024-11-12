@@ -78,7 +78,7 @@ export const Header = () => {
           </div>
         </div>
         <Link
-          href="login"
+          href="/login"
           className="hidden flex-row items-center gap-2 xl:flex"
         >
           <Image src={accountIcon} alt="" className="size-7" />

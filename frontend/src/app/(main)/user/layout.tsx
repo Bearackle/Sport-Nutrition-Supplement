@@ -13,6 +13,8 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 // ** Import Icons
+import { logoutAction } from "@/actions/auth-actions";
+// import { getUserInfo } from "@/actions/user-actions";
 import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
 import orderIcon from "/public/order-icon.png";
@@ -49,6 +51,10 @@ export default function UserLayout({
 }>) {
   const pathname = usePathname();
   const router = useRouter();
+  // const [userInfo, setUserInfo] = React.useState<any>(null);
+  // useEffect(() => {
+  //   getUserInfo().then((res) => setUserInfo(res));
+  // }, []);
 
   const stringAvatar = (name: string) => {
     return {
@@ -57,6 +63,8 @@ export default function UserLayout({
       children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
     };
   };
+
+  // console.log(userInfo);
   return (
     <div
       className={cn(
@@ -172,6 +180,7 @@ export default function UserLayout({
               </button>
             ))}
             <button
+              onClick={logoutAction}
               className={cn(
                 "relative flex w-full flex-row items-center p-[0.75em]",
               )}
