@@ -18,7 +18,7 @@ class seed_admin_account extends Seeder
             'name' => 'admin',
             'email' => '4hprotein@gmail.com',
             'password' => Hash::make('duyHungGavl123'),
-            'phone' => '0333303802',
+            'phone' => '03333038',
         ]);
     }
 }
