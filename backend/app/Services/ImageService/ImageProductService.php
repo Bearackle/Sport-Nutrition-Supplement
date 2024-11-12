@@ -2,14 +2,14 @@
 
 namespace App\Services\ImageService;
 
-use App\Http\Resources\ImageResource;
-use App\Http\Responses\ApiResponse;
+use App\Jobs\UploadImageProductToCloudinary;
 use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Repositories\Image\DescriptionImageRepositoryInterface;
 use App\Repositories\Image\ProductImageRepositoryInterface;
 use App\Repositories\Image\RatingImageRepository;
 use App\Repositories\Image\RatingImageRepositoryInterface;
 use Cloudinary\Api\Exception\ApiError;
+use Illuminate\Support\Facades\Storage;
 
 class ImageProductService implements ImageProductServiceInterface{
     protected ProductImageRepositoryInterface $productImageRepository;
@@ -26,40 +26,48 @@ class ImageProductService implements ImageProductServiceInterface{
         $this->ratingImageRepository = $ratingImageRepository;
     }
     /**
-     * @throws ApiError
      */
     public function addImageVariants($productId, $variantId, $image): bool
     {
         if(empty($image)){
             return false;
         }
-            $dataUploaded = $this->uploadToCloudinary($image);
-            $this->productImageRepository->create(
-                ['product_id' => $productId,
-                'variant_id'=> $variantId,'image_url'=> $dataUploaded['image_url'],
-                    'is_primary'=> true,'public_id' => $dataUploaded['public_id'],]);
+        $dataImage['product_id'] = $productId;
+        $dataImage['variant_id'] = $variantId;
+        $dataImage['is_primary'] = true;
+        $path = Storage::putFile('public/images', $image);
+        UploadImageProductToCloudinary::dispatch($path,$dataImage,$this);
         return true;
     }
+    public function cloneDefaultVariantImages($productId,$variantId): void
+    {
+        $productImage = $this->productImageRepository->getDefaultImageByProductID($productId);
+        $variantData['product_id'] = $productId;
+        $variantData['variant_id'] = $variantId;
+        $variantData['is_primary'] = false;
+        $variantData['image_url'] = $productImage->image_url;
+        $variantData['public_id'] = $productImage->public_id;
+        $this->productImageRepository->create($variantData);
+    }
     /**
-     * @throws ApiError
      */
     public function addImagesProduct($productId, array $images =[]): bool
     {
         if (empty($images)) {
             return false;
         }
-        $isFirst = true;
+        $dataImage['product_id'] = $productId;
+        $dataImage['is_primary'] = true;
         foreach ($images as $image) {
-            $dataUploaded = $this->uploadToCloudinary($image);
-            $this->productImageRepository->create(['product_id' => $productId,
-                'image_url' => $dataUploaded['image_url'],
-                'public_id' => $dataUploaded['public_id'],
-                'is_primary' => $isFirst]);
-            $isFirst = false;
+            $path = Storage::putFile('public/images', $image);
+            UploadImageProductToCloudinary::dispatch($path,$dataImage,$this);
+            $dataImage['is_primary'] = false;
         }
         return true;
     }
-
+    public function storeDBImageProducts(array $dataUploaded) : void {
+        $this->productImageRepository->create($dataUploaded);
+    }
     /**
      * @throws ApiError
      */
@@ -73,26 +81,26 @@ class ImageProductService implements ImageProductServiceInterface{
             ['combo_image_url' => $dataUpdated['image_url']]);
         return true;
     }
-
     /**
      * @throws ApiError
      */
     public function uploadToCloudinary($image): array
     {
-       $uploaded =  cloudinary() ->upload($image->getRealPath());
+       $uploaded =  cloudinary()->upload($image->getRealPath());
        return ['image_url' => $uploaded->getSecurePath(),
            'public_id' => $uploaded->getPublicId()];
     }
     /**
      * @throws ApiError
      */
-    public function updateUploadedImage($imageId, $image) : void
+    public function updateUploadedImage($imageId, $image) : bool
     {
         $img = $this->productImageRepository->find($imageId);
         $result = cloudinary()->upload($image->getRealPath(),[
             'public_id' => $img['public_id'],
             'overwrite' => true,
         ]);
+        return true;
     }
     public function deleteImage($image) : void {
         cloudinary()->destroy($image->public_id);
@@ -118,7 +126,8 @@ class ImageProductService implements ImageProductServiceInterface{
     public function addImageDescription($image)
     {
         $image_data = $this->uploadToCloudinary($image);
-        return $this->descriptionImageRepository->create($image_data);
+        $data = $this->descriptionImageRepository->create($image_data);
+        return $data;
     }
 
     public function getDescriptionsImage()
@@ -132,7 +141,6 @@ class ImageProductService implements ImageProductServiceInterface{
         $this->deleteImage($image);
         $image->delete();
     }
-
     /**
      * @throws ApiError
      */

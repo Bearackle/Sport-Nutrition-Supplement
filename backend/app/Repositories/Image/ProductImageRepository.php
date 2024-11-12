@@ -13,4 +13,11 @@ class ProductImageRepository extends BaseRepository implements ProductImageRepos
     }
     public function deleteImageByProductID($productId){
     }
+
+    public function getDefaultImageByProductID($productId)
+    {
+       return (new \App\Models\ImageLinkModels\ProductImages)->where('product_id', $productId)
+           ->where('variant_id', null)
+           ->first();
+    }
 }

@@ -121,7 +121,6 @@ class ProductController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * @throws ApiError
      * @throws AuthorizationException
      * @OA\Post(
      *      path="/api/products/create",
@@ -155,9 +154,10 @@ class ProductController extends Controller
     {
         $this->authorize('create', Product::class);
         $product = ProductIntputData::validateAndCreate($request->input());
-        $product_created = $this->productService->insertNewProduct($product);
-        $this->imageProductService->addImagesProduct($product_created->product_id,[ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
-        $this->productVariantService->insertDefaultTaste(VariantInputData::from($product_created));
+        $productCreated = $this->productService->insertNewProduct($product);
+        $this->imageProductService->addImagesProduct($productCreated->product_id,[ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
+        $variantCreated = $this->productVariantService->insertDefaultTaste(VariantInputData::from($productCreated));
+        $this->imageProductService->cloneDefaultVariantImages($productCreated->product_id,$variantCreated->variant_id);
         return new ApiResponse(200,['message' => 'Product added successfully']);
     }
     /**
