@@ -1621,14 +1621,14 @@
                 }
             }
         },
-        "/api/accounts/profile": {
+        "/api/account/profile": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "hồ sơ",
                 "description": "Lấy thông tin hồ sơ người dùng, chỉ có user mới có thể xem",
-                "operationId": "8d63142d8392df4c87cacd4fae21e2e8",
+                "operationId": "a39247318fb307eb75143b61694e9a35",
                 "responses": {
                     "200": {
                         "description": "Thông tin người dùng"

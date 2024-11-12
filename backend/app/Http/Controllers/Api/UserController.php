@@ -99,7 +99,7 @@ class UserController
     /**
      * Display the specified resource.
      * @OA\Get(
-     *      path="/api/accounts/profile",
+     *      path="/api/account/profile",
      *      summary="hồ sơ",
      *      tags={"User"},
      *      description="Lấy thông tin hồ sơ người dùng, chỉ có user mới có thể xem",
