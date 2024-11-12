@@ -1523,7 +1523,7 @@
                 }
             }
         },
-        "account/register": {
+        "/api/account/register": {
             "post": {
                 "tags": [
                     "User"
@@ -1579,7 +1579,7 @@
                 }
             }
         },
-        "account/login": {
+        "/api/account/login": {
             "post": {
                 "tags": [
                     "User"
@@ -1621,14 +1621,14 @@
                 }
             }
         },
-        "accounts/profile": {
+        "/api/accounts/profile": {
             "get": {
                 "tags": [
                     "User"
                 ],
                 "summary": "hồ sơ",
                 "description": "Lấy thông tin hồ sơ người dùng, chỉ có user mới có thể xem",
-                "operationId": "ebc9ac5abbb69a4a8679056a6475ce8f",
+                "operationId": "8d63142d8392df4c87cacd4fae21e2e8",
                 "responses": {
                     "200": {
                         "description": "Thông tin người dùng"
