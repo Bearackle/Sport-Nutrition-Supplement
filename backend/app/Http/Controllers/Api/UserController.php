@@ -43,7 +43,7 @@ class UserController
 
     /**
      * @OA\Post(
-     *     path="account/register",
+     *     path="/api/account/register",
      *     summary="register new account",
      *     tags={"User"},
      *     description="Đăng ký người dùng mới",
@@ -73,7 +73,7 @@ class UserController
 
     /**
      * @OA\Post(
-     *     path="account/login",
+     *     path="/api/account/login",
      *     summary="login account",
      *     description="đăng nhập người dùng",
      *     tags={"User"},
@@ -99,7 +99,7 @@ class UserController
     /**
      * Display the specified resource.
      * @OA\Get(
-     *      path="accounts/profile",
+     *      path="/api/accounts/profile",
      *      summary="hồ sơ",
      *      tags={"User"},
      *      description="Lấy thông tin hồ sơ người dùng, chỉ có user mới có thể xem",
