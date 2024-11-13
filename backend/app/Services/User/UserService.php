@@ -45,12 +45,12 @@ class UserService implements UserServiceInterface
         ];
         return new ApiResponse(200,$data);
     }
-    public function profile(): ApiResponse
+    public function profile(): \Illuminate\Contracts\Auth\Authenticatable
     {
-        $user = Auth::user();
-        return new ApiResponse(200,[$user]);
+        return Auth::user();
     }
-    public function updatePassword(array $user){
+    public function updatePassword(array $user): ApiResponse
+    {
         $userData = $this->userRepository->find($user['userid']);
         if(!Hash::check($user['password'],$userData->password)){
             return new ApiResponse(300,[],'Old password doesn\'t match');

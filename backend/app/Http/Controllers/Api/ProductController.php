@@ -258,7 +258,6 @@ class ProductController extends Controller
         return new ApiResponse(200,['message' => 'Product not deleted']);
     }
     /**
-     * @throws ApiError
      * @throws AuthorizationException
      * @OA\Post(
      *     path="/api/products/{id}/image",

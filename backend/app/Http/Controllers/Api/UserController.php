@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\UserFullResource;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
@@ -70,7 +71,6 @@ class UserController
     {
         return $this->userService->register($request->validated());
     }
-
     /**
      * @OA\Post(
      *     path="/api/account/login",
@@ -107,19 +107,20 @@ class UserController
      *   @OA\Response(response=401, description="Không được cấp quyền, người dùng không có bearer token phù hợp"),
      * )
      */
-    public function show()
+    public function show(): UserFullResource
     {
-        return $this->userService->profile();
+        return new UserFullResource($this->userService->profile());
     }
     /**
-     * Update the specified resource in storage.
+     * @OA\Patch(
+     *      path="/api/
+     * )
      *
      */
     public function update(UpdatePasswordRequest $request): ApiResponse
     {
         return $this->userService->updatePassword($request->validated());
     }
-
     /**
      * Remove the specified resource from storage.
      */

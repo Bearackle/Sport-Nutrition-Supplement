@@ -28,9 +28,10 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|numeric|digits:10',
-            'password' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
-            'confirm_password' => 'required | same:password'
+            'phone' => ['required','numeric','digits:10','regex:/(0)(3|5|7|8|9)+([0-9]{8})\b/'],
+         //   'password' => ['required','string','min:8','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
+            'password' => ['required','string','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
+            'confirm_password' => 'required|same:password'
         ];
     }
     public function failedValidation(Validator $validator)

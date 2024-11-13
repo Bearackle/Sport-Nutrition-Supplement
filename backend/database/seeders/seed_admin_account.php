@@ -15,10 +15,10 @@ class seed_admin_account extends Seeder
     public function run(): void
     {
         (new \App\Models\User)->create([
-            'name' => 'admin',
+            'name' => 'admin admin',
             'email' => '4hprotein@gmail.com',
-            'password' => Hash::make('duyHungGavl123'),
-            'phone' => '03333038',
+            'password' => Hash::make('duyHungGavl123#'),
+            'phone' => '0333303802',
         ]);
     }
 }
