@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Services\Order\CartServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -56,13 +57,13 @@ class CartController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ"),
      * )
      */
-    public function newCart(): ApiResponse
+    public function newCart() : ShoppingCartResource
     {
         /**@var User $user**/
         $user = auth()->user();
         $cart = ShoppingCartInputData::validateAndCreate(['user_id' => $user->user_id]);
         $cartOutput = $this->cartService->createCart($cart);
-        return new ApiResponse(200, [new ShoppingCartResource($cartOutput)]);
+        return new ShoppingCartResource($cartOutput);
     }
     /**
      * @OA\Post(
@@ -86,11 +87,11 @@ class CartController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function store(Request $request) : ApiResponse
+    public function store(Request $request): CartItemResource
     {
         $cartItem = CartItemInputData::validateAndCreate($request->input());
         $cartItemAdded = $this->cartService->addCartItem($cartItem);
-        return new ApiResponse (200,[new CartItemResource($cartItemAdded)]);
+        return new CartItemResource($cartItemAdded);
     }
     /**
      * @OA\Get(
@@ -103,14 +104,14 @@ class CartController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function show(): ApiResponse
+    public function show(): CartItemsResource
     {
         $this->authorize('view', ShoppingCart::class);
         /**@var User $user**/
         $user = auth()->user();
         $cart = $this->cartService->getCart(UserInputData::from(['user_id' => $user->user_id]));
         $cartWithItems = $this->cartService->getItems(ShoppingCartInputData::validateAndCreate(['cart_id' => $cart->cart_id]));
-        return new ApiResponse(200,[new CartItemsResource($cartWithItems)]);
+        return new CartItemsResource($cartWithItems);
     }
     /**
      * @OA\Patch(
@@ -134,12 +135,12 @@ class CartController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function update(Request $request,string $id) : ApiResponse
+    public function update(Request $request,string $id): JsonResponse|CartItemResource
     {
         $cartItemtoUpdate = CartItemInputData::factory()->alwaysValidate()->from(['cart_item_id' => $id], $request->input());
         $cartItemUpdated = $this->cartService->updateCartItemQuantity($cartItemtoUpdate);
         if($cartItemUpdated){
-            return new ApiResponse(200,[new CartItemResource($cartItemUpdated)]);
+            return new CartItemResource($cartItemUpdated);
         }
         else
             return ApiResponse::fail("update failed :(");

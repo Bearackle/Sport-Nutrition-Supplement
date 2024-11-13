@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,6 +22,7 @@ class ReviewResource extends JsonResource
             'comboId' => $this->has('combo_id') ? $this->combo_id : null,
             'rating' => $this->rating,
             'comment' => $this->comment,
+            'images'   => $this->has('images') ? ImageRatingResource::collection($this->images) : null,
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at
         ];
@@ -28,5 +30,9 @@ class ReviewResource extends JsonResource
     public function has(string $propertyName): bool
     {
         return isset($this->{$propertyName});
+    }
+    public function withResponse(Request $request, JsonResponse $response): void
+    {
+        $response->setData($this->toArray($request));
     }
 }

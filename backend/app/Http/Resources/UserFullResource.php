@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -23,5 +24,9 @@ class UserFullResource extends JsonResource
             'createAt' => $this->created_at,
             'updateAt' => $this->updated_at
         ];
+    }
+    public function withResponse(Request $request, JsonResponse $response): void
+    {
+         $response->setData($this->toArray($request));
     }
 }

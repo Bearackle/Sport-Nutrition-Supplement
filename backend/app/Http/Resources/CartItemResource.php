@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -22,5 +23,9 @@ class CartItemResource extends JsonResource
             'comboId' => $this->combo_id,
             'quantity' => $this->quantity
         ];
+    }
+    public function withResponse(Request $request, JsonResponse $response): void
+    {
+        $response->setData($this->toArray($request));
     }
 }

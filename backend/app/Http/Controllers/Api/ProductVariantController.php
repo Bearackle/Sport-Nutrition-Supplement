@@ -15,7 +15,9 @@ use App\Services\ImageService\ImageProductServiceInterface;
 use App\Services\Product\ProductVariantServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductVariantController extends Controller
 {
@@ -51,12 +53,13 @@ class ProductVariantController extends Controller
      *     @OA\Response(response=400, description="Tìm mùi vị thất bại"),
      * )
      */
-    public function VariantsOfProduct($id): ApiResponse
+    public function VariantsOfProduct($id): AnonymousResourceCollection
     {
         $data_variants = $this->productVariantService->getVariantsData(
             ProductIntputData::validateAndCreate(['product_id' => $id]));
-        return new ApiResponse(200, [VariantResource::collection($data_variants)]);
+        return VariantResource::collection($data_variants);
     }
+
     /**
      * @OA\Get(
      *     path="/api/products/admin/{id}/variants",
@@ -72,12 +75,14 @@ class ProductVariantController extends Controller
      *     @OA\Response(response=200, description="Tìm mùi vị thành công"),
      *     @OA\Response(response=400, description="Tìm mùi vị thất bại"),
      * )
+     * @throws AuthorizationException
      */
-    public function VariantsOfProductAdmin($id): ApiResponse
+    public function VariantsOfProductAdmin($id) : AnonymousResourceCollection
     {
+        $this->authorize('viewAny', ProductVariant::class);
         $data_variants = $this->productVariantService->getVariantsData(
             ProductIntputData::validateAndCreate(['product_id' => $id]));
-        return new ApiResponse(200, [VariantResource::collection($data_variants)]);
+        return VariantResource::collection($data_variants);
     }
     /**
      * @OA\Post(
@@ -137,18 +142,19 @@ class ProductVariantController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function update(Request $request, string $id) : ApiResponse
+    public function update(Request $request, string $id): JsonResponse|VariantResource
     {
         $this->authorize('update', ProductVariant::class);
         $variant_updated = $this->productVariantService->updateProductVariant(VariantInputData::factory()->alwaysValidate()
             ->from($request->input(),['variant_id' => $id]));
         if(!$variant_updated){
-            return new ApiResponse(400,[],"fail updated");
+            return ApiResponse::fail('fail update');
         }
-        return new ApiResponse(200,[new VariantResource($variant_updated)]);
+        return new VariantResource($variant_updated);
     }
+
     /**
-     * @OA\Patch(
+     * @OA\Post(
      *     path="/api/products/variants/image/{image_id}",
      *     tags={"Variant"},
      *     summary="cập nhập hình ảnh mùi vị",
@@ -162,19 +168,23 @@ class ProductVariantController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
-     *             mediaType="multipart-formdata",
-     *          @OA\Schema(
-     *              @OA\Property(property="image", type="string", format="binary", description="Ảnh thay thế")
+     *              mediaType="multipart/form-data",
+     *              @OA\Schema(
+     *                @OA\Property(property="image", type="string", format="binary",
+     *                               description="File ảnh của sản phẩm (1 ảnh) phải thuộc các định dạng: .jqg, .webp, .png")
      *          ),
      *         )
      *     ),
      *     @OA\Response(response=200, description="Cập nhật ảnh thành công"),
      *     @OA\Response(response=400, description="Cập nhật ảnh thất bại")
      * )
+     * @throws AuthorizationException
      */
-    public function updateImage(Request $request,string $id) : void {
+    public function updateImage(Request $request,string $id) : JsonResponse {
+        $this->authorize('update', ProductVariant::class);
         $this->imageProductService->updateUploadedImage($id,
             ImageData::validateAndCreate(['image' => $request->file('image')])->image);
+        return ApiResponse::success('update image successully');
     }
     /**
      * @OA\Delete(

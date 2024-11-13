@@ -53,7 +53,7 @@ Route::group([
     'prefix' => 'products/variants'], function() {
     Route::post('/', [ProductVariantController::class,'store'])->middleware('auth:sanctum');
     Route::patch('/{id}', [ProductVariantController::class, 'update'])->middleware('auth:sanctum');
-    Route::patch('/image/{image_id}', [ProductVariantController::class, 'updateImage'])->middleware('auth:sanctum');
+    Route::post('/image/{image_id}', [ProductVariantController::class, 'updateImage'])->middleware('auth:sanctum');
     Route::delete('/{id}', [ProductVariantController::class, 'destroy'])->middleware('auth:sanctum');
 });
 Route::group([

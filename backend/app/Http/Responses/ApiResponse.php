@@ -27,12 +27,16 @@ class ApiResponse implements Responsable
             options : JSON_UNESCAPED_UNICODE
         );
     }
-    public static function success(string $message): static
+    public static function success(string $message): \Illuminate\Http\JsonResponse
     {
-        return new static(200, ['message' => $message]);
+        return response()->json([
+            "message" => $message
+        ]);
     }
-    public static function fail(string $message): static
+    public static function fail(string $message): \Illuminate\Http\JsonResponse
     {
-        return new static(400, ['message' => $message]);
+        return response()->json([
+            "message" => $message
+        ],400);
     }
 }

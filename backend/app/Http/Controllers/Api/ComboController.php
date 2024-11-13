@@ -66,13 +66,13 @@ class ComboController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function store(Request $request) : ApiResponse
+    public function store(Request $request): ComboResource
     {
         $this->authorize('create', Combo::class);
         $combo = ComboInputData::validateAndCreate($request->input());
         $created_combo = $this->comboService->createCombo($combo);
         $this->imageProductService->addImageCombo($created_combo->combo_id, ImageData::validateAndCreate(['image' => $request->file('image')])->image);
-        return new ApiResponse(200,[new ComboResource($this->comboService->getComboById(ComboInputData::from(['combo_id' => $created_combo->combo_id])))]);
+        return new ComboResource($this->comboService->getComboById(ComboInputData::from(['combo_id' => $created_combo->combo_id])));
     }
     /**
      * @OA\Post(
@@ -95,12 +95,12 @@ class ComboController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function add(Request $request): ApiResponse
+    public function add(Request $request): ComboProductResource
     {
         $this->authorize('create', Combo::class);
         $product = ComboProductInputData::validateAndCreate($request->input());
         $product = $this->comboService->addProductCombo($product);
-        return new ApiResponse(200, [new ComboProductResource($product)]);
+        return new ComboProductResource($product);
     }
     /**
      * @OA\Get(
@@ -118,10 +118,10 @@ class ComboController extends Controller
      *     @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function show(string $id) : ApiResponse
+    public function show(string $id): ComboResource
     {
         $combo_products = $this->comboService->getComboWithProducts(ComboInputData::validateAndCreate(['combo_id' => $id]));
-        return new ApiResponse(200,[new ComboResource($combo_products)]);
+        return new ComboResource($combo_products);
     }
     /**
      * @OA\Delete (

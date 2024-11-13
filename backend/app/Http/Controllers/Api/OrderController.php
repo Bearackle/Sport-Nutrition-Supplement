@@ -85,15 +85,14 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function store(Request $request): ApiResponse
+    public function store(Request $request): OrderResource
     {
         $this->authorize('create', Order::class);
         /**@var User $user**/
         $user = auth()->user();
         $order = $this->orderService->createOrder(
-            UserInputData::validateAndCreate(['user_id' => $user->user_id])
-        ,$request->input('message'));
-        return new ApiResponse(200,[new OrderResource($order)]);
+            UserInputData::validateAndCreate(['user_id' => $user->user_id]),$request->input('message'));
+        return new OrderResource($order);
     }
     /**
      * @OA\Get(
@@ -111,11 +110,11 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function show(string $order_id): ApiResponse
+    public function show(string $order_id): OrderResource
     {
         $this->authorize('view', Order::class);
         $order =  $this->orderService->getOrderData(OrderInputData::validateAndCreate(['order_id' => $order_id]));
-        return new ApiResponse(200,[new OrderResource($order)]);
+        return new OrderResource($order);
     }
     /**
      * @OA\Patch(
@@ -141,12 +140,12 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function update(Request $request,string $order_id): ApiResponse
+    public function update(Request $request,string $order_id)  : OrderResource
     {
         $this->authorize('update', Order::class);
         $order = OrderInputData::factory()->alwaysValidate()->from(['order_id' => $order_id],$request->input());
         $orderUpdated = $this->orderService->updateOrder($order);
-        return new ApiResponse(200,[new OrderResource($orderUpdated)]);
+        return new OrderResource($orderUpdated);
     }
     /**
      * @OA\Delete(
@@ -191,11 +190,13 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function addPayment(Request $request): ApiResponse
+    public function addPayment(Request $request)
     {
         $this->authorize('create' , Order::class);
-        $payment = $this->orderService->addPaymentMethod(PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
-        return new ApiResponse(200, [new PaymentResource($payment)]);
+        $orderPayment = PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId'),
+            'payment_method' => $request->input('paymentMethod')]);
+        $payment = $this->orderService->addPaymentMethod($orderPayment);
+        return new PaymentResource($payment);
     }
 
     /**
@@ -215,11 +216,11 @@ class OrderController extends Controller
      *    @OA\Response(response=500, description="Lỗi dịch vụ")
      * )
      */
-    public function getOrderPayments(string $orderId): ApiResponse
+    public function getOrderPayments(string $orderId): PaymentResource
     {
         $this->authorize('view', Order::class);
         $payment = $this->paymentService->getPayment(OrderInputData::validateAndCreate(['order_id' => $orderId]));
-        return new ApiResponse(200, [new PaymentResource($payment)]);
+        return new PaymentResource($payment);
     }
     /**
      * @OA\Post(
@@ -241,12 +242,12 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function addAddress(Request $request) : ApiResponse
+    public function addAddress(Request $request) : OrderResource
     {
         $this->authorize('create', Order::class);
         $order = $this->orderService->addAddress(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]),
         AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
-        return new ApiResponse(200, [new OrderResource($order)]);
+        return new OrderResource($order);
     }
     /**
      * @param Request $request
@@ -270,11 +271,11 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function addShipping(Request $request): ApiResponse
+    public function addShipping(Request $request) : OrderResource
     {
         $this->authorize('create', Order::class);
         $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
         ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
-         return new ApiResponse(200, [new OrderResource($order)]);
+         return new OrderResource($order);
     }
 }

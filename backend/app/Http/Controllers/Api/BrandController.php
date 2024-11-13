@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\BrandResource;
 use App\Services\Product\BrandServcieInterface;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,9 @@ class BrandController extends Controller
      *   @OA\Response(response=400, description="Lấy thất bại")
      * )
      */
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return $this->brandServcie->getBrands();
+        return BrandResource::collection($this->brandServcie->getBrands());
     }
 
     /**

@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Enum\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class OrderResource extends JsonResource
 {
@@ -28,5 +28,9 @@ class OrderResource extends JsonResource
     public function has(string $propertyName): bool
     {
         return isset($this->{$propertyName});
+    }
+    public function withResponse(Request $request,JsonResponse $response): void
+    {
+        $response->setData($this->toArray($request));
     }
 }

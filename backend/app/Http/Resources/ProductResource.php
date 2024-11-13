@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\LaravelData\Optional;
@@ -22,7 +23,7 @@ class ProductResource extends JsonResource
             'productId' => $this->product_id,
             'productName' => $this->product_name,
             'description' => $this->description,
-            'shortDescription' => $this->short_description,
+            'shortDescription' => $this->has('short_description') ? $this->short_description : null,
             'price'=> $this->price,
             'sale' => $this->sale,
             'priceAfterSale' => $this->price_after_sale,
@@ -35,5 +36,9 @@ class ProductResource extends JsonResource
     public function has(string $propertyName): bool
     {
         return isset($this->{$propertyName});
+    }
+    public function withResponse(Request $request, JsonResponse $response): void
+    {
+        $response->setData($this->toArray($request));
     }
 }

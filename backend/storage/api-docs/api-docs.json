@@ -809,7 +809,8 @@
                             "type": "object",
                             "example": {
                                 "sortbyprice": "asc",
-                                "category": "1"
+                                "category": "1",
+                                "price": "(>=700000AND<=900000)"
                             },
                             "additionalProperties": true
                         }
@@ -1518,13 +1519,13 @@
             }
         },
         "/api/products/variants/image/{image_id}": {
-            "patch": {
+            "post": {
                 "tags": [
                     "Variant"
                 ],
                 "summary": "cập nhập hình ảnh mùi vị",
                 "description": "Cập nhật hình ảnh mùi vị có image_id",
-                "operationId": "50f1438bb28ecfeded0a419c29eb48f2",
+                "operationId": "f64eb4f0650e8813a1122e1897c02c3c",
                 "parameters": [
                     {
                         "name": "image_id",
@@ -1536,11 +1537,11 @@
                 "requestBody": {
                     "required": true,
                     "content": {
-                        "multipart-formdata": {
+                        "multipart/form-data": {
                             "schema": {
                                 "properties": {
                                     "image": {
-                                        "description": "Ảnh thay thế",
+                                        "description": "File ảnh của sản phẩm (1 ảnh) phải thuộc các định dạng: .jqg, .webp, .png",
                                         "type": "string",
                                         "format": "binary"
                                     }
@@ -1594,7 +1595,7 @@
                                         "type": "string",
                                         "example": "rất ngon"
                                     },
-                                    "image": {
+                                    "images[]": {
                                         "description": "File ảnh đánh giá sản phẩm (một hoặc nhiều) phải thuộc các định dạng: .jqg, .webp, .png",
                                         "type": "array",
                                         "items": {
@@ -1614,6 +1615,221 @@
                     },
                     "400": {
                         "description": "Tạo sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    }
+                }
+            }
+        },
+        "/api/review/product/{id}": {
+            "get": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Tìm tất cả đánh giá của sản phẩm",
+                "description": "Tìm tất cả đánh giá của sản phẩm có {id}",
+                "operationId": "1e35d54502d28324e78c17b4989c8cca",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của sản phẩm",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/review/combo/{id}": {
+            "get": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Tìm tất cả đánh giá của combo",
+                "description": "Tìm tất cả đánh giá của combo có {id}",
+                "operationId": "73a3f62bf09e36bf5134351fc467a5dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của combo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/review/{id}": {
+            "delete": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "xóa comment",
+                "description": "xóa sản phẩm (hành động nguy hiểm)",
+                "operationId": "20bd1ae8f3105bd62aae8ace4066566a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id review cần xóa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "xóa sản phẩm thành công"
+                    },
+                    "400": {
+                        "description": "xóa sản phẩm thất bại"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "cập nhật thông tin",
+                "description": "Cập nhật thông tin đánh giá",
+                "operationId": "2ef0f067218613c4fc83d701d6470314",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của đánh giá cần update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5
+                                    },
+                                    "comment": {
+                                        "type": "string",
+                                        "example": "rat tuyet voi"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/review/image": {
+            "post": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Thêm ảnh đánh giá",
+                "description": "Thêm ảnh cho đánh giá",
+                "operationId": "e6dcfbedd82dd8173d811599cbc48728",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "reviewId": {
+                                        "description": "reviewId của đánh giá cần upload ảnh",
+                                        "type": "integer",
+                                        "format": "int32"
+                                    },
+                                    "images[]": {
+                                        "description": "File ảnh đánh giá sản phẩm (một hoặc nhiều) phải thuộc các định dạng: .jqg, .webp, .png",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tải ảnh lên thành công"
+                    },
+                    "400": {
+                        "description": "Tải ảnh lên thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    }
+                }
+            }
+        },
+        "/api/review/image/{id}": {
+            "delete": {
+                "tags": [
+                    "Review"
+                ],
+                "summary": "Xóa ảnh đánh giá",
+                "description": "Xóa 1 ảnh của review",
+                "operationId": "4e701d44a9a280bfed1af07dcc1498c1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của ảnh",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Xóa ảnh thành công"
+                    },
+                    "400": {
+                        "description": "Xóa ảnh thất bại"
                     },
                     "422": {
                         "description": "Sai định dạng yêu cầu"

@@ -66,7 +66,8 @@ class ProductController extends Controller
      *         description="Lọc sản phẩm với tiêu chí",
      *         @OA\Schema(type="object",additionalProperties=true,example={
      * "sortbyprice": "asc",
-     * "category" : "1"
+     * "category" : "1",
+     * "price" : "(>=700000AND<=900000)"
      * })
      *     ),
      *     @OA\Response(response=200, description="Lọc thành công"),
@@ -178,11 +179,10 @@ class ProductController extends Controller
      * @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      **/
-    public function show(string $id) : ApiResponse
+    public function show(string $id): ProductResource
     {
          $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
-         $data = new ProductResource($product);
-         return new ApiResponse(200,[$data]);
+         return new ProductResource($product);
     }
     /**
      * @param string $id
@@ -204,11 +204,10 @@ class ProductController extends Controller
      *  @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
-    public function showProductsAdmin(string $id) : ApiResponse
+    public function showProductsAdmin(string $id) : ProductResource
     {
         $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
-        $data = new ProductResource($product);
-        return new ApiResponse(200,[$data]);
+        return new ProductResource($product);
     }
     /**
      * @OA\Patch(
@@ -411,11 +410,11 @@ class ProductController extends Controller
      *  @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
-    public function uploadDescriptionImage(Request $request): ApiResponse
+    public function uploadDescriptionImage(Request $request): ImageResource
     {
         $this->authorize('create',Product::class);
         $image = $this->imageProductService->addImageDescription(ImageData::validateAndCreate(['image' => $request->file('image')])->image);
-        return new ApiResponse(200, [new ImageResource($image)]);
+        return new ImageResource($image);
     }
     /**
      * @throws AuthorizationException
@@ -429,12 +428,11 @@ class ProductController extends Controller
      *    @OA\Response(response=422, description="Sai định dạng yêu cầu")
      * )
      */
-    public function getAllDescriptionImages(): ApiResponse
+    public function getAllDescriptionImages(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $this->authorize('viewAny',Product::class);
         $images = $this->imageProductService->getDescriptionsImage();
-        $imagesResponse = ImageResource::collection($images);
-        return new ApiResponse(200,[$imagesResponse]);
+        return ImageResource::collection($images);
     }
     /**
      * @throws AuthorizationException

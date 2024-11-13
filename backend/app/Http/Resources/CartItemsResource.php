@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,5 +21,9 @@ class CartItemsResource extends JsonResource
             'products' => ProductVariantPivotResource::collection($this->variants),
             'combos' =>   ComboCartItems::collection($this->combos)
         ];
+    }
+    public function withResponse(Request $request, JsonResponse $response): void
+    {
+        $response->setData($this->toArray($request));
     }
 }
