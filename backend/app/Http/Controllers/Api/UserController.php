@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\DTOs\InputData\UserInputUpdatePasswordData;
 use App\Http\Resources\UserFullResource;
 use App\Http\Responses\ApiResponse;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
@@ -113,13 +115,31 @@ class UserController
     }
     /**
      * @OA\Patch(
-     *      path="/api/
+     *      path="/api/account/reset",
+     *      tags={"User"},
+     *      summary="thay đổi mật khẩu",
+     *      description="thay đổi mật khẩu người dùng",
+     *       @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *                mediaType="application/x-www-form-urlencoded",
+     *                @OA\Schema(
+     *                    @OA\Property(property="oldPassword", format="password"),
+     *                    @OA\Property(property="password", format="password"),
+     *                    @OA\Property(property="confirmPassword", format="password"),
+     *                )
+     *           )
+     *      ),
+     *     @OA\Response(response=200, description="cập nhật thành công"),
+     *     @OA\Response(response=400, description="cập nhật thất bại")
      * )
-     *
      */
     public function update(UpdatePasswordRequest $request): ApiResponse
     {
-        return $this->userService->updatePassword($request->validated());
+        /**@var User $user **/
+        $user = auth()->user();
+        $data = UserInputUpdatePasswordData::from($request->validated());
+        return $this->userService->updatePassword($user,$data);
     }
     /**
      * Remove the specified resource from storage.
@@ -128,5 +148,4 @@ class UserController
     {
         //
     }
-    //customize function start here
 }

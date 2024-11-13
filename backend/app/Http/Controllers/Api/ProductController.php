@@ -118,7 +118,6 @@ class ProductController extends Controller
         $products = $this->productService->getProducts();
         return ProductLandingMask::collection($products);
     }
-
     /**
      * Store a newly created resource in storage.
      * @throws AuthorizationException
@@ -134,6 +133,7 @@ class ProductController extends Controller
      *              mediaType="multipart/form-data",
      *              @OA\Schema(
      *                  @OA\Property(property="productName", format="name", example="Ostrovit Micellar Casein - 700 grams", description="Tên sản phẩm"),
+     *                  @OA\Property(property="shortDescription", example="chứa nhiều protein", description="Mô tả sản phẩm ngắn"),
      *                  @OA\Property(property="description", example="sản phẩm số 1", description="Mô tả sản phẩm (được lưu trữ dạng html trong database)"),
      *                  @OA\Property(property="price", format="int32", description="Giá gốc của sản phẩm",example="100000"),
      *                  @OA\Property(property="sale", format="int32", description="tỷ lệ sale sản phẩm", example="10"),
@@ -157,7 +157,7 @@ class ProductController extends Controller
         $productCreated = $this->productService->insertNewProduct($product);
         $this->imageProductService->addImagesProduct($productCreated->product_id,[ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
         $variantCreated = $this->productVariantService->insertDefaultTaste(VariantInputData::from($productCreated));
-        $this->imageProductService->cloneDefaultVariantImages($productCreated->product_id,$variantCreated->variant_id);
+        $this->imageProductService->addImageVariants($productCreated->product_id, $variantCreated->variant_id,$request->file('image'));
         return new ApiResponse(200,['message' => 'Product added successfully']);
     }
     /**
@@ -183,6 +183,32 @@ class ProductController extends Controller
          $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
          $data = new ProductResource($product);
          return new ApiResponse(200,[$data]);
+    }
+    /**
+     * @param string $id
+     * @return ApiResponse
+     * @OA\Get(
+     *     path="/api/products/admin/{id}",
+     *     tags={"Product"},
+     *     summary="Admin Tìm thông tin sản phẩm",
+     *     description="Admin tìm thông tin sản phẩm, trường stockQuantity sẽ có giá trị",
+     *     @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="id của sản phẩm cần tìm",
+     *          @OA\Schema(type="integer"),
+     *      ),
+     *  @OA\Response(response=200, description="Success"),
+     *  @OA\Response(response=400,description="Fail to get"),
+     *  @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     * )
+     */
+    public function showProductsAdmin(string $id) : ApiResponse
+    {
+        $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
+        $data = new ProductResource($product);
+        return new ApiResponse(200,[$data]);
     }
     /**
      * @OA\Patch(
@@ -296,7 +322,8 @@ class ProductController extends Controller
      * @throws AuthorizationException
      * /**
      * /**
-     * @OA\Patch(
+     * /**
+     * @OA\Post(
      *      path="/api/products/image/{id}",
      *      tags={"Product"},
      *      description="Cập nhật ảnh sản phẩm",
@@ -305,30 +332,28 @@ class ProductController extends Controller
      *          in="path",
      *          name="id",
      *          required=true,
-     *          @OA\Schema(type="integer"),
-     *      ),
+     *          description="mã ảnh sản phẩm",
+     *      @OA\Schema(type="integer"),
+     *     ),
      *      @OA\RequestBody(
-     *           required=true,
-     *           @OA\MediaType(
-     *               mediaType="multipart/form-data",
-     *               @OA\Schema(
-     *                   @OA\Property(
-     *                       property="image",
-     *                       type="string",
-     *                       format="binary",
-     *                       description="File ảnh của sản phẩm (1 ảnh)"
-     *                   )
-     *               )
-     *           )
-     *       ),
-     *      @OA\Response(response=200, description="update ảnh thành công"),
-     *      @OA\Response(response=400, description="update ảnh sản phẩm thất bại"),
-     *      @OA\Header(
-     *          header="Content-Type",
-     *          @OA\Schema(type="string", default="multipart/form-data")
-     *      ),
-     *      @OA\Response(response=422, description="Sai định dạng yêu cầu")
-     *  )
+     *          required=true,
+     *          content={
+     *                  @OA\MediaType(
+     *                      mediaType="multipart/form-data",
+     *                      @OA\Schema(
+     *                          @OA\Property(
+     *                              property="image",
+     *                              type="string",
+     *                              format="binary"
+     * )
+     * )
+     * )
+     * }
+     * ),
+     * @OA\Response(response=200, description="update ảnh thành công"),
+     * @OA\Response(response=400, description="update ảnh sản phẩm thất bại"),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     * )
      * /
      **/
     public function updateImage(UpdateImageRequest $request,string $id)  : ApiResponse    {

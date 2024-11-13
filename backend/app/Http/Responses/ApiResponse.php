@@ -9,7 +9,7 @@ class ApiResponse implements Responsable
     protected int $httpCode;
     protected array $data;
     protected string $errorMessage;
-    public function __construct(int $httpCode, array $data=[],string $errorMessage=''){
+    public function __construct(int $httpCode,array $data,string $errorMessage=''){
         $this->httpCode = $httpCode;
         $this->data = $data;
         $this->errorMessage = $errorMessage;
@@ -17,8 +17,8 @@ class ApiResponse implements Responsable
     public function toResponse($request): \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         $payload = match (true) {
-            $this->httpCode >= 500 => ['error_message' => 'Server error'],
-            $this->httpCode >= 400 => ['error_message' => $this->errorMessage],
+            $this->httpCode >= 500 => ['errorMessage' => 'Server error'],
+            $this->httpCode >= 400 => ['errorMessage' => $this->errorMessage],
             $this->httpCode >= 200 => ['data' => $this->data],
         };
         return response()-> json(

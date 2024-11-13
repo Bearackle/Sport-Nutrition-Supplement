@@ -8,7 +8,7 @@ interface ImageProductServiceInterface
 {
     public function addImagesProduct($productId,array $images);
     public function addImageVariants($productId, $variantId,$image);
-    public function addImageCombo($comboID, $imageCombo);
+    public function addImageCombo($comboId, $imageCombo);
     public function addImageDescription($image);
     public function updateUploadedImage($imageId,$image);
     public function uploadToCloudinary($image);
@@ -17,7 +17,7 @@ interface ImageProductServiceInterface
     public function getImageData($image_id);
     public function getDescriptionsImage();
     public function deleteDescriptionsImage($imageId);
-    public function addReviewImages($imageDatas);
+    public function addReviewImages($imageDataSource);
     public function deleteReviewImage($publicId);
 
 }

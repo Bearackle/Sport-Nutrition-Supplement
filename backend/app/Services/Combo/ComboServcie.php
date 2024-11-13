@@ -27,7 +27,7 @@ class ComboServcie implements ComboServiceInterface
     }
     public function getAllCombos(): \Illuminate\Contracts\Pagination\Paginator
     {
-        return $this->combo_repository->getAvailableCombos();
+        return $this->combo_repository->getAvailableCombos()->paginate(10);
     }
     public function getComboOfCategory($categoryId): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {

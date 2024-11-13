@@ -2,29 +2,28 @@
 
 namespace App\Jobs;
 
+use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Services\ImageService\ImageProductService;
 use Cloudinary\Api\Exception\ApiError;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
-class UploadImageProductToCloudinary implements ShouldQueue
+class UploadComboImageToCloudinary implements ShouldQueue
 {
     use Queueable;
-    public string $filePath;
-    public array $data;
-    protected ImageProductService $imageProductService;
-    public int $tries = 2;
+    protected array $data;
+    protected string $filePath;
+    protected ComboRepositoryInterface $comboRepository;
     /**
      * Create a new job instance.
      */
-    public function __construct(string $filePath,array $data,ImageProductService $imageProductService)
+    public function __construct(string $filePath,array $data, ComboRepositoryInterface $comboRepository)
     {
         $this->filePath = $filePath;
         $this->data = $data;
-        $this->imageProductService = $imageProductService;
+        $this->comboRepository = $comboRepository;
     }
     /**
      * Execute the job.
@@ -32,11 +31,10 @@ class UploadImageProductToCloudinary implements ShouldQueue
      */
     public function handle(): void
     {
-            $uploaded = cloudinary()->upload(Storage::path($this->filePath));
-            $this->data['image_url'] = $uploaded->getSecurePath();
-            $this->data['public_id'] = $uploaded->getPublicId();
-            $this->imageProductService->storeDBImageProducts($this->data);
-            Storage::delete($this->filePath);
+        $uploaded = cloudinary()->upload(Storage::path($this->filePath));
+        $this->data['combo_image_url'] = $uploaded->getSecurePath();
+        $this->comboRepository->update($this->data['combo_id'],$this->data);
+        Storage::delete($this->filePath);
     }
     public function fail($exception = null) : void
     {

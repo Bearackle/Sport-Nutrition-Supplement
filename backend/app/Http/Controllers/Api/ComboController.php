@@ -27,14 +27,20 @@ class ComboController extends Controller
         $this->imageProductService = $imageProductService;
     }
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/combo/all",
+     *     tags={"Combo"},
+     *     description="Tìm thông tin tất cả combos",
+     *     summary="Tìm thông tin tất cả combo combo",
+     *     @OA\Response(response=200, description="Tìm thấy combos"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
         $combos = $this->comboService->getAllCombos();
         return CombosLandingMask::collection($combos);
     }
-
     /**
      * @OA\Post(
      *     path="/api/combo/create",

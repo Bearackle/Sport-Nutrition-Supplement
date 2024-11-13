@@ -126,4 +126,9 @@ class OrderService implements OrderServiceInterface
         event(new addShippingCharges($this->order_repository->find($order->order_id), $ship->method));
         return OrderOutputData::from($order);
     }
+
+    public function getAllOrders(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
+    {
+        return OrderOutputData::collect($this->order_repository->getAllOrders()->paginate(10));
+    }
 }

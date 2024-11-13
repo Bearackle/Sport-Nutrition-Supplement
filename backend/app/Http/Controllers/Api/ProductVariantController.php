@@ -57,7 +57,28 @@ class ProductVariantController extends Controller
             ProductIntputData::validateAndCreate(['product_id' => $id]));
         return new ApiResponse(200, [VariantResource::collection($data_variants)]);
     }
-
+    /**
+     * @OA\Get(
+     *     path="/api/products/admin/{id}/variants",
+     *     tags={"Variant"},
+     *     summary="Admin tìm mùi vị của sản phẩm",
+     *     description="Tìm thông tin mùi vị của sản phẩm có trường stockQuantity",
+     *     @OA\Parameter (
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         description="mã sản phẩm",
+     *     ),
+     *     @OA\Response(response=200, description="Tìm mùi vị thành công"),
+     *     @OA\Response(response=400, description="Tìm mùi vị thất bại"),
+     * )
+     */
+    public function VariantsOfProductAdmin($id): ApiResponse
+    {
+        $data_variants = $this->productVariantService->getVariantsData(
+            ProductIntputData::validateAndCreate(['product_id' => $id]));
+        return new ApiResponse(200, [VariantResource::collection($data_variants)]);
+    }
     /**
      * @OA\Post(
      *     path="/api/products/variants",

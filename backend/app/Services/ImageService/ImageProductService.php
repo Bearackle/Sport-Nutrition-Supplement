@@ -2,7 +2,9 @@
 
 namespace App\Services\ImageService;
 
+use App\Jobs\UploadComboImageToCloudinary;
 use App\Jobs\UploadImageProductToCloudinary;
+use App\Jobs\UploadToCloudinary;
 use App\Repositories\Combo\ComboRepositoryInterface;
 use App\Repositories\Image\DescriptionImageRepositoryInterface;
 use App\Repositories\Image\ProductImageRepositoryInterface;
@@ -39,16 +41,6 @@ class ImageProductService implements ImageProductServiceInterface{
         UploadImageProductToCloudinary::dispatch($path,$dataImage,$this);
         return true;
     }
-    public function cloneDefaultVariantImages($productId,$variantId): void
-    {
-        $productImage = $this->productImageRepository->getDefaultImageByProductID($productId);
-        $variantData['product_id'] = $productId;
-        $variantData['variant_id'] = $variantId;
-        $variantData['is_primary'] = false;
-        $variantData['image_url'] = $productImage->image_url;
-        $variantData['public_id'] = $productImage->public_id;
-        $this->productImageRepository->create($variantData);
-    }
     /**
      */
     public function addImagesProduct($productId, array $images =[]): bool
@@ -69,16 +61,14 @@ class ImageProductService implements ImageProductServiceInterface{
         $this->productImageRepository->create($dataUploaded);
     }
     /**
-     * @throws ApiError
      */
-    public function addImageCombo($comboID, $imageCombo): bool
+    public function addImageCombo($comboId, $imageCombo): bool
     {
         if(empty($imageCombo)){
             return false;
         }
-        $dataUpdated = $this->uploadToCloudinary($imageCombo);
-        $this->comboRepository->update($comboID,
-            ['combo_image_url' => $dataUpdated['image_url']]);
+        $path = Storage::putFile('public/images', $imageCombo);
+        UploadComboImageToCloudinary::dispatch($path,['combo_id' => $comboId],$this->comboRepository);
         return true;
     }
     /**
@@ -96,10 +86,8 @@ class ImageProductService implements ImageProductServiceInterface{
     public function updateUploadedImage($imageId, $image) : bool
     {
         $img = $this->productImageRepository->find($imageId);
-        $result = cloudinary()->upload($image->getRealPath(),[
-            'public_id' => $img['public_id'],
-            'overwrite' => true,
-        ]);
+        $path = Storage::putFile('public/images', $image);
+        UploadToCloudinary::dispatch($path,$img->toArray());
         return true;
     }
     public function deleteImage($image) : void {
@@ -134,7 +122,6 @@ class ImageProductService implements ImageProductServiceInterface{
     {
         return $this->descriptionImageRepository->getAll()->sortByDesc('created_at');
     }
-
     public function deleteDescriptionsImage($imageId) : void
     {
         $image = $this->descriptionImageRepository->find($imageId);
@@ -144,10 +131,10 @@ class ImageProductService implements ImageProductServiceInterface{
     /**
      * @throws ApiError
      */
-    public function addReviewImages($imageDatas): array
+    public function addReviewImages($imageDataSource): array
     {
         $ratingImageData = [];
-        foreach ($imageDatas as $imageData) {
+        foreach ($imageDataSource as $imageData) {
             $imageData = $this->uploadToCloudinary($imageData->image);
             $ratingImageData[] = $imageData['image_url'];
         }

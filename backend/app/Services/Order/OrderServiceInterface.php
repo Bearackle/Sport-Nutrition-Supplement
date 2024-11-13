@@ -14,6 +14,7 @@ use App\Models\Payment;
 interface OrderServiceInterface
 {
     public function getOrderData(OrderInputData $order);
+    public function getAllOrders();
     public function getOrderofUser(UserInputData $user);
     public function createOrder(UserInputData $user, string $message);
     public function updateOrder(OrderInputData $order);

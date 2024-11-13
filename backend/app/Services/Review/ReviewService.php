@@ -42,11 +42,11 @@ class ReviewService implements ReviewServiceInterface
 
     public function getReviewsOfProduct(ProductIntputData $product)
     {
-        return $this->review_repository->getAllReviewsByProduct($product->product_id)->simplePaginate(5);
+        return $this->review_repository->getAllReviewsByProduct($product->product_id)->paginate(5);
     }
     public function getReviewsOfCombo(ComboInputData $combo): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
-        return $this->review_repository->getAllReviewsByCombo($combo->combo_id)->simplePaginate(5);
+        return $this->review_repository->getAllReviewsByCombo($combo->combo_id)->paginate(5);
     }
     public function updateReview(ReviewInputData $review) : ReviewOutputData
     {

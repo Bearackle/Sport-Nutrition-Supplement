@@ -31,8 +31,8 @@ class ComboRepository extends BaseRepository implements ComboRepositoryInterface
             $variant->with('product');
         }])->find($comboId);
     }
-    public function getAvailableCombos(): \Illuminate\Contracts\Pagination\Paginator
+    public function getAvailableCombos()
     {
-        return (new \App\Models\Combo)->where('price','>', 0 )->simplePaginate(10);
+        return (new \App\Models\Combo)->where('price','>', 0 );
     }
 }

@@ -18,6 +18,7 @@ use App\Services\Order\PaymentServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
 
 class OrderController extends Controller
@@ -41,13 +42,30 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function index(): ApiResponse
+    public function index(): AnonymousResourceCollection
     {
-        $this->authorize('viewAny', Order::class);
+        $this->authorize('view', Order::class);
         /**@var User $user**/
         $user = auth()->user();
         $orders = $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => $user->user_id]));
-        return new ApiResponse(200,[OrderResource::collection($orders)]);
+        return OrderResource::collection($orders);
+    }
+    /**
+     * @OA\Get(
+     *     path="/api/order/admin/all",
+     *     description="Tất cả đơn hàng của đang tồn tại trong hệ thống, sắp xếp theo ngày tạo mới nhất",
+     *     summary="Tìm tất cả đơn hàng",
+     *     tags={"Order"},
+     *     @OA\Response(response=200,description="Lấy đơn hàng thành công"),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     * )
+     * @throws AuthorizationException
+     */
+    public function adminGetOrders(): AnonymousResourceCollection
+    {
+        $this->authorize('viewAny', Order::class);
+        $orders = $this->orderService->getAllOrders();
+        return OrderResource::collection($orders);
     }
     /**
      * @OA\Post(
@@ -199,7 +217,7 @@ class OrderController extends Controller
      */
     public function getOrderPayments(string $orderId): ApiResponse
     {
-        $this->authorize('viewAny', Order::class);
+        $this->authorize('view', Order::class);
         $payment = $this->paymentService->getPayment(OrderInputData::validateAndCreate(['order_id' => $orderId]));
         return new ApiResponse(200, [new PaymentResource($payment)]);
     }

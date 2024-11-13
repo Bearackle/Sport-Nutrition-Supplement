@@ -283,6 +283,24 @@
                 }
             }
         },
+        "/api/combo/all": {
+            "get": {
+                "tags": [
+                    "Combo"
+                ],
+                "summary": "Tìm thông tin tất cả combo combo",
+                "description": "Tìm thông tin tất cả combos",
+                "operationId": "cf2b39348511fab6a4cdbfb4366bcd8a",
+                "responses": {
+                    "200": {
+                        "description": "Tìm thấy combos"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
         "/api/combo/create": {
             "post": {
                 "tags": [
@@ -447,6 +465,24 @@
                 "summary": "Tìm tất cả đơn hàng",
                 "description": "Tất cả đơn hàng của người dùng",
                 "operationId": "725d22fa896d52e37bdb4e2aadb7445b",
+                "responses": {
+                    "200": {
+                        "description": "Lấy đơn hàng thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
+        "/api/order/admin/all": {
+            "get": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Tìm tất cả đơn hàng",
+                "description": "Tất cả đơn hàng của đang tồn tại trong hệ thống, sắp xếp theo ngày tạo mới nhất",
+                "operationId": "4ee180fb7a74eda02d96c6d845e3fdd7",
                 "responses": {
                     "200": {
                         "description": "Lấy đơn hàng thành công"
@@ -864,6 +900,10 @@
                                         "format": "name",
                                         "example": "Ostrovit Micellar Casein - 700 grams"
                                     },
+                                    "shortDescription": {
+                                        "description": "Mô tả sản phẩm ngắn",
+                                        "example": "chứa nhiều protein"
+                                    },
                                     "description": {
                                         "description": "Mô tả sản phẩm (được lưu trữ dạng html trong database)",
                                         "example": "sản phẩm số 1"
@@ -1053,6 +1093,38 @@
                 }
             }
         },
+        "/api/products/admin/{id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Admin Tìm thông tin sản phẩm",
+                "description": "Admin tìm thông tin sản phẩm, trường stockQuantity sẽ có giá trị",
+                "operationId": "bc5bb6f17ccf9c244260c55db03edd09",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của sản phẩm cần tìm",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "400": {
+                        "description": "Fail to get"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    }
+                }
+            }
+        },
         "/api/products/{id}/image": {
             "post": {
                 "tags": [
@@ -1100,6 +1172,52 @@
             }
         },
         "/api/products/image/{id}": {
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Cập nhật 1 ảnh của sản phẩm",
+                "description": "Cập nhật ảnh sản phẩm",
+                "operationId": "62b134cf7e7e0c058c6c0a98a465b087",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "mã ảnh sản phẩm",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "update ảnh thành công"
+                    },
+                    "400": {
+                        "description": "update ảnh sản phẩm thất bại"
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu"
+                    }
+                }
+            },
             "delete": {
                 "tags": [
                     "Product"
@@ -1121,52 +1239,6 @@
                     },
                     "400": {
                         "description": "Xóa ảnh thất bại"
-                    },
-                    "422": {
-                        "description": "Sai định dạng yêu cầu"
-                    }
-                }
-            },
-            "patch": {
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Cập nhật 1 ảnh của sản phẩm",
-                "description": "Cập nhật ảnh sản phẩm",
-                "operationId": "ddc155b5f54fa0ad20bad81d6c0e0362",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "image": {
-                                        "description": "File ảnh của sản phẩm (1 ảnh)",
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "update ảnh thành công"
-                    },
-                    "400": {
-                        "description": "update ảnh sản phẩm thất bại"
                     },
                     "422": {
                         "description": "Sai định dạng yêu cầu"
@@ -1275,6 +1347,32 @@
                 ],
                 "summary": "Tìm mùi vị của sản phẩm",
                 "operationId": "980bb81304dedea55e4352ca4888d2eb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "mã sản phẩm",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm mùi vị thành công"
+                    },
+                    "400": {
+                        "description": "Tìm mùi vị thất bại"
+                    }
+                }
+            }
+        },
+        "/api/products/admin/{id}/variants": {
+            "get": {
+                "tags": [
+                    "Variant"
+                ],
+                "summary": "Admin tìm mùi vị của sản phẩm",
+                "description": "Tìm thông tin mùi vị của sản phẩm có trường stockQuantity",
+                "operationId": "b0427c74f87159c80eb295465faac9ae",
                 "parameters": [
                     {
                         "name": "id",
@@ -1635,6 +1733,45 @@
                     },
                     "401": {
                         "description": "Không được cấp quyền, người dùng không có bearer token phù hợp"
+                    }
+                }
+            }
+        },
+        "/api/account/reset": {
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "thay đổi mật khẩu",
+                "description": "thay đổi mật khẩu người dùng",
+                "operationId": "c96e8df9232b214e318fea3b594710c3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "properties": {
+                                    "oldPassword": {
+                                        "format": "password"
+                                    },
+                                    "password": {
+                                        "format": "password"
+                                    },
+                                    "confirmPassword": {
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "cập nhật thành công"
+                    },
+                    "400": {
+                        "description": "cập nhật thất bại"
                     }
                 }
             }

@@ -14,7 +14,7 @@ class categories_table_default_data extends Seeder
     public function run(): void
     {
         $parent_categories = ['Whey Protein','Mass Gainer','BCAA-EAA','Fat Burner','Preworkout','Vitamin','Đơn Chất','Thực Phẩm Sức Khỏe Ăn Kiêng','Phụ Kiện','Thanh Lý Sản Phẩm Lỗi'];
-        $children_categories = [1 => ['Protein Trả  i Dài','Protein Thực Vật'],
+        $children_categories = [1 => ['Protein Trải Dài','Protein Thực Vật'],
                                 2 => ['Mass Cao Năng Lượng','Mass Trung Năng Lượng'],
                                 3 => ['EAA','BCAA'],
                                 4 => ['Đốt Mỡ Không Chất Kích Thích', 'Đốt Mỡ Có Chất Kích Thích'],

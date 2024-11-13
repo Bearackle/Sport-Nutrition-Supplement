@@ -9,4 +9,5 @@ interface OrderRepositoryInterface extends RepositoryInterface{
     public function getLatestOrder($userId);
     public function getStatusOrder($orderId);
     public function getOrderByDateRange($range);
+    public function getAllOrders();
 }

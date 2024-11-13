@@ -2,6 +2,8 @@
 
 namespace App\Services\User;
 
+use App\DTOs\InputData\UserInputUpdatePasswordData;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Auth;
@@ -49,20 +51,20 @@ class UserService implements UserServiceInterface
     {
         return Auth::user();
     }
-    public function updatePassword(array $user): ApiResponse
+    public function updatePassword(User $user,UserInputUpdatePasswordData $data) : ApiResponse
     {
-        $userData = $this->userRepository->find($user['userid']);
-        if(!Hash::check($user['password'],$userData->password)){
-            return new ApiResponse(300,[],'Old password doesn\'t match');
+        if(!Hash::check($data->old_password,$user->password)){
+            return new ApiResponse(400,['message' => 'Old password doesn\'t match']);
         }
-        $result = $this->userRepository->update(['password' => $user['password']],$userData->userid);
+        $result = $this->userRepository->update($user->user_id,
+            ['password' => bcrypt($data->password)]);
         if(!$result){
-            return new ApiResponse(300,[],'Update fail, please try again');
+            return new ApiResponse(400,[],'Update fail, please try again');
         }
-        $data = [
+        $dataResponse = [
             'status' => 'success',
             'message' => 'updated'
         ];
-        return new ApiResponse(200,$data);
+        return new ApiResponse(200,$dataResponse);
     }
 }
