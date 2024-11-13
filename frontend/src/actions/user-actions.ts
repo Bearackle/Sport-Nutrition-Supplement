@@ -1,15 +1,13 @@
 "use server";
 
-import Util from "@/lib/utils";
-import CookieService from "@/services/CookieService";
 import UserService from "@/services/UserService";
 
 export const getUserInfo = async () => {
-  const token = CookieService.getCookie("token");
-
-  if (token && Util.isTokenValid(token)) {
+  try {
     const res = await UserService.getMe();
-    return res.data;
+    return res.data.data;
+  } catch (error) {
+    console.error((error as any).response);
   }
   return null;
 };

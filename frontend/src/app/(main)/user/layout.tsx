@@ -10,11 +10,11 @@ import {
 import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 
 // ** Import Icons
 import { logoutAction } from "@/actions/auth-actions";
-// import { getUserInfo } from "@/actions/user-actions";
+import { getUserInfo } from "@/actions/user-actions";
 import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
 import orderIcon from "/public/order-icon.png";
@@ -51,20 +51,35 @@ export default function UserLayout({
 }>) {
   const pathname = usePathname();
   const router = useRouter();
-  // const [userInfo, setUserInfo] = React.useState<any>(null);
-  // useEffect(() => {
-  //   getUserInfo().then((res) => setUserInfo(res));
-  // }, []);
+  const [userInfo, setUserInfo] = React.useState<any>(null);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  useEffect(() => {
+    getUserInfo()
+      .then((res) => {
+        setUserInfo(res);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+    // if (!userInfo) {
+    //   router.replace("/login");
+    // }
+  }, []);
 
   const stringAvatar = (name: string) => {
     return {
       bgColor: stringToColor(name),
       textColor: getContrastingColor(stringToColor(name)),
-      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+      children: `${name?.split(" ")[0][0]}${name?.split(" ")[1][0]}`,
     };
   };
 
-  // console.log(userInfo);
+  const handleLogout = () => {
+    logoutAction();
+    router.replace("/login");
+  };
+
+  console.log(isLoading);
   return (
     <div
       className={cn(
@@ -109,14 +124,14 @@ export default function UserLayout({
             <Avatar
               className={cn("size-[4em]")}
               style={{
-                backgroundColor: `${stringAvatar("Lê Quốc Hưng").bgColor}`,
+                backgroundColor: `${stringAvatar(userInfo?.name).bgColor}`,
               }}
             >
               <AvatarFallback
                 className={cn("text-[1.375em]")}
-                style={{ color: `${stringAvatar("Lê Quốc Hưng").textColor}` }}
+                style={{ color: `${stringAvatar(userInfo?.name).textColor}` }}
               >
-                {stringAvatar("Lê Quốc Hưng").children}
+                {stringAvatar(userInfo?.name).children}
               </AvatarFallback>
             </Avatar>
             <p
@@ -124,10 +139,10 @@ export default function UserLayout({
                 "mb-[0.25em] mt-[0.375em] text-[0.9375em] capitalize leading-[1.21] text-white",
               )}
             >
-              Lê Quốc Hưng
+              {userInfo?.name}
             </p>
             <p className={cn("text-[0.875em] leading-[1.21] text-white")}>
-              0999555666
+              {userInfo?.phone}
             </p>
           </div>
           <div
@@ -180,7 +195,7 @@ export default function UserLayout({
               </button>
             ))}
             <button
-              onClick={logoutAction}
+              onClick={handleLogout}
               className={cn(
                 "relative flex w-full flex-row items-center p-[0.75em]",
               )}

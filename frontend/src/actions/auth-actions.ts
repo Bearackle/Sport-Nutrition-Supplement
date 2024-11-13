@@ -1,7 +1,6 @@
 "use server";
 import CookieService from "@/services/CookieService";
 import UserService from "@/services/UserService";
-import { redirect } from "next/navigation";
 import { z } from "zod";
 
 const schemaLogin = z.object({
@@ -158,5 +157,4 @@ export async function changePasswordAction(prevState: any, formData: FormData) {
 
 export async function logoutAction() {
   CookieService.removeCookie("token");
-  redirect("/login");
 }

@@ -16,7 +16,20 @@ axiosClient.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error),
+  (error) => {
+    Promise.reject(error);
+  },
 );
 
+axiosClient.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      CookieService.removeCookie("token");
+    }
+    return Promise.reject(error);
+  },
+);
 export default axiosClient;

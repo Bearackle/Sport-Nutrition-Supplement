@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
-import { ProductOverview } from "@/components/product-detail/ProductOverview";
 import { ProductDescription } from "@/components/product-detail/ProductDescription";
+import { ProductOverview } from "@/components/product-detail/ProductOverview";
 import { ProductReviews } from "@/components/product-detail/ProductReviews";
+import { cn } from "@/lib/utils";
 // import { ProductDetailBreadcrumb } from "@/components/product-detail/ProductDetailBreadcrumb";
 
 const data = {
