@@ -6,6 +6,7 @@ use App\DTOs\InputData\UserInputUpdatePasswordData;
 use App\Http\Resources\UserFullResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Responses\ApiResponse;
@@ -43,10 +44,13 @@ class UserService implements UserServiceInterface
             return ApiResponse::fail('Login Fail :(');
         }
         $user->tokens()->delete();
+        $token = $user->createToken('access_token',[],Carbon::now()->
+        addMinute(4320));
         $data = [
             'status' => 'success',
             'message' => 'Login successfully',
-            'token' => $user->createToken('access_token')->plainTextToken,
+            'token' => $token->plainTextToken,
+            'expiresAt' =>$token->accessToken->expires_at,
             'account' => new UserResource($user)
         ];
         return response()->json($data, 200);

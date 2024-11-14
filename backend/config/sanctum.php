@@ -45,9 +45,7 @@ return [
     | "expires_at" attribute, but first-party sessions are not affected.
     |
     */
-
-    'expiration' => 4320,
-
+    'expiration' => null,
     /*
     |--------------------------------------------------------------------------
     | Token Prefix
