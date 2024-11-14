@@ -12,7 +12,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                  */
-                'api' => 'api/documentation',
+                'api' => 'documentation',
             ],
             'paths' => [
                 /*
@@ -328,5 +328,5 @@ return [
             'L5_SWAGGER_CONST_HOST' => env('L5_SWAGGER_CONST_HOST', 'http://my-default-host.com'),
         ],
     ],
-//    'swagger_version' => env('SWAGGER_VERSION', '3.1.0'),
+    'openapi' => '3.0.0'
 ];

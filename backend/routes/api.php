@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Middleware\JsonResponseMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
@@ -19,7 +20,7 @@ Route::get('/user', function (Request $request) {
 Route::group([
     'prefix' => 'account'
 ],function(){
-    Route::post('login',[UserController::class,'login'])->name('login');
+    Route::post('login',[UserController::class,'login']);
     Route::post('register',[UserController::class,'register']);
     Route::get('profile',[UserController::class,'show'])->middleware('auth:sanctum');
     Route::patch('reset',[UserController::class,'update'])->middleware('auth:sanctum');

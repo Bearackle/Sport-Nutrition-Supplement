@@ -44,9 +44,9 @@ class ProductController extends Controller
      *     summary="sản phẩm quan tâm nhiều",
      *     tags={"Product"},
      *     description="Lấy sản phẩm hot nhất hiển thị trên trang chủ",
-     *     @OA\Response(response=200,description="Lấy sản phẩm thành công"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu"),
-     *     @OA\Response(response=400, description="Lỗi mạng")
+     *     @OA\Response(response=200,description="Lấy sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Lỗi mạng",@OA\JsonContent())
      * )
      */
     public function index()
@@ -70,9 +70,9 @@ class ProductController extends Controller
      * "price" : "(>=700000AND<=900000)"
      * })
      *     ),
-     *     @OA\Response(response=200, description="Lọc thành công"),
-     *     @OA\Response(response=400, description="Lọc thất bại"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200, description="Lọc thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Lọc thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
     public function filter(Request $request,ProductFilter $productFilter): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -93,9 +93,9 @@ class ProductController extends Controller
      *          description="id của category",
      *          @OA\Schema(type="integer")
      *     ),
-     * @OA\Response(response=200,description="Lấy sản phẩm thành công"),
-     * @OA\Response(response=400,description="Không tìm thấy sản phẩm"),
-     * @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     * @OA\Response(response=200,description="Lấy sản phẩm thành công",@OA\JsonContent()),
+     * @OA\Response(response=400,description="Không tìm thấy sản phẩm",@OA\JsonContent()),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function CategoryProduct($id): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -109,9 +109,9 @@ class ProductController extends Controller
      *     summary="tất cả sản phẩm",
      *     tags={"Collection"},
      *     description="Lấy tất cả sản phẩm",
-     *     @OA\Response(response=200, description="lấy sản phẩm thành công"),
-     *     @OA\Response(response=400, description="lấy sản phẩm thất bại"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200, description="lấy sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="lấy sản phẩm thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
     public function allProducts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -146,9 +146,9 @@ class ProductController extends Controller
      *              )
      *          )
      *      ),
-     *      @OA\Response(response=200, description="Tạo sản phẩm thành công"),
-     *      @OA\Response(response=400, description="Tạo sản phẩm thất bại"),
-     *       @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *      @OA\Response(response=200, description="Tạo sản phẩm thành công",@OA\JsonContent()),
+     *      @OA\Response(response=400, description="Tạo sản phẩm thất bại",@OA\JsonContent()),
+     *      @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      *  )
      **/
     public function store(Request $request) : ApiResponse
@@ -174,9 +174,9 @@ class ProductController extends Controller
      *         description="id của sản phẩm cần tìm",
      *         @OA\Schema(type="integer"),
      *     ),
-     * @OA\Response(response=200, description="Success"),
-     * @OA\Response(response=400,description="Fail to get"),
-     * @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     * @OA\Response(response=200, description="Success",@OA\JsonContent()),
+     * @OA\Response(response=400,description="Fail to get",@OA\JsonContent()),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
     public function show(string $id): ProductResource
@@ -184,9 +184,10 @@ class ProductController extends Controller
          $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
          return new ProductResource($product);
     }
+
     /**
      * @param string $id
-     * @return ApiResponse
+     * @return ProductResource
      * @OA\Get(
      *     path="/api/products/admin/{id}",
      *     tags={"Product"},
@@ -199,9 +200,9 @@ class ProductController extends Controller
      *          description="id của sản phẩm cần tìm",
      *          @OA\Schema(type="integer"),
      *      ),
-     *  @OA\Response(response=200, description="Success"),
-     *  @OA\Response(response=400,description="Fail to get"),
-     *  @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *  @OA\Response(response=200, description="Success",@OA\JsonContent()),
+     *  @OA\Response(response=400,description="Fail to get",@OA\JsonContent()),
+     *  @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function showProductsAdmin(string $id) : ProductResource
@@ -236,9 +237,9 @@ class ProductController extends Controller
      *              @OA\Property (property="brandId", type="integer", example=1)
      *          )
      *     ),
-     *    @OA\Response(response=200,description="Cập nhật sản phẩm thành công"),
-     *    @OA\Response(response=400,description="Cập nhật sản phẩm thất bại"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *    @OA\Response(response=200,description="Cập nhật sản phẩm thành công",@OA\JsonContent()),
+     *    @OA\Response(response=400,description="Cập nhật sản phẩm thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      *
      * @throws AuthorizationException
@@ -267,9 +268,9 @@ class ProductController extends Controller
      *          description="id sản phẩm cần xóa",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200,description="xóa sản phẩm thành công"),
-     *     @OA\Response(response=400, description="xóa sản phẩm thất bại"),
-     *      @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200,description="xóa sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="xóa sản phẩm thất bại",@OA\JsonContent()),
+     *      @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -304,9 +305,9 @@ class ProductController extends Controller
      *               )
      *           )
      *       ),
-     *     @OA\Response(response=200,description="Tải ảnh lên thành công"),
-     *     @OA\Response(response=400, description="Tải ảnh lên thất bại"),
-     *      @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200,description="Tải ảnh lên thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Tải ảnh lên thất bại",@OA\JsonContent()),
+     *      @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function uploadImage(Request $request,string $id) : ApiResponse
@@ -349,9 +350,9 @@ class ProductController extends Controller
      * )
      * }
      * ),
-     * @OA\Response(response=200, description="update ảnh thành công"),
-     * @OA\Response(response=400, description="update ảnh sản phẩm thất bại"),
-     * @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     * @OA\Response(response=200, description="update ảnh thành công",@OA\JsonContent()),
+     * @OA\Response(response=400, description="update ảnh sản phẩm thất bại",@OA\JsonContent()),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      * /
      **/
@@ -373,9 +374,9 @@ class ProductController extends Controller
      *         required=true,
      *         description="id của ảnh"
      *     ),
-     *     @OA\Response(response=200, description="Xóa ảnh thành công"),
-     *     @OA\Response(response=400, description="Xóa ảnh thất bại"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200, description="Xóa ảnh thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Xóa ảnh thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -405,9 +406,9 @@ class ProductController extends Controller
      *                               description="File ảnh mô tả của sản phẩm, lưu ý chỉ nhận 1 file"))
      *          )
      *     ),
-     * @OA\Response(response=200, description="upload ảnh thành công"),
-     * @OA\Response(response=500, description="Lỗi dịch vụ"),
-     *  @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     * @OA\Response(response=200, description="upload ảnh thành công",@OA\JsonContent()),
+     * @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent()),
+     *  @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function uploadDescriptionImage(Request $request): ImageResource
@@ -423,9 +424,9 @@ class ProductController extends Controller
      *     tags={"Description-image"},
      *     description="Tìm toàn bộ ảnh description",
      *     summary="Tìm ảnh mô tả sản phẩm",
-     *   @OA\Response(response=200, description="Tìm ảnh thành công"),
-     *   @OA\Response(response=500, description="Lỗi dịch vụ"),
-     *    @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *   @OA\Response(response=200, description="Tìm ảnh thành công",@OA\JsonContent()),
+     *   @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent()),
+     *    @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function getAllDescriptionImages(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -447,9 +448,9 @@ class ProductController extends Controller
      *         required=true,
      *         description="Xóa ảnh mô tả sản phẩm"
      *      ),
-     *     @OA\Response(response=200, description="Xóa ảnh thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200, description="Xóa ảnh thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function destroyDescriptionImage(string $imageId): ApiResponse

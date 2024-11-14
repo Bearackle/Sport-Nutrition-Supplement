@@ -780,13 +780,28 @@
                 "operationId": "2940002b2cd1dec288a466e18e8bff93",
                 "responses": {
                     "200": {
-                        "description": "Lấy sản phẩm thành công"
+                        "description": "Lấy sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Lỗi mạng"
+                        "description": "Lỗi mạng",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -818,13 +833,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lọc thành công"
+                        "description": "Lọc thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Lọc thất bại"
+                        "description": "Lọc thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -850,13 +880,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Lấy sản phẩm thành công"
+                        "description": "Lấy sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Không tìm thấy sản phẩm"
+                        "description": "Không tìm thấy sản phẩm",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -871,13 +916,28 @@
                 "operationId": "16a6b87468e0b4d2b7ddcf113d9fc061",
                 "responses": {
                     "200": {
-                        "description": "lấy sản phẩm thành công"
+                        "description": "lấy sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "lấy sản phẩm thất bại"
+                        "description": "lấy sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -947,13 +1007,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tạo sản phẩm thành công"
+                        "description": "Tạo sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tạo sản phẩm thất bại"
+                        "description": "Tạo sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -979,13 +1054,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Fail to get"
+                        "description": "Fail to get",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -1009,13 +1099,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "xóa sản phẩm thành công"
+                        "description": "xóa sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "xóa sản phẩm thất bại"
+                        "description": "xóa sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -1083,13 +1188,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Cập nhật sản phẩm thành công"
+                        "description": "Cập nhật sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Cập nhật sản phẩm thất bại"
+                        "description": "Cập nhật sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1115,13 +1235,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success"
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Fail to get"
+                        "description": "Fail to get",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1161,13 +1296,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tải ảnh lên thành công"
+                        "description": "Tải ảnh lên thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tải ảnh lên thất bại"
+                        "description": "Tải ảnh lên thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1209,13 +1359,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "update ảnh thành công"
+                        "description": "update ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "update ảnh sản phẩm thất bại"
+                        "description": "update ảnh sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -1236,13 +1401,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Xóa ảnh thành công"
+                        "description": "Xóa ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Xóa ảnh thất bại"
+                        "description": "Xóa ảnh thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1257,13 +1437,28 @@
                 "operationId": "de102ac7eb9656e47f4b60428e1d8171",
                 "responses": {
                     "200": {
-                        "description": "Tìm ảnh thành công"
+                        "description": "Tìm ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -1296,13 +1491,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "upload ảnh thành công"
+                        "description": "upload ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -1330,13 +1540,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Xóa ảnh thành công"
+                        "description": "Xóa ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }

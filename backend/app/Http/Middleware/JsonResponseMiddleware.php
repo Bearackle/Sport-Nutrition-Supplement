@@ -39,7 +39,6 @@ class JsonResponseMiddleware
                 $response->headers->all()
             );
         }
-
         return $response;
     }
 }
