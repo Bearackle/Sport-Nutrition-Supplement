@@ -47,9 +47,9 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'write product review']);
         Permission::create(['name' => 'view own orders']);
         //add permission to role
-        $admin = Role::create(['name' => 'admin']);
+        $admin = Role::create(['name' => 'admin','guard_name' => 'api']);
         $admin->givePermissionTo(Permission::all());
-        $user = Role::create(['name' => 'user']);
+        $user = Role::create(['name' => 'user','guard_name' => 'api']);
         $user->givePermissionTo(['view products','view product reviews','cancel own order','place order',
             'write product review','view own orders','edit user', 'add item','update cart stock','view cart','remove item']);
         $admin_account = (new \App\Models\User)->find(1);

@@ -20,22 +20,26 @@ class UserService implements UserServiceInterface
     public function __construct(UserRepositoryInterface $userRepository){
         $this->userRepository = $userRepository;
     }
-    public function register(array $userData): ApiResponse
+    public function register(array $userData): JsonResponse
     {
         if(!$this->userRepository->isEmailExists($userData['email'])){
-            return new ApiResponse(409,[],'Email already used');
+            return ApiResponse::fail('Email already used');
         }
         if(! $this->userRepository->isPhoneExists($userData['phone'])){
-            return new ApiResponse(409,[],'Phone number already used');
+            return ApiResponse::fail('Phone number already used');
         }
         $userData['password'] = bcrypt($userData['password']);
-        $userData['is_admin'] = false;
         $userRegisterd = $this->userRepository->create($userData);
-        $userRegisterd->assginRole('user');
-        $success['name'] = $userRegisterd->name;
-        $success['token'] = $userRegisterd->createToken('access_token')->plainTextToken;
-        $success['message'] = 'Register successfully';
-        return new ApiResponse(200, $success);
+        $userRegisterd->assignRole('user');
+        $token = $userRegisterd->createToken('access_token',['*'], Carbon::now()->addDays(3));
+        $data = [
+            'status' => 'success',
+            'message' => 'User successfully registered',
+            'token' => $token->plainTextToken,
+            'expiresAt' =>$token->accessToken->expires_at,
+            'account' => new UserResource($userRegisterd),
+        ];
+        return response()->json($data);
     }
     public function login(array $userUnAuthorized): JsonResponse
     {
@@ -44,8 +48,8 @@ class UserService implements UserServiceInterface
             return ApiResponse::fail('Login Fail :(');
         }
         $user->tokens()->delete();
-        $token = $user->createToken('access_token',[],Carbon::now()->
-        addMinute(4320));
+        $token = $user->createToken('access_token',['*'],Carbon::now()->
+        addDays(3));
         $data = [
             'status' => 'success',
             'message' => 'Login successfully',
@@ -53,7 +57,7 @@ class UserService implements UserServiceInterface
             'expiresAt' =>$token->accessToken->expires_at,
             'account' => new UserResource($user)
         ];
-        return response()->json($data, 200);
+        return response()->json($data);
     }
     public function profile(): \Illuminate\Contracts\Auth\Authenticatable
     {
