@@ -3,7 +3,10 @@
 namespace App\Services\User;
 
 use App\DTOs\InputData\UserInputUpdatePasswordData;
+use App\Http\Resources\UserFullResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Auth;
@@ -33,38 +36,39 @@ class UserService implements UserServiceInterface
         $success['message'] = 'Register successfully';
         return new ApiResponse(200, $success);
     }
-    public function login(array $userUnAuthorized): ApiResponse
+    public function login(array $userUnAuthorized): JsonResponse
     {
         $user = $this->userRepository->findByEmail($userUnAuthorized['email']);
         if(!$user || !Hash::check($userUnAuthorized['password'],$user->password)){
-            return new ApiResponse(401,[],'Login Fail :(');
+            return ApiResponse::fail('Login Fail :(');
         }
         $user->tokens()->delete();
         $data = [
             'status' => 'success',
             'message' => 'Login successfully',
-            'token' => $user->createToken('access_token')->plainTextToken
+            'token' => $user->createToken('access_token')->plainTextToken,
+            'account' => new UserResource($user)
         ];
-        return new ApiResponse(200,$data);
+        return response()->json($data, 200);
     }
     public function profile(): \Illuminate\Contracts\Auth\Authenticatable
     {
         return Auth::user();
     }
-    public function updatePassword(User $user,UserInputUpdatePasswordData $data) : ApiResponse
+    public function updatePassword(User $user,UserInputUpdatePasswordData $data): JsonResponse
     {
         if(!Hash::check($data->old_password,$user->password)){
-            return new ApiResponse(400,['message' => 'Old password doesn\'t match']);
+            return ApiResponse::fail( 'Old password doesn\'t match');
         }
         $result = $this->userRepository->update($user->user_id,
             ['password' => bcrypt($data->password)]);
         if(!$result){
-            return new ApiResponse(400,[],'Update fail, please try again');
+            return ApiResponse::fail('Update fail, please try again');
         }
         $dataResponse = [
             'status' => 'success',
-            'message' => 'updated'
+            'message' => 'data user updated'
         ];
-        return new ApiResponse(200,$dataResponse);
+        return response()->json($dataResponse, 200);
     }
 }

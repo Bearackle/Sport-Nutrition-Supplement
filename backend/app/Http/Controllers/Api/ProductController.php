@@ -20,7 +20,9 @@ use App\Services\Product\ProductVariantServiceInterface;
 use Cloudinary\Api\Exception\ApiError;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller
 {
@@ -75,7 +77,7 @@ class ProductController extends Controller
      *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
-    public function filter(Request $request,ProductFilter $productFilter): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function filter(Request $request,ProductFilter $productFilter): AnonymousResourceCollection
     {
         $product_filtered = $this->productService->filter($productFilter)->paginate(10);
         return ProductResource::collection($product_filtered);
@@ -98,7 +100,7 @@ class ProductController extends Controller
      * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
-    public function CategoryProduct($id): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function CategoryProduct($id): AnonymousResourceCollection
     {
         $products = $this->productService->getCategoryProduct(CategoryInputData::from(['category_id' => $id]));
         return ProductResource::collection($products);
@@ -114,7 +116,7 @@ class ProductController extends Controller
      *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
-    public function allProducts(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function allProducts(): AnonymousResourceCollection
     {
         $products = $this->productService->getProducts();
         return ProductLandingMask::collection($products);
@@ -151,7 +153,7 @@ class ProductController extends Controller
      *      @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      *  )
      **/
-    public function store(Request $request) : ApiResponse
+    public function store(Request $request): JsonResponse
     {
         $this->authorize('create', Product::class);
         $product = ProductIntputData::validateAndCreate($request->input());
@@ -159,7 +161,7 @@ class ProductController extends Controller
         $this->imageProductService->addImagesProduct($productCreated->product_id,[ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
         $variantCreated = $this->productVariantService->insertDefaultTaste(VariantInputData::from($productCreated));
         $this->imageProductService->addImageVariants($productCreated->product_id, $variantCreated->variant_id,$request->file('image'));
-        return new ApiResponse(200,['message' => 'Product added successfully']);
+        return ApiResponse::success('Product added successfully');
     }
     /**
      * @OA\Get(
@@ -244,16 +246,16 @@ class ProductController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function update(Request $request,string $id): ApiResponse
+    public function update(Request $request,string $id)
     {
         $this->authorize('update',Product::class);
         $product = ProductIntputData::factory()->alwaysValidate()->from(['product_id' => $id],
             $request->all());
         $result = $this->productService->updateProduct($product);
         if($result){
-            return new ApiResponse(200,['message' => 'Product updated successfully']);
+            return ApiResponse::success('Product updated successfully');
         }
-        return new ApiResponse(200,['message' => 'Product not updated']);
+        return ApiResponse::success('Product not updated');
     }
     /**
      * @OA\Delete(
@@ -274,14 +276,14 @@ class ProductController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function destroy(string $id): ApiResponse
+    public function destroy(string $id): JsonResponse
     {
         $this->authorize('delete', Product::class);
         $is_success = $this->productService->deleteProduct(ProductIntputData::validateAndCreate(['product_id' => $id]));
         if($is_success){
-            return new ApiResponse(200,['message' => 'Product deleted successfully']);
+            return  ApiResponse::success('Product deleted successfully');
         }
-        return new ApiResponse(200,['message' => 'Product not deleted']);
+        return ApiResponse::fail('Product not deleted');
     }
     /**
      * @throws AuthorizationException
@@ -310,12 +312,12 @@ class ProductController extends Controller
      *      @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
-    public function uploadImage(Request $request,string $id) : ApiResponse
+    public function uploadImage(Request $request,string $id): JsonResponse
     {
         $this->authorize('update',Product::class);
         $this->imageProductService->addImagesProduct($id,
             [ImageData::validateAndCreate(['image' => $request->file('image')])->image]);
-        return new ApiResponse(200, ['message' => 'image add successfully']);
+        return ApiResponse::success('image add successfully');
     }
     /**
      * @throws ApiError
@@ -356,11 +358,12 @@ class ProductController extends Controller
      * )
      * /
      **/
-    public function updateImage(UpdateImageRequest $request,string $id)  : ApiResponse    {
+    public function updateImage(UpdateImageRequest $request,string $id): JsonResponse
+    {
         $this->authorize('update',Product::class);
         $this->imageProductService->updateUploadedImage($id,
             ImageData::validateAndCreate(['image' => $request->file('image')])->image);
-        return new ApiResponse(200, ['message' => 'image update successully']);
+        return ApiResponse::success('image update successully');
     }
     /**
      * @OA\Delete(
@@ -380,12 +383,12 @@ class ProductController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function destroyImage(string $image_id) : ApiResponse
+    public function destroyImage(string $image_id): JsonResponse
     {
         $this->authorize('delete',Product::class);
         $image = $this->imageProductService->getImageData($image_id);
         $this->imageProductService->deleteImage($image);
-        return new ApiResponse(200, ['message' => 'destroy image successfully']);
+        return ApiResponse::success('destroy image successfully');
     }
     /**
      * @throws ApiError
@@ -429,7 +432,7 @@ class ProductController extends Controller
      *    @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
-    public function getAllDescriptionImages(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function getAllDescriptionImages(): AnonymousResourceCollection
     {
         $this->authorize('viewAny',Product::class);
         $images = $this->imageProductService->getDescriptionsImage();
@@ -453,10 +456,10 @@ class ProductController extends Controller
      *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
-    public function destroyDescriptionImage(string $imageId): ApiResponse
+    public function destroyDescriptionImage(string $imageId): JsonResponse
     {
         $this->authorize('delete',Product::class);
         $this->imageProductService->deleteDescriptionsImage($imageId);
-        return new ApiResponse(200,['message' => 'delete description image successfully']);
+        return ApiResponse::success('delete description image successfully');
     }
 }

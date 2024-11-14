@@ -134,7 +134,7 @@ class UserController
      *     @OA\Response(response=400, description="cập nhật thất bại",@OA\JsonContent())
      * )
      */
-    public function update(UpdatePasswordRequest $request): ApiResponse
+    public function update(UpdatePasswordRequest $request)
     {
         /**@var User $user **/
         $user = auth()->user();
