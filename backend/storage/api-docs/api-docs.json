@@ -10,6 +10,167 @@
         "version": "1.0"
     },
     "paths": {
+        "/api/address": {
+            "get": {
+                "tags": [
+                    "Address"
+                ],
+                "summary": "Tìm tất cả địa chỉ",
+                "description": "Tìm tất cả địa chỉ khả dụng của người dùng",
+                "operationId": "fae59d8d0e8b25def1d1f9b9a98c764d",
+                "responses": {
+                    "200": {
+                        "description": "Tìm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Không xác thực",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Address"
+                ],
+                "summary": "Thêm địa chỉ",
+                "description": "Thêm địa chỉ cho ngời dùng",
+                "operationId": "fd63427415ec5c522a9ca1bf9a3e570a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "addressDetail": {
+                                        "type": "string",
+                                        "example": "số 1 đường hàn thuyên"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Không xác thực",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/address/default": {
+            "get": {
+                "tags": [
+                    "Address"
+                ],
+                "summary": "Lấy địa chỉ mặc định",
+                "description": "Lấy địa chỉ mặc định của nguời dùng (mới nhất)",
+                "operationId": "451ce470bc832788f41e08874583a8fc",
+                "responses": {
+                    "200": {
+                        "description": "Tìm sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "api/address/{id}": {
+            "delete": {
+                "tags": [
+                    "Address"
+                ],
+                "summary": "Xóa địa chỉ",
+                "description": "Xóa địa chỉ",
+                "operationId": "8fcab32df1fd4a96a33ecd365c41f533",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id sản phẩm cần xóa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "xóa địa chỉ thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "xóa địa chỉ thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/brands/all": {
             "get": {
                 "tags": [
@@ -20,10 +181,20 @@
                 "operationId": "60b4d070ef168f82d245b0a68e3bf721",
                 "responses": {
                     "200": {
-                        "description": "Lấy thành công"
+                        "description": "Lấy thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Lấy thất bại"
+                        "description": "Lấy thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -33,18 +204,33 @@
                 "tags": [
                     "Cart"
                 ],
-                "summary": "lấy id của giỏ hàng",
+                "summary": "Lấy ID của giỏ hàng",
                 "description": "Lấy thông tin giỏ hàng",
                 "operationId": "7fdb9b40bd4ad2baf12aa15164eab788",
                 "responses": {
                     "200": {
-                        "description": "Tìm thông tin giỏ hàng thành công"
+                        "description": "Tìm thông tin giỏ hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tìm thông tin giỏ hàng thất bại"
+                        "description": "Tìm thông tin giỏ hàng thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -59,10 +245,20 @@
                 "operationId": "dcd5e8845838826de0ecec206c878c77",
                 "responses": {
                     "200": {
-                        "description": "Tạo giỏ hàng thành công"
+                        "description": "Tạo giỏ hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -112,13 +308,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Thêm vào giỏ hàng thành công"
+                        "description": "Thêm vào giỏ hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sản phẩm đã tồn tại"
+                        "description": "Sản phẩm đã tồn tại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -133,10 +344,20 @@
                 "operationId": "16a9af23587ee39b04dc04c10d1734a6",
                 "responses": {
                     "200": {
-                        "description": "Tìm sản phẩm thành công"
+                        "description": "Tìm sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -159,10 +380,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Xóa sản phẩm than công"
+                        "description": "Xóa sản phẩm than công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -197,10 +428,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Cập nhật sản phẩm thành công"
+                        "description": "Cập nhật sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -278,7 +519,12 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Thành công"
+                        "description": "Thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -293,10 +539,20 @@
                 "operationId": "cf2b39348511fab6a4cdbfb4366bcd8a",
                 "responses": {
                     "200": {
-                        "description": "Tìm thấy combos"
+                        "description": "Tìm thấy combos",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -348,10 +604,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tạo combo thành công"
+                        "description": "Tạo combo thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Tạo combo thất bại"
+                        "description": "Tạo combo thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -394,10 +660,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Thêm sản phẩm thành công"
+                        "description": "Thêm sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Thêm sản phẩm thất bại"
+                        "description": "Thêm sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -420,10 +696,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm thấy combo"
+                        "description": "Tìm thấy combo",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -446,13 +732,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Xóa thành công"
+                        "description": "Xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Xóa thất bại"
+                        "description": "Xóa thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -467,10 +768,20 @@
                 "operationId": "725d22fa896d52e37bdb4e2aadb7445b",
                 "responses": {
                     "200": {
-                        "description": "Lấy đơn hàng thành công"
+                        "description": "Lấy đơn hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -485,10 +796,20 @@
                 "operationId": "4ee180fb7a74eda02d96c6d845e3fdd7",
                 "responses": {
                     "200": {
-                        "description": "Lấy đơn hàng thành công"
+                        "description": "Lấy đơn hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -519,10 +840,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tạo đơn hàng thành công"
+                        "description": "Tạo đơn hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -544,10 +875,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm thông tin thành công"
+                        "description": "Tìm thông tin thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -568,10 +909,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Xóa đơn hàng thành công"
+                        "description": "Xóa đơn hàng thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -610,10 +961,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Cập nhật đơn hàng"
+                        "description": "Cập nhật đơn hàng",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -652,10 +1013,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Thêm phương thức thanh toán thành công"
+                        "description": "Thêm phương thức thanh toán thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -678,10 +1049,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm thành công"
+                        "description": "Tìm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -720,10 +1101,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Thêm địa chỉ thành công"
+                        "description": "Thêm địa chỉ thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -762,10 +1153,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Thêm thành công"
+                        "description": "Thêm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1583,10 +1984,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm mùi vị thành công"
+                        "description": "Tìm mùi vị thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tìm mùi vị thất bại"
+                        "description": "Tìm mùi vị thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1609,10 +2020,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm mùi vị thành công"
+                        "description": "Tìm mùi vị thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tìm mùi vị thất bại"
+                        "description": "Tìm mùi vị thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1659,10 +2080,20 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Tạo mùi vị thành công"
+                        "description": "Tạo mùi vị thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tạo mùi vị thất bại"
+                        "description": "Tạo mùi vị thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1685,13 +2116,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "xóa thành công"
+                        "description": "xóa thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "xóa thất bại"
+                        "description": "xóa thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -1735,10 +2181,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "cập nhật thành công"
+                        "description": "cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "cập nhật thất bại"
+                        "description": "cập nhật thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1778,10 +2234,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Cập nhật ảnh thành công"
+                        "description": "Cập nhật ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Cập nhật ảnh thất bại"
+                        "description": "Cập nhật ảnh thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1836,13 +2302,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tạo sản phẩm thành công"
+                        "description": "Tạo sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tạo sản phẩm thất bại"
+                        "description": "Tạo sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1868,10 +2349,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm thành công"
+                        "description": "Tìm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1897,10 +2388,20 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tìm thành công"
+                        "description": "Tìm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -1926,13 +2427,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "xóa sản phẩm thành công"
+                        "description": "xóa sản phẩm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "xóa sản phẩm thất bại"
+                        "description": "xóa sản phẩm thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             },
@@ -1976,13 +2492,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Cập nhật thành công"
+                        "description": "Cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "500": {
-                        "description": "Lỗi dịch vụ"
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -2022,13 +2553,28 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Tải ảnh lên thành công"
+                        "description": "Tải ảnh lên thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Tải ảnh lên thất bại"
+                        "description": "Tải ảnh lên thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -2051,13 +2597,28 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Xóa ảnh thành công"
+                        "description": "Xóa ảnh thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Xóa ảnh thất bại"
+                        "description": "Xóa ảnh thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Sai định dạng yêu cầu"
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -2110,10 +2671,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "successful register"
+                        "description": "successful register",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "401": {
-                        "description": "fail to register"
+                        "description": "fail to register",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -2152,10 +2723,20 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "đăng nhập thành công"
+                        "description": "đăng nhập thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "401": {
-                        "description": "đăng nhập thất bại, vui lòng kiểm tra lại thông tin"
+                        "description": "đăng nhập thất bại, vui lòng kiểm tra lại thông tin",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -2170,10 +2751,20 @@
                 "operationId": "a39247318fb307eb75143b61694e9a35",
                 "responses": {
                     "200": {
-                        "description": "Thông tin người dùng"
+                        "description": "Thông tin người dùng",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "401": {
-                        "description": "Không được cấp quyền, người dùng không có bearer token phù hợp"
+                        "description": "Không được cấp quyền, người dùng không có bearer token phù hợp",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
@@ -2209,16 +2800,30 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "cập nhật thành công"
+                        "description": "cập nhật thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     },
                     "400": {
-                        "description": "cập nhật thất bại"
+                        "description": "cập nhật thất bại",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
                     }
                 }
             }
         }
     },
     "tags": [
+        {
+            "name": "Address",
+            "description": "Address"
+        },
         {
             "name": "Brand",
             "description": "Brand"

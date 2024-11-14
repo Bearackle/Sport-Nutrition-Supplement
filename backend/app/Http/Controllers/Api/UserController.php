@@ -65,8 +65,8 @@ class UserController
      *              )
      *          )
      *      ),
-     *   @OA\Response(response=200,description="successful register"),
-     *   @OA\Response(response=401,description="fail to register")
+     *   @OA\Response(response=200,description="successful register",@OA\JsonContent()),
+     *   @OA\Response(response=401,description="fail to register",@OA\JsonContent())
      * )
      */
     public function register(RegisterRequest $request)
@@ -91,8 +91,8 @@ class UserController
      *               )
      *          )
      *     ),
-     *     @OA\Response(response=200, description="đăng nhập thành công"),
-     *     @OA\Response(response=401, description="đăng nhập thất bại, vui lòng kiểm tra lại thông tin")
+     *     @OA\Response(response=200, description="đăng nhập thành công",@OA\JsonContent()),
+     *     @OA\Response(response=401, description="đăng nhập thất bại, vui lòng kiểm tra lại thông tin",@OA\JsonContent())
      * )
      **/
     public function login(LoginRequest $request){
@@ -105,8 +105,8 @@ class UserController
      *      summary="hồ sơ",
      *      tags={"User"},
      *      description="Lấy thông tin hồ sơ người dùng, chỉ có user mới có thể xem",
-     *   @OA\Response(response=200, description="Thông tin người dùng"),
-     *   @OA\Response(response=401, description="Không được cấp quyền, người dùng không có bearer token phù hợp"),
+     *   @OA\Response(response=200, description="Thông tin người dùng",@OA\JsonContent()),
+     *   @OA\Response(response=401, description="Không được cấp quyền, người dùng không có bearer token phù hợp",@OA\JsonContent()),
      * )
      */
     public function show(): UserFullResource
@@ -130,8 +130,8 @@ class UserController
      *                )
      *           )
      *      ),
-     *     @OA\Response(response=200, description="cập nhật thành công"),
-     *     @OA\Response(response=400, description="cập nhật thất bại")
+     *     @OA\Response(response=200, description="cập nhật thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="cập nhật thất bại",@OA\JsonContent())
      * )
      */
     public function update(UpdatePasswordRequest $request): ApiResponse

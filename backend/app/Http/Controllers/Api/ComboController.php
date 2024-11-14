@@ -32,8 +32,8 @@ class ComboController extends Controller
      *     tags={"Combo"},
      *     description="Tìm thông tin tất cả combos",
      *     summary="Tìm thông tin tất cả combo combo",
-     *     @OA\Response(response=200, description="Tìm thấy combos"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tìm thấy combos",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -61,8 +61,8 @@ class ComboController extends Controller
      *              )
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Tạo combo thành công"),
-     *     @OA\Response(response=500, description="Tạo combo thất bại")
+     *     @OA\Response(response=200, description="Tạo combo thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Tạo combo thất bại",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -90,8 +90,8 @@ class ComboController extends Controller
      *              @OA\Property (property="quantity", type="integer", example=1)
      *          )
      *     ),
-     *     @OA\Response(response=200, description="Thêm sản phẩm thành công"),
-     *     @OA\Response(response=500, description="Thêm sản phẩm thất bại")
+     *     @OA\Response(response=200, description="Thêm sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Thêm sản phẩm thất bại",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -114,8 +114,8 @@ class ComboController extends Controller
      *         required=true,
      *         description="id của combo"
      *     ),
-     *     @OA\Response(response=200, description="Tìm thấy combo"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tìm thấy combo",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function show(string $id): ComboResource
@@ -135,9 +135,9 @@ class ComboController extends Controller
      *         required=true,
      *         description="comboId cần xóa"
      *     ),
-     *     @OA\Response(response=200, description="Xóa thành công"),
-     *     @OA\Response(response=400, description="Xóa thất bại"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Xóa thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Xóa thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */

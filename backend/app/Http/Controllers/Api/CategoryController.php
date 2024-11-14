@@ -54,7 +54,7 @@ class CategoryController
      *         description="id của category cha",
      *         @OA\Schema(type="integer")
      *          ),
-     *     @OA\Response(response=200,description="Thành công")
+     *     @OA\Response(response=200,description="Thành công",@OA\JsonContent())
      * )
      */
     public function ChildrenCategories($id){

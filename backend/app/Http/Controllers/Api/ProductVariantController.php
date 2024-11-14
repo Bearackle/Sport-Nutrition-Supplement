@@ -49,8 +49,8 @@ class ProductVariantController extends Controller
      *         required=true,
      *         description="mã sản phẩm",
      *     ),
-     *     @OA\Response(response=200, description="Tìm mùi vị thành công"),
-     *     @OA\Response(response=400, description="Tìm mùi vị thất bại"),
+     *     @OA\Response(response=200, description="Tìm mùi vị thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Tìm mùi vị thất bại",@OA\JsonContent()),
      * )
      */
     public function VariantsOfProduct($id): AnonymousResourceCollection
@@ -72,8 +72,8 @@ class ProductVariantController extends Controller
      *         required=true,
      *         description="mã sản phẩm",
      *     ),
-     *     @OA\Response(response=200, description="Tìm mùi vị thành công"),
-     *     @OA\Response(response=400, description="Tìm mùi vị thất bại"),
+     *     @OA\Response(response=200, description="Tìm mùi vị thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Tìm mùi vị thất bại",@OA\JsonContent()),
      * )
      * @throws AuthorizationException
      */
@@ -102,8 +102,8 @@ class ProductVariantController extends Controller
      *          )
      *        )
      *     ),
-     *     @OA\Response(response=201,description="Tạo mùi vị thành công"),
-     *     @OA\Response(response=400, description="Tạo mùi vị thất bại")
+     *     @OA\Response(response=201,description="Tạo mùi vị thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Tạo mùi vị thất bại",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -137,8 +137,8 @@ class ProductVariantController extends Controller
      *               @OA\Property (property="stockQuantity", type="integer", example=10)
      *           )
      *      ),
-     *     @OA\Response(response=200,description="cập nhật thành công"),
-     *     @OA\Response(response=400, description="cập nhật thất bại")
+     *     @OA\Response(response=200,description="cập nhật thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="cập nhật thất bại",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -175,8 +175,8 @@ class ProductVariantController extends Controller
      *          ),
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Cập nhật ảnh thành công"),
-     *     @OA\Response(response=400, description="Cập nhật ảnh thất bại")
+     *     @OA\Response(response=200, description="Cập nhật ảnh thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Cập nhật ảnh thất bại",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -198,9 +198,9 @@ class ProductVariantController extends Controller
      *         required=true,
      *         description="id của mùi  vị"
      *     ),
-     *     @OA\Response(response=200, description="xóa thành công"),
-     *     @OA\Response(response=400, description="xóa thất bại"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="xóa thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="xóa thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function destroy($id) : ApiResponse

@@ -19,8 +19,8 @@ class BrandController extends Controller
      *     tags={"Brand"},
      *     summary="Tất cả nhãn hiệu",
      *     description="Lấy tất cả nhãn hiệu",
-     *   @OA\Response(response=200, description="Lấy thành công"),
-     *   @OA\Response(response=400, description="Lấy thất bại")
+     *   @OA\Response(response=200, description="Lấy thành công",@OA\JsonContent()),
+     *   @OA\Response(response=400, description="Lấy thất bại",@OA\JsonContent())
      * )
      */
     public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection

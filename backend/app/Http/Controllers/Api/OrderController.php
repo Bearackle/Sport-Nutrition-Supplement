@@ -37,8 +37,8 @@ class OrderController extends Controller
      *     description="Tất cả đơn hàng của người dùng",
      *     summary="Tìm tất cả đơn hàng",
      *     tags={"Order"},
-     *     @OA\Response(response=200,description="Lấy đơn hàng thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200,description="Lấy đơn hàng thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -56,8 +56,8 @@ class OrderController extends Controller
      *     description="Tất cả đơn hàng của đang tồn tại trong hệ thống, sắp xếp theo ngày tạo mới nhất",
      *     summary="Tìm tất cả đơn hàng",
      *     tags={"Order"},
-     *     @OA\Response(response=200,description="Lấy đơn hàng thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200,description="Lấy đơn hàng thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -80,8 +80,8 @@ class OrderController extends Controller
      *              @OA\Property (property="message", type="string", example="goi hang can than")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Tạo đơn hàng thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tạo đơn hàng thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -105,8 +105,8 @@ class OrderController extends Controller
      *         in="path",
      *         description="nhập order_id của đơn hàng"
      *     ),
-     *     @OA\Response(response=200, description="Tìm thông tin thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tìm thông tin thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -135,8 +135,8 @@ class OrderController extends Controller
      *              @OA\Property (property="status", description="Trạng thái đơn hàng",example="SHIPPED")
      *         ),
      *     ),
-     *     @OA\Response(response=200, description="Cập nhật đơn hàng"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Cập nhật đơn hàng",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -159,12 +159,12 @@ class OrderController extends Controller
      *         required=true,
      *         description="Nhập order_id",
      *     ),
-     *     @OA\Response(response=200, description="Xóa đơn hàng thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Xóa đơn hàng thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
-    public function destroy(string $order_id) : ApiResponse
+    public function destroy(string $order_id): \Illuminate\Http\JsonResponse
     {
         $this->authorize('delete', Order::class);
         $this->orderService->destroyOrder(OrderInputData::validateAndCreate(['order_id' => $order_id]));
@@ -185,12 +185,12 @@ class OrderController extends Controller
      *              @OA\Property (property="paymentMethod", type="string", example="VN_PAY")
      *          )
      *     ),
-     *     @OA\Response(response=200, description="Thêm phương thức thanh toán thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Thêm phương thức thanh toán thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
-    public function addPayment(Request $request)
+    public function addPayment(Request $request): PaymentResource
     {
         $this->authorize('create' , Order::class);
         $orderPayment = PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId'),
@@ -212,8 +212,8 @@ class OrderController extends Controller
      *        required=true,
      *        description="mã đơn hàng",
      *    ),
-     *    @OA\Response(response=200, description="Tìm thành công"),
-     *    @OA\Response(response=500, description="Lỗi dịch vụ")
+     *    @OA\Response(response=200, description="Tìm thành công",@OA\JsonContent()),
+     *    @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function getOrderPayments(string $orderId): PaymentResource
@@ -237,8 +237,8 @@ class OrderController extends Controller
      *               @OA\Property (property="addressDetail", type="string", example="so 1...")
      *           )
      *      ),
-     *     @OA\Response(response=200, description="Thêm địa chỉ thành công"),
-     *     @OA\Response(response=400, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Thêm địa chỉ thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -266,8 +266,8 @@ class OrderController extends Controller
      *                @OA\Property (property="method", type="string", example="VN")
      *            )
      *       ),
-     * @OA\Response(response=200, description="Thêm thành công"),
-     * @OA\Response (response=500, description="Lỗi dịch vụ")
+     * @OA\Response(response=200, description="Thêm thành công",@OA\JsonContent()),
+     * @OA\Response (response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */

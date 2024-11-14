@@ -29,14 +29,14 @@ class CartController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/cart",
-     *     summary="lấy id của giỏ hàng",
-     *     description="Lấy thông tin giỏ hàng",
-     *     tags={"Cart"},
-     *     @OA\Response(response=200, description="Tìm thông tin giỏ hàng thành công"),
-     *     @OA\Response(response=400, description="Tìm thông tin giỏ hàng thất bại"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
-     * )
+     *      path="/api/cart",
+     *      summary="Lấy ID của giỏ hàng",
+     *      description="Lấy thông tin giỏ hàng",
+     *      tags={"Cart"},
+     *      @OA\Response(response=200, description="Tìm thông tin giỏ hàng thành công", @OA\JsonContent()),
+     *      @OA\Response(response=400, description="Tìm thông tin giỏ hàng thất bại", @OA\JsonContent()),
+     *      @OA\Response(response=500, description="Lỗi dịch vụ", @OA\JsonContent())
+     *  )
      * @throws AuthorizationException
      */
     public function index(): ShoppingCartResource
@@ -53,8 +53,8 @@ class CartController extends Controller
      *     tags={"Cart"},
      *     description="Tạo giỏ hàng mới cho user, lưu ý mỗi user chỉ có 1 giỏ hàng",
      *     summary="Tạo giỏ hàng",
-     *     @OA\Response(response=200,description="Tạo giỏ hàng thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ"),
+     *     @OA\Response(response=200,description="Tạo giỏ hàng thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent()),
      * )
      */
     public function newCart() : ShoppingCartResource
@@ -82,9 +82,9 @@ class CartController extends Controller
      *              @OA\Property (property="quantity",type="integer", example=2)
      *          )
      *     ),
-     *     @OA\Response(response=200, description="Thêm vào giỏ hàng thành công"),
-     *     @OA\Response(response=422, description="Sản phẩm đã tồn tại"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Thêm vào giỏ hàng thành công",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sản phẩm đã tồn tại",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function store(Request $request): CartItemResource
@@ -99,8 +99,8 @@ class CartController extends Controller
      *     tags={"Cart"},
      *     description="Tìm thông tin toàn bộ sản phẩm có trong giỏ hàng",
      *     summary="sản phẩm trong giỏ hàng",
-     *     @OA\Response(response=200, description="Tìm sản phẩm thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tìm sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -131,8 +131,8 @@ class CartController extends Controller
      *              @OA\Property (property="quantity", example=20)
      *          )
      *     ),
-     *     @OA\Response(response=200, description="Cập nhật sản phẩm thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Cập nhật sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function update(Request $request,string $id): JsonResponse|CartItemResource
@@ -157,11 +157,11 @@ class CartController extends Controller
      *         required=true,
      *         name="item_id"
      *     ),
-     *     @OA\Response(response=200, description="Xóa sản phẩm than công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Xóa sản phẩm than công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
-    public function destroy(string $item_id) : ApiResponse
+    public function destroy(string $item_id): JsonResponse
     {
         $this->cartService->deleteCartItem(CartItemInputData::validateAndCreate(['cart_item_id' => $item_id]));
         return ApiResponse::success('deleted successfully');

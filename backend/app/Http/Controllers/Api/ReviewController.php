@@ -55,9 +55,9 @@ class ReviewController extends Controller
      *               )
      *           )
      *       ),
-     *       @OA\Response(response=200, description="Tạo sản phẩm thành công"),
-     *       @OA\Response(response=400, description="Tạo sản phẩm thất bại"),
-     *       @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *       @OA\Response(response=200, description="Tạo sản phẩm thành công",@OA\JsonContent()),
+     *       @OA\Response(response=400, description="Tạo sản phẩm thất bại",@OA\JsonContent()),
+     *       @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
@@ -87,8 +87,8 @@ class ReviewController extends Controller
      *           description="id của sản phẩm",
      *           @OA\Schema(type="integer")
      *      ),
-     *     @OA\Response(response=200, description="Tìm thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tìm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function showProductReview(string $id): AnonymousResourceCollection
@@ -110,8 +110,8 @@ class ReviewController extends Controller
      *           description="id của combo",
      *           @OA\Schema(type="integer")
      *      ),
-     *     @OA\Response(response=200, description="Tìm thành công"),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ")
+     *     @OA\Response(response=200, description="Tìm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
     public function showComboReview(string $id): AnonymousResourceCollection
@@ -140,9 +140,9 @@ class ReviewController extends Controller
      *              @OA\Property(property="comment", type="string", example="rat tuyet voi"),
      *          )
      *     ),
-     *    @OA\Response(response=200,description="Cập nhật thành công"),
-     *    @OA\Response(response=422, description="Sai định dạng yêu cầu"),
-     *    @OA\Response(response=500, description="Lỗi dịch vụ")
+     *    @OA\Response(response=200,description="Cập nhật thành công",@OA\JsonContent()),
+     *    @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent()),
+     *    @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      *
      * @throws AuthorizationException
@@ -175,9 +175,9 @@ class ReviewController extends Controller
      *          description="id review cần xóa",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200,description="xóa sản phẩm thành công"),
-     *     @OA\Response(response=400, description="xóa sản phẩm thất bại"),
-     *      @OA\Response(response=500, description="Lỗi dịch vụ"),
+     *     @OA\Response(response=200,description="xóa sản phẩm thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="xóa sản phẩm thất bại",@OA\JsonContent()),
+     *      @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent()),
      * )
      * @throws AuthorizationException
      */
@@ -217,9 +217,9 @@ class ReviewController extends Controller
      *               )
      *           )
      *       ),
-     *     @OA\Response(response=200,description="Tải ảnh lên thành công"),
-     *     @OA\Response(response=400, description="Tải ảnh lên thất bại"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200,description="Tải ảnh lên thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Tải ảnh lên thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
     public function addImage(Request $request) :  ApiResponse{
@@ -245,11 +245,10 @@ class ReviewController extends Controller
      *         required=true,
      *         description="id của ảnh"
      *     ),
-     *     @OA\Response(response=200, description="Xóa ảnh thành công"),
-     *     @OA\Response(response=400, description="Xóa ảnh thất bại"),
-     *     @OA\Response(response=422, description="Sai định dạng yêu cầu")
+     *     @OA\Response(response=200, description="Xóa ảnh thành công",@OA\JsonContent()),
+     *     @OA\Response(response=400, description="Xóa ảnh thất bại",@OA\JsonContent()),
+     *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
-     * @throws AuthorizationException
      */
     public function destroyImage(string $id): JsonResponse
     {
