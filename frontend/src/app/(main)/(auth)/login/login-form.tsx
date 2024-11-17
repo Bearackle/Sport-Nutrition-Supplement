@@ -12,7 +12,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { cn, handleErrorApi } from "@/lib/utils";
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";

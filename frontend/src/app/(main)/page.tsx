@@ -72,7 +72,7 @@ export default function Home() {
             </Link>
           </div>
           <CategoryBar />
-          <div className="flex w-full flex-row items-center gap-4 overflow-x-scroll ml:justify-between ml:overflow-hidden xl:h-[7.375rem]">
+          <div className="flex w-full flex-row items-center gap-4 overflow-x-scroll ml:justify-between ml:gap-0 ml:overflow-hidden xl:h-[7.375rem]">
             <CouponCard {...couponData} />
             <CouponCard {...couponData} />
             <CouponCard {...couponData} />

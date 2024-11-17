@@ -1,4 +1,3 @@
-import { getProfile } from "@/actions/user-actions";
 import UserProfileLoading from "@/app/(main)/user/profile/loading";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
@@ -6,10 +5,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 export default function Page() {
-  const userInfo = getProfile().then((res) => {
-    return res;
-  });
-  console.log(userInfo);
   return (
     <Suspense fallback={<UserProfileLoading />}>
       <div className={cn("w-full rounded-[0.625em] bg-white pb-[2.5em]")}>

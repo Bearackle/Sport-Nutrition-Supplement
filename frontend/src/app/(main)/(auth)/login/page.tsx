@@ -1,8 +1,8 @@
 "use client";
 
-import { LoginForm } from "@/components/forms/LoginForm";
 import Image from "next/image";
 import { Fragment } from "react";
+import LoginForm from "./login-form";
 import googleLogo from "/public/google-icon.svg";
 
 export default function page() {

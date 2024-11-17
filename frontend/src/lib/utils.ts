@@ -1,9 +1,9 @@
-import { toast } from "@/components/ui/use-toast";
 import { clsx, type ClassValue } from "clsx";
 import { jwtDecode } from "jwt-decode";
 import { UseFormSetError } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { EntityError } from "./http";
+import { toast } from "@/hooks/use-toast";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
