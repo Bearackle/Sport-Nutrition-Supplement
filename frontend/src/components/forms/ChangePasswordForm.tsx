@@ -1,28 +1,13 @@
 "use client";
 
-import { changePasswordAction } from "@/actions/auth-actions";
 import { cn } from "@/lib/utils";
-import { useFormState } from "react-dom";
-import { ZodErrors } from "../common/ZodErrors";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 
-const INITIAL_STATE = {
-  data: null,
-  errors: null,
-  message: null,
-  zodErrors: null,
-};
-
 export function ChangePasswordForm() {
-  const [formState, formAction] = useFormState(
-    changePasswordAction,
-    INITIAL_STATE,
-  );
-  console.log(formState);
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={() => console.log("Submit")} className="space-y-4">
       <div className="relative">
         <Label htmlFor="currentPassword">
           Mật khẩu hiện tại <span className="text-red-600">*</span>
@@ -36,7 +21,6 @@ export function ChangePasswordForm() {
             "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
           )}
         />
-        <ZodErrors error={formState?.zodErrors?.currentPassword} />
       </div>
 
       <div className="relative">
@@ -52,7 +36,6 @@ export function ChangePasswordForm() {
             "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
           )}
         />
-        <ZodErrors error={formState?.zodErrors?.newPassword} />
       </div>
       <div className="relative">
         <Label htmlFor="confirmPassword">
@@ -67,7 +50,6 @@ export function ChangePasswordForm() {
             "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
           )}
         />
-        <ZodErrors error={formState?.zodErrors?.confirmPassword} />
       </div>
       <Button
         type="submit"
