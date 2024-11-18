@@ -44,7 +44,7 @@ export const RegisterBody = z
       .refine((value) => value.trim().split(/\s+/).length >= 2, {
         message: "Vui lòng nhập đầy đủ họ và tên",
       }),
-    tel: z
+    phone: z
       .string()
       .min(1, { message: "Số điện thoại không được để trống" })
       .regex(/(0)(3|5|7|8|9)+([0-9]{8})\b/, {

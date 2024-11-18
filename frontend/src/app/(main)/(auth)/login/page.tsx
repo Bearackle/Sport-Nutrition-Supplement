@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment } from "react";
 import LoginForm from "./login-form";
 import googleLogo from "/public/google-icon.svg";
@@ -12,7 +13,13 @@ export default function page() {
         Đăng nhập tài khoản
       </h1>
       <LoginForm />
-      <div className="mt-8">
+      <div className="mx-auto mt-3 space-x-1">
+        <span>Bạn chưa có tài khoản?</span>
+        <Link href={"/register"} className="text-center font-bold">
+          Đăng ký
+        </Link>
+      </div>
+      <div className="mt-6">
         <div className="flex flex-row items-center justify-center gap-2">
           <div className="h-px w-[5rem] bg-app-carbon"></div>
           <div className="text-[0.875rem]">Hoặc đăng nhập với</div>

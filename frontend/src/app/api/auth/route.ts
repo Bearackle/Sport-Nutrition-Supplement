@@ -18,3 +18,15 @@ export async function POST(request: Request) {
     },
   });
 }
+
+export async function DELETE(_request: Request) {
+  return Response.json(
+    { message: "Đăng xuất thành công" },
+    {
+      status: 200,
+      headers: {
+        "Set-Cookie": `sessionToken=; Path=/; HttpOnly; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Lax; Secure`,
+      },
+    },
+  );
+}
