@@ -15,33 +15,39 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { cn, handleErrorApi } from "@/lib/utils";
-import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
+import {
+  RegisterBody,
+  RegisterBodyType,
+} from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { setUser } = useAppContext();
   const { toast } = useToast();
   const router = useRouter();
-  const form = useForm<LoginBodyType>({
-    resolver: zodResolver(LoginBody),
+
+  const form = useForm<RegisterBodyType>({
+    resolver: zodResolver(RegisterBody),
     defaultValues: {
+      fullName: "",
+      phone: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  async function onSubmit(values: LoginBodyType) {
+  async function onSubmit(values: RegisterBodyType) {
     if (loading) return;
     setLoading(true);
     setError(null);
     try {
-      const result = await authApiRequest.login(values);
+      const result = await authApiRequest.register(values);
 
       await authApiRequest.auth({
         sessionToken: result.payload.token,
@@ -59,7 +65,7 @@ const LoginForm = () => {
         error,
         setError: form.setError,
       });
-      setError("Tài khoản hoặc mật khẩu không chính xác");
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -78,6 +84,46 @@ const LoginForm = () => {
           className="w-full max-w-[600px] flex-shrink-0 space-y-2"
           noValidate
         >
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Họ và tên</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Họ và tên"
+                    type="text"
+                    className={cn(
+                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                    )}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Số điện thoại</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Số điện thoại"
+                    type="text"
+                    className={cn(
+                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                    )}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="email"
@@ -118,16 +164,31 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          <div className="!mt-2">
-            <Link href={"#"} className="float-right hover:underline">
-              Quên mật khẩu?
-            </Link>
-          </div>
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nhập lại mật khẩu</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Nhập lại mật khẩu"
+                    type="password"
+                    className={cn(
+                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                    )}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button
             type="submit"
             className="h-auto w-full rounded-none border-[2px] border-solid border-[#1250DC] bg-[#1250DC] py-3 text-base font-bold text-white transition-all duration-200 hover:bg-[#1250DC]/[0.9]"
           >
-            Đăng nhập
+            Đăng ký
           </Button>
         </form>
       </Form>
@@ -135,4 +196,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;

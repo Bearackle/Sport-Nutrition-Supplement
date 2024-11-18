@@ -7,13 +7,19 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
+import {
+  cn,
+  getContrastingColor,
+  handleErrorApi,
+  stringToColor,
+} from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 // ** Import Icons
 // import { logoutAction } from "@/actions/auth-actions";
+import authApiRequest from "@/apiRequests/auth";
 import { useAppContext } from "@/app/app-provider";
 import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
@@ -51,7 +57,7 @@ export default function UserLayout({
 }>) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user } = useAppContext();
+  const { user, setUser } = useAppContext();
 
   const stringAvatar = (name: string | undefined) => {
     if (!name)
@@ -67,9 +73,20 @@ export default function UserLayout({
     };
   };
 
-  const handleLogout = () => {
-    // logoutAction();
-    router.replace("/login");
+  const handleLogout = async () => {
+    try {
+      await authApiRequest.logout();
+      router.push("/login");
+    } catch (error) {
+      handleErrorApi({
+        error,
+      });
+    } finally {
+      setUser(null);
+      router.refresh();
+      localStorage.removeItem("sessionToken");
+      localStorage.removeItem("sessionTokenExpiresAt");
+    }
   };
 
   return (
