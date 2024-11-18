@@ -3,12 +3,10 @@
 namespace App\Services\User;
 
 use App\DTOs\InputData\UserInputUpdatePasswordData;
-use App\Http\Resources\UserFullResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -23,10 +21,10 @@ class UserService implements UserServiceInterface
     public function register(array $userData): JsonResponse
     {
         if(!$this->userRepository->isEmailExists($userData['email'])){
-            return ApiResponse::fail('Email already used');
+            return ApiResponse::fail('Email đã được sử dụng');
         }
         if(! $this->userRepository->isPhoneExists($userData['phone'])){
-            return ApiResponse::fail('Phone number already used');
+            return ApiResponse::fail('Số điện thoại đã được sử dụng');
         }
         $userData['password'] = bcrypt($userData['password']);
         $userRegisterd = $this->userRepository->create($userData);
@@ -34,7 +32,7 @@ class UserService implements UserServiceInterface
         $token = $userRegisterd->createToken('access_token',['*'], Carbon::now()->addDays(3));
         $data = [
             'status' => 'success',
-            'message' => 'User successfully registered',
+            'message' => 'Đăng ký tài khoản thành công',
             'token' => $token->plainTextToken,
             'expiresAt' =>$token->accessToken->expires_at,
             'account' => new UserResource($userRegisterd),
@@ -45,14 +43,14 @@ class UserService implements UserServiceInterface
     {
         $user = $this->userRepository->findByEmail($userUnAuthorized['email']);
         if(!$user || !Hash::check($userUnAuthorized['password'],$user->password)){
-            return ApiResponse::fail('Login Fail :(');
+            return ApiResponse::fail('Đăng nhập thất bại!');
         }
         $user->tokens()->delete();
         $token = $user->createToken('access_token',['*'],Carbon::now()->
         addDays(3));
         $data = [
             'status' => 'success',
-            'message' => 'Login successfully',
+            'message' => 'Đăng nhập thành công!',
             'token' => $token->plainTextToken,
             'expiresAt' =>$token->accessToken->expires_at,
             'account' => new UserResource($user)
@@ -66,16 +64,16 @@ class UserService implements UserServiceInterface
     public function updatePassword(User $user,UserInputUpdatePasswordData $data): JsonResponse
     {
         if(!Hash::check($data->old_password,$user->password)){
-            return ApiResponse::fail( 'Old password doesn\'t match');
+            return ApiResponse::fail( 'Mật khẩu cũ không trùng!');
         }
         $result = $this->userRepository->update($user->user_id,
             ['password' => bcrypt($data->password)]);
         if(!$result){
-            return ApiResponse::fail('Update fail, please try again');
+            return ApiResponse::fail('Cập nhật mật khẩu thất bại');
         }
         $dataResponse = [
             'status' => 'success',
-            'message' => 'data user updated'
+            'message' => 'cập nhật mật khẩu thành công'
         ];
         return response()->json($dataResponse, 200);
     }
