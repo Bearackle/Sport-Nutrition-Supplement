@@ -7,12 +7,20 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
+import {
+  cn,
+  getContrastingColor,
+  handleErrorApi,
+  stringToColor,
+} from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
 // ** Import Icons
+// import { logoutAction } from "@/actions/auth-actions";
+import authApiRequest from "@/apiRequests/auth";
+import { useAppContext } from "@/app/app-provider";
 import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
 import orderIcon from "/public/order-icon.png";
@@ -49,14 +57,38 @@ export default function UserLayout({
 }>) {
   const pathname = usePathname();
   const router = useRouter();
+  const { user, setUser } = useAppContext();
 
-  const stringAvatar = (name: string) => {
+  const stringAvatar = (name: string | undefined) => {
+    if (!name)
+      return {
+        bgColor: "#FFF",
+        textColor: "#000",
+        children: `uu`,
+      };
     return {
       bgColor: stringToColor(name),
       textColor: getContrastingColor(stringToColor(name)),
-      children: `${name.split(" ")[0][0]}${name.split(" ")[1][0]}`,
+      children: `${user?.name.split(" ")[0][0]}${user?.name.split(" ")[1][0]}`,
     };
   };
+
+  const handleLogout = async () => {
+    try {
+      await authApiRequest.logout();
+      router.push("/login");
+    } catch (error) {
+      handleErrorApi({
+        error,
+      });
+    } finally {
+      setUser(null);
+      router.refresh();
+      localStorage.removeItem("sessionToken");
+      localStorage.removeItem("sessionTokenExpiresAt");
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -101,14 +133,14 @@ export default function UserLayout({
             <Avatar
               className={cn("size-[4em]")}
               style={{
-                backgroundColor: `${stringAvatar("Lê Quốc Hưng").bgColor}`,
+                backgroundColor: `${stringAvatar(user?.name).bgColor}`,
               }}
             >
               <AvatarFallback
                 className={cn("text-[1.375em]")}
-                style={{ color: `${stringAvatar("Lê Quốc Hưng").textColor}` }}
+                style={{ color: `${stringAvatar(user?.name).textColor}` }}
               >
-                {stringAvatar("Lê Quốc Hưng").children}
+                {stringAvatar(user?.name).children}
               </AvatarFallback>
             </Avatar>
             <p
@@ -116,10 +148,10 @@ export default function UserLayout({
                 "mb-[0.25em] mt-[0.375em] text-[0.9375em] capitalize leading-[1.21] text-white",
               )}
             >
-              Lê Quốc Hưng
+              {user?.name}
             </p>
             <p className={cn("text-[0.875em] leading-[1.21] text-white")}>
-              0999555666
+              {user?.phone}
             </p>
           </div>
           <div
@@ -172,6 +204,7 @@ export default function UserLayout({
               </button>
             ))}
             <button
+              onClick={handleLogout}
               className={cn(
                 "relative flex w-full flex-row items-center p-[0.75em]",
               )}

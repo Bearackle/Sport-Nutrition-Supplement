@@ -3,9 +3,10 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import MobileNavBar from "../nav-bar/MobileNavBar";
+import { HeaderCart } from "./HeaderCart";
+import { HeaderUser } from "./HeaderUser";
 import SearchInput from "./SearchInput";
-import accountIcon from "/public/account-icon.svg";
-import cartIcon from "/public/cart-icon.svg";
+import { UserAndCart } from "./UserAndCart";
 import logo from "/public/logo.png";
 import phoneIcon from "/public/phone-icon.svg";
 import saleIcon from "/public/sale-icon.svg";
@@ -77,42 +78,9 @@ export const Header = () => {
             </Link>
           </div>
         </div>
-        <Link
-          href="login"
-          className="hidden flex-row items-center gap-2 xl:flex"
-        >
-          <Image src={accountIcon} alt="" className="size-7" />
-          <p className="text-center text-[0.875rem] font-semibold text-white">
-            Đăng nhập
-          </p>
-        </Link>
-        <div className="hidden xl:block">
-          <Link
-            href="/cart"
-            className="flex flex-row items-center gap-2 rounded-[3.125rem] bg-[#1250DC] px-4 py-2"
-          >
-            <Image src={cartIcon} alt="" className="size-7" />
-            <p className="text-center text-[0.875rem] font-semibold tracking-[0.025rem] text-white">
-              Giỏ hàng
-            </p>
-          </Link>
-        </div>
-        <div className="absolute right-[4%] flex flex-row items-center gap-1 xs:gap-4 xl:hidden">
-          <Link href="login" className="flex flex-row items-center gap-2">
-            <Image src={accountIcon} alt="" className="size-5 xs:size-7" />
-            <p className="hidden text-center text-[0.875rem] font-semibold text-white lg:block">
-              Đăng nhập
-            </p>
-          </Link>
-          <div>
-            <button className="flex flex-row items-center gap-2 rounded-[3.125rem] px-4 py-2 lg:bg-[#1250DC]">
-              <Image src={cartIcon} alt="" className="size-5 xs:size-7" />
-              <p className="hidden text-center text-[0.875rem] font-semibold tracking-[0.025rem] text-white lg:block">
-                Giỏ hàng
-              </p>
-            </button>
-          </div>
-        </div>
+        <HeaderUser />
+        <HeaderCart />
+        <UserAndCart />
       </div>
       <div className="w-full xl:hidden">
         <SearchInput />

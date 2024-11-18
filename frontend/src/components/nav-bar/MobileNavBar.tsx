@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // ** Import next
 import Image from "next/image";
-import Link from "next/link";
 
 // ** Import ui
 import {
@@ -17,7 +16,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
 // ** Import images
 import { productCategories } from "@/data/category";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
-import accountIcon from "/public/account-icon.svg";
+import { MobileUserNavBar } from "./MobileUserNavBar";
 
 const MobileNavBar = () => {
   return (
@@ -41,20 +40,7 @@ const MobileNavBar = () => {
           }}
           className="w-full"
         >
-          <Link
-            href="/login"
-            className="flex flex-row items-center gap-4 px-4 py-3"
-          >
-            <Image src={accountIcon} alt="" className="size-8" />
-            <div>
-              <p className="text-center text-base font-bold text-white">
-                Tài khoản
-              </p>
-              <p className="text-center text-[0.875rem] font-medium text-white">
-                Đăng nhập
-              </p>
-            </div>
-          </Link>
+          <MobileUserNavBar />
         </SheetHeader>
         <div>
           <ul>

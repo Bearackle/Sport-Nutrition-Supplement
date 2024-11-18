@@ -1,8 +1,11 @@
+"use client";
+import { useAppContext } from "@/app/app-provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
 import Link from "next/link";
 
 export default function Page() {
+  const { user } = useAppContext();
   return (
     <div className={cn("w-full rounded-[0.625em] bg-white pb-[2.5em]")}>
       <div
@@ -16,16 +19,16 @@ export default function Page() {
         <Avatar
           className={cn("size-[5.625em]")}
           style={{
-            backgroundColor: `${stringToColor("Lê Quốc Hưng")}`,
+            backgroundColor: `${stringToColor(user?.name || "undefined undefined")}`,
           }}
         >
           <AvatarFallback
             className={cn("text-[1.75em]")}
             style={{
-              color: `${getContrastingColor(stringToColor("Lê Quốc Hưng"))}`,
+              color: `${getContrastingColor(stringToColor(user?.name || "undefined undefined"))}`,
             }}
           >
-            {`${"Lê Quốc Hưng".split(" ")[0][0]}${"Lê Quốc Hưng".split(" ")[1][0]}`}
+            {`${user?.name.split(" ").slice(-2).join(" ").split(" ")[0][0]}${user?.name.split(" ").slice(-2).join(" ").split(" ")[1][0]}`}
           </AvatarFallback>
         </Avatar>
         <div className="mt-[1em] w-[20.375em] divide-y text-[0.875em] leading-[1.21] text-[#333]">
@@ -33,19 +36,19 @@ export default function Page() {
             className={cn("flex w-full flex-row justify-between py-[0.875em]")}
           >
             <span>Họ và tên</span>
-            <span>Lê Quốc Hưng</span>
+            <span>{user?.name}</span>
           </div>
           <div
             className={cn("flex w-full flex-row justify-between py-[0.875em]")}
           >
             <span>Số điện thoại</span>
-            <span>0969696969</span>
+            <span>{user?.phone}</span>
           </div>
           <div
             className={cn("flex w-full flex-row justify-between py-[0.875em]")}
           >
             <span>Email</span>
-            <span>quochung@gmail.com</span>
+            <span>{user?.email}</span>
           </div>
         </div>
         <Link
