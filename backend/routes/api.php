@@ -8,8 +8,6 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
 use App\Http\Controllers\Api\ReviewController;
-use App\Http\Middleware\JsonResponseMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CategoryController;
@@ -32,6 +30,7 @@ Route::group([
     Route::get('all',[ProductController::class,'allProducts']);
     Route::get('category/{id}',[ProductController::class,'CategoryProduct']);
     Route::get('products', [ProductController::class,'filter']);
+    Route::post('search',[ProductController::class,'search']);
 });
 Route::group([
     'prefix' => 'products'

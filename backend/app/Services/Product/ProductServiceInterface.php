@@ -17,4 +17,5 @@ interface ProductServiceInterface{
     public function filter(ProductFilter $filters);
     public function getCategoryProduct(CategoryInputData $category);
     public function getModelProduct(ProductIntputData $product);
+    public function search($data);
 }

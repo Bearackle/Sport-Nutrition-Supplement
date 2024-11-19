@@ -9,6 +9,7 @@ use App\DTOs\InputData\VariantInputData;
 use App\Filters\ProductFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateImageRequest;
+use App\Http\Resources\CombosLandingMask;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\ProductLandingMask;
 use App\Http\Resources\ProductResource;
@@ -461,5 +462,9 @@ class ProductController extends Controller
         $this->authorize('delete',Product::class);
         $this->imageProductService->deleteDescriptionsImage($imageId);
         return ApiResponse::success('delete description image successfully');
+    }
+    public function search(Request $request){
+        $data = $this->productService->search($request->input('name'));
+        return ProductLandingMask::collection($data);
     }
 }

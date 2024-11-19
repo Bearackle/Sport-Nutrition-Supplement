@@ -7,6 +7,8 @@ use App\DTOs\InputData\ProductIntputData;
 use App\DTOs\OutputData\ProductOutputData;
 use App\Filters\ProductFilter;
 use App\Models\Category;
+use App\Models\Combo;
+use App\Models\Product;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Traits\ProductStockChecking;
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -73,5 +75,14 @@ class ProductService implements ProductServiceInterface{
     }
     public function calculatedPrice($price,$sale) : int{
             return $price * ((100.0-$sale)/100.0);
+    }
+
+    public function search($data)
+    {
+        if ($data != '') {
+            $products = Product::fullTextSearch('product_name', $data);
+            return $products->paginate(10);
+        }
+        return null;
     }
 }
