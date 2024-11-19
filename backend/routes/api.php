@@ -30,7 +30,7 @@ Route::group([
     Route::get('all',[ProductController::class,'allProducts']);
     Route::get('category/{id}',[ProductController::class,'CategoryProduct']);
     Route::get('products', [ProductController::class,'filter']);
-    Route::post('search',[ProductController::class,'search']);
+    Route::get('search',[ProductController::class,'search']);
 });
 Route::group([
     'prefix' => 'products'

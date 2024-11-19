@@ -463,6 +463,32 @@ class ProductController extends Controller
         $this->imageProductService->deleteDescriptionsImage($imageId);
         return ApiResponse::success('delete description image successfully');
     }
+    /**
+     * @OA\Get (
+     *     path="/api/collection/search",
+     *     tags={"Collection"},
+     *     description="Tìm sản phẩm có tên gần giống tham số",
+     *     summary="Tìm sản phẩm",
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         required=false,
+     *         description="Tìm sản phẩm có tên gần giống",
+     *         @OA\Schema(
+     *             type="string",
+     *             example="casei"
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tìm thành công"
+     *     ),
+     *     @OA\Response(
+     *         response=500,
+     *         description="Lỗi dịch vụ"
+     *     )
+     * )
+     */
     public function search(Request $request){
         $data = $this->productService->search($request->input('name'));
         return ProductLandingMask::collection($data);

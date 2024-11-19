@@ -1967,6 +1967,36 @@
                 }
             }
         },
+        "/api/collection/search": {
+            "get": {
+                "tags": [
+                    "Collection"
+                ],
+                "summary": "Tìm sản phẩm",
+                "description": "Tìm sản phẩm có tên gần giống tham số",
+                "operationId": "9765543a6474b44114bcc12db8117913",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Tìm sản phẩm có tên gần giống",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "casei"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tìm thành công"
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ"
+                    }
+                }
+            }
+        },
         "/api/products/{id}/variants": {
             "get": {
                 "tags": [
