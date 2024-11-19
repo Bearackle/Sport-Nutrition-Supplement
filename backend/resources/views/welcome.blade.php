@@ -16,6 +16,6 @@
         </style>
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-        <a href="http://dinhhuan.id.vn/api/documentation">Go to api documentation</a>
+        <a href="http://dinhhuan.id.vn/documentation">Go to api documentation</a>
     </body>
 </html>
