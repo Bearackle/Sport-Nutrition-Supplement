@@ -489,7 +489,8 @@ class ProductController extends Controller
      *     )
      * )
      */
-    public function search(Request $request){
+    public function search(Request $request): AnonymousResourceCollection
+    {
         $data = $this->productService->search($request->input('name'));
         return ProductLandingMask::collection($data);
     }
