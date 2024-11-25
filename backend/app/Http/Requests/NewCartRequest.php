@@ -26,7 +26,7 @@ class NewCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'UserID' => 'required|exists:users,userid|unique:shopping_carts,UserID',
+            'userId' => 'required|exists:users,userid|unique:shopping_carts,UserID',
         ];
     }
     public function failedValidation(Validator $validator)
@@ -34,8 +34,8 @@ class NewCartRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

@@ -10,6 +10,7 @@ use App\DTOs\InputData\UserInputData;
 use App\DTOs\OutputData\OrderOutputData;
 use App\DTOs\OutputData\PaymentOutputData;
 use App\Enum\OrderStatus;
+use App\Enum\PaymentMethod;
 use App\Enum\ShipMethod;
 use App\Events\addShippingCharges;
 use App\Models\Address;
@@ -118,7 +119,7 @@ class OrderService implements OrderServiceInterface
     }
     public function addPaymentMethod(PaymentInputData $payment): PaymentOutputData
     {
-        return $this->payment_service->addPaymentMethod($payment);
+        return PaymentOutputData::from($this->payment_service->addPaymentMethod($payment));
     }
     public function addShippingMethod(OrderInputData $order, ShippingMethodInputData $ship): OrderOutputData
     {

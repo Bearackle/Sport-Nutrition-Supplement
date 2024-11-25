@@ -36,8 +36,8 @@ class LoginRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

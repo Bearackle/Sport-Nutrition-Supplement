@@ -12,8 +12,8 @@ class Handler extends ExceptionHandler
     protected function invalidJson($request, ValidationException $exception): JsonResponse
     {
         return response()->json([
-            'message' => 'Validation failed',
-            'errors' => $exception->errors()
+            'errors' => $exception->errors(),
+            'status' => 422
         ], Response::HTTP_UNPROCESSABLE_ENTITY);
     }
 }

@@ -27,14 +27,14 @@ class UpdateProductRequest extends FormRequest
     {
         return [
 //            'ProductID' => 'exists:products,ProductID',
-            'ProductName' => 'string',
-            'Description' => 'string',
-            'Short_Description' => 'string',
-            'Price' => 'numeric',
-            'Sale' => 'numeric',
-            'StockQuantity' => 'numeric',
-            'CategoryID' => 'numeric',
-            'BrandID' => 'numeric',
+            'productName' => 'string',
+            'description' => 'string',
+            'shortDescription' => 'string',
+            'price' => 'numeric',
+            'sale' => 'numeric',
+            'stockQuantity' => 'numeric',
+            'categoryId' => 'numeric',
+            'brandId' => 'numeric',
         ];
     }
     public function failedValidation(Validator $validator)
@@ -42,8 +42,8 @@ class UpdateProductRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\BrandController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ComboController;
 use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProductVariantController;
 use App\Http\Controllers\Api\ReviewController;
@@ -116,6 +117,11 @@ Route::group([
     Route::get('default',[AddressController::class,'defaultAddress'])->middleware('auth:sanctum');
     Route::post('/',[AddressController::class,'store'])->middleware('auth:sanctum');
     Route::delete('/{id}',[AddressController::class,'destroy'])->middleware('auth:sanctum');
+});
+Route::group([
+    'prefix' => 'payment'
+], function(){
+    Route::get('/create', [PaymentController::class, 'create'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'review'

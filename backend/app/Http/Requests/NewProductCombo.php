@@ -26,10 +26,10 @@ class NewProductCombo extends FormRequest
     public function rules(): array
     {
         return [
-            "ComboID" => "required|integer|exists:combos,ComboID",
-            "ProductID" => "required|exists:products,ProductID",
-            "VariantID" => "exists:product_variants,VariantID",
-            "Quantity" => "required|integer|min:1",
+            "comboId" => "required|integer|exists:combos,ComboID",
+            "productId" => "required|exists:products,ProductID",
+            "variantId" => "exists:product_variants,VariantID",
+            "quantity" => "required|integer|min:1",
         ];
     }
     public function failedValidation(Validator $validator)
@@ -37,8 +37,8 @@ class NewProductCombo extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

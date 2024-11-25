@@ -187,7 +187,6 @@ class ProductController extends Controller
          $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
          return new ProductResource($product);
     }
-
     /**
      * @param string $id
      * @return ProductResource
@@ -247,7 +246,7 @@ class ProductController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function update(Request $request,string $id)
+    public function update(Request $request,string $id): JsonResponse
     {
         $this->authorize('update',Product::class);
         $product = ProductIntputData::factory()->alwaysValidate()->from(['product_id' => $id],

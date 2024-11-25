@@ -26,7 +26,7 @@ class UploadImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'Images[]' => 'array|image|mimes:jpg, jpeg, png, webp'
+            'images[]' => 'array|image|mimes:jpg, jpeg, png, webp'
         ];
     }
     public function failedValidation(Validator $validator)
@@ -34,8 +34,8 @@ class UploadImageRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

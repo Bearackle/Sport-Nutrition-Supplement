@@ -31,7 +31,7 @@ class RegisterRequest extends FormRequest
             'phone' => ['required','numeric','digits:10','regex:/(0)(3|5|7|8|9)+([0-9]{8})\b/'],
          //   'password' => ['required','string','min:8','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
             'password' => ['required','string','regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/'],
-            'confirm_password' => 'required|same:password'
+            'confirmPassword' => 'required|same:password'
         ];
     }
     public function failedValidation(Validator $validator)
@@ -39,8 +39,8 @@ class RegisterRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }

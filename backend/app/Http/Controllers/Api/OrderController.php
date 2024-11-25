@@ -249,9 +249,11 @@ class OrderController extends Controller
         AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
         return new OrderResource($order);
     }
+
     /**
      * @param Request $request
-     * @return ApiResponse
+     * @return OrderResource
+     * @throws AuthorizationException
      * @OA\Post(
      *     path="/api/order/ship",
      *     tags={"Order"},
@@ -269,7 +271,6 @@ class OrderController extends Controller
      * @OA\Response(response=200, description="Thêm thành công",@OA\JsonContent()),
      * @OA\Response (response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
-     * @throws AuthorizationException
      */
     public function addShipping(Request $request) : OrderResource
     {

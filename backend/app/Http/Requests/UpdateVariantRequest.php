@@ -27,7 +27,7 @@ class UpdateVariantRequest extends FormRequest
     {
         return [
             'variantName' => 'string',
-            'productID' => 'numeric',
+            'productId' => 'numeric',
             'stockQuantity' => 'required|numeric',
         ];
     }
@@ -36,8 +36,8 @@ class UpdateVariantRequest extends FormRequest
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(response()->json(
             [
-                'error' => $errors,
-                'status_code' => 422,
+                'errors' => $errors,
+                'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
 }
