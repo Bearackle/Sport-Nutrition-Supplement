@@ -1,15 +1,14 @@
-"use client";
-
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import RegisterForm from "./register-form";
 import googleLogo from "/public/google-icon.svg";
 
-// export const metadata: Metadata = {
-//   title: "Đăng ký | 4H",
-//   description:
-//     "4H | Đăng ký để mua sắm các sản phẩm dinh dưỡng thể thao hàng đầu",
-// };
+export const metadata: Metadata = {
+  title: "Đăng ký",
+  description:
+    "Đăng ký để khám phá và mua sắm các sản phẩm dinh dưỡng thể thao chất lượng cao đến từ 4HProtein.",
+};
 
 export default function page() {
   return (

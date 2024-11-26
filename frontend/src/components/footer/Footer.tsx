@@ -1,11 +1,11 @@
+import { Subscription } from "@/components/footer/Subscription";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import logo from "../../../public/logo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
-import { Subscription } from "@/components/footer/Subscription";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import Link from "next/link";
+import logo from "../../../public/logo.png";
 
 export const Footer = () => {
   return (
@@ -150,6 +150,7 @@ export const Footer = () => {
               allowFullScreen={false}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
+              title="4HProtein Location"
               className={cn(
                 "mx-auto aspect-[8/5] w-[90%] xs:mx-0 lg:w-[25rem]",
               )}

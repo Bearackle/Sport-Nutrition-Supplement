@@ -1,17 +1,16 @@
 "use client";
-import * as React from "react";
 
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { forwardRef, InputHTMLAttributes, useState } from "react";
 import visibilityIcon from "/public/visibility-icon.svg";
 import visibilityOffIcon from "/public/visibility-off-icon.svg";
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
-    const [isVisible, setIsVisible] = React.useState(false);
+    const [isVisible, setIsVisible] = useState(false);
     return (
       <div className="relative">
         <input

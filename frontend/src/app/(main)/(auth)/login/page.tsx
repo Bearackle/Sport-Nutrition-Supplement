@@ -1,10 +1,15 @@
-"use client";
-
+import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import LoginForm from "./login-form";
 import googleLogo from "/public/google-icon.svg";
+
+export const metadata: Metadata = {
+  title: "Đăng nhập",
+  description:
+    "Đăng nhập vào 4H Protein để khám phá và mua sắm các sản phẩm dinh dưỡng thể thao chất lượng cao.",
+};
 
 export default function page() {
   return (

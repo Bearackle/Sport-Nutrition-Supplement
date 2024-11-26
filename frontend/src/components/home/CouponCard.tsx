@@ -57,8 +57,8 @@ const CouponCard = ({
             className={cn(
               "rounded-[0.625rem] px-3 py-2 text-[0.6875rem] font-medium text-white transition-all duration-300 hover:scale-105 active:scale-100",
               isCopied
-                ? "border-[1.5px] border-solid border-[#F42406] bg-white text-[#C11616]"
-                : "bg-[#F42406]",
+                ? "border-[1.5px] border-solid border-[#AD1706] bg-white text-[#C11616]"
+                : "bg-[#AD1706]",
             )}
           >
             {isCopied ? "Dùng ngay" : "Lấy mã"}

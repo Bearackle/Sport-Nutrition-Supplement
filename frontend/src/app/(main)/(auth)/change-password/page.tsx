@@ -1,5 +1,10 @@
+import { Metadata } from "next";
 import { Fragment } from "react";
 import ChangePasswordForm from "./change-password-form";
+
+export const metadata: Metadata = {
+  title: "Đổi mật khẩu",
+};
 
 const page = () => {
   return (
