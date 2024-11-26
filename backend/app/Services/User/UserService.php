@@ -62,8 +62,9 @@ class UserService implements UserServiceInterface
             return response()->json([
                 'errors' => [
                     'currentPassword' => 'Mật khẩu không chính xác'
-                ]
-            ]);
+                ],
+                'status' => 422
+            ,422]);
         }
         $result = $this->userRepository->update($user->user_id,
             ['password' => bcrypt($data->new_password)]);
