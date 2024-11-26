@@ -50,7 +50,7 @@ export class EntityError extends HttpError {
 let clientLogoutRequest: null | Promise<any> = null;
 export const isClient = () => typeof window !== "undefined";
 const request = async <Response>(
-  method: "GET" | "POST" | "PUT" | "DELETE",
+  method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH",
   url: string,
   options?: CustomOptions | undefined,
 ) => {
@@ -67,6 +67,7 @@ const request = async <Response>(
       ? {}
       : {
           "Content-Type": "application/json",
+          Accept: "application/json",
         };
   if (isClient()) {
     const sessionToken = localStorage.getItem("sessionToken");
@@ -126,6 +127,7 @@ const request = async <Response>(
           } finally {
             localStorage.removeItem("sessionToken");
             localStorage.removeItem("sessionTokenExpiresAt");
+            localStorage.removeItem("user");
             clientLogoutRequest = null;
             location.href = "/login";
           }
@@ -187,6 +189,13 @@ const http = {
     options?: Omit<CustomOptions, "body"> | undefined,
   ) {
     return request<Response>("DELETE", url, { ...options });
+  },
+  patch<Response>(
+    url: string,
+    body: any,
+    options?: Omit<CustomOptions, "body"> | undefined,
+  ) {
+    return request<Response>("PATCH", url, { ...options, body });
   },
 };
 

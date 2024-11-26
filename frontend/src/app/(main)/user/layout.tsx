@@ -10,17 +10,19 @@ import {
 import {
   cn,
   getContrastingColor,
+  getInitials,
   handleErrorApi,
   stringToColor,
 } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { Fragment } from "react";
 
 // ** Import Icons
 // import { logoutAction } from "@/actions/auth-actions";
 import authApiRequest from "@/apiRequests/auth";
 import { useAppContext } from "@/app/app-provider";
+import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
 import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
 import orderIcon from "/public/order-icon.png";
@@ -58,6 +60,7 @@ export default function UserLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser } = useAppContext();
+  const [loading, setLoading] = React.useState(false);
 
   const stringAvatar = (name: string | undefined) => {
     if (!name)
@@ -69,14 +72,18 @@ export default function UserLayout({
     return {
       bgColor: stringToColor(name),
       textColor: getContrastingColor(stringToColor(name)),
-      children: `${user?.name.split(" ")[0][0]}${user?.name.split(" ")[1][0]}`,
+      children: getInitials(user?.name ?? "undefined undefined"),
     };
   };
 
   const handleLogout = async () => {
+    if (loading) return;
+    setLoading(true);
     try {
       await authApiRequest.logout();
       router.push("/login");
+      localStorage.removeItem("sessionToken");
+      localStorage.removeItem("sessionTokenExpiresAt");
     } catch (error) {
       handleErrorApi({
         error,
@@ -90,95 +97,138 @@ export default function UserLayout({
   };
 
   return (
-    <div
-      className={cn(
-        "mx-auto w-full max-w-[95%] py-12 xl:max-w-[75rem]",
-        "text-[16px] md:text-[10px] lg:text-[13px] xl:text-[16px]",
-      )}
-    >
-      <Breadcrumb className="md:px-[4.5%] xl:px-[0.625em]">
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/" className="text-[0.875em]">
-              Trang chủ
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink href="/user/profile" className="text-[0.875em]">
-              Người dùng
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem className="text-[0.875em]">
-            {routeMap[pathname]}
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <Fragment>
+      <CustomLoadingAnimation isLoading={loading} />
       <div
         className={cn(
-          "mt-4 flex flex-col items-start justify-between gap-y-4 px-[0.625em] md:flex-row md:justify-evenly xl:justify-between",
+          "mx-auto w-full max-w-[95%] py-12 xl:max-w-[75rem]",
+          "text-[16px] md:text-[10px] lg:text-[13px] xl:text-[16px]",
         )}
       >
-        <div className={cn("w-full md:w-[17.75em]")}>
-          <div
-            className={cn(
-              "flex h-[11em] w-full flex-col items-center justify-center rounded-[0.625em]",
-            )}
-            style={{
-              background:
-                "linear-gradient(135deg, rgba(66,108,230,1) 0%, rgba(45,92,209,1) 50%, rgba(19,62,192,1) 100%)",
-            }}
-          >
-            <Avatar
-              className={cn("size-[4em]")}
+        <Breadcrumb className="md:px-[4.5%] xl:px-[0.625em]">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/" className="text-[0.875em]">
+                Trang chủ
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink href="/user/profile" className="text-[0.875em]">
+                Người dùng
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem className="text-[0.875em]">
+              {routeMap[pathname]}
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <div
+          className={cn(
+            "mt-4 flex flex-col items-start justify-between gap-y-4 px-[0.625em] md:flex-row md:justify-evenly xl:justify-between",
+          )}
+        >
+          <div className={cn("w-full md:w-[17.75em]")}>
+            <div
+              className={cn(
+                "flex h-[11em] w-full flex-col items-center justify-center rounded-[0.625em]",
+              )}
               style={{
-                backgroundColor: `${stringAvatar(user?.name).bgColor}`,
+                background:
+                  "linear-gradient(135deg, rgba(66,108,230,1) 0%, rgba(45,92,209,1) 50%, rgba(19,62,192,1) 100%)",
               }}
             >
-              <AvatarFallback
-                className={cn("text-[1.375em]")}
-                style={{ color: `${stringAvatar(user?.name).textColor}` }}
+              <Avatar
+                className={cn("size-[4em]")}
+                style={{
+                  backgroundColor: `${stringAvatar(user?.name).bgColor}`,
+                }}
               >
-                {stringAvatar(user?.name).children}
-              </AvatarFallback>
-            </Avatar>
-            <p
+                <AvatarFallback
+                  className={cn("text-[1.375em]")}
+                  style={{ color: `${stringAvatar(user?.name).textColor}` }}
+                >
+                  {stringAvatar(user?.name).children}
+                </AvatarFallback>
+              </Avatar>
+              <p
+                className={cn(
+                  "mb-[0.25em] mt-[0.375em] text-[0.9375em] capitalize leading-[1.21] text-white",
+                )}
+              >
+                {user?.name}
+              </p>
+              <p className={cn("text-[0.875em] leading-[1.21] text-white")}>
+                {user?.phone}
+              </p>
+            </div>
+            <div
               className={cn(
-                "mb-[0.25em] mt-[0.375em] text-[0.9375em] capitalize leading-[1.21] text-white",
+                "mt-[1.25em] w-full divide-y rounded-[0.625em] bg-white",
               )}
             >
-              {user?.name}
-            </p>
-            <p className={cn("text-[0.875em] leading-[1.21] text-white")}>
-              {user?.phone}
-            </p>
-          </div>
-          <div
-            className={cn(
-              "mt-[1.25em] w-full divide-y rounded-[0.625em] bg-white",
-            )}
-          >
-            {tabs.map((tab, index) => (
+              {tabs.map((tab, index) => (
+                <button
+                  key={index}
+                  onClick={() => router.push(tab.href)}
+                  className={cn(
+                    "relative flex w-full flex-row items-center p-[0.75em]",
+                  )}
+                >
+                  <Image
+                    src={tab.icon}
+                    alt={tab.label}
+                    className={cn("size-[2em]")}
+                  />
+                  <div
+                    className={cn(
+                      "ml-[1em] text-[0.875em] font-medium",
+                      pathname === tab.href ? "text-[#1250DC]" : "text-[#333]",
+                    )}
+                  >
+                    {tab.label}
+                  </div>
+                  <div className={cn("absolute right-[5%]")}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.75}
+                      stroke="currentColor"
+                      className={cn(
+                        "size-[1.5em]",
+                        pathname === tab.href
+                          ? "stroke-[#1250DC]"
+                          : "stroke-[#333]",
+                      )}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                      />
+                    </svg>
+                  </div>
+                </button>
+              ))}
               <button
-                key={index}
-                onClick={() => router.push(tab.href)}
+                onClick={handleLogout}
                 className={cn(
                   "relative flex w-full flex-row items-center p-[0.75em]",
                 )}
               >
                 <Image
-                  src={tab.icon}
-                  alt={tab.label}
+                  src={exitIcon}
+                  alt="Log out"
                   className={cn("size-[2em]")}
                 />
                 <div
                   className={cn(
-                    "ml-[1em] text-[0.875em] font-medium",
-                    pathname === tab.href ? "text-[#1250DC]" : "text-[#333]",
+                    "ml-[1em] text-[0.875em] font-medium text-[#333]",
                   )}
                 >
-                  {tab.label}
+                  Đăng xuất
                 </div>
                 <div className={cn("absolute right-[5%]")}>
                   <svg
@@ -186,13 +236,8 @@ export default function UserLayout({
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.75}
-                    stroke="currentColor"
-                    className={cn(
-                      "size-[1.5em]",
-                      pathname === tab.href
-                        ? "stroke-[#1250DC]"
-                        : "stroke-[#333]",
-                    )}
+                    stroke="#333"
+                    className={cn("size-[1.5em]")}
                   >
                     <path
                       strokeLinecap="round"
@@ -202,46 +247,11 @@ export default function UserLayout({
                   </svg>
                 </div>
               </button>
-            ))}
-            <button
-              onClick={handleLogout}
-              className={cn(
-                "relative flex w-full flex-row items-center p-[0.75em]",
-              )}
-            >
-              <Image
-                src={exitIcon}
-                alt="Log out"
-                className={cn("size-[2em]")}
-              />
-              <div
-                className={cn(
-                  "ml-[1em] text-[0.875em] font-medium text-[#333]",
-                )}
-              >
-                Đăng xuất
-              </div>
-              <div className={cn("absolute right-[5%]")}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.75}
-                  stroke="#333"
-                  className={cn("size-[1.5em]")}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
-              </div>
-            </button>
+            </div>
           </div>
+          <div className={cn("w-full md:w-[55em]")}>{children}</div>
         </div>
-        <div className={cn("w-full md:w-[55em]")}>{children}</div>
       </div>
-    </div>
+    </Fragment>
   );
 }

@@ -1,5 +1,5 @@
-import { ChangePasswordForm } from "@/components/forms/ChangePasswordForm";
 import { Fragment } from "react";
+import ChangePasswordForm from "./change-password-form";
 
 const page = () => {
   return (

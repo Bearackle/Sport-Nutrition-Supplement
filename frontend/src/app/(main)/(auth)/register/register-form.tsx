@@ -26,7 +26,6 @@ import { useForm } from "react-hook-form";
 
 const RegisterForm = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const { setUser } = useAppContext();
   const { toast } = useToast();
   const router = useRouter();
@@ -34,7 +33,7 @@ const RegisterForm = () => {
   const form = useForm<RegisterBodyType>({
     resolver: zodResolver(RegisterBody),
     defaultValues: {
-      fullName: "",
+      name: "",
       phone: "",
       email: "",
       password: "",
@@ -45,7 +44,6 @@ const RegisterForm = () => {
   async function onSubmit(values: RegisterBodyType) {
     if (loading) return;
     setLoading(true);
-    setError(null);
     try {
       const result = await authApiRequest.register(values);
 
@@ -53,6 +51,9 @@ const RegisterForm = () => {
         sessionToken: result.payload.token,
         expiresAt: result.payload.expiresAt,
       });
+      localStorage.setItem("sessionToken", result.payload.token);
+      localStorage.setItem("sessionTokenExpiresAt", result.payload.expiresAt);
+
       toast({
         variant: "success",
         title: result.payload.message,
@@ -65,7 +66,6 @@ const RegisterForm = () => {
         error,
         setError: form.setError,
       });
-      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -73,11 +73,6 @@ const RegisterForm = () => {
   return (
     <Fragment>
       <CustomLoadingAnimation isLoading={loading} />
-      {error && (
-        <p className="mt-1 text-center text-[0.75rem] font-medium text-red-600 md:text-sm">
-          {error}
-        </p>
-      )}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -86,7 +81,7 @@ const RegisterForm = () => {
         >
           <FormField
             control={form.control}
-            name="fullName"
+            name="name"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Họ và tên</FormLabel>
@@ -186,7 +181,7 @@ const RegisterForm = () => {
           />
           <Button
             type="submit"
-            className="h-auto w-full rounded-none border-[2px] border-solid border-[#1250DC] bg-[#1250DC] py-3 text-base font-bold text-white transition-all duration-200 hover:bg-[#1250DC]/[0.9]"
+            className="!mt-4 h-auto w-full rounded-none border-[2px] border-solid border-[#1250DC] bg-[#1250DC] py-3 text-base font-bold text-white transition-all duration-200 hover:bg-[#1250DC]/[0.9]"
           >
             Đăng ký
           </Button>

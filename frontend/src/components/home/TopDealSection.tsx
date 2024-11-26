@@ -1,20 +1,7 @@
 import Image from "next/image";
-import { CustomCarousel } from "../common/CustomCarousel";
-import { CarouselItem } from "../ui/carousel";
-import HomeProductCard from "./HomeProductCard";
+import TopDealListSection from "./TopDealListSection";
 import arrow from "/public/arrow.svg";
 import saleIcon from "/public/sale-icon.svg";
-
-const data = Array.from({ length: 8 }, (_, i) => ({
-  id: i,
-  image:
-    "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
-  name: "RULE 1 PROTEIN (ĐỎ) WHEY ISOLATE TĂNG CƠ BẮP - 5 LBS",
-  rating: 4,
-  price: 1950000,
-  discount: 20,
-  priceAfterDiscount: 1579000,
-}));
 
 const TopDealSection = () => {
   return (
@@ -24,16 +11,7 @@ const TopDealSection = () => {
         <span>TOP DEAL • SIÊU RẺ</span>
       </h3>
       <div className="mx-auto mt-2 w-full px-3 sm:w-[80%] ml:w-full ml:px-4">
-        <CustomCarousel>
-          {data.map((product, index) => (
-            <CarouselItem
-              key={product.id}
-              className="flex basis-full justify-center xs:basis-1/2 ml:basis-1/3"
-            >
-              <HomeProductCard index={index} {...product} />
-            </CarouselItem>
-          ))}
-        </CustomCarousel>
+        <TopDealListSection />
       </div>
       <div className="mt-2 flex justify-center">
         <button className="flex flex-row items-center rounded-[0.625rem] border border-solid border-[#8C8F8D] px-2 py-1 text-[0.875rem]">

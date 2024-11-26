@@ -1,7 +1,12 @@
 "use client";
 import { useAppContext } from "@/app/app-provider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
+import {
+  cn,
+  getContrastingColor,
+  getInitials,
+  stringToColor,
+} from "@/lib/utils";
 import Link from "next/link";
 
 export default function Page() {
@@ -28,7 +33,7 @@ export default function Page() {
               color: `${getContrastingColor(stringToColor(user?.name || "undefined undefined"))}`,
             }}
           >
-            {`${user?.name.split(" ").slice(-2).join(" ").split(" ")[0][0]}${user?.name.split(" ").slice(-2).join(" ").split(" ")[1][0]}`}
+            {`${getInitials(user?.name ?? "undefined undefined")}`}
           </AvatarFallback>
         </Avatar>
         <div className="mt-[1em] w-[20.375em] divide-y text-[0.875em] leading-[1.21] text-[#333]">

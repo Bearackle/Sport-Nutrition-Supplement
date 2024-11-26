@@ -1,6 +1,11 @@
 "use client";
 import { useAppContext } from "@/app/app-provider";
-import { cn, getContrastingColor, stringToColor } from "@/lib/utils";
+import {
+  cn,
+  getContrastingColor,
+  getInitials,
+  stringToColor,
+} from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { Avatar, AvatarFallback } from "../ui/avatar";
@@ -29,7 +34,7 @@ export const UserAndCart = () => {
                   color: `${getContrastingColor(stringToColor(user?.name))}`,
                 }}
               >
-                {`${user?.name.split(" ")[0][0]}${user?.name.split(" ")[1][0]}`}
+                {`${getInitials(user?.name ?? "undefined undefined")}`}
               </AvatarFallback>
             </Avatar>
           </div>

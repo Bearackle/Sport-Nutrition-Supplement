@@ -1,7 +1,5 @@
 "use client";
-
 import authApiRequest from "@/apiRequests/auth";
-import { useAppContext } from "@/app/app-provider";
 import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,66 +13,52 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { cn, handleErrorApi } from "@/lib/utils";
-import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
+import {
+  ChangePasswordBody,
+  ChangePasswordBodyType,
+} from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment, useState } from "react";
 import { useForm } from "react-hook-form";
 
-const LoginForm = () => {
+const ChangePasswordForm = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { setUser } = useAppContext();
   const { toast } = useToast();
   const router = useRouter();
-  const form = useForm<LoginBodyType>({
-    resolver: zodResolver(LoginBody),
+  const form = useForm<ChangePasswordBodyType>({
+    resolver: zodResolver(ChangePasswordBody),
     defaultValues: {
-      email: "",
-      password: "",
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
-  async function onSubmit(values: LoginBodyType) {
+  async function onSubmit(values: ChangePasswordBodyType) {
     if (loading) return;
     setLoading(true);
-    setError(null);
     try {
-      const result = await authApiRequest.login(values);
-
-      await authApiRequest.auth({
-        sessionToken: result.payload.token,
-        expiresAt: result.payload.expiresAt,
-      });
-      localStorage.setItem("sessionToken", result.payload.token);
-      localStorage.setItem("sessionTokenExpiresAt", result.payload.expiresAt);
-
+      await authApiRequest.changePassword(values);
       toast({
         variant: "success",
-        title: result.payload.message,
+        title: "Đổi mật khẩu thành công",
       });
-      setUser(result.payload.account);
-      router.push("/");
+      router.push("/user/profile");
       router.refresh();
     } catch (error: any) {
       handleErrorApi({
         error,
         setError: form.setError,
       });
-      setError("Tài khoản hoặc mật khẩu không chính xác");
     } finally {
       setLoading(false);
     }
   }
+
   return (
     <Fragment>
       <CustomLoadingAnimation isLoading={loading} />
-      {error && (
-        <p className="mt-1 text-center text-[0.75rem] font-medium text-red-600 md:text-sm">
-          {error}
-        </p>
-      )}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -83,33 +67,13 @@ const LoginForm = () => {
         >
           <FormField
             control={form.control}
-            name="email"
+            name="currentPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Mật khẩu hiện tại</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Email"
-                    type="email"
-                    className={cn(
-                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
-                    )}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Mật khẩu</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="Mật khẩu"
+                    placeholder="Mật khẩu hiện tại"
                     type="password"
                     className={cn(
                       "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
@@ -121,16 +85,51 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          <div className="!mt-2">
-            <Link href={"#"} className="float-right hover:underline">
-              Quên mật khẩu?
-            </Link>
-          </div>
+          <FormField
+            control={form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Mật khẩu mới</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Mật khẩu mới"
+                    type="password"
+                    className={cn(
+                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                    )}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Nhập lại mật khẩu mới</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Nhập lại mật khẩu mới"
+                    type="password"
+                    className={cn(
+                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                    )}
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <Button
             type="submit"
-            className="h-auto w-full rounded-none border-[2px] border-solid border-[#1250DC] bg-[#1250DC] py-3 text-base font-bold text-white transition-all duration-200 hover:bg-[#1250DC]/[0.9]"
+            className="!mt-4 h-auto w-full rounded-none border-[2px] border-solid border-[#1250DC] bg-[#1250DC] py-3 text-base font-bold text-white transition-all duration-200 hover:bg-[#1250DC]/[0.9]"
           >
-            Đăng nhập
+            Đổi mật khẩu
           </Button>
         </form>
       </Form>
@@ -138,4 +137,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default ChangePasswordForm;
