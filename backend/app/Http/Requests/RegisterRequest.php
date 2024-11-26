@@ -43,4 +43,10 @@ class RegisterRequest extends FormRequest
                 'status' => 422,
             ], Response::HTTP_UNPROCESSABLE_ENTITY));
     }
+    public function messages(): array
+    {
+        return [
+            'email.unique' => 'Email đã được đăng ký',
+        ];
+    }
 }

@@ -27,7 +27,11 @@ class UpdatePasswordRequest extends FormRequest
     {
         return [
             'currentPassword' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
-            'newPassword' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
+            'newPassword' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/',function ($attribute, $value, $fail) {
+             if($value == $this->input('currentPassword')){
+                 $fail('The new password must not be the same as the current password');
+             }
+            }],
             'confirmPassword' => 'required | same:newPassword'
         ];
     }

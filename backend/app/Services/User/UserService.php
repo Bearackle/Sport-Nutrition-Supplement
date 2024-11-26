@@ -20,12 +20,6 @@ class UserService implements UserServiceInterface
     }
     public function register(array $userData): JsonResponse
     {
-        if(!$this->userRepository->isEmailExists($userData['email'])){
-            return ApiResponse::fail('Email đã được sử dụng');
-        }
-        if(! $this->userRepository->isPhoneExists($userData['phone'])){
-            return ApiResponse::fail('Số điện thoại đã được sử dụng');
-        }
         $userData['password'] = bcrypt($userData['password']);
         $userRegisterd = $this->userRepository->create($userData);
         $userRegisterd->assignRole('user');

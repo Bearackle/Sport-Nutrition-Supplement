@@ -134,3 +134,4 @@ Route::group([
     Route::delete('/{id}',[ReviewController::class,'destroy'])->middleware('auth:sanctum');
     Route::delete('image/{id}',[ReviewController::class,'destroyImage'])->middleware('auth:sanctum');
 });
+
