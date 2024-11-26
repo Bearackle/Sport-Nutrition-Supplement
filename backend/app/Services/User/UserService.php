@@ -64,6 +64,13 @@ class UserService implements UserServiceInterface
                     'currentPassword' => 'Mật khẩu không chính xác'
                 ],
                 'status' => 422],422);
+        } else if($data->new_password == $data->current_password){
+            return response()->json([
+                'errors' =>[
+                    'newPassword' => 'Mật khẩu mới không được trùng mật khẩu đang sử dụng'
+                ],
+                'status' => 422
+            ],422);
         }
         $result = $this->userRepository->update($user->user_id,
             ['password' => bcrypt($data->new_password)]);
