@@ -11,6 +11,7 @@ use App\Http\Responses\ApiResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Repositories\User\UserRepositoryInterface;
+use Nette\Schema\ValidationException;
 
 class UserService implements UserServiceInterface
 {
@@ -58,7 +59,11 @@ class UserService implements UserServiceInterface
     public function updatePassword(User $user,UserInputUpdatePasswordData $data): JsonResponse
     {
         if(!Hash::check($data->current_password,$user->password)){
-            return ApiResponse::fail( 'Mật khẩu cũ không trùng!');
+            return response()->json([
+                'errors' => [
+                    'currentPassword' => 'Mật khẩu không chính xác'
+                ]
+            ]);
         }
         $result = $this->userRepository->update($user->user_id,
             ['password' => bcrypt($data->new_password)]);
