@@ -26,9 +26,9 @@ class UpdatePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'oldPassword' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
-            'password' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
-            'confirmPassword' => 'required | same:password'
+            'currentPassword' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
+            'newPassword' => ['required','string','min:6','regex:/[a-zA-Z]/', 'regex:/[0-9]/'],
+            'confirmPassword' => 'required | same:newPassword'
         ];
     }
     public function failedValidation(Validator $validator)

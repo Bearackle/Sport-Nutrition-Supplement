@@ -115,7 +115,7 @@ class UserController
     }
     /**
      * @OA\Patch(
-     *      path="/api/account/reset",
+     *      path="/api/account/change-password",
      *      tags={"User"},
      *      summary="thay đổi mật khẩu",
      *      description="thay đổi mật khẩu người dùng",
@@ -124,8 +124,8 @@ class UserController
      *          @OA\MediaType(
      *                mediaType="application/x-www-form-urlencoded",
      *                @OA\Schema(
-     *                    @OA\Property(property="oldPassword", format="password"),
-     *                    @OA\Property(property="password", format="password"),
+     *                    @OA\Property(property="currentPassword", format="password"),
+     *                    @OA\Property(property="newPassword", format="password"),
      *                    @OA\Property(property="confirmPassword", format="password"),
      *                )
      *           )

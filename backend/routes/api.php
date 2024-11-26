@@ -23,7 +23,7 @@ Route::group([
     Route::post('login',[UserController::class,'login']);
     Route::post('register',[UserController::class,'register']);
     Route::get('profile',[UserController::class,'show'])->middleware('auth:sanctum');
-    Route::patch('reset',[UserController::class,'update'])->middleware('auth:sanctum');
+    Route::patch('change-password',[UserController::class,'update'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'collection'

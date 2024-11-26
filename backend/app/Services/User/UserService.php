@@ -63,18 +63,17 @@ class UserService implements UserServiceInterface
     }
     public function updatePassword(User $user,UserInputUpdatePasswordData $data): JsonResponse
     {
-        if(!Hash::check($data->old_password,$user->password)){
+        if(!Hash::check($data->current_password,$user->password)){
             return ApiResponse::fail( 'Mật khẩu cũ không trùng!');
         }
         $result = $this->userRepository->update($user->user_id,
-            ['password' => bcrypt($data->password)]);
+            ['password' => bcrypt($data->new_password)]);
         if(!$result){
             return ApiResponse::fail('Cập nhật mật khẩu thất bại');
         }
         $dataResponse = [
-            'status' => 'success',
             'message' => 'cập nhật mật khẩu thành công'
         ];
-        return response()->json($dataResponse, 200);
+        return response()->json($dataResponse);
     }
 }

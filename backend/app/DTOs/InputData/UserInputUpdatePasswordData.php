@@ -9,7 +9,7 @@ use Spatie\LaravelData\Mappers\CamelCaseMapper;
 #[MapInputName(CamelCaseMapper::class)]
 class UserInputUpdatePasswordData extends Data
 {
-   public string $old_password;
-   public string $password;
+   public string $current_password;
+   public string $new_password;
    public string $confirm_password;
 }

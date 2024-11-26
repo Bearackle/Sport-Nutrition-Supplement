@@ -2799,24 +2799,24 @@
                 }
             }
         },
-        "/api/account/reset": {
+        "/api/account/change-password": {
             "patch": {
                 "tags": [
                     "User"
                 ],
                 "summary": "thay đổi mật khẩu",
                 "description": "thay đổi mật khẩu người dùng",
-                "operationId": "c96e8df9232b214e318fea3b594710c3",
+                "operationId": "ff3b98131b9e7e280c8183546b58b591",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
                                 "properties": {
-                                    "oldPassword": {
+                                    "currentPassword": {
                                         "format": "password"
                                     },
-                                    "password": {
+                                    "newPassword": {
                                         "format": "password"
                                     },
                                     "confirmPassword": {
