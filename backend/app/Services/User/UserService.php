@@ -69,8 +69,7 @@ class UserService implements UserServiceInterface
                 'errors' =>[
                     'newPassword' => 'Mật khẩu mới không được trùng mật khẩu đang sử dụng'
                 ],
-                'status' => 422
-            ],422);
+                'status' => 422],422);
         }
         $result = $this->userRepository->update($user->user_id,
             ['password' => bcrypt($data->new_password)]);

@@ -4,6 +4,7 @@ namespace App\DTOs\InputData;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use phpDocumentor\Reflection\Types\Nullable;
 use PhpOption\Option;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Attributes\Validation\Exists;
@@ -24,7 +25,7 @@ class ProductIntputData extends Data
     public string|Optional $product_name;
     #[RequiredWithout('product_id')]
     public string|Optional $description;
-    public string|Optional $short_description;
+    public ?string $short_description;
     #[RequiredWithout('product_id')]
     public int|Optional $price;
     public int|Optional $price_after_sale;
