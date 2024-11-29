@@ -107,13 +107,13 @@ class ProductVariantController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function store(NewProductVariants $request) : ApiResponse
+    public function store(NewProductVariants $request)
     {
         $this->authorize('create', ProductVariant::class);
         $new_variant = $this->productVariantService->insertProductVariant(VariantInputData::validateAndCreate($request->validated()));
         $this->imageProductService->addImageVariants($new_variant->product_id, $new_variant->variant_id
             ,$request->file('image'));
-        return new ApiResponse(201,[$new_variant]);
+        return new VariantResource($new_variant);
     }
 
     /**
