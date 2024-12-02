@@ -96,7 +96,11 @@ export const ChangePasswordBody = z
   .object({
     currentPassword: z
       .string()
-      .min(1, { message: "Mật khẩu hiện tại không được để trống" }),
+      .min(1, { message: "Mật khẩu hiện tại không được để trống" })
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+        message:
+          "Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt",
+      }),
     newPassword: z
       .string()
       .min(1, { message: "Mật khẩu mới không được để trống" })

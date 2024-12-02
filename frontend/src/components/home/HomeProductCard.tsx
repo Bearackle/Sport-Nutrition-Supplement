@@ -46,14 +46,14 @@ const HomeProductCard = ({
         <Link href={"/product/1"} className="space-y-1">
           <div
             className={cn(
-              "flex flex-row items-center gap-2 text-[0.6rem] font-bold uppercase !no-underline ml:text-[0.625rem]",
+              "flex flex-row items-center gap-2 text-[0.6rem] font-bold uppercase leading-none !no-underline ml:text-[0.625rem]",
               index === 0 ? "opacity-100" : "opacity-0",
             )}
           >
-            <div className="rounded-full bg-[#C116164D] p-1 text-[#C11616]">
+            <div className="flex h-6 items-center justify-center rounded-full bg-[#C116164D] px-1 text-[#C11616]">
               <span>🔥</span> TOP DEAL
             </div>
-            <div className="flex w-fit flex-row items-center rounded-full bg-[#3498DB4D] p-1 text-[#043BFF]">
+            <div className="flex h-6 w-fit flex-row items-center rounded-full bg-[#3498DB4D] px-1 text-[#043BFF]">
               <Image src={blueCheck} alt="" className="size-4" />
               Chính hãng
             </div>

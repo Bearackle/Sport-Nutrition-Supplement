@@ -23,13 +23,13 @@ export const UserAndCart = () => {
         >
           <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-white/50 xs:size-8">
             <Avatar
-              className={cn("size-5 xs:size-7")}
+              className={cn("size-[1.375rem] xs:size-7")}
               style={{
                 backgroundColor: `${stringToColor(user?.name)}`,
               }}
             >
               <AvatarFallback
-                className={cn("text-xs xs:text-sm")}
+                className={cn("text-[0.7rem] xs:text-sm")}
                 style={{
                   color: `${getContrastingColor(stringToColor(user?.name))}`,
                 }}
