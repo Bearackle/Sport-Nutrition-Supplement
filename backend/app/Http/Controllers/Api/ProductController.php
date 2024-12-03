@@ -43,7 +43,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      * @OA\Get(
-     *     path="/api/products/top_deals",
+     *     path="/api/products/top-deals",
      *     summary="sản phẩm quan tâm nhiều",
      *     tags={"Product"},
      *     description="Lấy sản phẩm hot nhất hiển thị trên trang chủ",

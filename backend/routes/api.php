@@ -36,7 +36,7 @@ Route::group([
 Route::group([
     'prefix' => 'products'
 ],function(){
-    Route::get('top_deals' , [ProductController::class,'index']);
+    Route::get('top-deals' , [ProductController::class,'index']);
     Route::post('create', [ProductController::class,'store'])->middleware('auth:sanctum');
     Route::get('/{id}',[ProductController::class,'show']);
     Route::get('admin/{id}',[ProductController::class,'showProductsAdmin'])->middleware('auth:sanctum');
@@ -69,7 +69,7 @@ Route::group([
     'prefix' => 'categories'
 ],function(){
     Route::get('/',[CategoryController::class,'index']);
-    Route::get('/top_products',[CategoryController::class,'getTopProductCategories']);
+    Route::get('/top-products',[CategoryController::class,'getTopProductCategories']);
     Route::get('/{id}/children',[CategoryController::class,'ChildrenCategories']);
 });
 Route::group([

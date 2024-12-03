@@ -1171,14 +1171,14 @@
                 }
             }
         },
-        "/api/products/top_deals": {
+        "/api/products/top-deals": {
             "get": {
                 "tags": [
                     "Product"
                 ],
                 "summary": "sản phẩm quan tâm nhiều",
                 "description": "Lấy sản phẩm hot nhất hiển thị trên trang chủ",
-                "operationId": "5e70be4667b0d0b8dc2b1ac47e24a328",
+                "operationId": "f732b08a386865cb537c0569d86e12b2",
                 "responses": {
                     "200": {
                         "description": "Lấy sản phẩm thành công",
