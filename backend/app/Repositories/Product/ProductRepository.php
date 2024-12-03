@@ -51,9 +51,7 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     public function getProductData($id)
     {
         return (new \App\Models\Product)->
-        with(['images' => function ($query) {
-            $query->whereNull('variant_id');
-        },'variants'])->find($id);
+        with(['images','variants'])->find($id);
     }
     public function filterer(ProductFilter $filter)
     {

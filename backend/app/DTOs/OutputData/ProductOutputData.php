@@ -2,10 +2,13 @@
 
 namespace App\DTOs\OutputData;
 
+use DOMDocument;
+use DOMElement;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Optional;
 use Spatie\LaravelData\Attributes\LoadRelation;
 use Spatie\LaravelData\Data;
+use function PHPUnit\Framework\isEmpty;
 
 class ProductOutputData extends Data
 {

@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateImageRequest;
 use App\Http\Resources\CombosLandingMask;
 use App\Http\Resources\ImageResource;
+use App\Http\Resources\ProductDetailResource;
 use App\Http\Resources\ProductLandingMask;
 use App\Http\Resources\ProductLandingMaskSimple;
 use App\Http\Resources\ProductResource;
@@ -183,10 +184,10 @@ class ProductController extends Controller
      * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
-    public function show(string $id): ProductResource
+    public function show(string $id): ProductDetailResource
     {
          $product = $this->productService->getProductDetail(ProductIntputData::validateAndCreate(['product_id' => $id]));
-         return new ProductResource($product);
+         return new ProductDetailResource($product);
     }
     /**
      * @param string $id

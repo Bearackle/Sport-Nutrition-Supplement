@@ -55,10 +55,6 @@ class Product extends Model
     public function scopeFilter($query, $filters){
         return $filters->apply($query);
     }
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new ProductDataScope());
-    }
     protected function fullTextWildcards($term)
     {
         // removing symbols used by MySQL

@@ -35,9 +35,9 @@ class ProductService implements ProductServiceInterface{
     {
         return ProductOutputData::collect($this->productRepository->getTop10ProductHighestSale());
     }
-    public function getProductDetail(ProductIntputData $product) : ProductOutputData
+    public function getProductDetail(ProductIntputData $product)
     {
-        return ProductOutputData::from($this->productRepository->getProductData($product->product_id));
+        return $this->productRepository->getProductData($product->product_id);
     }
     public function insertNewProduct(ProductIntputData $product): ProductOutputData {
         $product->price_after_sale = $this->calculatedPrice($product->price,$product->sale);
