@@ -12,6 +12,7 @@ use App\Http\Requests\UpdateImageRequest;
 use App\Http\Resources\CombosLandingMask;
 use App\Http\Resources\ImageResource;
 use App\Http\Resources\ProductLandingMask;
+use App\Http\Resources\ProductLandingMaskSimple;
 use App\Http\Resources\ProductResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Product;
@@ -52,9 +53,9 @@ class ProductController extends Controller
      *     @OA\Response(response=400, description="Lỗi mạng",@OA\JsonContent())
      * )
      */
-    public function index(): AnonymousResourceCollection
+    public function index(): array
     {
-        return ProductLandingMask::collection($this->productService->getHotProductBySale());
+        return ProductLandingMaskSimple::collection($this->productService->getHotProductBySale())->additional([])->resolve();
     }
     /**
      * @OA\Get(
