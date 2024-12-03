@@ -43,7 +43,7 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      * @OA\Get(
-     *     path="/api/products/pages",
+     *     path="/api/products/top_deals",
      *     summary="sản phẩm quan tâm nhiều",
      *     tags={"Product"},
      *     description="Lấy sản phẩm hot nhất hiển thị trên trang chủ",
@@ -52,9 +52,9 @@ class ProductController extends Controller
      *     @OA\Response(response=400, description="Lỗi mạng",@OA\JsonContent())
      * )
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        return $this->productService->getHotProductBySale();
+        return ProductLandingMask::collection($this->productService->getHotProductBySale());
     }
     /**
      * @OA\Get(

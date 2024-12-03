@@ -107,7 +107,7 @@ class ProductVariantController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function store(NewProductVariants $request)
+    public function store(NewProductVariants $request): VariantResource
     {
         $this->authorize('create', ProductVariant::class);
         $new_variant = $this->productVariantService->insertProductVariant(VariantInputData::validateAndCreate($request->validated()));

@@ -36,7 +36,7 @@ Route::group([
 Route::group([
     'prefix' => 'products'
 ],function(){
-    Route::get('pages' , [ProductController::class,'index']);
+    Route::get('top_deals' , [ProductController::class,'index']);
     Route::post('create', [ProductController::class,'store'])->middleware('auth:sanctum');
     Route::get('/{id}',[ProductController::class,'show']);
     Route::get('admin/{id}',[ProductController::class,'showProductsAdmin'])->middleware('auth:sanctum');

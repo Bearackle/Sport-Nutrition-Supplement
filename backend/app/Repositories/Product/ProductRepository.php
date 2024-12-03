@@ -28,7 +28,8 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     }
     public function getTop10ProductHighestSale(): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Product)->orderBy('sale','desc')->take(10)->get();
+        return (new \App\Models\Product)->with('images')
+            ->orderBy('sale','desc')->take(10)->get();
     }
     public function getProductsByCategories($categoryId): \Illuminate\Database\Eloquent\Builder
     {
