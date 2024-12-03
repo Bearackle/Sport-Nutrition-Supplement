@@ -1,3 +1,4 @@
+import productApiRequest from "@/apiRequests/product";
 import { ProductDescription } from "@/components/product-detail/ProductDescription";
 import { ProductOverview } from "@/components/product-detail/ProductOverview";
 import { ProductReviews } from "@/components/product-detail/ProductReviews";
@@ -98,6 +99,8 @@ const data = {
 
 const page = ({ params }: { params: { id: string } }) => {
   console.log(params.id);
+
+  const _product = productApiRequest.productDetail(params.id);
 
   const productOverviewProps = {
     id: data.id,
