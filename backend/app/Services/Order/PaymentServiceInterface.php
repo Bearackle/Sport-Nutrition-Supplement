@@ -12,5 +12,5 @@ interface PaymentServiceInterface
     public function addPaymentMethod(PaymentInputData $payment);
     public function getPayments();
     public function getPayment(OrderInputData $order);
-    public function createPayment(OrderInputData $order,$ip);
+    public function createPayment(OrderInputData $order);
 }

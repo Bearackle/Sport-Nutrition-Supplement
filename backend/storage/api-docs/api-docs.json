@@ -1226,6 +1226,7 @@
                             "example": {
                                 "sortbyprice": "asc",
                                 "category": "1",
+                                "brand": "1",
                                 "price": "(>=700000AND<=900000)"
                             },
                             "additionalProperties": true

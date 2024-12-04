@@ -121,7 +121,7 @@ Route::group([
 Route::group([
     'prefix' => 'payment'
 ], function(){
-    Route::get('/create', [PaymentController::class, 'create'])->middleware('auth:sanctum');
+    Route::get('/check-out', [PaymentController::class, 'create'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'review'
@@ -134,4 +134,3 @@ Route::group([
     Route::delete('/{id}',[ReviewController::class,'destroy'])->middleware('auth:sanctum');
     Route::delete('image/{id}',[ReviewController::class,'destroyImage'])->middleware('auth:sanctum');
 });
-

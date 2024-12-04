@@ -72,6 +72,7 @@ class ProductController extends Controller
      *         @OA\Schema(type="object",additionalProperties=true,example={
      * "sortbyprice": "asc",
      * "category" : "1",
+     * "brand" : "1",
      * "price" : "(>=700000AND<=900000)"
      * })
      *     ),
@@ -83,7 +84,7 @@ class ProductController extends Controller
     public function filter(Request $request,ProductFilter $productFilter): AnonymousResourceCollection
     {
         $product_filtered = $this->productService->filter($productFilter)->paginate(10);
-        return ProductResource::collection($product_filtered);
+        return ProductLandingMask::collection($product_filtered);
     }
     /**
      * @OA\Get(

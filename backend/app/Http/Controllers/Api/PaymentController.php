@@ -34,10 +34,10 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         $order = OrderInputData::validateAndCreate(['order_id' => $request->get('orderId')]);
-        $this->paymentService->createPayment($order,$request->ip());
+        $this->paymentService->createPayment($order);
     }
 
     /**
@@ -70,5 +70,7 @@ class PaymentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function vnpayPayment(Request $request){
     }
 }
