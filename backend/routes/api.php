@@ -28,7 +28,7 @@ Route::group([
 Route::group([
     'prefix' => 'collection'
 ],function(){
-    Route::get('all',[ProductController::class,'allProducts']);
+    Route::get('all',[ProductController::class,'filter']);
     Route::get('category/{id}',[ProductController::class,'CategoryProduct']);
     Route::get('products', [ProductController::class,'filter']);
     Route::get('search',[ProductController::class,'search']);

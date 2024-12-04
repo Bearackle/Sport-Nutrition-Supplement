@@ -29,7 +29,7 @@ class ProductService implements ProductServiceInterface{
     }
     public function getProducts()
     {
-       return $this->productRepository->getAllAvailableProducts()->paginate(10);
+       return $this->productRepository->getAllAvailableProducts()->paginate(12);
     }
     public function getHotProductBySale(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
@@ -68,7 +68,7 @@ class ProductService implements ProductServiceInterface{
     }
     public function getCategoryProduct(CategoryInputData $category)
     {
-        return $this->productRepository->getProductsByCategories($category->category_id)->paginate(10);
+        return $this->productRepository->getProductsByCategories($category->category_id)->paginate(12);
     }
     public function getModelProduct(ProductIntputData $product) {
         return $this->productRepository->find($product->product_id);
@@ -81,7 +81,7 @@ class ProductService implements ProductServiceInterface{
     {
         if ($data != '') {
             $products = Product::fullTextSearch('product_name', $data);
-            return $products->paginate(10);
+            return $products->paginate(12);
         }
         return null;
     }

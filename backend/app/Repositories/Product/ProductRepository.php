@@ -21,7 +21,6 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
     {
         return (new \App\Models\Product)
             ->orderBy('updated_at','DESC')
-            ->where('stock_quantity','>',-1)
             ->with(['images' => function ($query) {
                 $query->whereNull('variant_id')->where('is_primary',1);
             }]);

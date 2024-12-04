@@ -83,7 +83,7 @@ class ProductController extends Controller
      **/
     public function filter(Request $request,ProductFilter $productFilter): AnonymousResourceCollection
     {
-        $product_filtered = $this->productService->filter($productFilter)->paginate(10);
+        $product_filtered = $this->productService->filter($productFilter)->paginate(12);
         return ProductLandingMask::collection($product_filtered);
     }
     /**
@@ -99,15 +99,28 @@ class ProductController extends Controller
      *          description="id của category",
      *          @OA\Schema(type="integer")
      *     ),
+     *     @OA\Parameter(
+     *          name="params",
+     *          in="query",
+     *          required=false,
+     *          description="Lọc sản phẩm với tiêu chí",
+     *          @OA\Schema(type="object",additionalProperties=true,example={
+     *  "sortbyprice": "asc",
+     *  "brand" : "1",
+     *  "price" : "(>=700000AND<=900000)"
+     *  })
+     *      ),
      * @OA\Response(response=200,description="Lấy sản phẩm thành công",@OA\JsonContent()),
      * @OA\Response(response=400,description="Không tìm thấy sản phẩm",@OA\JsonContent()),
      * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      */
-    public function CategoryProduct($id): AnonymousResourceCollection
+    public function CategoryProduct(string $id,Request $request): AnonymousResourceCollection
     {
-        $products = $this->productService->getCategoryProduct(CategoryInputData::from(['category_id' => $id]));
-        return ProductResource::collection($products);
+        $request->merge(['category' => $id]);
+        $productFilter = new ProductFilter($request);
+        $product_filtered = $this->productService->filter($productFilter)->paginate(12);
+        return ProductLandingMask::collection($product_filtered);
     }
     /**
      * @OA\Get(
@@ -115,6 +128,18 @@ class ProductController extends Controller
      *     summary="tất cả sản phẩm",
      *     tags={"Collection"},
      *     description="Lấy tất cả sản phẩm",
+     *     @OA\Parameter(
+     *          name="params",
+     *          in="query",
+     *          required=false,
+     *          description="Lọc sản phẩm với tiêu chí",
+     *          @OA\Schema(type="object",additionalProperties=true,example={
+     *  "sortbyprice": "asc",
+     *  "category" : "1",
+     *  "brand" : "1",
+     *  "price" : "(>=700000AND<=900000)"
+     *  })
+     *      ),
      *     @OA\Response(response=200, description="lấy sản phẩm thành công",@OA\JsonContent()),
      *     @OA\Response(response=400, description="lấy sản phẩm thất bại",@OA\JsonContent()),
      *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())

@@ -1278,6 +1278,21 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "params",
+                        "in": "query",
+                        "description": "Lọc sản phẩm với tiêu chí",
+                        "required": false,
+                        "schema": {
+                            "type": "object",
+                            "example": {
+                                "sortbyprice": "asc",
+                                "brand": "1",
+                                "price": "(>=700000AND<=900000)"
+                            },
+                            "additionalProperties": true
+                        }
                     }
                 ],
                 "responses": {
@@ -1316,6 +1331,24 @@
                 "summary": "tất cả sản phẩm",
                 "description": "Lấy tất cả sản phẩm",
                 "operationId": "16a6b87468e0b4d2b7ddcf113d9fc061",
+                "parameters": [
+                    {
+                        "name": "params",
+                        "in": "query",
+                        "description": "Lọc sản phẩm với tiêu chí",
+                        "required": false,
+                        "schema": {
+                            "type": "object",
+                            "example": {
+                                "sortbyprice": "asc",
+                                "category": "1",
+                                "brand": "1",
+                                "price": "(>=700000AND<=900000)"
+                            },
+                            "additionalProperties": true
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "lấy sản phẩm thành công",
