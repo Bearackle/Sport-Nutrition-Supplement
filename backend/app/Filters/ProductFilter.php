@@ -2,6 +2,9 @@
 
 namespace App\Filters;
 
+use MongoDB\BSON\Int64;
+use PhpParser\Builder;
+
 class ProductFilter extends QueryFilter
 {
     public function brand($value){
@@ -10,18 +13,16 @@ class ProductFilter extends QueryFilter
     public function category($value){
         return $this->builder->where('category_id',$value);
     }
-    public function price($values){
-        $queryString = preg_replace('/[^0-9]+/',' ',$values);
-        $queryString = trim($queryString);
-        $prices = explode(" ",$queryString);
-        $prices = array_map('intval', $prices);
-        return $this->builder->where('price', '>=',$prices[0])
-            ->where('price','<=',$prices[1]);
+    public function priceFrom($value){
+        $this->builder->where('price', '>=',$value);
+    }
+    public function priceTo($value){
+        $this->builder->where('price', '<=',$value);
     }
     public function sortbyPrice($value){
         return $this->builder->orderBy('price',$value);
     }
     public function sortbyAlphabetical($value){
-        return $this->builder->orderBy('productName',$value);
+        return $this->builder->orderBy('product_name',$value);
     }
 }

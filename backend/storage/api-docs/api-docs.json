@@ -1224,10 +1224,12 @@
                         "schema": {
                             "type": "object",
                             "example": {
-                                "sortbyprice": "asc",
+                                "sortByPrice": "asc",
+                                "sortByAlphabetical": "asc",
                                 "category": "1",
                                 "brand": "1",
-                                "price": "(>=700000AND<=900000)"
+                                "priceFrom": "700000",
+                                "priceTo": "900000"
                             },
                             "additionalProperties": true
                         }
@@ -1287,9 +1289,11 @@
                         "schema": {
                             "type": "object",
                             "example": {
-                                "sortbyprice": "asc",
+                                "sortByPrice": "asc",
+                                "sortByAlphabetical": "asc",
                                 "brand": "1",
-                                "price": "(>=700000AND<=900000)"
+                                "priceFrom": "700000",
+                                "priceTo": "900000"
                             },
                             "additionalProperties": true
                         }
@@ -1340,10 +1344,12 @@
                         "schema": {
                             "type": "object",
                             "example": {
-                                "sortbyprice": "asc",
+                                "sortByPrice": "asc",
+                                "sortByAlphabetical": "asc",
                                 "category": "1",
                                 "brand": "1",
-                                "price": "(>=700000AND<=900000)"
+                                "priceFrom": "700000",
+                                "priceTo": "900000"
                             },
                             "additionalProperties": true
                         }

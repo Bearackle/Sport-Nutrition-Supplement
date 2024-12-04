@@ -70,10 +70,12 @@ class ProductController extends Controller
      *         required=false,
      *         description="Lọc sản phẩm với tiêu chí",
      *         @OA\Schema(type="object",additionalProperties=true,example={
-     * "sortbyprice": "asc",
+     * "sortByPrice": "asc",
+     * "sortByAlphabetical" : "asc",
      * "category" : "1",
      * "brand" : "1",
-     * "price" : "(>=700000AND<=900000)"
+     *  "priceFrom" : "700000",
+     *      "priceTo" : "900000"
      * })
      *     ),
      *     @OA\Response(response=200, description="Lọc thành công",@OA\JsonContent()),
@@ -105,11 +107,13 @@ class ProductController extends Controller
      *          required=false,
      *          description="Lọc sản phẩm với tiêu chí",
      *          @OA\Schema(type="object",additionalProperties=true,example={
-     *  "sortbyprice": "asc",
+     *  "sortByPrice": "asc",
+     *    "sortByAlphabetical" : "asc",
      *  "brand" : "1",
-     *  "price" : "(>=700000AND<=900000)"
+     *  "priceFrom" : "700000",
+     *     "priceTo" : "900000"
      *  })
-     *      ),
+     * ),
      * @OA\Response(response=200,description="Lấy sản phẩm thành công",@OA\JsonContent()),
      * @OA\Response(response=400,description="Không tìm thấy sản phẩm",@OA\JsonContent()),
      * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
@@ -134,12 +138,14 @@ class ProductController extends Controller
      *          required=false,
      *          description="Lọc sản phẩm với tiêu chí",
      *          @OA\Schema(type="object",additionalProperties=true,example={
-     *  "sortbyprice": "asc",
+     *  "sortByPrice": "asc",
+     *  "sortByAlphabetical" : "asc",
      *  "category" : "1",
      *  "brand" : "1",
-     *  "price" : "(>=700000AND<=900000)"
+     *   "priceFrom" : "700000",
+     *   "priceTo" : "900000"
      *  })
-     *      ),
+     *  ),
      *     @OA\Response(response=200, description="lấy sản phẩm thành công",@OA\JsonContent()),
      *     @OA\Response(response=400, description="lấy sản phẩm thất bại",@OA\JsonContent()),
      *     @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
