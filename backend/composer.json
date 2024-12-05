@@ -16,7 +16,8 @@
         "spatie/laravel-permission": "^6.9",
         "zircote/swagger-php": "^4.11",
         "ext-dom": "*",
-        "ext-libxml": "*"
+        "ext-libxml": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

@@ -21,16 +21,32 @@
         }
     </style>
 </head>
-<body class="vh-100">
+<body class="vh-20">
+<div class="container mt-5">
+    <div class="custom-alert">
+        Xin vui lòng kiểm tra kĩ đơn hàng trước khi xác
+        nhận thanh toán. Nếu khách hàng muốn huỷ đơn, xin liên hệ qua mail <a href="mailto:4hprotein@gmail.com">4hprotein@gmail.com</a> hoặc qua Zalo/SĐT: 033.330.3802 <br>Trễ nhất sau khi thanh toán 6h!!!
+        4HProtein xin cảm ơn~
+    </div>
+</div>
 <div class="container h-100 d-flex justify-content-center align-items-center">
-    <form action="{{url('payment/vn-pay')}}" method="post" id="payment-form" style="min-width: 300px;">
-        <div class="container mt-5">
-            <div class="custom-alert">
-                Xin vui lòng kiểm tra kĩ đơn hàng trước khi xác
-                nhận thanh toán. Nếu khách hàng muốn huỷ đơn, xin liên hệ qua mail 4hprotein@gmail.com hoặc qua Zalo/SĐT: ... Trễ nhất sau khi thanh toán 6h!!!
-                4HProtein xin cảm ơn~
-            </div>
-        </div>
+    @php
+     $url='payment/';
+     @endphp
+     @switch($payment->payment_method)
+        @case (0)
+            @php $url = $url.'internet-banking'; @endphp
+            @break;
+        @case (1)
+        @php $url = $url.'vn-pay'; @endphp
+        @break;
+        @case (3)
+        @php $url = $url.'momo-pay'; @endphp
+        @break;
+        @default
+            @php $url = url('payment/cod'); @endphp
+     @endswitch
+    <form action="{{url($url)}}" method="post" id="payment-form" style="min-width: 300px;">
         @csrf
         <div class="form-group">
             <label for="card-holder-name" class="label">Số tiền cần thanh toán</label>
@@ -41,7 +57,9 @@
             <input id="card-holder-name" type="text" class="form-control text-sm" readonly value="{{\App\Enum\PaymentMethod::tryFrom($payment->payment_method)->name}}">
         </div>
         <input type="hidden" name="orderId" value="{{$payment->order->order_id}}">
-        <button type="submit" id="card-button" class="btn btn-primary mt-4">Xác nhận</button>
+        <div class="text-center">
+        <button type="submit" id="card-button" name="redirect" class="btn btn-primary mt-4">Xác nhận</button>
+        </div>
     </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

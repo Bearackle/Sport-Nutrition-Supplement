@@ -20,7 +20,7 @@ class ProductFilter extends QueryFilter
         $this->builder->where('price_after_sale', '<=',$value);
     }
     public function sortbyPrice($value){
-        return $this->builder->orderBy('price',$value);
+        return $this->builder->orderBy('price_after_sale',$value);
     }
     public function sortbyAlphabetical($value){
         return $this->builder->orderBy('product_name',$value);

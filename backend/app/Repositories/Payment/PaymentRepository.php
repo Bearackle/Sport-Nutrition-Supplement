@@ -15,6 +15,7 @@ class PaymentRepository extends BaseRepository implements PaymentRepositoryInter
     {
         return (new \App\Models\Payment)->where('order_id',$orderId)
             ->with('order')
+            ->orderby('payment_id','desc')
         ->first();
     }
     public function getPaymentByUserID($userId)
