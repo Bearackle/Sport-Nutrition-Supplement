@@ -41,7 +41,7 @@ class ProductDetailResource extends JsonResource
     }
     public function transformShortDescription(string $shortDescription): array
     {
-        $listItems = explode(',',$shortDescription);
+        $listItems = explode('#',$shortDescription);
         return array_map('trim', $listItems);
     }
 }
