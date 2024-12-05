@@ -1171,6 +1171,53 @@
                 }
             }
         },
+        "/payment/success/{id}": {
+            "get": {
+                "tags": [
+                    "Payment"
+                ],
+                "summary": "Thanh toán thành công",
+                "description": "Thanh toán thành công",
+                "operationId": "9c59e3dc5b699e4fcb6cbad00c49c191",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id của order",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to get",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Sai định dạng yêu cầu",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/products/top-deals": {
             "get": {
                 "tags": [
@@ -2913,6 +2960,10 @@
         {
             "name": "Order",
             "description": "Order"
+        },
+        {
+            "name": "Payment",
+            "description": "Payment"
         },
         {
             "name": "Product",

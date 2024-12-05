@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\DTOs\InputData\OrderInputData;
 use App\DTOs\OutputData\OrderOutputData;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendEmail;
+use App\Mail\MailPaymentComplelete;
 use App\Models\Payment;
+use App\Models\User;
 use App\Services\Order\PaymentService;
 use App\Services\Order\PaymentServiceInterface;
 use Illuminate\Http\Request;
@@ -79,7 +82,7 @@ class PaymentController extends Controller
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost:8000/payment/check-out/".$request->input('orderId');
+        $vnp_Returnurl = "http://localhost:8000/payment/success";
         $vnp_TmnCode = "YHR1DK4Y";//Mã website tại VNPAY
         $vnp_HashSecret = "3NSOGGL258PLOFC4KDPAVK4AK64TTWM2"; //Chuỗi bí mật
         $vnp_TxnRef = '#HD'.$request->input('orderId');
@@ -148,8 +151,8 @@ class PaymentController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $payment->order->total_amount;
         $orderId = time() ."";
-        $redirectUrl = "http://localhost:8000/payment/check-out/7";
-        $ipnUrl = "http://localhost:8000/payment/check-out/7";
+        $redirectUrl = "http://localhost:8000/payment/success";
+        $ipnUrl = "http://localhost:8000/payment/success";
         $extraData = "";
 
 //            $partnerCode = $_POST["partnerCode"];
@@ -195,8 +198,8 @@ class PaymentController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = "10000";
         $orderId = time() ."";
-        $redirectUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b";
-        $ipnUrl = "https://webhook.site/b3088a6a-2d17-4f8d-a383-71389a6c600b";
+        $redirectUrl = "http://localhost:8000/payment/success";
+        $ipnUrl = "http://localhost:8000/payment/success";
         $extraData = "";
 
             $requestId = time() . "";
@@ -246,6 +249,36 @@ class PaymentController extends Controller
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
         return view('ConfirmPayment', ['payment' => $payment]);
+    }
+    /**
+    *@OA\Get(
+     *  path="/payment/success/{id}",
+     *  description="Thanh toán thành công",
+     *  summary="Thanh toán thành công",
+     *  tags={"Payment"},
+     * @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="id của order",
+     *          @OA\Schema(type="integer"),
+     *      ),
+     * @OA\Response(response=200, description="Success",@OA\JsonContent()),
+     * @OA\Response(response=400,description="Fail to get",@OA\JsonContent()),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
+     * )
+ **/
+    public function success(string $orderId): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    {
+        $this->sendMail($orderId);
+        return view('SuccessPayment');
+    }
+    public function sendMail(string $orderId): void
+    {
+        /**@var User $user**/
+        $user = auth()->user();
+        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
+        SendEmail::dispatch($user,$payment);
     }
 }
 
