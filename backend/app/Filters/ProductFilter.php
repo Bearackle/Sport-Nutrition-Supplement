@@ -14,10 +14,10 @@ class ProductFilter extends QueryFilter
         return $this->builder->where('category_id',$value);
     }
     public function priceFrom($value){
-        $this->builder->where('price', '>=',$value);
+        $this->builder->where('price_after_sale', '>=',$value);
     }
     public function priceTo($value){
-        $this->builder->where('price', '<=',$value);
+        $this->builder->where('price_after_sale', '<=',$value);
     }
     public function sortbyPrice($value){
         return $this->builder->orderBy('price',$value);

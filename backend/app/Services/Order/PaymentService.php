@@ -35,25 +35,26 @@ class PaymentService implements PaymentServiceInterface
     {
     }
 
-    public function getPayment(OrderInputData $order): PaymentOutputData
+    public function getPaymentData(OrderInputData $order)
     {
-        $payment = $this->paymentRepository->getPaymentByOrderID($order->order_id);
-        return PaymentOutputData::from($payment);
+        $paymentData = $this->paymentRepository->getPaymentByOrderID($order->order_id);
+        return $paymentData;
     }
 
     public function createPayment(OrderInputData $order)
     {
         $orderData = $this->orderRepository->find($order->order_id);
     }
-    public function VNPAY(OrderInputData $order){
-             $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-             $vnp_Returnurl = "http://localhost:8000/payment/check-out";
+    public function VNPAY($orderId){
+        $payment = $this->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
+        $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+             $vnp_Returnurl = "http://localhost:8000/payment/check-out".$orderId;
              $vnp_TmnCode = "YHR1DK4Y";//Mã website tại VNPAY
              $vnp_HashSecret = "3NSOGGL258PLOFC4KDPAVK4AK64TTWM2"; //Chuỗi bí mật
-             $vnp_TxnRef = '1234';
+             $vnp_TxnRef = '#HD'.$orderId;
              $vnp_OrderInfo = 'Thanh toán đơn hàng';
              $vnp_OrderType = 'billpayment';
-             $vnp_Amount = $amount * 100;
+             $vnp_Amount = $payment->order->total_amount * 100;
              $vnp_Locale = 'vn';
              $vnp_BankCode = 'NCB';
              $vnp_IpAddr = $_SERVER['REMOTE_ADDR'];

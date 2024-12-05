@@ -10,8 +10,9 @@ Route::get('/', function () {
 
 Route::get('/test-email', function(){
 });
-Route::get('payment/check-out', function(){
-    return view('ConfirmPayment');
-});
+Route::get('payment/check-out/{id}',[PaymentController::class,'checkOut']);
 Route::post('payment/vn-pay',[PaymentController::class,'vnpayPayment']);
+Route::post('payment/momo-pay',[PaymentController::class,'momoPayment']);
+Route::post('payment/internet-banking',[PaymentController::class,'internetBanking']);
+Route::post('payment/cod',[PaymentController::class,'codPayment']);
 

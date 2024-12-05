@@ -13,9 +13,12 @@ use Illuminate\Http\Request;
 class PaymentController extends Controller
 {
     protected PaymentServiceInterface $paymentService;
-    public function __construct(PaymentServiceInterface $paymentService){
+
+    public function __construct(PaymentServiceInterface $paymentService)
+    {
         $this->paymentService = $paymentService;
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -71,6 +74,15 @@ class PaymentController extends Controller
     {
         //
     }
-    public function vnpayPayment(Request $request){
+
+    public function vnpayPayment(Request $request)
+    {
+        $this->paymentService->VNPAY($request->input('orderId'));
+    }
+    public function checkOut(string $orderId): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    {
+        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
+        return view('ConfirmPayment', ['payment' => $payment]);
     }
 }
+
