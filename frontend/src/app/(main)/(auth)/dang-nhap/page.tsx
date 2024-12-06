@@ -20,7 +20,7 @@ export default function page() {
       <LoginForm />
       <div className="mx-auto mt-3 space-x-1">
         <span>Bạn chưa có tài khoản?</span>
-        <Link href={"/register"} className="text-center font-bold">
+        <Link href={"/dang-ky"} className="text-center font-bold">
           Đăng ký
         </Link>
       </div>

@@ -1,4 +1,5 @@
 "use client";
+import { inter } from "@/lib/font";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
@@ -19,9 +20,11 @@ export const ProductDescription = ({ description }: TProps) => {
       </h3>
       <div
         className={cn(
-          "editor-rendered-content overflow-hidden",
+          "editor-rendered-content mt-4 overflow-hidden",
           isShowMore ? "max-h-max" : "max-h-[35rem]",
+          inter.variable,
         )}
+        style={{ fontFamily: inter.style.fontFamily }}
         dangerouslySetInnerHTML={{ __html: description }}
       ></div>
       <button

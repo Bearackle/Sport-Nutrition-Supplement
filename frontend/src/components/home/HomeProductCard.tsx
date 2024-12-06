@@ -40,7 +40,7 @@ const HomeProductCard = ({ index, product }: TProps) => {
         />
       </div>
       <div>
-        <Link href={`/product/${product?.productId}`} className="space-y-1">
+        <Link href={`/san-pham/${product?.productId}`} className="space-y-1">
           <div
             className={cn(
               "flex flex-row items-center gap-2 text-[0.6rem] font-bold uppercase leading-none !no-underline ml:text-[0.625rem]",
@@ -71,7 +71,7 @@ const HomeProductCard = ({ index, product }: TProps) => {
         <div className="rounded-full bg-[#C11616] p-1 text-[0.625rem] font-bold text-white">{`-${product?.sale}%`}</div>
       </div>
       <button
-        onClick={() => router.push(`/product/${product?.productId}`)}
+        onClick={() => router.push(`/san-pham/${product?.productId}`)}
         className="text-normal w-full rounded-full bg-[#1F5ADD] py-3 leading-[1.21] text-white transition-all duration-300 hover:bg-[#2c6af0]"
       >
         Chọn mua

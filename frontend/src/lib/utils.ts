@@ -112,3 +112,11 @@ export const handleErrorApi = ({
 export const normalizePath = (path: string) => {
   return path.startsWith("/") ? path.slice(1) : path;
 };
+
+export const getKeyByValueIgnoreCase = (
+  obj: Record<string, string>,
+  value: string,
+) => {
+  const lowerValue = value.toLowerCase();
+  return Object.keys(obj).find((key) => obj[key].toLowerCase() === lowerValue);
+};

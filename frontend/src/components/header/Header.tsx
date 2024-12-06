@@ -64,7 +64,10 @@ export const Header = () => {
               "absolute -bottom-7 left-4 flex flex-row items-center gap-6 text-[0.75rem] font-bold italic text-white",
             )}
           >
-            <Link href="#" className="flex flex-row items-center gap-1">
+            <Link
+              href="/danh-muc/32"
+              className="flex flex-row items-center gap-1"
+            >
               <Image src={saleIcon} alt="" className="size-6" />
               <span>Hot Deals</span>
             </Link>
@@ -72,7 +75,7 @@ export const Header = () => {
               <Image src={trackingIcon} alt="" className="size-5" />
               <span>Tra cứu đơn hàng</span>
             </Link>
-            <Link href="#" className="flex flex-row items-center">
+            <Link href="/danh-muc/10" className="flex flex-row items-center">
               <Image src={saleTag} alt="" className="size-6" />
               <span>Xả kho hàng</span>
             </Link>

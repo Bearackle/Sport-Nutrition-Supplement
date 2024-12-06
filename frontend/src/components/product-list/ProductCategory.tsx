@@ -8,7 +8,6 @@ type TProps = {
     id: string;
     label: string;
     icon: string | StaticImageData;
-    amount?: number;
     children?: {
       id: string;
       label: string;
@@ -67,21 +66,17 @@ const ProductCategory = ({ category }: TProps) => {
         href={`/products/${category.id}`}
         className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
       >
-        <div className="size-10">
+        <div className="flex size-10 min-w-10 items-center justify-center">
           <Image
             src={category.icon}
             alt={category.label}
             width={40}
             height={40}
-            className="h-10 w-auto"
+            className="h-10 w-auto max-w-10"
           />
         </div>
         <div className="w-full">
-          {category.amount ? (
-            <div className="text-[0.875rem] font-medium">{category.label}</div>
-          ) : (
-            <></>
-          )}
+          <div className="text-[0.875rem] font-medium">{category.label}</div>
         </div>
       </Link>
     );

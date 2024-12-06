@@ -20,7 +20,7 @@ const Loading = () => {
           <Skeleton className="h-4 w-full py-[0.875em]" />
         </div>
         <Link
-          href="/change-password"
+          href="/doi-mat-khau"
           className="mx-auto mt-[3.5em] rounded-[1.25em] bg-[#004FFF]/[0.23] px-[2.5em] py-[0.75em] text-[1em] font-bold leading-[1.21] text-[#1F5ADD] transition-all duration-200 hover:bg-[#004FFF]/[0.3]"
         >
           Đổi mật khẩu

@@ -1,17 +1,38 @@
 import { inter } from "@/lib/font";
 import { Pagination, useMediaQuery } from "@mui/material";
+import { RefObject } from "react";
 
 type TProps = {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   count: number;
+  scrollToRef?: RefObject<HTMLElement>;
 };
 
-function CustomPagination({ currentPage, setCurrentPage, count }: TProps) {
+function CustomPagination({
+  currentPage,
+  setCurrentPage,
+  count,
+  scrollToRef,
+}: TProps) {
   const mlMatch = useMediaQuery("(min-width: 875px)");
   const calcCoefficient = () => {
     if (mlMatch) return 1;
     return 0.8;
+  };
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    newPage: number,
+  ) => {
+    setCurrentPage(newPage);
+
+    // Scroll tới phần tử nếu ref được truyền vào
+    if (scrollToRef?.current) {
+      scrollToRef.current.scrollIntoView({
+        block: "start",
+      });
+    }
   };
   return (
     <>
@@ -20,7 +41,7 @@ function CustomPagination({ currentPage, setCurrentPage, count }: TProps) {
         siblingCount={1}
         shape="rounded"
         page={currentPage}
-        onChange={(_event, newPage) => setCurrentPage(newPage)}
+        onChange={handlePageChange}
         sx={{
           "Button.MuiPaginationItem-rounded.Mui-selected": {
             background:

@@ -19,6 +19,9 @@ import {
 } from "react";
 
 // ** Import ui
+import { filterBrands } from "@/data/brand";
+import { categories } from "@/data/category";
+import { filterPrices } from "@/data/filterPrices";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -28,56 +31,23 @@ import {
 } from "../ui/accordion";
 import filterIcon from "/public/filter.svg";
 
-const categories = ["Whey Protein", "Mass Gainer", "EAA-BCAA", "Pre-Workout"];
-const prices = [
-  {
-    name: "Giá dưới 500.000₫",
-    priceTo: 500000,
-  },
-  {
-    name: "500.000₫ - 1.000.000₫",
-    priceFrom: 500000,
-    priceTo: 1000000,
-  },
-  {
-    name: "1.000.000₫ - 1.500.000₫",
-    priceFrom: 1000000,
-    priceTo: 1500000,
-  },
-  {
-    name: "1.500.000₫ - 2.000.000₫",
-    priceFrom: 1500000,
-    priceTo: 2000000,
-  },
-  {
-    name: "2.000.000₫ - 2.500.000₫",
-    priceFrom: 2000000,
-    priceTo: 2500000,
-  },
-  {
-    name: "Giá trên 2.500.000₫",
-    priceFrom: 2500000,
-  },
-];
-const brands = ["Acient Nutrition", "Advil", "Allmax", "Liquid", "Natrol"];
-
 export const filterOptions = [
   {
     id: "prices",
     title: "Giá bán",
-    options: prices,
+    options: filterPrices,
     type: "radio",
   },
   {
-    id: "categories",
+    id: "category",
     title: "Loại sản phẩm",
     options: categories,
     type: "checkbox",
   },
   {
-    id: "brands",
+    id: "brand",
     title: "Thương hiệu",
-    options: brands,
+    options: filterBrands,
     type: "checkbox",
   },
 ];
@@ -104,7 +74,7 @@ export function convertStringToQueriesObject(
 export function convertValidStringQueries(queries: Record<string, string[]>) {
   let q = "";
   const sortedKeys = Object.keys(queries).sort((a, b) => {
-    const order = ["categories", "brands", "priceFrom", "priceTo"];
+    const order = ["category", "brand", "priceFrom", "priceTo"];
     return order.indexOf(a) - order.indexOf(b);
   });
   for (const key of sortedKeys) {
@@ -116,7 +86,7 @@ export function convertValidStringQueries(queries: Record<string, string[]>) {
   return q;
 }
 
-const FilterBar = () => {
+const FilterBar = ({ category }: { category: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -124,7 +94,6 @@ const FilterBar = () => {
   const [selectedFilterQueries, setSelectedFilterQueries] = useState<
     Record<string, string[]>
   >({});
-
   useEffect(() => {
     const paramsObj = convertStringToQueriesObject(searchParams);
     setSelectedFilterQueries(paramsObj);
@@ -134,12 +103,11 @@ const FilterBar = () => {
     const name = e.target.name;
     const value = e.target.value;
     const type = e.target.type;
-
     const selectedQueries = { ...selectedFilterQueries }; // Copy object để giữ nguyên trạng thái cũ
 
     if (name === "prices") {
       // Tìm khoảng giá dựa trên tên
-      const selectedPrice = prices.find((price) => price.name === value);
+      const selectedPrice = filterPrices[value as keyof typeof filterPrices];
 
       if (selectedPrice) {
         // Xóa các giá trị hiện tại của `priceFrom` và `priceTo`
@@ -173,6 +141,8 @@ const FilterBar = () => {
       }
     }
 
+    setSelectedFilterQueries(selectedQueries);
+
     router.push(`${pathname}?${convertValidStringQueries(selectedQueries)}`, {
       scroll: false,
     });
@@ -180,7 +150,7 @@ const FilterBar = () => {
 
   function isChecked(id: string, option: string) {
     if (id === "prices") {
-      const selectedPrice = prices.find((price) => price.name === option);
+      const selectedPrice = filterPrices[option as keyof typeof filterPrices];
       return (
         selectedFilterQueries.priceFrom?.includes(
           selectedPrice?.priceFrom?.toString() || "",
@@ -197,49 +167,44 @@ const FilterBar = () => {
   }
   return (
     <>
-      <div className="sticky top-3 hidden h-max max-h-[95vh] w-[18rem] rounded-xl bg-white pb-8 leading-[1.21] xl:block">
+      <div className="sticky top-32 hidden h-max max-h-[80vh] w-[18rem] overflow-hidden rounded-xl bg-white pb-8 leading-[1.21] xl:block">
         <div className="flex w-full flex-row items-center gap-2 border-b border-solid border-[#333]/30 px-4 pb-2 pt-3">
           <Image src={filterIcon} alt="filter" width={24} height={24} />
           <span className="text-base font-semibold">Bộ lọc nâng cao</span>
         </div>
-        <div className="no-scrollbar max-h-[90vh] overflow-y-scroll px-4">
+        <div className="no-scrollbar max-h-[72.5vh] overflow-y-scroll px-4">
           {filterOptions.map(({ id, title, type, options }) => {
             return (
-              <div key={id}>
+              <div
+                key={id}
+                className={cn(
+                  category !== "tat-ca-san-pham" && id === "category"
+                    ? "hidden"
+                    : "",
+                )}
+              >
                 <Accordion type="single" collapsible defaultValue="prices">
                   <AccordionItem value={id}>
                     <AccordionTrigger className="pb-2 pt-3 text-base font-medium uppercase">
                       {title}
                     </AccordionTrigger>
                     <AccordionContent className="space-y-4 pt-2">
-                      {options.map((value) => {
+                      {Object.entries(options).map(([key, value]) => {
                         if (id === "prices") {
                           return (
                             <CheckboxAndRadioGroup
-                              key={
-                                typeof value === "string" ? value : value.name
-                              }
+                              key={`${id}-${key.toLocaleLowerCase().trim()}`}
                             >
                               <CheckboxAndRadioItem
                                 type={type}
                                 name={id}
-                                id={
-                                  typeof value === "string"
-                                    ? value.toLocaleLowerCase().trim()
-                                    : value.name.toLocaleLowerCase().trim()
-                                } // Sử dụng name để đặt id cho UI
-                                label={
-                                  typeof value === "string" ? value : value.name
-                                } // Hiển thị name cho người dùng
-                                value={
-                                  typeof value === "string" ? value : value.name
-                                } // Sử dụng name trong quá trình kiểm tra
+                                id={`${id}-${key.toLocaleLowerCase().trim()}`}
+                                label={id === "prices" ? key : value}
+                                value={id === "prices" ? key : value}
                                 checked={isChecked(
                                   id,
-                                  typeof value === "string"
-                                    ? value
-                                    : value.name,
-                                )} // Kiểm tra xem option đã được chọn chưa
+                                  id === "prices" ? key : value,
+                                )}
                                 onChange={handleSelectFilterOptions}
                               />
                             </CheckboxAndRadioGroup>
@@ -247,9 +212,7 @@ const FilterBar = () => {
                         } else {
                           return (
                             <CheckboxAndRadioGroup
-                              key={
-                                typeof value === "string" ? value : value.name
-                              }
+                              key={`${id}-${key.toLocaleLowerCase().trim()}`}
                             >
                               <CheckboxAndRadioItem
                                 type={type}
@@ -259,9 +222,7 @@ const FilterBar = () => {
                                     ? value.toLocaleLowerCase().trim()
                                     : value.name.toLocaleLowerCase().trim()
                                 }
-                                label={
-                                  typeof value === "string" ? value : value.name
-                                }
+                                label={id === "prices" ? key : value}
                                 value={
                                   typeof value === "string"
                                     ? value.toLocaleLowerCase().trim()
@@ -269,9 +230,7 @@ const FilterBar = () => {
                                 }
                                 checked={isChecked(
                                   id,
-                                  typeof value === "string"
-                                    ? value
-                                    : value.name,
+                                  id === "prices" ? key : value,
                                 )}
                                 onChange={handleSelectFilterOptions}
                               />
@@ -295,10 +254,18 @@ export default FilterBar;
 
 interface ICheckboxAndRadioGroup {
   children: ReactNode;
+  className?: string;
 }
 
-function CheckboxAndRadioGroup({ children }: ICheckboxAndRadioGroup) {
-  return <div className="flex flex-row items-center gap-2">{children}</div>;
+function CheckboxAndRadioGroup({
+  children,
+  className,
+}: ICheckboxAndRadioGroup) {
+  return (
+    <div className={cn("flex flex-row items-center gap-2", className)}>
+      {children}
+    </div>
+  );
 }
 
 interface CheckboxAndRadioItem extends ComponentPropsWithoutRef<"input"> {
@@ -308,10 +275,23 @@ interface CheckboxAndRadioItem extends ComponentPropsWithoutRef<"input"> {
 function CheckboxAndRadioItem({ id, label, ...props }: CheckboxAndRadioItem) {
   return (
     <>
-      <input id={id} className="size-4 shrink-0 text-[0.875rem]" {...props} />
+      <input
+        id={id}
+        className={cn(
+          props.type === "radio"
+            ? "peer hidden"
+            : "size-4 shrink-0 text-[0.875rem]",
+        )}
+        {...props}
+      />
       <label
         htmlFor={id}
-        className={cn("text-sm", props.type === "radio" ? "" : "uppercase")}
+        className={cn(
+          "text-sm",
+          props.type === "radio"
+            ? "inline-flex w-full cursor-pointer flex-row items-center justify-center rounded-[0.375rem] border border-solid border-[#333] px-4 py-3 text-sm transition-all duration-200 peer-checked:border-[#1250dc] peer-checked:bg-[#1250dc]/10 peer-checked:text-[#1250dc]"
+            : "uppercase",
+        )}
       >
         {label}
       </label>

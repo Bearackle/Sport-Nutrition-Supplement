@@ -49,7 +49,7 @@ const MobileNavBar = () => {
                 <Accordion type="single" collapsible className="w-full">
                   {!nav.children && (
                     <a
-                      href={`/products/${nav.id}`}
+                      href={`/danh-muc/${nav.id}`}
                       className={cn(
                         "flex min-h-8 flex-row items-center gap-2 border-b border-solid border-[#333]/10 px-4 py-2 text-[0.875rem] font-semibold text-[#333333]",
                       )}
@@ -90,7 +90,7 @@ const MobileNavBar = () => {
                         {nav.children.map((childNav, index) => (
                           <a
                             key={index}
-                            href={`/products/${childNav.id}`}
+                            href={`/danh-muc/${childNav.id}`}
                             className={cn(
                               "flex min-h-8 flex-row items-center gap-2 px-4 py-2 text-[0.875rem] font-semibold text-[#333333]",
                             )}

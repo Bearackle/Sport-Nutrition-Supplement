@@ -16,7 +16,7 @@ export const MobileUserNavBar = () => {
   if (user) {
     return (
       <Link
-        href="/user/profile"
+        href="/nguoi-dung/thong-tin-ca-nhan"
         className={cn("flex flex-row items-center gap-3 px-4 py-3")}
       >
         <Avatar
@@ -42,7 +42,7 @@ export const MobileUserNavBar = () => {
   }
 
   return (
-    <Link href="/login" className="flex flex-row items-center gap-4 px-4 py-3">
+    <Link href="/dang-nhap" className="flex flex-row items-center gap-4 px-4 py-3">
       <Image src={accountIcon} alt="" className="size-8" />
       <div>
         <p className="text-center text-base font-bold text-white">Tài khoản</p>

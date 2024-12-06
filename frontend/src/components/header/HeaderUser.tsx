@@ -16,7 +16,7 @@ export const HeaderUser = () => {
   if (user) {
     return (
       <Link
-        href="/user/profile"
+        href="/nguoi-dung/thong-tin-ca-nhan"
         className="hidden w-[10rem] flex-row items-center justify-center gap-2 xl:flex"
       >
         <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/50">
@@ -43,7 +43,7 @@ export const HeaderUser = () => {
     );
   }
   return (
-    <Link href="/login" className="hidden flex-row items-center gap-2 xl:flex">
+    <Link href="/dang-nhap" className="hidden flex-row items-center gap-2 xl:flex">
       <Image src={accountIcon} alt="" className="size-7" />
       <p className="text-center text-[0.875rem] font-semibold text-white">
         Đăng nhập

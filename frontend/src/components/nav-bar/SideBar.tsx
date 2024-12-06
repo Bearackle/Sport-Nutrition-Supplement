@@ -22,7 +22,7 @@ const SideBar = () => {
               <li key={index}>
                 {!nav.children && (
                   <a
-                    href={`/products/${nav.id}`}
+                    href={`/danh-muc/${nav.id}`}
                     className={cn(
                       "flex min-h-8 flex-row items-center gap-2 px-4 text-[0.875rem] font-semibold text-[#333333] hover:text-[#1250DC] hover:underline",
                     )}
@@ -71,7 +71,7 @@ const SideBar = () => {
                         {nav.children.map((childNav, index) => (
                           <li key={index}>
                             <a
-                              href={`/products/${childNav.id}`}
+                              href={`/danh-muc/${childNav.id}`}
                               className={cn(
                                 "flex min-h-8 flex-row items-center gap-2 text-[0.875rem] font-semibold text-[#333333] hover:text-[#1250DC] hover:underline",
                               )}

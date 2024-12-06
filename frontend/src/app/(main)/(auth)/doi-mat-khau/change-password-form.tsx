@@ -44,7 +44,7 @@ const ChangePasswordForm = () => {
         variant: "success",
         title: "Đổi mật khẩu thành công",
       });
-      router.push("/user/profile");
+      router.push("/nguoi-dung/thong-tin-ca-nhan");
       router.refresh();
     } catch (error: any) {
       handleErrorApi({

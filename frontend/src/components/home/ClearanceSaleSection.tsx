@@ -1,37 +1,24 @@
 "use client";
+import productApiRequest from "@/apiRequests/product";
 import { cn } from "@/lib/utils";
+import { TopDealsResType } from "@/schemaValidations/product.schema";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomCarousel } from "../common/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import HomeProductCard from "./HomeProductCard";
 import arrow from "/public/arrow.svg";
 
-const data1 = Array.from({ length: 8 }, (_, i) => ({
-  id: i,
-  image:
-    "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
-  name: "RULE 1 PROTEIN (ĐỎ) WHEY ISOLATE TĂNG CƠ BẮP - 5 LBS",
-  rating: 4,
-  price: 1950000,
-  discount: 20,
-  priceAfterDiscount: 1579000,
-}));
-
-const data2 = Array.from({ length: 8 }, (_, i) => ({
-  id: i,
-  image:
-    "https://bizweb.dktcdn.net/thumb/grande/100/398/814/products/z5892281336181-febfe30290debf1f356aa951ca51abc4.jpg?v=1727944519513",
-  name: "RULE 1 PROTEIN (ĐỎ) WHEY ISOLATE TĂNG CƠ BẮP - 5 LBS",
-  rating: 4,
-  price: 1950000,
-  discount: 20,
-  priceAfterDiscount: 1579000,
-}));
-
 const ClearanceSaleSection = () => {
   const [activeProduct, setActiveProduct] = useState("clearance-sale");
-  const displayData = activeProduct === "clearance-sale" ? data1 : data2;
+  const [displayData, setDisplayData] = useState<TopDealsResType>([]);
+
+  useEffect(() => {
+    productApiRequest
+      .topDeals()
+      .then((result) => setDisplayData(result.payload));
+  }, []);
+
   return (
     <div className="w-full rounded-[0.9375rem] bg-white p-4 pb-3">
       <div className="flex flex-col items-start justify-start xs:flex-row xs:items-center xs:justify-between">
@@ -67,10 +54,10 @@ const ClearanceSaleSection = () => {
         <CustomCarousel>
           {displayData.map((product, index) => (
             <CarouselItem
-              key={product.id}
+              key={product.productId}
               className="flex basis-full justify-center xs:basis-1/2 ml:basis-1/3"
             >
-              <HomeProductCard index={index} {...product} />
+              <HomeProductCard index={index} product={product} />
             </CarouselItem>
           ))}
         </CustomCarousel>

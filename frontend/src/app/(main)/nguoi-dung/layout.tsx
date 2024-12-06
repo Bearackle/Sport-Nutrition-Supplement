@@ -29,24 +29,24 @@ import orderIcon from "/public/order-icon.png";
 import profileIcon from "/public/profile-icon.png";
 
 const routeMap: Record<string, string> = {
-  "/user/profile": "Thông tin cá nhân",
-  "/user/order-history": "Lịch sử đơn hàng",
-  "/user/addresses": "Quản lý sổ địa chỉ",
+  "/nguoi-dung/thong-tin-ca-nhan": "Thông tin cá nhân",
+  "/nguoi-dung/lich-su-don-hang": "Lịch sử đơn hàng",
+  "/nguoi-dung/so-dia-chi": "Quản lý sổ địa chỉ",
 };
 
 const tabs = [
   {
-    href: "/user/profile",
+    href: "/nguoi-dung/thong-tin-ca-nhan",
     label: "Thông tin cá nhân",
     icon: profileIcon,
   },
   {
-    href: "/user/order-history",
+    href: "/nguoi-dung/lich-su-don-hang",
     label: "Lịch sử đơn hàng",
     icon: orderIcon,
   },
   {
-    href: "/user/addresses",
+    href: "/nguoi-dung/so-dia-chi",
     label: "Quản lý sổ địa chỉ",
     icon: locationIcon,
   },
@@ -81,7 +81,7 @@ export default function UserLayout({
     setLoading(true);
     try {
       await authApiRequest.logout();
-      router.push("/login");
+      router.push("/dang-nhap");
       localStorage.removeItem("sessionToken");
       localStorage.removeItem("sessionTokenExpiresAt");
     } catch (error) {
@@ -108,18 +108,21 @@ export default function UserLayout({
         <Breadcrumb className="md:px-[4.5%] xl:px-[0.625em]">
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="/" className="text-[0.875em]">
+              <BreadcrumbLink href="/" className="text-[1em]">
                 Trang chủ
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/user/profile" className="text-[0.875em]">
+              <BreadcrumbLink
+                href="/nguoi-dung/thong-tin-ca-nhan"
+                className="text-[1em]"
+              >
                 Người dùng
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="text-[0.875em]">
+            <BreadcrumbItem className="text-[1em]">
               {routeMap[pathname]}
             </BreadcrumbItem>
           </BreadcrumbList>

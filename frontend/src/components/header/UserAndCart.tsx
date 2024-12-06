@@ -18,7 +18,7 @@ export const UserAndCart = () => {
     if (user) {
       return (
         <Link
-          href="/user/profile"
+          href="/nguoi-dung/thong-tin-ca-nhan"
           className="flex max-w-[9rem] flex-row items-center gap-2"
         >
           <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-white/50 xs:size-8">
@@ -46,7 +46,7 @@ export const UserAndCart = () => {
     }
 
     return (
-      <Link href="/login" className="flex flex-row items-center gap-2">
+      <Link href="/dang-nhap" className="flex flex-row items-center gap-2">
         <Image src={accountIcon} alt="" className="size-5 xs:size-7" />
         <p className="hidden text-center text-[0.875rem] font-semibold text-white lg:block">
           Đăng nhập
@@ -59,7 +59,7 @@ export const UserAndCart = () => {
       <MobileUser />
       <div>
         <Link
-          href={isAuthenticated ? "/cart" : "/login"}
+          href={isAuthenticated ? "/gio-hang" : "/dang-nhap"}
           className="flex flex-row items-center gap-2 rounded-[3.125rem] px-4 py-2 lg:bg-[#1250DC]"
         >
           <Image src={cartIcon} alt="" className="size-5 xs:size-7" />
