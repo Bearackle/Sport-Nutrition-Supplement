@@ -77,12 +77,12 @@ class ProductService implements ProductServiceInterface{
             return $price * ((100.0-$sale)/100.0);
     }
 
-    public function search($data)
+    public function search($data,$filter)
     {
         if ($data != '') {
-            $products = Product::fullTextSearch('product_name', $data);
+            $products = Product::fullTextSearch('product_name', $data)->Filter($filter);
             return $products->paginate(12);
         }
-        return $this->productRepository->getAllAvailableProducts()->paginate(12);
+        return $this->productRepository->getAllAvailableProducts()->Filter($filter)->paginate(12);
     }
 }

@@ -512,6 +512,20 @@ class ProductController extends Controller
      *             example="casei"
      *         )
      *     ),
+     *       @OA\Parameter(
+     *          name="params",
+     *          in="query",
+     *          required=false,
+     *          description="Lọc sản phẩm với tiêu chí",
+     *          @OA\Schema(type="object",additionalProperties=true,example={
+     *          "sortByPrice": "asc",
+     *          "sortByAlphabetical" : "asc",
+     *          "category" : "1",
+     *          "brand" : "1",
+     *          "priceFrom" : "700000",
+     *          "priceTo" : "900000"
+     *  })
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Tìm thành công"
@@ -522,9 +536,9 @@ class ProductController extends Controller
      *     )
      * )
      */
-    public function search(Request $request): AnonymousResourceCollection
+    public function search(Request $request,ProductFilter $productFilter): AnonymousResourceCollection
     {
-        $data = $this->productService->search($request->input('name'));
+        $data = $this->productService->search($request->input('name'),$productFilter);
         return ProductLandingMask::collection($data);
     }
 }

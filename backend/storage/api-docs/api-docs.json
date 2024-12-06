@@ -2119,6 +2119,24 @@
                             "type": "string",
                             "example": "casei"
                         }
+                    },
+                    {
+                        "name": "params",
+                        "in": "query",
+                        "description": "Lọc sản phẩm với tiêu chí",
+                        "required": false,
+                        "schema": {
+                            "type": "object",
+                            "example": {
+                                "sortByPrice": "asc",
+                                "sortByAlphabetical": "asc",
+                                "category": "1",
+                                "brand": "1",
+                                "priceFrom": "700000",
+                                "priceTo": "900000"
+                            },
+                            "additionalProperties": true
+                        }
                     }
                 ],
                 "responses": {
