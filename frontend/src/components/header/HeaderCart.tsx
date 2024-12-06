@@ -9,7 +9,7 @@ export const HeaderCart = () => {
   return (
     <div className="hidden xl:block">
       <Link
-        href={isAuthenticated ? "/cart" : "/login"}
+        href={isAuthenticated ? "/gio-hang" : "/dang-nhap"}
         className="flex flex-row items-center gap-2 rounded-[3.125rem] bg-[#1250DC] px-4 py-2"
       >
         <Image src={cartIcon} alt="" className="size-7" />

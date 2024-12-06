@@ -1,4 +1,5 @@
 // ** Import images
+import { TParamsCategory } from "@/types/category";
 import allAccessories from "/public/categories/all-accessories.svg";
 import allDiet from "/public/categories/all-diet.webp";
 import allElements from "/public/categories/all-elements.png";
@@ -36,22 +37,20 @@ import vitaminHealthy from "/public/categories/vitamin-healthy.png";
 import vitamin from "/public/categories/vitamin.svg";
 import wheyBlend from "/public/categories/whey-blend.png";
 import wheyPlant from "/public/categories/whey-plant.png";
-import wheyProtein2 from "/public/categories/whey-protein.png";
 import wheyProtein from "/public/categories/whey-protein.svg";
 import workout from "/public/categories/workout.svg";
 import zma from "/public/categories/zma.png";
 import saleIcon from "/public/sale-icon.svg";
 import saleTag from "/public/sale-tag.svg";
-import { TParamsCategory } from "@/types/category";
 
 export const productCategories: Array<TParamsCategory> = [
   {
-    id: "daily-deal",
+    id: "31",
     label: "GIÁ SIÊU ƯU ĐÃI",
     icon: saleIcon,
   },
   {
-    id: "deal-hot-combo-tiet-kiem",
+    id: "32",
     label: "Deal Hot - Combo Tiết Kiệm",
     icon: saleIcon,
   },
@@ -61,22 +60,17 @@ export const productCategories: Array<TParamsCategory> = [
     icon: wheyProtein,
     children: [
       {
-        id: "whey-protein-all",
-        label: "Whey Protein Thực Phẩm Thể Thao (Tất Cả Sản Phẩm)",
+        id: "1",
+        label: "Whey Protein",
         icon: allWhey,
       },
       {
-        id: "whey-protein",
-        label: "Whey Protein",
-        icon: wheyProtein2,
-      },
-      {
-        id: "protein-trai-dai",
+        id: "11",
         label: "Protein Trải Dài",
         icon: wheyBlend,
       },
       {
-        id: "protein-thuc-vat",
+        id: "12",
         label: "Protein Thực Vật",
         icon: wheyPlant,
       },
@@ -88,17 +82,17 @@ export const productCategories: Array<TParamsCategory> = [
     icon: massGainer,
     children: [
       {
-        id: "mass-gainer-all",
-        label: "Tất Cả Mass Gainer",
+        id: "2",
+        label: "Mass Gainer",
         icon: allMass,
       },
       {
-        id: "mass-cao-nang-luong",
+        id: "13",
         label: "Mass Cao Năng Lượng",
         icon: hightMass,
       },
       {
-        id: "mass-trung-nang-luong",
+        id: "14",
         label: "Mass Trung Năng Lượng",
         icon: mediumMass,
       },
@@ -110,17 +104,17 @@ export const productCategories: Array<TParamsCategory> = [
     icon: amino,
     children: [
       {
-        id: "eaa-bcaa-all",
+        id: "3",
         label: "Tất cả BCAA-EAA",
         icon: bcaaeaa,
       },
       {
-        id: "eaa",
+        id: "15",
         label: "EAA",
         icon: eaa,
       },
       {
-        id: "bcaa",
+        id: "16",
         label: "BCAA",
         icon: bcaa,
       },
@@ -132,19 +126,19 @@ export const productCategories: Array<TParamsCategory> = [
     icon: fatBurner,
     children: [
       {
-        id: "fat-burner-all",
+        id: "4",
         label: "Tất cả Fat Burner",
         icon: allFat,
       },
       {
-        id: "dot-mo-co-chat-kich-thich",
-        label: "Đốt Mỡ Có Chất Kích Thích",
-        icon: fatCaffeine,
-      },
-      {
-        id: "dot-mo-khong-chat-kich-thich",
+        id: "17",
         label: "Đốt Mỡ Không Chất Kích Thích",
         icon: fatNoCaffeine,
+      },
+      {
+        id: "18",
+        label: "Đốt Mỡ Có Chất Kích Thích",
+        icon: fatCaffeine,
       },
     ],
   },
@@ -154,17 +148,17 @@ export const productCategories: Array<TParamsCategory> = [
     icon: workout,
     children: [
       {
-        id: "tang-suc-manh-all",
+        id: "5",
         label: "Tất Cả Pre-Workout",
         icon: allPreworkout,
       },
       {
-        id: "tang-suc-manh-co-caffeine",
+        id: "19",
         label: "Tăng Sức Mạnh Có Caffeine",
         icon: preworkoutCaffeine,
       },
       {
-        id: "tang-suc-manh-khong-caffeine",
+        id: "20",
         label: "Tăng Sức Mạnh Không Caffeine",
         icon: preworkoutNoCaffeine,
       },
@@ -176,22 +170,22 @@ export const productCategories: Array<TParamsCategory> = [
     icon: vitamin,
     children: [
       {
-        id: "vitamin-all",
+        id: "6",
         label: "Tất Cả Các Loại Vitamin",
         icon: allVitamin,
       },
       {
-        id: "vitamin-suc-khoe",
+        id: "21",
         label: "Vitamin Sức Khỏe",
         icon: vitaminHealthy,
       },
       {
-        id: "thuc-pham-sac-dep",
+        id: "22",
         label: "Thực phẩm Sắc Đẹp",
         icon: vitaminBeauty,
       },
       {
-        id: "zinc-magnesium-b6",
+        id: "23",
         label: "ZMA (Zinc - Magnesium - B6)",
         icon: zma,
       },
@@ -203,42 +197,42 @@ export const productCategories: Array<TParamsCategory> = [
     icon: element,
     children: [
       {
-        id: "don-chat-all",
+        id: "7",
         label: "Tất Cả Các Đơn Chất",
         icon: allElements,
       },
       {
-        id: "creatine",
+        id: "24",
         label: "Creatine",
         icon: creatine,
       },
       {
-        id: "caffeine",
+        id: "25",
         label: "Caffeine",
         icon: caffeine,
       },
       {
-        id: "beta-alanine",
+        id: "26",
         label: "Beta Alanine",
         icon: betaAlanine,
       },
       {
-        id: "citrulline",
+        id: "27",
         label: "Citrulline",
         icon: citrulline,
       },
       {
-        id: "arginine",
+        id: "28",
         label: "Arginine",
         icon: arginine,
       },
       {
-        id: "taurine",
+        id: "29",
         label: "Taurine",
         icon: taurine,
       },
       {
-        id: "cac-don-chat-khac",
+        id: "30",
         label: "Các Đơn Chất Khác",
         icon: otherElements,
       },
@@ -250,7 +244,7 @@ export const productCategories: Array<TParamsCategory> = [
     icon: diet,
     children: [
       {
-        id: "ngu-coc",
+        id: "8",
         label: "Tất Cả Các Loại Thực Phẩm Ăn Kiêng",
         icon: allDiet,
       },
@@ -262,7 +256,7 @@ export const productCategories: Array<TParamsCategory> = [
     icon: practice,
     children: [
       {
-        id: "phu-kien",
+        id: "9",
         label: "Tất Cả Phụ Kiện",
         icon: allAccessories,
       },
@@ -274,7 +268,7 @@ export const productCategories: Array<TParamsCategory> = [
     icon: saleTag,
     children: [
       {
-        id: "xa-kho-sale",
+        id: "10",
         label: "XẢ KHO SALE",
         icon: saleTag,
       },
@@ -286,8 +280,43 @@ export const productCategories: Array<TParamsCategory> = [
     icon: lookup,
   },
   {
-    id: "all",
+    id: "tat-ca-san-pham",
     label: "Tất cả sản phẩm",
     icon: allProducts,
   },
 ];
+
+export const categories = {
+  1: "Whey Protein",
+  11: "Protein Trải Dài",
+  12: "Protein Thực Vật",
+  2: "Mass Gainer",
+  13: "Mass Cao Năng Lượng",
+  14: "Mass Trung Năng Lượng",
+  3: "BCAA-EAA",
+  15: "EAA",
+  16: "BCAA",
+  4: "Fat Burner",
+  17: "Đốt Mỡ Không Chất Kích Thích",
+  18: "Đốt Mỡ Có Chất Kích Thích",
+  5: "Pre-Workout",
+  19: "Tăng Sức Mạnh Có Caffeine",
+  20: "Tăng Sức Mạnh Không Caffeine",
+  6: "Vitamin",
+  21: "Vitamin Sức Khỏe",
+  22: "Thực phẩm Sắc Đẹp",
+  23: "ZMA (Zinc - Magnesium - B6)",
+  7: "Đơn Chất",
+  24: "Creatine",
+  25: "Caffeine",
+  26: "Beta Alanine",
+  27: "Citrulline",
+  28: "Arginine",
+  29: "Taurine",
+  30: "Các Đơn Chất Khác",
+  8: "Thực Phẩm Sức Khỏe Ăn Kiêng",
+  9: "Phụ Kiện",
+  10: "Thanh Lý Hàng Lỗi",
+  31: "GIÁ SIÊU ƯU ĐÃI",
+  32: "Deal Hot - Combo Tiết Kiệm",
+};

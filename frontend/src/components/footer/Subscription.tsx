@@ -6,7 +6,7 @@ export const Subscription = () => {
   const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/register");
+    router.push("/dang-ky");
   };
   return (
     <form

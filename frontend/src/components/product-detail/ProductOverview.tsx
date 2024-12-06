@@ -1,29 +1,26 @@
 "use client";
-import { CustomCarousel } from "@/components/common/CustomCarousel";
-import { CarouselItem } from "@/components/ui/carousel";
+import { brands } from "@/data/brand";
 import { cn, formatPrice } from "@/lib/utils";
 import { Rating } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ProductImages } from "./ProductImages";
 import giftIcon from "/public/gift-icon.svg";
 
 type TProps = {
-  id: string;
+  id: number;
   image: string[];
   name: string;
-  brand: {
-    id: string;
-    name: string;
-  };
+  brandId: number;
   rating: number;
   price: number;
   priceAfterDiscount: number;
   discount: number;
   promotionInformation: string[];
   variants: {
-    id: string;
-    name: string;
+    variantId: number;
+    variantName: string;
     stockQuantity: number;
   }[];
   shortDescription: string[];
@@ -33,7 +30,7 @@ export const ProductOverview = ({
   id,
   image,
   name,
-  brand,
+  brandId,
   rating,
   price,
   priceAfterDiscount,
@@ -56,58 +53,36 @@ export const ProductOverview = ({
   };
 
   useEffect(() => {
-    if (quantity < 1) {
+    if (currentVariant.stockQuantity === 0) {
+      setQuantity(0);
+    } else if (quantity < 1) {
       setQuantity(1);
-    } else if (quantity > 999) {
+    } else if (quantity > currentVariant.stockQuantity) {
+      setQuantity(currentVariant.stockQuantity);
+    }
+    if (quantity > 999) {
       setQuantity(999);
     }
-  }, [quantity]);
+  }, [quantity, currentVariant]);
   return (
     <div
-      id={id}
+      id={id.toString()}
       className={cn(
         "mx-auto mt-4 flex w-[95%] flex-col justify-between gap-y-6 overflow-hidden rounded-[0.75rem] bg-white p-8",
         "lg:flex-row",
       )}
     >
       {/*Product Image*/}
-      <div className={cn("flex w-full justify-center lg:w-[22.5rem]")}>
-        <div
-          className={cn(
-            "aspect-square w-full overflow-hidden rounded-[0.625rem] border border-solid border-[#333]/30 px-[10%] xs:size-[22.5rem]",
-          )}
-        >
-          <CustomCarousel dotVisible={true}>
-            {image.map((img, index) => (
-              <CarouselItem
-                key={index}
-                className="flex h-[75vw] w-full basis-full items-center justify-center xs:h-[21.5rem]"
-              >
-                <Image
-                  src={img}
-                  alt={`Product image ${index}`}
-                  width={360}
-                  height={360}
-                  className={cn(
-                    "h-auto w-auto",
-                    "max-h-[70%] max-w-full xs:max-h-[20rem] xs:max-w-[20rem]",
-                  )}
-                />
-              </CarouselItem>
-            ))}
-          </CustomCarousel>
-        </div>
-      </div>
+      <ProductImages images={image} />
 
       {/*Product Information*/}
       <div
         className={cn("w-full overflow-hidden lg:w-[32.5rem] xl:w-[42.5rem]")}
       >
-        <h2 className={cn("text-2xl leading-[1.21]")}>{name}</h2>
+        <h2 className={cn("text-2xl leading-10")}>{name}</h2>
         <div className={cn("flex flex-row items-center gap-2")}>
           <span className={cn("text-[0.875rem]")}>{rating}</span>
           <Rating name="read-only" value={rating} readOnly size="small" />
-          <span className={cn("text-[0.875rem] text-[#8C8F8D]")}>(48)</span>
         </div>
         <div
           className={cn(
@@ -116,14 +91,11 @@ export const ProductOverview = ({
         >
           <div>
             <span>Thương hiệu: </span>
-            <Link href={"#"} className={cn("text-[#1250DC]")}>
-              {brand.name}
-            </Link>
-          </div>
-          <div>
-            <span>HEX: </span>
-            <Link href={"#"} className={cn("text-[#1250DC]")}>
-              859400007993
+            <Link
+              href={`/danh-muc/tat-ca-san-pham?brand=${brands[brandId - 1].toLowerCase()}`}
+              className={cn("text-[#1250DC]")}
+            >
+              {brands[brandId - 1]}
             </Link>
           </div>
         </div>
@@ -180,7 +152,7 @@ export const ProductOverview = ({
             />
             <span
               className={cn(
-                "text-[0.875rem] font-bold uppercase leading-[1.5] text-white",
+                "select-none text-[0.875rem] font-bold uppercase leading-[1.5] text-white",
               )}
             >
               Thông tin ưu đãi
@@ -204,36 +176,36 @@ export const ProductOverview = ({
         </div>
 
         {/*Variants*/}
-        <div className={cn("mt-2 flex w-max max-w-[95%] flex-row gap-2")}>
+        <div className={cn("mt-2 flex w-max max-w-full flex-row gap-2")}>
           <div
             className={cn(
-              "w-[4rem] shrink-0 pt-[0.375rem] text-[1.125rem] font-bold leading-[1.21]",
+              "w-[4rem] shrink-0 select-none pt-[0.375rem] text-[1.125rem] font-bold leading-[1.21]",
             )}
           >
             Mùi vị:
           </div>
-          <div className={cn("flex flex-wrap gap-2")}>
+          <div className={cn("flex grow flex-wrap gap-2")}>
             {variants.map((variant, index) => (
-              <div key={variant.id}>
+              <div key={variant.variantId}>
                 <input
-                  id={variant.id}
+                  id={variant.variantId.toString()}
                   name="variant"
                   type="radio"
-                  value={variant.id}
+                  value={variant.variantId.toString()}
                   defaultChecked={index === 0}
                   onClick={() => setCurrentVariant(variant)}
                   className={cn("hidden")}
                 />
                 <label
-                  htmlFor={variant.id}
+                  htmlFor={variant.variantId.toString()}
                   className={cn(
-                    "inline-flex cursor-pointer flex-row items-center justify-center rounded-[1.25rem] border border-solid px-3 py-2 text-[0.875rem] font-bold leading-[1.21] transition-all duration-100",
-                    currentVariant.id === variant.id
+                    "inline-flex cursor-pointer flex-row items-center justify-center rounded-[1.25rem] border border-solid px-3 py-2 text-[0.875rem] font-bold capitalize leading-[1.21] transition-all duration-100",
+                    currentVariant.variantId === variant.variantId
                       ? "border-[#1F5ADD] bg-[#1F5ADD]/10 text-[#1F5ADD]"
                       : "border-[#8C8F8D] text-[#8C8F8D]",
                   )}
                 >
-                  {variant.name}
+                  {variant.variantName}
                 </label>
               </div>
             ))}
@@ -248,9 +220,19 @@ export const ProductOverview = ({
               "mt-3 list-disc space-y-1 pl-6 text-[0.875rem] leading-[1.21]",
             )}
           >
-            {shortDescription.map((item, index) => (
-              <li key={`product-short-info-${index}`}>{item}</li>
-            ))}
+            {shortDescription && (
+              <>
+                {shortDescription.length === 1 ? (
+                  <li>{shortDescription[0]}</li>
+                ) : (
+                  <>
+                    {shortDescription.map((item, index) => (
+                      <li key={`product-short-info-${index}`}>{item}</li>
+                    ))}
+                  </>
+                )}
+              </>
+            )}
           </ul>
         </div>
 
@@ -258,7 +240,11 @@ export const ProductOverview = ({
         <div
           className={cn("mt-4 flex flex-row items-center gap-4 text-[#333]")}
         >
-          <p className={cn("text-[1.125rem] font-normal leading-[1.21]")}>
+          <p
+            className={cn(
+              "select-none text-[1.125rem] font-normal leading-[1.21]",
+            )}
+          >
             Số lượng:
           </p>
           <div
@@ -267,11 +253,12 @@ export const ProductOverview = ({
             )}
           >
             <button
-              disabled={quantity === 1}
+              disabled={currentVariant.stockQuantity === 0 || quantity === 1}
               onClick={handleMinusButton}
               className={cn(
                 "flex h-full items-center px-1",
-                quantity === 1 && "opacity-50",
+                (currentVariant.stockQuantity === 0 || quantity === 1) &&
+                  "opacity-50",
               )}
             >
               <svg
@@ -291,8 +278,8 @@ export const ProductOverview = ({
             </button>
             <input
               type="number"
-              min="1"
-              max="999"
+              min={1}
+              max={currentVariant.stockQuantity || 999}
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
               className={cn(
@@ -300,11 +287,18 @@ export const ProductOverview = ({
               )}
             />
             <button
-              disabled={quantity === 999}
+              disabled={
+                currentVariant.stockQuantity === 0 ||
+                quantity === currentVariant.stockQuantity ||
+                quantity === 999
+              }
               onClick={handlePlusButton}
               className={cn(
                 "flex h-full items-center px-1",
-                quantity === 999 && "opacity-50",
+                (currentVariant.stockQuantity === 0 ||
+                  quantity === currentVariant.stockQuantity ||
+                  quantity === 999) &&
+                  "opacity-50",
               )}
             >
               <svg
@@ -336,20 +330,32 @@ export const ProductOverview = ({
             "mt-4 flex flex-col items-center gap-x-7 gap-y-3 xs:flex-row",
           )}
         >
-          <button
-            className={cn(
-              "w-full rounded-[1.25rem] bg-[#1F5ADD] px-10 py-3 text-base font-bold leading-[1.21] text-white xs:w-auto",
-            )}
-          >
-            Chọn mua
-          </button>
-          <button
-            className={cn(
-              "w-full rounded-[1.25rem] bg-[#004FFF]/[0.23] px-5 py-3 text-base font-bold leading-[1.21] text-[#1F5ADD] xs:w-auto",
-            )}
-          >
-            Thêm vào giỏ hàng
-          </button>
+          {currentVariant.stockQuantity === 0 ? (
+            <div
+              className={cn(
+                "w-full select-none rounded-[1.25rem] bg-[#EAEFFA] px-10 py-3 text-base font-bold leading-[1.21] text-[#1250DC] xs:w-auto",
+              )}
+            >
+              Hết hàng
+            </div>
+          ) : (
+            <>
+              <button
+                className={cn(
+                  "w-full rounded-[1.25rem] bg-[#1F5ADD] px-10 py-3 text-base font-bold leading-[1.21] text-white transition-all duration-200 hover:opacity-90 xs:w-auto",
+                )}
+              >
+                Chọn mua
+              </button>
+              <button
+                className={cn(
+                  "w-full rounded-[1.25rem] bg-[#004FFF]/[0.23] px-5 py-3 text-base font-bold leading-[1.21] text-[#1F5ADD] xs:w-auto",
+                )}
+              >
+                Thêm vào giỏ hàng
+              </button>
+            </>
+          )}
         </div>
 
         <p className={cn("mt-6")}>

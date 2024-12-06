@@ -6,12 +6,12 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { useRouter } from "next/navigation";
 import { productCategories } from "@/data/category";
 import { TParamsCategory } from "@/types/category";
+import { useRouter } from "next/navigation";
 
 type TProps = {
-  categoryId: string;
+  categoryId: number;
   name: string;
 };
 
@@ -59,13 +59,15 @@ export const ProductDetailBreadcrumb = ({ categoryId, name }: TProps) => {
     return null;
   };
 
-  if (findCategoryById(categoryId, productCategories) === null) {
+  if (findCategoryById(categoryId.toString(), productCategories) === null) {
     router.push("/not-found");
     return null;
   }
 
-  const parentCategory = findParentCategory(categoryId, productCategories);
-  const category = findCategoryById(categoryId, productCategories);
+  const parentCategory = findParentCategory(
+    categoryId.toString(),
+    productCategories,
+  );
   return (
     <Breadcrumb className="px-[0.625rem]">
       <BreadcrumbList>
@@ -77,31 +79,39 @@ export const ProductDetailBreadcrumb = ({ categoryId, name }: TProps) => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink
-                href={`/products/${parentCategory.children?.[0].id}`}
+                href={`/danh-muc/${parentCategory.children?.[0].id}`}
               >
                 {parentCategory?.label}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="text-black">
-              <BreadcrumbLink href={`/products/${parentCategory.id}`}>
-                {findCategoryById(categoryId, productCategories)?.label}
+              <BreadcrumbLink href={`/danh-muc/${categoryId}`}>
+                {
+                  findCategoryById(categoryId.toString(), productCategories)
+                    ?.label
+                }
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="text-black">{name}</BreadcrumbItem>
+            <BreadcrumbItem className="line-clamp-1 text-black">
+              {name}
+            </BreadcrumbItem>
           </>
         ) : (
           <>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="text-black">
-              <BreadcrumbLink href={`/products/${categoryId}`}>
-                {findCategoryById(categoryId, productCategories)?.label}
+              <BreadcrumbLink href={`/danh-muc/${categoryId}`}>
+                {
+                  findCategoryById(categoryId.toString(), productCategories)
+                    ?.label
+                }
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem className="text-black">
-              {category?.label}
+            <BreadcrumbItem className="line-clamp-1 text-black">
+              {name}
             </BreadcrumbItem>
           </>
         )}

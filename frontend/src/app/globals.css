@@ -116,6 +116,7 @@
 
   .editor-rendered-content * {
     @apply !leading-[1.21];
+    font-family: var(--font-inter) !important;
   }
 
   .editor-rendered-content *[id]::before {
@@ -147,7 +148,15 @@
     @apply text-sm font-bold text-[#399EEA];
   } */
   .editor-rendered-content p {
-    @apply text-base;
+    @apply !text-base;
+  }
+
+  .editor-rendered-content span {
+    @apply !text-base;
+  }
+
+  .editor-rendered-content strong span {
+    @apply !font-bold;
   }
 
   .editor-rendered-content pre {
@@ -162,8 +171,8 @@
     @apply italic;
   }
 
-  .editor-rendered-content ul {
-    @apply ml-6 mt-2 list-disc space-y-2;
+  .editor-rendered-content ul li {
+    @apply ml-6 mt-2 list-disc space-y-2 !text-base;
   }
 
   .editor-rendered-content ol {

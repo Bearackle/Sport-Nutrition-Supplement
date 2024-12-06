@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { filterPrices } from "@/data/filterPrices";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -23,38 +24,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import filterIcon from "/public/filter.svg";
 
-const prices = [
-  {
-    name: "Giá dưới 500.000₫",
-    priceTo: 500000,
-  },
-  {
-    name: "500.000₫ - 1.000.000₫",
-    priceFrom: 500000,
-    priceTo: 1000000,
-  },
-  {
-    name: "1.000.000₫ - 1.500.000₫",
-    priceFrom: 1000000,
-    priceTo: 1500000,
-  },
-  {
-    name: "1.500.000₫ - 2.000.000₫",
-    priceFrom: 1500000,
-    priceTo: 2000000,
-  },
-  {
-    name: "2.000.000₫ - 2.500.000₫",
-    priceFrom: 2000000,
-    priceTo: 2500000,
-  },
-  {
-    name: "Giá trên 2.500.000₫",
-    priceFrom: 2500000,
-  },
-];
-
-const MobileFilter = () => {
+const MobileFilter = ({ category }: { category: string }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -77,7 +47,7 @@ const MobileFilter = () => {
 
     if (name === "prices") {
       // Tìm khoảng giá dựa trên tên
-      const selectedPrice = prices.find((price) => price.name === value);
+      const selectedPrice = filterPrices[value as keyof typeof filterPrices];
 
       if (selectedPrice) {
         // Xóa các giá trị hiện tại của `priceFrom` và `priceTo`
@@ -118,7 +88,7 @@ const MobileFilter = () => {
 
   function isChecked(id: string, option: string) {
     if (id === "prices") {
-      const selectedPrice = prices.find((price) => price.name === option);
+      const selectedPrice = filterPrices[option as keyof typeof filterPrices];
       return (
         selectedFilterQueries.priceFrom?.includes(
           selectedPrice?.priceFrom?.toString() || "",
@@ -150,7 +120,14 @@ const MobileFilter = () => {
           </div>
           {filterOptions.map(({ id, title, type, options }) => {
             return (
-              <div key={id}>
+              <div
+                key={id}
+                className={cn(
+                  category !== "tat-ca-san-pham" && id === "category"
+                    ? "hidden"
+                    : "",
+                )}
+              >
                 <Accordion type="single" collapsible defaultValue="prices">
                   <AccordionItem value={id}>
                     <AccordionTrigger className="px-4 pb-3 pt-4 text-base font-medium uppercase">
@@ -164,33 +141,21 @@ const MobileFilter = () => {
                           : "grid-cols-2",
                       )}
                     >
-                      {options.map((value) => {
+                      {Object.entries(options).map(([key, value]) => {
                         if (id === "prices") {
                           return (
                             <CheckboxAndRadioGroup
-                              key={
-                                typeof value === "string" ? value : value.name
-                              }
+                              key={id === "prices" ? key : value}
                             >
                               <CheckboxAndRadioItem
                                 type={type}
                                 name={id}
-                                id={
-                                  typeof value === "string"
-                                    ? value.toLocaleLowerCase().trim()
-                                    : value.name.toLocaleLowerCase().trim()
-                                } // Sử dụng name để đặt id cho UI
-                                label={
-                                  typeof value === "string" ? value : value.name
-                                } // Hiển thị name cho người dùng
-                                value={
-                                  typeof value === "string" ? value : value.name
-                                } // Sử dụng name trong quá trình kiểm tra
+                                id={`${id}-${key.toLocaleLowerCase().trim()}`}
+                                label={id === "prices" ? key : value} // Hiển thị name cho người dùng
+                                value={id === "prices" ? key : value} // Sử dụng name trong quá trình kiểm tra
                                 checked={isChecked(
                                   id,
-                                  typeof value === "string"
-                                    ? value
-                                    : value.name,
+                                  id === "prices" ? key : value,
                                 )} // Kiểm tra xem option đã được chọn chưa
                                 onChange={handleSelectFilterOptions}
                               />
@@ -199,31 +164,17 @@ const MobileFilter = () => {
                         } else {
                           return (
                             <CheckboxAndRadioGroup
-                              key={
-                                typeof value === "string" ? value : value.name
-                              }
+                              key={id === "prices" ? key : value}
                             >
                               <CheckboxAndRadioItem
                                 type={type}
                                 name={id}
-                                id={
-                                  typeof value === "string"
-                                    ? value.toLocaleLowerCase().trim()
-                                    : value.name.toLocaleLowerCase().trim()
-                                }
-                                label={
-                                  typeof value === "string" ? value : value.name
-                                }
-                                value={
-                                  typeof value === "string"
-                                    ? value.toLocaleLowerCase().trim()
-                                    : value.name.toLocaleLowerCase().trim()
-                                }
+                                id={`${id}-${key.toLocaleLowerCase().trim()}`}
+                                label={id === "prices" ? key : value}
+                                value={id === "prices" ? key : value}
                                 checked={isChecked(
                                   id,
-                                  typeof value === "string"
-                                    ? value
-                                    : value.name,
+                                  id === "prices" ? key : value,
                                 )}
                                 onChange={handleSelectFilterOptions}
                               />

@@ -1,5 +1,6 @@
 import http from "@/lib/http";
 import {
+  ChangePasswordBodyType,
   LoginBodyType,
   LoginResType,
   RegisterBodyType,
@@ -16,6 +17,8 @@ const authApiRequest = {
       baseUrl: "",
     }),
   logout: () => http.delete("/api/auth", { baseUrl: "" }),
+  changePassword: (body: ChangePasswordBodyType) =>
+    http.patch("/account/change-password", body),
 };
 
 export default authApiRequest;

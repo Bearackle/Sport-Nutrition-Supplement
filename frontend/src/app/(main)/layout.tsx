@@ -6,7 +6,10 @@ import type { Metadata } from "next";
 import "../globals.css";
 
 export const metadata: Metadata = {
-  title: "Sport Nutrition Supplements",
+  title: {
+    default: "4HProtein | Sport Nutrition Supplements",
+    template: `%s | 4HProtein`,
+  },
   description: "Sport Nutrition Supplements",
 };
 
@@ -22,7 +25,6 @@ export default function MainLayout({
   return (
     <>
       <Header />
-      {/* <Navbar /> */}
       {children}
       <Footer />
     </>

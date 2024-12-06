@@ -38,7 +38,7 @@ export type LoginResType = z.TypeOf<typeof LoginRes>;
 
 export const RegisterBody = z
   .object({
-    fullName: z
+    name: z
       .string()
       .min(1, { message: "Họ và tên không được để trống" })
       .refine((value) => value.trim().split(/\s+/).length >= 2, {
@@ -96,15 +96,32 @@ export const ChangePasswordBody = z
   .object({
     currentPassword: z
       .string()
-      .min(1, { message: "Mật khẩu hiện tại không được để trống" }),
+      .min(1, { message: "Mật khẩu hiện tại không được để trống" })
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+        message:
+          "Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt",
+      }),
     newPassword: z
       .string()
-      .min(1, { message: "Mật khẩu mới không được để trống" }),
+      .min(1, { message: "Mật khẩu mới không được để trống" })
+      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+        message:
+          "Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường, số và ký tự đặc biệt",
+      }),
     confirmPassword: z
       .string()
       .min(1, { message: "Mật khẩu xác nhận không được để trống" }),
   })
-  .strict();
+  .strict()
+  .superRefine((data, ctx) => {
+    if (data.newPassword !== data.confirmPassword) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["confirmPassword"],
+        message: "Mật khẩu xác nhận không khớp với mật khẩu mới",
+      });
+    }
+  });
 
 export type ChangePasswordBodyType = z.TypeOf<typeof ChangePasswordBody>;
 

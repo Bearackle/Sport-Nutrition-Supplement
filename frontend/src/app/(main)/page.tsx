@@ -16,9 +16,9 @@ import megaMass from "/public/product-banners/mega-mass-banner.png";
 import proteinGainer from "/public/product-banners/protein-gainer-banner.png";
 
 export const metadata: Metadata = {
-  title: "4H | Thực phẩm thể hình chính hãng",
+  title: "4HProtein | Thực phẩm thể hình chính hãng",
   description:
-    "4H | Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
+    "4HProtein | Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
 };
 
 const couponData = {

@@ -1,15 +1,15 @@
 "use client";
 
+import { productCategories } from "@/data/category";
 import { cn } from "@/lib/utils";
+import { TParamsCategory } from "@/types/category";
 import { usePathname } from "next/navigation";
 import ProductCategory from "./ProductCategory";
-import { productCategories } from "@/data/category";
-import { TParamsCategoryWithAmount } from "@/types/category";
 
 const ProductCategoryList = () => {
   const pathname = usePathname();
-  let categories: TParamsCategoryWithAmount[] = [];
-  if (pathname === "/products/all") {
+  let categories: TParamsCategory[] = [];
+  if (pathname === "/danh-muc/tat-ca-san-pham") {
     categories = productCategories.slice(0, -2);
   } else {
     // Call API to get categories

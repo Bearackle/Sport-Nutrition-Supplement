@@ -50,6 +50,18 @@ export const getContrastingColor = (hex: string): string => {
   return luminance > 0.5 ? "#000000" : "#FFFFFF";
 };
 
+export const getInitials = (fullName: string): string => {
+  const words = fullName.trim().split(/\s+/);
+
+  if (words.length >= 2) {
+    const firstInitial = words[0][0];
+    const lastInitial = words[words.length - 1][0];
+    return `${firstInitial}${lastInitial}`.toUpperCase();
+  } else {
+    throw new Error("Chuỗi phải chứa ít nhất hai từ.");
+  }
+};
+
 export const getVietnameseDate = (date: string) => {
   const options = {
     year: "numeric" as const,
@@ -63,6 +75,14 @@ export const getVietnameseTime = (date: string) => {
   return new Date(date).toLocaleTimeString("vi-VN");
 };
 
+export const objectToArray = <T extends Record<string, any>>(
+  obj: T,
+): { field: keyof T; message: T[keyof T] }[] =>
+  Object.entries(obj).map(([key, value]) => ({
+    field: key as keyof T,
+    message: value as T[keyof T],
+  }));
+
 export const handleErrorApi = ({
   error,
   setError,
@@ -73,10 +93,10 @@ export const handleErrorApi = ({
   duration?: number;
 }) => {
   if (error instanceof EntityError && setError) {
-    error.payload.errors.forEach((item) => {
-      setError(item.field, {
+    objectToArray(error.payload.errors).forEach((item) => {
+      setError(item.field as string, {
         type: "server",
-        message: item.message,
+        message: String(item.message),
       });
     });
   } else {
@@ -91,4 +111,12 @@ export const handleErrorApi = ({
 
 export const normalizePath = (path: string) => {
   return path.startsWith("/") ? path.slice(1) : path;
+};
+
+export const getKeyByValueIgnoreCase = (
+  obj: Record<string, string>,
+  value: string,
+) => {
+  const lowerValue = value.toLowerCase();
+  return Object.keys(obj).find((key) => obj[key].toLowerCase() === lowerValue);
 };
