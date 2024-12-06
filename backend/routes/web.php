@@ -8,8 +8,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test-email', [PaymentController::class, '']);
-Route::get('payment/check-out/{id}',[PaymentController::class,'checkOut']);
+Route::get('payment/check-out/{orderId}',[PaymentController::class,'checkOut'])->name('payment.check-out')->middleware('auth:sanctum');
 Route::post('payment/vn-pay',[PaymentController::class,'vnpayPayment']);
 Route::post('payment/momo-pay',[PaymentController::class,'momoQr']);
 Route::post('payment/internet-banking',[PaymentController::class,'internetBanking']);

@@ -121,7 +121,7 @@ Route::group([
 Route::group([
     'prefix' => 'payment'
 ], function(){
-    Route::get('/check-out', [PaymentController::class, 'create'])->middleware('auth:sanctum');
+    Route::get('/check-out-url/{id}', [PaymentController::class, 'getUrlPayment'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'review'

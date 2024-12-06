@@ -280,5 +280,30 @@ class PaymentController extends Controller
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
         SendEmail::dispatch($user,$payment);
     }
+    /**
+     *@OA\Get(
+     *  path="/api/payment/check-out-url/{id}",
+     *  description="Thanh toán thành công",
+     *  summary="Thanh toán thành công",
+     *  tags={"Payment"},
+     * @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="id của order",
+     *          @OA\Schema(type="integer"),
+     *      ),
+     * @OA\Response(response=200, description="Success",@OA\JsonContent()),
+     * @OA\Response(response=400,description="Fail to get",@OA\JsonContent()),
+     * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
+     * )
+     **/
+    public function getUrlPayment(string $orderId): \Illuminate\Http\JsonResponse
+    {
+        $order = OrderInputData::validateAndCreate(['order_id' => $orderId]);
+        return response()->json([
+            'redirectUrl' => route('payment.check-out', ['orderId' => $order->order_id])
+        ]);
+    }
 }
 

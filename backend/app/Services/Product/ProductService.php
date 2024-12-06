@@ -83,6 +83,6 @@ class ProductService implements ProductServiceInterface{
             $products = Product::fullTextSearch('product_name', $data);
             return $products->paginate(12);
         }
-        return null;
+        return $this->productRepository->getAllAvailableProducts()->paginate(12);
     }
 }

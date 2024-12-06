@@ -27,6 +27,6 @@ class SendEmail implements ShouldQueue
     public function handle(): void
     {
         Mail::to($this->user->email)
-            ->send(new MailPaymentComplelete($this->user, $this->paymentData))
+            ->send(new MailPaymentComplelete($this->user, $this->paymentData));
     }
 }
