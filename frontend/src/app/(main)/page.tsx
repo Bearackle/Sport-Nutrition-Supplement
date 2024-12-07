@@ -21,16 +21,38 @@ export const metadata: Metadata = {
     "4HProtein | Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
 };
 
-const couponData = {
-  title: "MÃ 5% GIẢM TỐI ĐA 50K",
-  shortDescription: [
-    "🔅Áp dụng toàn bộ sản phẩm",
-    "🔅Giảm tối đa 50k",
-    "🔅Áp dụng đơn > 399k",
-  ],
-  conditionUrl: "#",
-  code: "UNKNOWNCOUPON",
-};
+const couponData = [
+  {
+    title: "MÃ 5% GIẢM TỐI ĐA 50K",
+    shortDescription: [
+      "🔅Áp dụng toàn bộ sản phẩm",
+      "🔅Giảm tối đa 50k",
+      "🔅Áp dụng đơn > 399k",
+    ],
+    conditionUrl: "#",
+    code: "FS50K",
+  },
+  {
+    title: "MÃ 5% GIẢM TỐI ĐA 100K",
+    shortDescription: [
+      "🔅Áp dụng toàn bộ sản phẩm",
+      "🔅Giảm tối đa 100k",
+      "🔅Áp dụng đơn > 999k",
+    ],
+    conditionUrl: "#",
+    code: "FS100K",
+  },
+  {
+    title: "MÃ 5% GIẢM TỐI ĐA 150K",
+    shortDescription: [
+      "🔅Áp dụng toàn bộ sản phẩm",
+      "🔅Giảm tối đa 150k",
+      "🔅Áp dụng đơn > 1999k",
+    ],
+    conditionUrl: "#",
+    code: "FS150K",
+  },
+];
 
 export default function Home() {
   return (
@@ -73,9 +95,9 @@ export default function Home() {
           </div>
           <CategoryBar />
           <div className="flex w-full flex-row items-center gap-4 overflow-x-scroll ml:justify-between ml:gap-0 ml:overflow-hidden xl:h-[7.375rem]">
-            <CouponCard {...couponData} />
-            <CouponCard {...couponData} />
-            <CouponCard {...couponData} />
+            {couponData.map((coupon, index) => (
+              <CouponCard key={index} {...coupon} />
+            ))}
           </div>
           <TopDealSection />
           <div className="flex h-[18rem] w-full flex-row items-center gap-4 overflow-x-scroll rounded-[0.9375rem] bg-white px-3 ml:justify-evenly ml:gap-0 ml:overflow-hidden ml:px-0">
