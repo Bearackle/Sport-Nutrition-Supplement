@@ -3,10 +3,7 @@ import productApiRequest from "@/apiRequests/product";
 import { filterBrands } from "@/data/brand";
 import { categories } from "@/data/category";
 import { cn, getKeyByValueIgnoreCase } from "@/lib/utils";
-import {
-  ProductsMetaType,
-  ProductsResType,
-} from "@/schemaValidations/product.schema";
+import { ProductsMetaType, ProductsResType } from "@/types/product";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import CustomPagination from "../common/CustomPagination";

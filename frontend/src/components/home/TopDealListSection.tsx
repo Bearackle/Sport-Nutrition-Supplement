@@ -1,6 +1,6 @@
 "use client";
 import productApiRequest from "@/apiRequests/product";
-import { TopDealsResType } from "@/schemaValidations/product.schema";
+import { TopDealsResType } from "@/types/product";
 import { useEffect, useState } from "react";
 import { CustomCarousel } from "../common/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";

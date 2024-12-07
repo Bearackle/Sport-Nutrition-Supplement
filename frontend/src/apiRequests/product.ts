@@ -3,7 +3,7 @@ import {
   AllProductsResType,
   ProductDetailResType,
   TopDealsResType,
-} from "@/schemaValidations/product.schema";
+} from "@/types/product";
 
 const productApiRequest = {
   searchProducts: (queryParams: string) => {

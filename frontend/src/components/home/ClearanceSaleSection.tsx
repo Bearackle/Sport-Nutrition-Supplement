@@ -1,13 +1,13 @@
 "use client";
 import productApiRequest from "@/apiRequests/product";
 import { cn } from "@/lib/utils";
-import { TopDealsResType } from "@/schemaValidations/product.schema";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CustomCarousel } from "../common/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import HomeProductCard from "./HomeProductCard";
 import arrow from "/public/arrow.svg";
+import { TopDealsResType } from "@/types/product";
 
 const ClearanceSaleSection = () => {
   const [activeProduct, setActiveProduct] = useState("clearance-sale");
