@@ -82,7 +82,7 @@ class PaymentController extends Controller
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost:8000/payment/success";
+        $vnp_Returnurl = "http://dinhhuan.id.vn/payment/success/".$payment->order->order_id;
         $vnp_TmnCode = "YHR1DK4Y";//Mã website tại VNPAY
         $vnp_HashSecret = "3NSOGGL258PLOFC4KDPAVK4AK64TTWM2"; //Chuỗi bí mật
         $vnp_TxnRef = '#HD'.$request->input('orderId');
@@ -142,7 +142,55 @@ class PaymentController extends Controller
             json_encode($returnData);
         }
     }
-    public function momoPayment(Request $request){
+//    public function momoPayment(Request $request){
+//        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
+//        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+//        $partnerCode = 'MOMOBKUN20180529';
+//        $accessKey = 'klm05TvNBzhg7h7j';
+//        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+//        $orderInfo = "Thanh toán qua MoMo";
+//        $amount = $payment->order->total_amount;
+//        $orderId = time() ."";
+//        $redirectUrl = "http://localhost:8000/payment/success";
+//        $ipnUrl = "http://localhost:8000/payment/success";
+//        $extraData = "";
+//
+////            $partnerCode = $_POST["partnerCode"];
+////            $accessKey = $_POST["accessKey"];
+////            $serectkey = $_POST["secretKey"];
+////            $orderId = $_POST["orderId"]; // Mã đơn hàng
+////            $orderInfo = $_POST["orderInfo"];
+////            $amount = $_POST["amount"];
+////            $ipnUrl = $_POST["ipnUrl"];
+////            $redirectUrl = $_POST["redirectUrl"];
+////            $extraData = $_POST["extraData"];
+//
+//            $requestId = time() . "";
+//            $requestType = "payWithATM";
+//            //before sign HMAC SHA256 signature
+//            $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
+//            $signature = hash_hmac("sha256", $rawHash, $secretKey);
+//            $data = array('partnerCode' => $partnerCode,
+//                'partnerName' => "Test",
+//                "storeId" => "MomoTestStore",
+//                'requestId' => $requestId,
+//                'amount' => $amount,
+//                'orderId' => $orderId,
+//                'orderInfo' => $orderInfo,
+//                'redirectUrl' => $redirectUrl,
+//                'ipnUrl' => $ipnUrl,
+//                'lang' => 'vi',
+//                'extraData' => $extraData,
+//                'requestType' => $requestType,
+//                'signature' => $signature);
+//            $result = $this->execPostRequest($endpoint, json_encode($data));
+//            $jsonResult = json_decode($result, true);  // decode json
+//
+//            //Just a example, please check more in there
+//      return redirect()->to($jsonResult['payUrl']);
+//     //       header('Location: ' . $jsonResult['payUrl']);
+//    }
+    public function momoQr(Request $request){
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
         $partnerCode = 'MOMOBKUN20180529';
@@ -151,59 +199,12 @@ class PaymentController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $payment->order->total_amount;
         $orderId = time() ."";
-        $redirectUrl = "http://localhost:8000/payment/success";
-        $ipnUrl = "http://localhost:8000/payment/success";
+        $redirectUrl = "http://dinhhuan.id.vn/payment/success/".$payment->order->order_id;
+        $ipnUrl = "http://dinhhuan.id.vn/payment/success/".$payment->order->order_id;
         $extraData = "";
-
-//            $partnerCode = $_POST["partnerCode"];
-//            $accessKey = $_POST["accessKey"];
-//            $serectkey = $_POST["secretKey"];
-//            $orderId = $_POST["orderId"]; // Mã đơn hàng
-//            $orderInfo = $_POST["orderInfo"];
-//            $amount = $_POST["amount"];
-//            $ipnUrl = $_POST["ipnUrl"];
-//            $redirectUrl = $_POST["redirectUrl"];
-//            $extraData = $_POST["extraData"];
 
             $requestId = time() . "";
             $requestType = "payWithATM";
-            //before sign HMAC SHA256 signature
-            $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
-            $signature = hash_hmac("sha256", $rawHash, $secretKey);
-            $data = array('partnerCode' => $partnerCode,
-                'partnerName' => "Test",
-                "storeId" => "MomoTestStore",
-                'requestId' => $requestId,
-                'amount' => $amount,
-                'orderId' => $orderId,
-                'orderInfo' => $orderInfo,
-                'redirectUrl' => $redirectUrl,
-                'ipnUrl' => $ipnUrl,
-                'lang' => 'vi',
-                'extraData' => $extraData,
-                'requestType' => $requestType,
-                'signature' => $signature);
-            $result = $this->execPostRequest($endpoint, json_encode($data));
-            $jsonResult = json_decode($result, true);  // decode json
-
-            //Just a example, please check more in there
-      return redirect()->to($jsonResult['payUrl']);
-     //       header('Location: ' . $jsonResult['payUrl']);
-    }
-    public function momoQr(Request $request){
-        $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-        $partnerCode = 'MOMOBKUN20180529';
-        $accessKey = 'klm05TvNBzhg7h7j';
-        $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
-        $orderInfo = "Thanh toán qua MoMo";
-        $amount = "10000";
-        $orderId = time() ."";
-        $redirectUrl = "http://localhost:8000/payment/success";
-        $ipnUrl = "http://localhost:8000/payment/success";
-        $extraData = "";
-
-            $requestId = time() . "";
-            $requestType = "captureWallet";
             //before sign HMAC SHA256 signature
             $rawHash = "accessKey=" . $accessKey . "&amount=" . $amount . "&extraData=" . $extraData . "&ipnUrl=" . $ipnUrl . "&orderId=" . $orderId . "&orderInfo=" . $orderInfo . "&partnerCode=" . $partnerCode . "&redirectUrl=" . $redirectUrl . "&requestId=" . $requestId . "&requestType=" . $requestType;
             $signature = hash_hmac("sha256", $rawHash, $secretKey);
@@ -275,9 +276,8 @@ class PaymentController extends Controller
     }
     public function sendMail(string $orderId): void
     {
-        /**@var User $user**/
-        $user = auth()->user();
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
+        $user = $payment->order->user;
         SendEmail::dispatch($user,$payment);
     }
     /**
@@ -304,6 +304,16 @@ class PaymentController extends Controller
         return response()->json([
             'redirectUrl' => route('payment.check-out', ['orderId' => $order->order_id])
         ]);
+    }
+    public function internetBanking(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    {
+        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
+        return view('InternetBanking',['payment' => $payment]);
+    }
+    public function codPayment(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    {
+        $this->sendMail($request->input('orderId'));
+        return view('SuccessOrdered');
     }
 }
 

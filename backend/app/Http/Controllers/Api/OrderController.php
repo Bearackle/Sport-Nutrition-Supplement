@@ -54,7 +54,7 @@ class OrderController extends Controller
      * @OA\Get(
      *     path="/api/order/admin/all",
      *     description="Tất cả đơn hàng của đang tồn tại trong hệ thống, sắp xếp theo ngày tạo mới nhất",
-     *     summary="Tìm tất cả đơn hàng",
+     *     summary="Admin Tìm tất cả đơn hàng",
      *     tags={"Order"},
      *     @OA\Response(response=200,description="Lấy đơn hàng thành công",@OA\JsonContent()),
      *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
@@ -198,17 +198,16 @@ class OrderController extends Controller
         $payment = $this->orderService->addPaymentMethod($orderPayment);
         return new PaymentResource($payment);
     }
-
     /**
      * @throws AuthorizationException
      * @OA\Get(
-     *    path="/api/order/payment/{order_id}",
+     *    path="/api/order/payment/{id}",
      *    tags={"Order"},
      *    summary="Thông tin thanh toán",
      *    description="Tìm thông tin thanh toán của người dùng",
      *    @OA\Parameter (
      *        in="path",
-     *        name="order_id",
+     *        name="id",
      *        required=true,
      *        description="mã đơn hàng",
      *    ),
@@ -219,7 +218,7 @@ class OrderController extends Controller
     public function getOrderPayments(string $orderId): PaymentResource
     {
         $this->authorize('view', Order::class);
-        $payment = $this->paymentService->getPayment(OrderInputData::validateAndCreate(['order_id' => $orderId]));
+        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
         return new PaymentResource($payment);
     }
     /**
@@ -227,7 +226,7 @@ class OrderController extends Controller
      *     path="/api/order/address",
      *     summary="Thêm địa chỉ",
      *     tags={"Order"},
-     *     description="Thêm địa chỉ cho ơn hàng",
+     *     description="Thêm địa chỉ cho đơn hàng, có thể addressDetail hoặc addressId",
      *     @OA\RequestBody(
      *          required=true,
      *           @OA\JsonContent(
@@ -278,5 +277,44 @@ class OrderController extends Controller
         $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
         ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
          return new OrderResource($order);
+    }
+    /**
+     * @throws AuthorizationException
+     * @OA\Post(
+     *     path="/api/order/content",
+     *     summary="Thêm phương thức thanh toán, phương thức vận chuyển, địa chỉ giao hàng",
+     *     tags={"Order"},
+     *     description="Thêm phương thức thanh toán, phương thức vận chuyển, địa chỉ giao hàng, lưu ý đối với address có thể truyền trực tiếp một address detail dạng chuỗi, hoặc truyền addressId,
+     *          nhưng chỉ có thể truyền 1 trong 2",
+     *     @OA\RequestBody(
+     *            required=true,
+     *             @OA\JsonContent(
+     *                 type="object",
+     *                 required={"orderId","method"},
+     *                 @OA\Property(property="orderId", type="integer", example=1),
+     *                      @OA\Property (property="paymentMethod", type="string", example="VN"),
+     *                      @OA\Property (property="addressDetail", type="string", example="so 128, phường tân tạo, quận 1, TPHCM"),
+     *                 @OA\Property (property="method", type="string", example="VN")
+     *             )
+     *        ),
+     *  @OA\Response(response=200, description="Thêm thành công",@OA\JsonContent()),
+     *  @OA\Response (response=500, description="Lỗi dịch vụ",@OA\JsonContent())
+     * )
+     */
+    public function addOrderContent(Request $request): OrderResource
+    {
+        $this->authorize('create' , Order::class);
+        /**@var User $user **/
+        $user = auth()->user();
+        $orderPayment = PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId'),
+            'payment_method' => $request->input('paymentMethod')]);
+        $this->orderService->addPaymentMethod($orderPayment);
+
+        $this->orderService->addAddress(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId'),'user_id' => $user->user_id]),
+            AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
+
+        $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
+            ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
+        return new OrderResource($order);
     }
 }

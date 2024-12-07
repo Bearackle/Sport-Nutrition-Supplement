@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thanh toán thành công</title>
+    <title>Đặt hàng thành công</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('logo.webp') }}">
     <style>
         body {
@@ -71,6 +71,6 @@
     <circle fill="none" stroke="#68E534" stroke-width="20" cx="200" cy="200" r="190" class="circle" stroke-linecap="round" transform="rotate(-90 200 200) "/>
     <polyline fill="none" stroke="#68E534" stroke-width="24" points="88,214 173,284 304,138" stroke-linecap="round" stroke-linejoin="round" class="tick" />
 </svg>
-<h2>Thanh toán thành công! bạn có thể đóng cửa sổ này</h2>
+<h2>Đặt hàng thành công! bạn có thể đóng cửa sổ này</h2>
 </body>
 </html>

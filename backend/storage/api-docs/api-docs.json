@@ -791,7 +791,7 @@
                 "tags": [
                     "Order"
                 ],
-                "summary": "Tìm tất cả đơn hàng",
+                "summary": "Admin Tìm tất cả đơn hàng",
                 "description": "Tất cả đơn hàng của đang tồn tại trong hệ thống, sắp xếp theo ngày tạo mới nhất",
                 "operationId": "4ee180fb7a74eda02d96c6d845e3fdd7",
                 "responses": {
@@ -1031,17 +1031,17 @@
                 }
             }
         },
-        "/api/order/payment/{order_id}": {
+        "/api/order/payment/{id}": {
             "get": {
                 "tags": [
                     "Order"
                 ],
                 "summary": "Thông tin thanh toán",
                 "description": "Tìm thông tin thanh toán của người dùng",
-                "operationId": "a4f671bdce1edf809e2a5f9d10ba8b83",
+                "operationId": "eeb584d2a6ceb7a8f05cae8f8d032cc2",
                 "parameters": [
                     {
-                        "name": "order_id",
+                        "name": "id",
                         "in": "path",
                         "description": "mã đơn hàng",
                         "required": true
@@ -1073,7 +1073,7 @@
                     "Order"
                 ],
                 "summary": "Thêm địa chỉ",
-                "description": "Thêm địa chỉ cho ơn hàng",
+                "description": "Thêm địa chỉ cho đơn hàng, có thể addressDetail hoặc addressId",
                 "operationId": "a0ba234ea87c2b4a608984cc7098fab2",
                 "requestBody": {
                     "required": true,
@@ -1140,6 +1140,66 @@
                                     "orderId": {
                                         "type": "integer",
                                         "example": 1
+                                    },
+                                    "method": {
+                                        "type": "string",
+                                        "example": "VN"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Thêm thành công",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Lỗi dịch vụ",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/order/content": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "summary": "Thêm phương thức thanh toán, phương thức vận chuyển, địa chỉ giao hàng",
+                "description": "Thêm phương thức thanh toán, phương thức vận chuyển, địa chỉ giao hàng, lưu ý đối với address có thể truyền trực tiếp một address detail dạng chuỗi, hoặc truyền addressId,\n     *          nhưng chỉ có thể truyền 1 trong 2",
+                "operationId": "15f77247253032d4b5c5f41c090acefc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "orderId",
+                                    "method"
+                                ],
+                                "properties": {
+                                    "orderId": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "paymentMethod": {
+                                        "type": "string",
+                                        "example": "VN"
+                                    },
+                                    "addressDetail": {
+                                        "type": "string",
+                                        "example": "so 128, phường tân tạo, quận 1, TPHCM"
                                     },
                                     "method": {
                                         "type": "string",

@@ -8,10 +8,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('payment/check-out/{orderId}',[PaymentController::class,'checkOut'])->name('payment.check-out')->middleware('auth:sanctum');
+Route::get('payment/check-out/{orderId}',[PaymentController::class,'checkOut'])->name('payment.check-out');
 Route::post('payment/vn-pay',[PaymentController::class,'vnpayPayment']);
 Route::post('payment/momo-pay',[PaymentController::class,'momoQr']);
 Route::post('payment/internet-banking',[PaymentController::class,'internetBanking']);
 Route::post('payment/cod',[PaymentController::class,'codPayment']);
 
-Route::get('payment/success/{id}', [PaymentController::class, 'success']);
+Route::get('payment/success/{id}', [PaymentController::class, 'success'])->name('payment.success');

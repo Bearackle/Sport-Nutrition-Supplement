@@ -114,6 +114,9 @@ class OrderService implements OrderServiceInterface
             $addressData = $this->address_service->getAddressDetail($address)->address_detail;
         } else {
             $addressData = $address->address_detail;
+            $this->address_service->createAddress(AddressInputData::from(['order_id' => $order->order_id,
+                'user_id' => $order->user_id,
+                'address_detail' => $addressData]));
         }
         return OrderOutputData::from($this->order_repository->update($order->order_id,['address_detail' => $addressData]));
     }
@@ -127,7 +130,6 @@ class OrderService implements OrderServiceInterface
         event(new addShippingCharges($this->order_repository->find($order->order_id), $ship->method));
         return OrderOutputData::from($order);
     }
-
     public function getAllOrders(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
         return OrderOutputData::collect($this->order_repository->getAllOrders()->paginate(10));

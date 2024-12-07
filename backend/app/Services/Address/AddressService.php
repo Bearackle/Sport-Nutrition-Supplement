@@ -26,9 +26,13 @@ class AddressService implements AddressServiceInterface
     {
         return $this->addressRepository->delete($address->address_id);
     }
-    public function getDefaultAddress(UserInputData $user) : AddressOutputData
+    public function getDefaultAddress(UserInputData $user) : AddressOutputData | bool
     {
-       return AddressOutputData::from($this->addressRepository->getAddressesUser($user->user_id)->first());
+       $address = $this->addressRepository->getAddressesUser($user->user_id)->first();
+       if($address == null){
+           return false;
+       }
+       return AddressOutputData::from($address);
     }
     public function getAllAddresses(UserInputData $user): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {

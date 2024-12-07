@@ -108,6 +108,7 @@ Route::group([
     Route::post('payment',[OrderController::class,'addPayment'])->middleware('auth:sanctum');
     Route::post('address',[OrderController::class,'addAddress'])->middleware('auth:sanctum');
     Route::post('ship', [OrderController::class,'addShipping'])->middleware('auth:sanctum');
+    Route::post('content',[OrderController::class,'addOrderContent'])->middleware('auth:sanctum');
 });
 
 Route::group([

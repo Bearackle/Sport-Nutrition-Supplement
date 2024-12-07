@@ -47,7 +47,7 @@
         @default
             @php $url = url('payment/cod'); @endphp
      @endswitch
-    <form action="{{url('payment/momo-pay')}}" method="post" id="payment-form" style="min-width: 300px;">
+    <form action="{{url($url)}}" method="post" id="payment-form" style="min-width: 300px;">
         @csrf
         <div class="form-group">
             <label for="card-holder-name" class="label">Số tiền cần thanh toán</label>

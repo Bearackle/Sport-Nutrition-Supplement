@@ -86,7 +86,9 @@ class AddressController extends Controller
     **/
     public function defaultAddress(): AddressResource
     {
-        $addresses = $this->addressService->getDefaultAddress(UserInputData::from(['user_id' => auth()->user()->user_id]));
+        /**@var User $user**/
+        $user = auth()->user();
+        $addresses = $this->addressService->getDefaultAddress(UserInputData::from(['user_id' => $user->user_id]));
         return new AddressResource($addresses);
     }
     /**
