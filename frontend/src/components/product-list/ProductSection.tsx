@@ -74,10 +74,21 @@ const ProductSection = ({ category }: { category: string }) => {
           setMeta(result.payload.meta);
         })
         .finally(() => setIsLoading(false));
+    } else if (category === "tim-kiem") {
+      productApiRequest
+        .searchProducts(buildSearchParams(params))
+        .then((result) => {
+          setData(result.payload.data);
+          setMeta(result.payload.meta);
+        })
+        .finally(() => setIsLoading(false));
     } else {
       productApiRequest
         .categoryProducts(category, buildSearchParams(params))
-        .then((result) => setData(result.payload.data))
+        .then((result) => {
+          setData(result.payload.data);
+          setMeta(result.payload.meta);
+        })
         .finally(() => setIsLoading(false));
     }
   }, [searchParams, sortOption, currentPage]);

@@ -43,7 +43,7 @@ const ProductCard = ({
         <p className="text-[0.75rem] font-bold leading-[1.21] text-[#8C8F8D] line-through">
           {formatPrice(price)}
         </p>
-        <div className="rounded-full bg-[#C11616] p-1 text-[0.625rem] font-bold text-white">{`-${sale}%`}</div>
+        <div className="rounded-full bg-[linear-gradient(295deg,#CD1A0C_0%,#FF5246_98.45%)] px-1.5 py-1 text-[0.625rem] font-bold text-white">{`-${sale}%`}</div>
       </div>
       <button
         onClick={() => {

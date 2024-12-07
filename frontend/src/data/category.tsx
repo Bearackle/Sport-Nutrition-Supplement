@@ -275,7 +275,7 @@ export const productCategories: Array<TParamsCategory> = [
     ],
   },
   {
-    id: "tra-cuu-san-pham",
+    id: "tim-kiem",
     label: "Tra Cứu Sản Phẩm",
     icon: lookup,
   },

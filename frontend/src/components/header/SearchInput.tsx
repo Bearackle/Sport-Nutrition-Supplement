@@ -1,17 +1,31 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import searchIcon from "/public/search-icon.svg";
 
 export default function SearchInput() {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const router = useRouter();
+  const pathname = usePathname();
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // const onSearch = (e: React.FormEvent) => {
-  //   e.preventDefault();
-  // };
+  useEffect(() => {
+    if (pathname !== "/danh-muc/tim-kiem") {
+      setSearchQuery("");
+    }
+  }, [pathname]);
+
+  const onSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery) {
+      router.push(`/danh-muc/tim-kiem?name=${searchQuery}`);
+    } else {
+      router.push(`/danh-muc/tim-kiem`);
+    }
+  };
   return (
     <form
-      action=""
+      onSubmit={onSearch}
       className="mx-auto flex h-10 w-[92.5%] flex-row items-center rounded-[3.125rem] bg-white xl:w-[30rem]"
     >
       <input

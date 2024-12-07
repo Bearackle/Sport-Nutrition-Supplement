@@ -6,6 +6,9 @@ import {
 } from "@/schemaValidations/product.schema";
 
 const productApiRequest = {
+  searchProducts: (queryParams: string) => {
+    return http.get<AllProductsResType>(`/collection/search?${queryParams}`);
+  },
   allProducts: (queryParams: string) => {
     return http.get<AllProductsResType>(`/collection/all?${queryParams}`);
   },

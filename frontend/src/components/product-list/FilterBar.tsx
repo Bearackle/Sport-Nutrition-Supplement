@@ -178,7 +178,9 @@ const FilterBar = ({ category }: { category: string }) => {
               <div
                 key={id}
                 className={cn(
-                  category !== "tat-ca-san-pham" && id === "category"
+                  category !== "tat-ca-san-pham" &&
+                    category !== "tim-kiem" &&
+                    id === "category"
                     ? "hidden"
                     : "",
                 )}
