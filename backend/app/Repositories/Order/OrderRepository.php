@@ -34,8 +34,12 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         return Order::whereBetween('order_date',[$range['start_date'],$range['end_date']])
         ->get();
     }
-
-    public function getAllOrders()
+    public function getOrderWithProducts($orderId)
+    {
+        return Order::with(['variants' => function ($variant) {
+                $variant->with(['product','image']);
+            }])->find($orderId)->first();
+    }    public function getAllOrders()
     {
        return (new \App\Models\Order)->orderBy('order_date','desc');
     }

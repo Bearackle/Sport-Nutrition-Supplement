@@ -10,4 +10,5 @@ interface OrderRepositoryInterface extends RepositoryInterface{
     public function getStatusOrder($orderId);
     public function getOrderByDateRange($range);
     public function getAllOrders();
+    public function getOrderWithProducts($orderId);
 }

@@ -43,9 +43,10 @@ class OrderService implements OrderServiceInterface
         $this->address_repository = $address_repository;
         $this->address_service  = $address_service;
     }
-    public function getOrderData(OrderInputData $order) : OrderOutputData
+    public function getOrderData(OrderInputData $order)
     {
-        return OrderOutputData::from($this->order_repository->find($order->order_id));
+        $data = $this->order_repository->getOrderWithProducts($order);
+        return $data;
     }
     public function createOrder(UserInputData $user, string $message) : OrderOutputData
     {

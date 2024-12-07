@@ -9,6 +9,7 @@ use App\DTOs\InputData\ShippingMethodInputData;
 use App\DTOs\InputData\UserInputData;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use App\Http\Resources\OrderResourceComplex;
 use App\Http\Resources\PaymentResource;
 use App\Http\Responses\ApiResponse;
 use App\Models\Order;
@@ -110,11 +111,12 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function show(string $order_id): OrderResource
+    public function show(string $order_id): OrderResourceComplex
     {
         $this->authorize('view', Order::class);
         $order =  $this->orderService->getOrderData(OrderInputData::validateAndCreate(['order_id' => $order_id]));
-        return new OrderResource($order);
+        dd($order);
+        return new OrderResourceComplex($order);
     }
     /**
      * @OA\Patch(

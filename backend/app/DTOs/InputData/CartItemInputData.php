@@ -23,7 +23,7 @@ class CartItemInputData extends Data
         public ?int $cart_id;
         #[MapInputName('productId'), RequiredWithoutAll('cart_item_id','combo_id_fk')]
         public ?int $product_id_fk;
-        #[MapInputName('variantId'),Exists('product_variants','variant_id'), Unique('cart_items','variant_id_fk')]
+        #[MapInputName('variantId'),Exists('product_variants','variant_id')]
         public ?int $variant_id_fk;
         #[MapInputName('comboId'), Exists('combos', 'combo_id'),Unique('cart_items', 'combo_id_fk'),RequiredWithoutAll('product_id_fk','cart_item_id')]
         public ?int $combo_id_fk;

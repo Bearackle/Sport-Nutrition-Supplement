@@ -30,11 +30,13 @@ class Order extends Model
     }
     public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(Product::class,'order_details','order_id','product_id');
+        return $this->belongsToMany(Product::class,'order_details','order_id','product_id')
+            ->withPivot('quantity','unit_price');
     }
     public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->belongsToMany(ProductVariant::class, 'order_details', 'order_id', 'variant_id');
+        return $this->belongsToMany(ProductVariant::class, 'order_details', 'order_id', 'variant_id')
+            ->withPivot('quantity','unit_price');
     }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {

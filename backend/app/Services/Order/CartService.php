@@ -27,6 +27,9 @@ class CartService implements CartServiceInterface
     public function getCart(UserInputData $user): ShoppingCartOutputData
     {
            $shoppingCart =  $this->cartRepository->getCartByUser($user->user_id);
+           if($shoppingCart == null){
+              return $this->createCart(ShoppingCartInputData::validateAndCreate(['user_id' => $user->user_id]));
+           }
            return ShoppingCartOutputData::from($shoppingCart);
     }
     public function getItems(ShoppingCartInputData $cart){

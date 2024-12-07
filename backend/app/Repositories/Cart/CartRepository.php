@@ -11,7 +11,7 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
     {
         return ShoppingCart::class;
     }
-    public function getCartByUser($userId) : ShoppingCart
+    public function getCartByUser($userId) : ShoppingCart | null
     {
         return (new \App\Models\ShoppingCart)
         ->where('user_id',$userId)->first();
