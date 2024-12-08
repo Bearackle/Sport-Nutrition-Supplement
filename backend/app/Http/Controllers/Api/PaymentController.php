@@ -283,8 +283,8 @@ class PaymentController extends Controller
     /**
      *@OA\Get(
      *  path="/api/payment/check-out-url/{id}",
-     *  description="Thanh toán thành công",
-     *  summary="Thanh toán thành công",
+     *  description="Lấy url thanh toán",
+     *  summary="Lấy url thanh toán",
      *  tags={"Payment"},
      * @OA\Parameter(
      *          name="id",

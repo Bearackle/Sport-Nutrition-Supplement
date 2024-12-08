@@ -45,10 +45,10 @@ class OrderService implements OrderServiceInterface
     }
     public function getOrderData(OrderInputData $order)
     {
-        $data = $this->order_repository->getOrderWithProducts($order);
+        $data = $this->order_repository->getOrderWithProducts($order->order_id);
         return $data;
     }
-    public function createOrder(UserInputData $user, string $message) : OrderOutputData
+    public function createOrder(UserInputData $user)
     {
         $cart = $this->cart_service->getCart($user);
         $items = $this->cart_repository->getCartItems($cart->cart_id);
@@ -56,10 +56,11 @@ class OrderService implements OrderServiceInterface
         $new_order_make = ['user_id' => $user->user_id,
             'total_amount' => $total_amount,
             'status' => OrderStatus::PENDING,
-            'note' => $message];
+            ];
         $new_order = $this->order_repository->create($new_order_make);
         $this->createOrderItems($new_order,$items);
-        return OrderOutputData::from($new_order);
+        $data = $this->order_repository->getOrderWithProducts($new_order->order_id);
+        return $data;
     }
     public function updateOrder(OrderInputData $order): OrderOutputData| false
     {

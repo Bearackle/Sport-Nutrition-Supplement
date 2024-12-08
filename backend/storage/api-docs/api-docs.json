@@ -199,70 +199,6 @@
                 }
             }
         },
-        "/api/cart": {
-            "get": {
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Lấy ID của giỏ hàng",
-                "description": "Lấy thông tin giỏ hàng",
-                "operationId": "7fdb9b40bd4ad2baf12aa15164eab788",
-                "responses": {
-                    "200": {
-                        "description": "Tìm thông tin giỏ hàng thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Tìm thông tin giỏ hàng thất bại",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Lỗi dịch vụ",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/cart/new": {
-            "post": {
-                "tags": [
-                    "Cart"
-                ],
-                "summary": "Tạo giỏ hàng",
-                "description": "Tạo giỏ hàng mới cho user, lưu ý mỗi user chỉ có 1 giỏ hàng",
-                "operationId": "dcd5e8845838826de0ecec206c878c77",
-                "responses": {
-                    "200": {
-                        "description": "Tạo giỏ hàng thành công",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Lỗi dịch vụ",
-                        "content": {
-                            "application/json": {
-                                "schema": {}
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/cart/item": {
             "post": {
                 "tags": [
@@ -277,10 +213,6 @@
                         "application/json": {
                             "schema": {
                                 "properties": {
-                                    "cartId": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
                                     "productId": {
                                         "type": "integer",
                                         "example": 30,
@@ -822,22 +754,6 @@
                 "summary": "Tạo đơn hàng",
                 "description": "Tạo đơn hàng từ giỏ hàng của người dùng",
                 "operationId": "e884d3d33fe19a6dad7763eaf117f838",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "message": {
-                                        "type": "string",
-                                        "example": "goi hang can than"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Tạo đơn hàng thành công",
@@ -1204,6 +1120,10 @@
                                     "method": {
                                         "type": "string",
                                         "example": "VN"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "gói hàng cẩn thận"
                                     }
                                 },
                                 "type": "object"
@@ -1283,8 +1203,8 @@
                 "tags": [
                     "Payment"
                 ],
-                "summary": "Thanh toán thành công",
-                "description": "Thanh toán thành công",
+                "summary": "Lấy url thanh toán",
+                "description": "Lấy url thanh toán",
                 "operationId": "e2f3151eb597bbaeda0939b8f3b938ce",
                 "parameters": [
                     {

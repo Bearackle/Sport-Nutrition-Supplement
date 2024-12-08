@@ -16,7 +16,7 @@ class OrderOutputData extends Data
         public int $user_id,
         public Carbon $order_date,
         public int $total_amount,
-        public string $note,
+        public ?string $note,
         public OrderStatus $status,
         public string|Optional $address_detail,
         public ShipMethod|Optional $shipment_charges

@@ -16,7 +16,7 @@ interface OrderServiceInterface
     public function getOrderData(OrderInputData $order);
     public function getAllOrders();
     public function getOrderofUser(UserInputData $user);
-    public function createOrder(UserInputData $user, string $message);
+    public function createOrder(UserInputData $user);
     public function updateOrder(OrderInputData $order);
     public function destroyOrder(OrderInputData $order);
     public function addAddress(OrderInputData $order, AddressInputData $address);

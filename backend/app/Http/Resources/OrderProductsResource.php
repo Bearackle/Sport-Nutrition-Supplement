@@ -15,13 +15,13 @@ class OrderProductsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'productId' => $this->variants->product_id,
-            'variantId' => $this->variants->variant_id,
-            'variantName' => $this->variants->variant_name,
-            'productName' => $this->variants->product->product_name,
-            'price' => $this->variants->price,
-            'priceAfterSale' => $this->variants->product->unit_price,
-            'quantity'=> $this->variants->pivot->quantity,
+            'productId' => $this->product_id,
+            'variantId' => $this->variant_id,
+            'variantName' => $this->variant_name,
+            'productName' => $this->product->product_name,
+            'price' => $this->product->price,
+            'priceAfterSale' => $this->pivot->unit_price,
+            'quantity'=> $this->pivot->quantity,
         ];
     }
 }

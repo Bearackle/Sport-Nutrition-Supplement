@@ -38,7 +38,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     {
         return Order::with(['variants' => function ($variant) {
                 $variant->with(['product','image']);
-            }])->find($orderId)->first();
+            }])->find($orderId);
     }    public function getAllOrders()
     {
        return (new \App\Models\Order)->orderBy('order_date','desc');

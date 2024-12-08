@@ -26,19 +26,6 @@ class CartController extends Controller
     {
         $this->cartService = $cartService;
     }
-
-    /**
-     * @OA\Get(
-     *      path="/api/cart",
-     *      summary="Lấy ID của giỏ hàng",
-     *      description="Lấy thông tin giỏ hàng",
-     *      tags={"Cart"},
-     *      @OA\Response(response=200, description="Tìm thông tin giỏ hàng thành công", @OA\JsonContent()),
-     *      @OA\Response(response=400, description="Tìm thông tin giỏ hàng thất bại", @OA\JsonContent()),
-     *      @OA\Response(response=500, description="Lỗi dịch vụ", @OA\JsonContent())
-     *  )
-     * @throws AuthorizationException
-     */
     public function index(): ShoppingCartResource
     {
         $this->authorize('view', ShoppingCart::class);
@@ -47,16 +34,6 @@ class CartController extends Controller
         $user = UserInputData::from(['user_id' => $user->user_id]);
         return new ShoppingCartResource($this->cartService->getCart($user));
     }
-    /**
-     * @OA\Post(
-     *     path="/api/cart/new",
-     *     tags={"Cart"},
-     *     description="Tạo giỏ hàng mới cho user, lưu ý mỗi user chỉ có 1 giỏ hàng",
-     *     summary="Tạo giỏ hàng",
-     *     @OA\Response(response=200,description="Tạo giỏ hàng thành công",@OA\JsonContent()),
-     *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent()),
-     * )
-     */
     public function newCart() : ShoppingCartResource
     {
         /**@var User $user**/
@@ -75,7 +52,6 @@ class CartController extends Controller
      *         required=true,
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property (property="cartId", type="integer", example=1),
      *              @OA\Property (property="productId", type="integer", example=30, nullable=true),
      *              @OA\Property (property="variantId", type="integer", example=13, nullable=true),
      *              @OA\Property (property="comboId", type="integer", example=null, nullable=true),
@@ -89,6 +65,9 @@ class CartController extends Controller
      */
     public function store(Request $request): CartItemResource
     {
+        /**@var User $user**/
+        $user = auth()->user();
+        $request->merge(['cartId' =>  $this->cartService->getCart(UserInputData::from(['user_id' => $user->user_id]))->cart_id]);
         $cartItem = CartItemInputData::validateAndCreate($request->input());
         $cartItemAdded = $this->cartService->addCartItem($cartItem);
         return new CartItemResource($cartItemAdded);

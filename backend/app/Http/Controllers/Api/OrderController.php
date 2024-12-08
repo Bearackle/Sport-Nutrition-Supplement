@@ -74,26 +74,19 @@ class OrderController extends Controller
      *     description="Tạo đơn hàng từ giỏ hàng của người dùng",
      *     tags={"Order"},
      *     summary="Tạo đơn hàng",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             type="object",
-     *              @OA\Property (property="message", type="string", example="goi hang can than")
-     *         )
-     *     ),
      *     @OA\Response(response=200, description="Tạo đơn hàng thành công",@OA\JsonContent()),
      *     @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      * @throws AuthorizationException
      */
-    public function store(Request $request): OrderResource
+    public function store(Request $request): OrderResourceComplex
     {
         $this->authorize('create', Order::class);
         /**@var User $user**/
         $user = auth()->user();
         $order = $this->orderService->createOrder(
-            UserInputData::validateAndCreate(['user_id' => $user->user_id]),$request->input('message'));
-        return new OrderResource($order);
+            UserInputData::validateAndCreate(['user_id' => $user->user_id]));
+        return new OrderResourceComplex($order);
     }
     /**
      * @OA\Get(
@@ -115,7 +108,6 @@ class OrderController extends Controller
     {
         $this->authorize('view', Order::class);
         $order =  $this->orderService->getOrderData(OrderInputData::validateAndCreate(['order_id' => $order_id]));
-        dd($order);
         return new OrderResourceComplex($order);
     }
     /**
@@ -296,7 +288,8 @@ class OrderController extends Controller
      *                 @OA\Property(property="orderId", type="integer", example=1),
      *                      @OA\Property (property="paymentMethod", type="string", example="VN"),
      *                      @OA\Property (property="addressDetail", type="string", example="so 128, phường tân tạo, quận 1, TPHCM"),
-     *                 @OA\Property (property="method", type="string", example="VN")
+     *                 @OA\Property (property="method", type="string", example="VN"),
+     *                 @OA\Property (property="note", type="string", example="gói hàng cẩn thận")
      *             )
      *        ),
      *  @OA\Response(response=200, description="Thêm thành công",@OA\JsonContent()),
@@ -317,6 +310,9 @@ class OrderController extends Controller
 
         $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
             ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
+        if($request->has('note')){
+            $this->orderService->updateOrder(OrderInputData::from(['order_id' => $request->input('orderId'),'note' => $request->input('note')]));
+        }
         return new OrderResource($order);
     }
 }

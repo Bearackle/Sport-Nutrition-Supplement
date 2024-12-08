@@ -2,9 +2,13 @@
 
 namespace App\Services\User;
 
+use App\DTOs\InputData\ShoppingCartInputData;
 use App\DTOs\InputData\UserInputUpdatePasswordData;
 use App\Http\Resources\UserResource;
+use App\Models\ShoppingCart;
 use App\Models\User;
+use App\Repositories\Cart\CartRepositoryInterface;
+use App\Services\Order\CartServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use App\Http\Responses\ApiResponse;
@@ -16,8 +20,10 @@ use Nette\Schema\ValidationException;
 class UserService implements UserServiceInterface
 {
     protected UserRepositoryInterface $userRepository;
-    public function __construct(UserRepositoryInterface $userRepository){
+    protected CartServiceInterface $cartService;
+    public function __construct(UserRepositoryInterface $userRepository,CartServiceInterface $cartService){
         $this->userRepository = $userRepository;
+        $this->cartService = $cartService;
     }
     public function register(array $userData): JsonResponse
     {
@@ -32,6 +38,8 @@ class UserService implements UserServiceInterface
             'expiresAt' =>$token->accessToken->expires_at,
             'account' => new UserResource($userRegisterd),
         ];
+        $cart = ShoppingCartInputData::validateAndCreate(['user_id' => $userRegisterd->user_id]);
+        $this->cartService->createCart($cart);
         return response()->json($data);
     }
     public function login(array $userUnAuthorized): JsonResponse

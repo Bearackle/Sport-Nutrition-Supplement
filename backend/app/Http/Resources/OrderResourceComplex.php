@@ -24,7 +24,7 @@ class OrderResourceComplex extends JsonResource
             'status' => OrderStatus::tryFrom($this->status)->label(),
             'addressDetail' => $this->has('address_detail') ? $this->address_detail : null,
             'shipmentCharges' => $this->has('shipment_charges') ? $this->shipment_charges : null,
-            'products' =>
+            'products' => OrderProductsResource::collection($this->variants)
         ];
     }
     public function has(string $propertyName): bool
