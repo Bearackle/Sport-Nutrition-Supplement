@@ -66,13 +66,13 @@ class AddressController extends Controller
      *    @OA\Response(response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
-    public function show(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+    public function show(): JsonResponse
     {
         $this->authorize('view', Address::class);
         /**@var User $user**/
         $user = auth()->user();
         $address = $this->addressService->getAllAddresses(UserInputData::from(['user_id' => $user->user_id]));
-        return AddressResource::collection($address);
+        return response()->json(AddressResource::collection($address));
     }
     /**
      * @OA\Get(
