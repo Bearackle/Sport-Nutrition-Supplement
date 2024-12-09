@@ -118,11 +118,12 @@ Route::group([
     Route::get('default',[AddressController::class,'defaultAddress'])->middleware('auth:sanctum');
     Route::post('/',[AddressController::class,'store'])->middleware('auth:sanctum');
     Route::delete('/{id}',[AddressController::class,'destroy'])->middleware('auth:sanctum');
+    Route::post('update/{id}',[AddressController::class,'update'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'payment'
 ], function(){
-    Route::get('/check-out-url/{id}', [PaymentController::class, 'getUrlPayment'])->middleware('auth:sanctum');
+    Route::post('/check-out-url', [PaymentController::class, 'getUrlPayment'])->middleware('auth:sanctum');
 });
 Route::group([
     'prefix' => 'review'

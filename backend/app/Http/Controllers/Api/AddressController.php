@@ -121,4 +121,16 @@ class AddressController extends Controller
         }
         return ApiResponse::fail('delete failed');
     }
+
+    /**
+     * @throws AuthorizationException
+     */
+    public function update(string $id,Request $request): AddressResource
+    {
+
+        $this->authorize('update', Address::class);
+        $request->merge(['address_id' => $id]);
+        $address = $this->addressService->updateAddress(AddressInputData::validateAndCreate($request->input()));
+        return new AddressResource($address);
+    }
 }

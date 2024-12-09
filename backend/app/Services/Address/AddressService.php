@@ -42,4 +42,9 @@ class AddressService implements AddressServiceInterface
     {
        return AddressOutputData::from($this->addressRepository->find($address->address_id));
     }
+    public function updateAddress(AddressInputData $address) : AddressOutputData
+    {
+         $addressUpdated = $this->addressRepository->update($address->address_id, $address->toArray());
+         return AddressOutputData::from($addressUpdated);
+    }
 }

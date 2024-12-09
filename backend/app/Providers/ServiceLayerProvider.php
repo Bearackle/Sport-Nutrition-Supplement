@@ -20,6 +20,8 @@ use App\Services\Product\ProductVariantService;
 use App\Services\Product\ProductVariantServiceInterface;
 use App\Services\Review\ReviewService;
 use App\Services\Review\ReviewServiceInterface;
+use App\Services\User\AESCodeService;
+use App\Services\User\AESCodeServiceInterface;
 use Illuminate\Support\ServiceProvider;
 use App\Services\User\UserService;
 use App\Services\Product\ProductService;
@@ -48,6 +50,7 @@ class ServiceLayerProvider extends ServiceProvider
         $this->app->bind(PaymentServiceInterface::class, PaymentService::class);
         $this->app->bind(AddressServiceInterface::class, AddressService::class);
         $this->app->bind(ReviewServiceInterface::class, ReviewService::class);
+        $this->app->bind(AESCodeServiceInterface::class, AESCodeService::class);
     }
     /**
      * Bootstrap services.

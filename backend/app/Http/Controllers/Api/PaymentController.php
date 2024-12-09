@@ -11,15 +11,19 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Services\Order\PaymentService;
 use App\Services\Order\PaymentServiceInterface;
+use App\Services\User\AESCodeServiceInterface;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
 {
     protected PaymentServiceInterface $paymentService;
+    protected AESCodeServiceInterface $aesCodeService;
 
-    public function __construct(PaymentServiceInterface $paymentService)
+    public function __construct(PaymentServiceInterface $paymentService, AESCodeServiceInterface $aesCodeService)
     {
         $this->paymentService = $paymentService;
+        $this->aesCodeService = $aesCodeService;
     }
 
     /**
@@ -82,7 +86,7 @@ class PaymentController extends Controller
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://dinhhuan.id.vn/payment/success/".$payment->order->order_id;
+        $vnp_Returnurl = "http://localhost:8000/payment/success/".$request->input('data');
         $vnp_TmnCode = "YHR1DK4Y";//Mã website tại VNPAY
         $vnp_HashSecret = "3NSOGGL258PLOFC4KDPAVK4AK64TTWM2"; //Chuỗi bí mật
         $vnp_TxnRef = '#HD'.$request->input('orderId');
@@ -199,8 +203,8 @@ class PaymentController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $payment->order->total_amount;
         $orderId = time() ."";
-        $redirectUrl = "http://dinhhuan.id.vn/payment/success/".$payment->order->order_id;
-        $ipnUrl = "http://dinhhuan.id.vn/payment/success/".$payment->order->order_id;
+        $redirectUrl = "http://dinhhuan.id.vn/payment/success/".$request->input('data');
+        $ipnUrl = "http://dinhhuan.id.vn/payment/success/".$request->input('data');
         $extraData = "";
 
             $requestId = time() . "";
@@ -246,10 +250,18 @@ class PaymentController extends Controller
         curl_close($ch);
         return $result;
     }
-    public function checkOut(string $orderId): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function checkOut(string $data): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderId]));
-        return view('ConfirmPayment', ['payment' => $payment]);
+        $orderData = json_decode($this->aesCodeService->decryptAES($data),true);
+        if(!$orderData)
+        {
+            abort(404);
+        }
+        if((Carbon::now()->timestamp - $orderData['ttl']) >= 0){
+            abort(403,'Hết thời gian truy cập');
+        }
+        $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $orderData['order_id']]));
+        return view('ConfirmPayment', ['payment' => $payment,'data' => $data]);
     }
     /**
     *@OA\Get(
@@ -269,9 +281,10 @@ class PaymentController extends Controller
      * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
  **/
-    public function success(string $orderId): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
+    public function success(string $data): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
-        $this->sendMail($orderId);
+        $orderData = json_decode($this->aesCodeService->decryptAES($data),true);
+        $this->sendMail($orderData['order_id']);
         return view('SuccessPayment');
     }
     public function sendMail(string $orderId): void
@@ -281,34 +294,38 @@ class PaymentController extends Controller
         SendEmail::dispatch($user,$payment);
     }
     /**
-     *@OA\Get(
+     *@OA\Post(
      *  path="/api/payment/check-out-url/{id}",
      *  description="Lấy url thanh toán",
      *  summary="Lấy url thanh toán",
      *  tags={"Payment"},
-     * @OA\Parameter(
-     *          name="id",
-     *          in="path",
-     *          required=true,
-     *          description="id của order",
-     *          @OA\Schema(type="integer"),
-     *      ),
+        @OA\RequestBody(
+        required=true,
+        @OA\JsonContent(
+        type="object",
+        required={"orderId","method"},
+        @OA\Property(property="orderId", type="integer", example=1),
+        )
+    ),
      * @OA\Response(response=200, description="Success",@OA\JsonContent()),
      * @OA\Response(response=400,description="Fail to get",@OA\JsonContent()),
      * @OA\Response(response=422, description="Sai định dạng yêu cầu",@OA\JsonContent())
      * )
      **/
-    public function getUrlPayment(string $orderId): \Illuminate\Http\JsonResponse
+    public function getUrlPayment(Request $request): \Illuminate\Http\JsonResponse
     {
-        $order = OrderInputData::validateAndCreate(['order_id' => $orderId]);
+        $order = OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]);
+        $data = json_encode(['order_id' => $order->order_id,
+            'ttl' => Carbon::now()->addMinutes(30)->timestamp]);
+        $encryptOrderData = $this->aesCodeService->encryptAES($data);
         return response()->json([
-            'redirectUrl' => route('payment.check-out', ['orderId' => $order->order_id])
+            'redirectUrl' => route('payment.check-out', ['data' => $encryptOrderData])
         ]);
     }
     public function internetBanking(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
-        return view('InternetBanking',['payment' => $payment]);
+        return view('InternetBanking',['payment' => $payment,'data' => $request->input('data')]);
     }
     public function codPayment(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {

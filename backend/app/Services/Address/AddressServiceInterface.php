@@ -4,6 +4,7 @@ namespace App\Services\Address;
 
 use App\DTOs\InputData\AddressInputData;
 use App\DTOs\InputData\UserInputData;
+use App\DTOs\OutputData\AddressOutputData;
 
 interface AddressServiceInterface
 {
@@ -12,4 +13,5 @@ interface AddressServiceInterface
     public function getDefaultAddress(UserInputData $user);
     public function getAllAddresses(UserInputData $user);
     public function getAddressDetail(AddressInputData $address);
+    public function updateAddress(AddressInputData $address);
 }

@@ -58,6 +58,7 @@
             <input id="card-holder-name" type="text" class="form-control text-sm" readonly value="{{\App\Enum\PaymentMethod::tryFrom($payment->payment_method)->name}}">
         </div>
         <input type="hidden" name="orderId" value="{{$payment->order->order_id}}">
+        <input type="hidden" name="data" value="{{$data}}">
         <div class="text-center">
         <button type="submit" id="card-button" name="redirect" class="btn btn-primary mt-4">Xác nhận</button>
         </div>

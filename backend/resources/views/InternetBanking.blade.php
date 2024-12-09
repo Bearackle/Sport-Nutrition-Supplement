@@ -94,7 +94,7 @@
             </div>
         </div>
     </div>
-    <button onclick="window.location.href='{{ route('payment.success',['id' => $payment->order->order_id]) }}'" class="btn btn-cancel w-100 fw-bold">Hoàn thành</button>
+    <button onclick="window.location.href='{{ route('payment.success',['data' => $data]) }}'" class="btn btn-cancel w-100 fw-bold">Hoàn thành</button>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
