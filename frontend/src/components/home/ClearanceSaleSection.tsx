@@ -1,7 +1,7 @@
 "use client";
 import productApiRequest from "@/apiRequests/product";
 import { cn } from "@/lib/utils";
-import { TopDealsResType } from "@/schemaValidations/product.schema";
+import { TopDealsResType } from "@/types/product";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CustomCarousel } from "../common/CustomCarousel";
@@ -32,7 +32,7 @@ const ClearanceSaleSection = () => {
               "rounded-[0.625rem] px-2 py-1 transition-all duration-200",
               activeProduct === "clearance-sale"
                 ? "bg-[#0A68FF] text-white"
-                : "boder-solid border border-[#8C8F8D] bg-white text-[#333]",
+                : "border border-solid border-[#8C8F8D] bg-white text-[#333]",
             )}
           >
             Sale xả kho
@@ -43,7 +43,7 @@ const ClearanceSaleSection = () => {
               "rounded-[0.625rem] px-2 py-1 transition-all duration-200",
               activeProduct === "liquidation"
                 ? "bg-[#0A68FF] text-white"
-                : "boder-solid border border-[#8C8F8D] bg-white text-[#333]",
+                : "border border-solid border-[#8C8F8D] bg-white text-[#333]",
             )}
           >
             Thanh lý hàng lỗi

@@ -5,7 +5,7 @@ export const AccountRes = z
     userId: z.number(),
     name: z.string(),
     email: z.string(),
-    phone: z.string().nullable(),
+    phone: z.string(),
   })
   .strict();
 
@@ -16,3 +16,15 @@ export const UpdateMeBody = z.object({
 });
 
 export type UpdateMeBodyType = z.TypeOf<typeof UpdateMeBody>;
+
+export const ProfileRes = z.object({
+  userId: z.number(),
+  name: z.string(),
+  email: z.string(),
+  emailVerifiedAt: z.string().nullable(),
+  phone: z.string(),
+  createAt: z.string(),
+  updateAt: z.string(),
+});
+
+export type ProfileResType = z.TypeOf<typeof ProfileRes>;

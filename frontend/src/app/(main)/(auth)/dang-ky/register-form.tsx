@@ -90,7 +90,7 @@ const RegisterForm = () => {
                     placeholder="Họ và tên"
                     type="text"
                     className={cn(
-                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                      "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
                     )}
                     {...field}
                   />
@@ -110,7 +110,7 @@ const RegisterForm = () => {
                     placeholder="Số điện thoại"
                     type="text"
                     className={cn(
-                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                      "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
                     )}
                     {...field}
                   />
@@ -130,7 +130,7 @@ const RegisterForm = () => {
                     placeholder="Email"
                     type="email"
                     className={cn(
-                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                      "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
                     )}
                     {...field}
                   />
@@ -150,7 +150,7 @@ const RegisterForm = () => {
                     placeholder="Mật khẩu"
                     type="password"
                     className={cn(
-                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                      "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
                     )}
                     {...field}
                   />
@@ -170,7 +170,7 @@ const RegisterForm = () => {
                     placeholder="Nhập lại mật khẩu"
                     type="password"
                     className={cn(
-                      "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+                      "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
                     )}
                     {...field}
                   />

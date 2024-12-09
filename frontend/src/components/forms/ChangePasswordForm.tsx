@@ -18,7 +18,7 @@ export function ChangePasswordForm() {
           type="password"
           placeholder="Mật khẩu hiện tại"
           className={cn(
-            "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+            "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
           )}
         />
       </div>
@@ -33,7 +33,7 @@ export function ChangePasswordForm() {
           type="password"
           placeholder="Mật khẩu mới"
           className={cn(
-            "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+            "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
           )}
         />
       </div>
@@ -47,7 +47,7 @@ export function ChangePasswordForm() {
           type="password"
           placeholder="Nhập lại mật khẩu"
           className={cn(
-            "boder-solid !h-auto !rounded-none border border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
+            "!h-auto !rounded-none border border-solid border-app-carbon px-3 py-2 pr-[2.625rem] text-base font-normal focus:outline-none",
           )}
         />
       </div>

@@ -1,7 +1,21 @@
 "use client";
+import addressApiRequest from "@/apiRequests/address";
+import { useToast } from "@/hooks/use-toast";
+import { cn, handleErrorApi } from "@/lib/utils";
+import {
+  AddressBody,
+  AddressBodyType,
+} from "@/schemaValidations/address.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+// ** Import UI
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -18,31 +32,39 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const formSchema = z.object({
-  address: z.string().min(1, { message: "Địa chỉ không được để trống" }),
-});
 
 const AddAddressModal = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const form = useForm<z.infer<typeof AddressBody>>({
+    resolver: zodResolver(AddressBody),
     defaultValues: {
-      address: "",
+      addressDetail: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: AddressBodyType) {
+    try {
+      await addressApiRequest.addAddress(values);
+      toast({
+        variant: "success",
+        title: "Thêm địa chỉ thành công",
+      });
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError,
+      });
+    } finally {
+      setIsOpen(false);
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
   }
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="text-[0.9375em] font-medium text-[#1250DC]">
         Thêm địa chỉ
       </DialogTrigger>
@@ -65,7 +87,7 @@ const AddAddressModal = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
-              name="address"
+              name="addressDetail"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
@@ -74,7 +96,7 @@ const AddAddressModal = () => {
                   <FormControl>
                     <Input
                       placeholder="Số nhà + Tên đường, Phường / Xã, Tỉnh / Thành phố"
-                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
+                      className="!h-auto border border-solid border-app-carbon px-3 py-2 text-[0.875rem] focus:outline-none md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
                       {...field}
                     />
                   </FormControl>

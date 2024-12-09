@@ -3,9 +3,12 @@ import {
   AllProductsResType,
   ProductDetailResType,
   TopDealsResType,
-} from "@/schemaValidations/product.schema";
+} from "@/types/product";
 
 const productApiRequest = {
+  searchProducts: (queryParams: string) => {
+    return http.get<AllProductsResType>(`/collection/search?${queryParams}`);
+  },
   allProducts: (queryParams: string) => {
     return http.get<AllProductsResType>(`/collection/all?${queryParams}`);
   },

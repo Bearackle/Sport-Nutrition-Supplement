@@ -167,18 +167,20 @@ const FilterBar = ({ category }: { category: string }) => {
   }
   return (
     <>
-      <div className="sticky top-32 hidden h-max max-h-[80vh] w-[18rem] overflow-hidden rounded-xl bg-white pb-8 leading-[1.21] xl:block">
+      <div className="sticky top-32 hidden h-max max-h-[70vh] w-[18rem] overflow-hidden rounded-xl bg-white pb-8 leading-[1.21] xl:block">
         <div className="flex w-full flex-row items-center gap-2 border-b border-solid border-[#333]/30 px-4 pb-2 pt-3">
           <Image src={filterIcon} alt="filter" width={24} height={24} />
           <span className="text-base font-semibold">Bộ lọc nâng cao</span>
         </div>
-        <div className="no-scrollbar max-h-[72.5vh] overflow-y-scroll px-4">
+        <div className="no-scrollbar max-h-[62.5vh] overflow-y-scroll px-4">
           {filterOptions.map(({ id, title, type, options }) => {
             return (
               <div
                 key={id}
                 className={cn(
-                  category !== "tat-ca-san-pham" && id === "category"
+                  category !== "tat-ca-san-pham" &&
+                    category !== "tim-kiem" &&
+                    id === "category"
                     ? "hidden"
                     : "",
                 )}

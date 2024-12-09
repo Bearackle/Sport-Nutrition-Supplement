@@ -3,10 +3,7 @@ import productApiRequest from "@/apiRequests/product";
 import { filterBrands } from "@/data/brand";
 import { categories } from "@/data/category";
 import { cn, getKeyByValueIgnoreCase } from "@/lib/utils";
-import {
-  ProductsMetaType,
-  ProductsResType,
-} from "@/schemaValidations/product.schema";
+import { ProductsMetaType, ProductsResType } from "@/types/product";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import CustomPagination from "../common/CustomPagination";
@@ -74,10 +71,21 @@ const ProductSection = ({ category }: { category: string }) => {
           setMeta(result.payload.meta);
         })
         .finally(() => setIsLoading(false));
+    } else if (category === "tim-kiem") {
+      productApiRequest
+        .searchProducts(buildSearchParams(params))
+        .then((result) => {
+          setData(result.payload.data);
+          setMeta(result.payload.meta);
+        })
+        .finally(() => setIsLoading(false));
     } else {
       productApiRequest
         .categoryProducts(category, buildSearchParams(params))
-        .then((result) => setData(result.payload.data))
+        .then((result) => {
+          setData(result.payload.data);
+          setMeta(result.payload.meta);
+        })
         .finally(() => setIsLoading(false));
     }
   }, [searchParams, sortOption, currentPage]);
