@@ -1,12 +1,7 @@
 "use client";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import authApiRequest from "@/apiRequests/auth";
+import { useAppContext } from "@/app/app-provider";
+import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
 import {
   cn,
   getContrastingColor,
@@ -16,13 +11,19 @@ import {
 } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React, { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+
+// ** Import UI
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 // ** Import Icons
-// import { logoutAction } from "@/actions/auth-actions";
-import authApiRequest from "@/apiRequests/auth";
-import { useAppContext } from "@/app/app-provider";
-import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
 import exitIcon from "/public/exit-icon.png";
 import locationIcon from "/public/location-icon.png";
 import orderIcon from "/public/order-icon.png";
@@ -60,7 +61,7 @@ export default function UserLayout({
   const pathname = usePathname();
   const router = useRouter();
   const { user, setUser } = useAppContext();
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const stringAvatar = (name: string | undefined) => {
     if (!name)
@@ -75,6 +76,13 @@ export default function UserLayout({
       children: getInitials(user?.name ?? "undefined undefined"),
     };
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      await authApiRequest.profile();
+    };
+    fetchProfile();
+  }, []);
 
   const handleLogout = async () => {
     if (loading) return;

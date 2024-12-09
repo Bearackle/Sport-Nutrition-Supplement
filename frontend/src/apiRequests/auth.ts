@@ -1,4 +1,5 @@
 import http from "@/lib/http";
+import { ProfileResType } from "@/schemaValidations/account.schema";
 import {
   ChangePasswordBodyType,
   LoginBodyType,
@@ -19,6 +20,7 @@ const authApiRequest = {
   logout: () => http.delete("/api/auth", { baseUrl: "" }),
   changePassword: (body: ChangePasswordBodyType) =>
     http.patch("/account/change-password", body),
+  profile: () => http.get<ProfileResType>("/account/profile"),
 };
 
 export default authApiRequest;

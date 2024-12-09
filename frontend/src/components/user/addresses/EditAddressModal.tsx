@@ -1,4 +1,17 @@
 "use client";
+import { cn, handleErrorApi } from "@/lib/utils";
+import {
+  AddressBody,
+  AddressBodyType,
+  AddressResType,
+} from "@/schemaValidations/address.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DialogClose } from "@radix-ui/react-dialog";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+// ** Import UI
+import addressApiRequest from "@/apiRequests/address";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -18,41 +31,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
-import { TParamsAddress } from "@/types/address-list";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { DialogClose } from "@radix-ui/react-dialog";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 type TProps = {
-  address: TParamsAddress;
+  address: AddressResType;
 };
 
-const formSchema = z.object({
-  name: z.string().optional(),
-  phone: z.string().optional(),
-  address: z.string().min(1, { message: "Địa chỉ không được để trống" }),
-});
-
 const EditAddressModal = ({ address }: TProps) => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const form = useForm<z.infer<typeof AddressBody>>({
+    resolver: zodResolver(AddressBody),
     defaultValues: {
-      name: address.name,
-      phone: address.phone,
-      address: address.address,
+      addressDetail: address.addressDetail,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Submit");
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: AddressBodyType) {
+    try {
+      await addressApiRequest.updateAddress(address.addressId, values);
+      toast({
+        variant: "success",
+        title: "Cập nhật địa chỉ thành công",
+      });
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError,
+      });
+    } finally {
+      setIsOpen(false);
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    }
   }
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger className="font-normal leading-[1.21] text-[#1250DC]">
         Sửa
       </DialogTrigger>
@@ -78,47 +95,7 @@ const EditAddressModal = ({ address }: TProps) => {
           >
             <FormField
               control={form.control}
-              name="name"
-              disabled={true}
-              render={({ field }) => (
-                <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
-                  <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
-                    Họ và tên
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Nguyễn Văn A"
-                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="phone"
-              disabled={true}
-              render={({ field }) => (
-                <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
-                  <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
-                    Số điện thoại
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="08xxxxxxxx"
-                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address"
+              name="addressDetail"
               render={({ field }) => (
                 <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
                   <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">
@@ -127,7 +104,7 @@ const EditAddressModal = ({ address }: TProps) => {
                   <FormControl>
                     <Input
                       placeholder="35/22 Đ. Số 9, Hiệp Bình Phước, Thủ Đức, TP.HCM"
-                      className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
+                      className="!h-auto border border-solid border-app-carbon px-3 py-2 text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]"
                       {...field}
                     />
                   </FormControl>

@@ -1,7 +1,7 @@
 "use client";
 import { cn, formatPrice } from "@/lib/utils";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 type TProps = {
@@ -69,7 +69,7 @@ export const OrderProductCard = ({ handleCheckboxClick }: TProps) => {
       <Link
         href={`product/1`}
         className={cn(
-          "boder-solid mr-3 shrink-0 self-start rounded-lg border p-1.5",
+          "mr-3 shrink-0 self-start rounded-lg border border-solid p-1.5",
         )}
       >
         <Image
