@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use phpDocumentor\Reflection\Types\Boolean;
 
 class CartItemsResource extends JsonResource
 {
@@ -16,14 +17,22 @@ class CartItemsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'cartId' => $this->cart_id,
-            'userId' => $this->user_id,
             'products' => ProductVariantPivotResource::collection($this->variants),
-            'combos' =>   ComboCartItems::collection($this->combos)
+            'combos' =>   ComboCartItems::collection($this->combos),
+            'isAvailable' => $this->isAvailable()
         ];
     }
     public function withResponse(Request $request, JsonResponse $response): void
     {
         $response->setData($this->toArray($request));
+    }
+    public function isAvailable(){
+        $available = true;
+        foreach ($this->variants as $product){
+            if($product->stock_quantity < $product->pivot->quantity){
+                $available = false;
+            }
+        }
+        return $available;
     }
 }
