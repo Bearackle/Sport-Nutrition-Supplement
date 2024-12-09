@@ -23,6 +23,7 @@ class ProductVariantPivotResource extends JsonResource
             'priceAfterSale' => $this->product->price_after_sale,
             'variantId' => $this->variant_id,
             'variantName' => $this->variant_name,
+            'stockQuantity'=> $this->stock_quantity,
             'quantity' => $this->pivot->quantity,
         ];
     }
