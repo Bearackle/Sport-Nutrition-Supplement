@@ -20,7 +20,7 @@ const page = async ({ params }: { params: { id: string } }) => {
     discount: data.sale,
     promotionInformation: [
       "Dùng mã TANGQUA để được Free quà tặng.",
-      "Mua kèm giá Shock, tặng quà theo đơn hàng.",
+      "Mua kèm giá sốc, tặng quà theo đơn hàng.",
       "Miễn 50% phí Ship (tối đa 50k) với đơn từ 500k.",
       "Miễn 100% phí Ship với đơn hàng trên 3500k.",
       "Tích lũy Hạng thành viên, chiết khấu hấp dẫn.",

@@ -76,8 +76,8 @@ export const ProductReviews = () => {
                       y2="3.04089"
                       gradientUnits="userSpaceOnUse"
                     >
-                      <stop stop-color="#F79009"></stop>
-                      <stop offset="1" stop-color="#FDB022"></stop>
+                      <stop stopColor="#F79009"></stop>
+                      <stop offset="1" stopColor="#FDB022"></stop>
                     </linearGradient>
                   </defs>
                 </svg>

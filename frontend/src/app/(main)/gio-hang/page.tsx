@@ -1,89 +1,36 @@
 "use client";
+import cartApiRequests from "@/apiRequests/cart";
+import { OrderProductCard } from "@/components/cart/OrderProductCard";
 import { cn, formatPrice } from "@/lib/utils";
+import { CartProductsType } from "@/types/cart";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import emptyCart from "/public/empty-cart.png";
-import { OrderProductCard } from "@/components/cart/OrderProductCard";
-
-const data = [{}];
 
 export default function page() {
-  const handleSelectAll = () => {
-    const checkboxes = document.querySelectorAll('button[role="checkbox"]');
-    const allChecked = Array.from(checkboxes).every(
-      (checkbox) => checkbox.getAttribute("aria-checked") === "true",
-    );
+  const [data, setData] = useState<CartProductsType>([]);
+  const [isAvailable, setIsAvailable] = useState(true);
+  console.log(isAvailable);
 
-    checkboxes.forEach((checkbox) => {
-      const newState = allChecked ? "false" : "true";
-      checkbox.setAttribute("aria-checked", newState);
-      checkbox.setAttribute(
-        "data-state",
-        newState === "true" ? "checked" : "unchecked",
-      );
-
-      const span = checkbox.querySelector("span");
-      if (span) {
-        span.setAttribute(
-          "data-state",
-          newState === "true" ? "checked" : "unchecked",
-        );
-      }
+  useEffect(() => {
+    cartApiRequests.getCartProducts().then((res) => {
+      setData(res.payload.products);
+      setIsAvailable(res.payload.isAvailable);
     });
+  }, []);
+
+  const getTotalPrice = () => {
+    return data.reduce((acc, product) => {
+      return acc + product.price * product.quantity;
+    }, 0);
   };
 
-  const handleCheckboxClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const target = event.target as HTMLElement;
-    if (target.tagName !== "BUTTON") return;
-
-    const currentCheckbox = target;
-    const currentState =
-      currentCheckbox.getAttribute("aria-checked") === "true";
-    const newState = currentState ? "false" : "true";
-
-    currentCheckbox.setAttribute("aria-checked", newState);
-    currentCheckbox.setAttribute(
-      "data-state",
-      newState === "true" ? "checked" : "unchecked",
-    );
-
-    const span = currentCheckbox.querySelector("span");
-    if (span) {
-      span.setAttribute(
-        "data-state",
-        newState === "true" ? "checked" : "unchecked",
-      );
-    }
-
-    const checkboxes = document.querySelectorAll(
-      'button[role="checkbox"]:not(#select-all)',
-    );
-    const selectAllCheckbox = document.getElementById("select-all");
-
-    if (!selectAllCheckbox) return;
-
-    const allChecked = Array.from(checkboxes).every(
-      (checkbox) => checkbox.getAttribute("aria-checked") === "true",
-    );
-
-    selectAllCheckbox.setAttribute(
-      "aria-checked",
-      allChecked ? "true" : "false",
-    );
-    selectAllCheckbox.setAttribute(
-      "data-state",
-      allChecked ? "checked" : "unchecked",
-    );
-
-    const selectAllSpan = selectAllCheckbox.querySelector("span");
-    if (selectAllSpan) {
-      selectAllSpan.setAttribute(
-        "data-state",
-        allChecked ? "checked" : "unchecked",
-      );
-    }
+  const getTotalPriceAfterSale = () => {
+    return data.reduce((acc, product) => {
+      return acc + product.priceAfterSale * product.quantity;
+    }, 0);
   };
-
   if (data[0] === undefined) {
     return (
       <div
@@ -94,7 +41,7 @@ export default function page() {
         <Link
           href="/"
           className={cn(
-            "flex flex-row items-center gap-1 text-[0.9375rem] text-[#1250DC]",
+            "flex w-max flex-row items-center gap-1 text-[0.9375rem] text-[#1250DC]",
           )}
         >
           <svg
@@ -145,7 +92,7 @@ export default function page() {
       <Link
         href="/"
         className={cn(
-          "ml-[2.5%] flex flex-row items-center gap-1 text-[0.9375rem] text-[#1250DC] lg:ml-0",
+          "ml-[2.5%] flex w-max flex-row items-center gap-1 text-[0.9375rem] text-[#1250DC] lg:ml-0",
         )}
       >
         <svg
@@ -176,51 +123,16 @@ export default function page() {
         >
           <div
             className={cn(
-              "flex flex-row items-center border-b border-solid border-[#D2D5D7] px-4 py-2 font-medium",
+              "flex flex-row items-center border-b border-solid border-[#D2D5D7] px-4 pb-2 pt-3 font-medium",
             )}
           >
-            <div className={cn("mr-auto inline-flex items-center")}>
-              <button
-                id="select-all"
-                type="button"
-                role="checkbox"
-                aria-checked="false"
-                data-state="unchecked"
-                value="on"
-                onClick={handleSelectAll}
-                className="peer h-5 w-5 shrink-0 rounded-full border-2 border-[#657384] focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-[#1250dc] data-[state=checked]:bg-[#1250dc] data-[state=checked]:text-white"
-              >
-                <span
-                  data-state="unchecked"
-                  className={cn(
-                    "flex shrink-0 items-center justify-center",
-                    "data-[state=unchecked]:hidden",
-                  )}
-                  style={{ pointerEvents: "none" }}
-                >
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3 stroke-current"
-                  >
-                    <path
-                      d="M8.5 16.5858L4.70711 12.7929C4.31658 12.4024 3.68342 12.4024 3.29289 12.7929C2.90237 13.1834 2.90237 13.8166 3.29289 14.2071L7.79289 18.7071C8.18342 19.0976 8.81658 19.0976 9.20711 18.7071L20.2071 7.70711C20.5976 7.31658 20.5976 6.68342 20.2071 6.29289C19.8166 5.90237 19.1834 5.90237 18.7929 6.29289L8.5 16.5858Z"
-                      fill="currentColor"
-                    ></path>
-                  </svg>
-                </span>
-              </button>
-              <label htmlFor="select-all" className="ml-2">
-                Chọn tất cả
-              </label>
-            </div>
+            <div className="ml-4 mr-auto">Sản phẩm</div>
             <div className={cn("hidden basis-[6.875rem] text-center xl:block")}>
               Giá thành
             </div>
             <div
               className={cn(
-                "ml-4 mr-14 hidden basis-[6.75rem] text-center xl:block",
+                "ml-8 mr-14 hidden basis-[6.75rem] text-center xl:block",
               )}
             >
               Số lượng
@@ -231,8 +143,12 @@ export default function page() {
               "divide-y p-4 [&>*]:py-4 [&>:first-child]:pt-0 [&>:last-child]:pb-0",
             )}
           >
-            <OrderProductCard handleCheckboxClick={handleCheckboxClick} />
-            <OrderProductCard handleCheckboxClick={handleCheckboxClick} />
+            {data.map((cartProdcut) => (
+              <OrderProductCard
+                key={cartProdcut.productId}
+                cartProduct={cartProdcut}
+              />
+            ))}
           </div>
         </div>
         <div
@@ -268,7 +184,7 @@ export default function page() {
           >
             <span className={cn("text-base text-[#4a4f63]")}>Tổng tiền</span>
             <span className={cn("text-base font-medium text-[#020b27]")}>
-              {formatPrice(1000000)}
+              {formatPrice(getTotalPrice())}
             </span>
           </div>
           <div
@@ -278,7 +194,7 @@ export default function page() {
               Giảm giá trực tiếp
             </span>
             <span className={cn("text-base font-medium text-[#f79009]")}>
-              -{formatPrice(200000)}
+              -{formatPrice(getTotalPrice() - getTotalPriceAfterSale())}
             </span>
           </div>
           <div
@@ -298,7 +214,7 @@ export default function page() {
               Tiết kiệm được
             </span>
             <span className={cn("text-base font-medium text-[#f79009]")}>
-              -{formatPrice(200000)}
+              -{formatPrice(getTotalPrice() - getTotalPriceAfterSale())}
             </span>
           </div>
           <hr className="my-3" />
@@ -321,14 +237,14 @@ export default function page() {
                     "text-[0.875rem] leading-[1.25rem] text-[#4a4f63] line-through",
                   )}
                 >
-                  {formatPrice(1000000)}
+                  {formatPrice(getTotalPrice())}
                 </span>
                 <span
                   className={cn(
                     "text-[1.25rem] font-semibold leading-7 tracking-[0.005rem] text-[#1250dc]",
                   )}
                 >
-                  {formatPrice(800000)}
+                  {formatPrice(getTotalPriceAfterSale())}
                 </span>
               </div>
             </div>
