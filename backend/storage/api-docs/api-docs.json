@@ -1199,24 +1199,33 @@
             }
         },
         "/api/payment/check-out-url/{id}": {
-            "get": {
+            "post": {
                 "tags": [
                     "Payment"
                 ],
                 "summary": "Lấy url thanh toán",
                 "description": "Lấy url thanh toán",
-                "operationId": "e2f3151eb597bbaeda0939b8f3b938ce",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id của order",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
+                "operationId": "4f9700e990effe261573edf3a9133a01",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "orderId",
+                                    "method"
+                                ],
+                                "properties": {
+                                    "orderId": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
                     "200": {
                         "description": "Success",

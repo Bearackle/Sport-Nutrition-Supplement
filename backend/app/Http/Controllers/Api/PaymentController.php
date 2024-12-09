@@ -86,7 +86,7 @@ class PaymentController extends Controller
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        $vnp_Returnurl = "http://localhost:8000/payment/success/".$request->input('data');
+        $vnp_Returnurl = "https://dinhhuan.id.vn/payment/success/".$request->input('data');
         $vnp_TmnCode = "YHR1DK4Y";//Mã website tại VNPAY
         $vnp_HashSecret = "3NSOGGL258PLOFC4KDPAVK4AK64TTWM2"; //Chuỗi bí mật
         $vnp_TxnRef = '#HD'.$request->input('orderId');
@@ -203,8 +203,8 @@ class PaymentController extends Controller
         $orderInfo = "Thanh toán qua MoMo";
         $amount = $payment->order->total_amount;
         $orderId = time() ."";
-        $redirectUrl = "http://dinhhuan.id.vn/payment/success/".$request->input('data');
-        $ipnUrl = "http://dinhhuan.id.vn/payment/success/".$request->input('data');
+        $redirectUrl = "https://dinhhuan.id.vn/payment/success/".$request->input('data');
+        $ipnUrl = "https://dinhhuan.id.vn/payment/success/".$request->input('data');
         $extraData = "";
 
             $requestId = time() . "";
