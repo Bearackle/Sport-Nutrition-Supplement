@@ -1,10 +1,13 @@
 "use client";
+import cartApiRequests from "@/apiRequests/cart";
 import { brands } from "@/data/brand";
-import { cn, formatPrice } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { cn, formatPrice, handleErrorApi } from "@/lib/utils";
 import { Rating } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import CustomLoadingAnimation from "../common/CustomLoadingAnimation";
 import { ProductImages } from "./ProductImages";
 import giftIcon from "/public/gift-icon.svg";
 
@@ -39,7 +42,9 @@ export const ProductOverview = ({
   variants,
   shortDescription,
 }: TProps) => {
+  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentVariant, setCurrentVariant] = useState(variants[0]);
 
   const handleMinusButton = () => {
@@ -64,6 +69,31 @@ export const ProductOverview = ({
       setQuantity(999);
     }
   }, [quantity, currentVariant]);
+
+  const handleAddToCart = async ({ type }: { type: string }) => {
+    setIsLoading(true);
+    try {
+      await cartApiRequests.addProductToCart({
+        productId: id,
+        variantId: currentVariant.variantId,
+        comboId: null,
+        quantity: quantity,
+      });
+
+      if (type === "buy") {
+        location.href = "/gio-hang";
+      } else {
+        toast({
+          variant: "success",
+          title: "Thêm vào giỏ hàng thành công!",
+        });
+      }
+    } catch (error) {
+      handleErrorApi({ error });
+    } finally {
+      setIsLoading(false);
+    }
+  };
   return (
     <div
       id={id.toString()}
@@ -72,9 +102,10 @@ export const ProductOverview = ({
         "lg:flex-row",
       )}
     >
+      <CustomLoadingAnimation isLoading={isLoading} />
+
       {/*Product Image*/}
       <ProductImages images={image} />
-
       {/*Product Information*/}
       <div
         className={cn("w-full overflow-hidden lg:w-[32.5rem] xl:w-[42.5rem]")}
@@ -341,6 +372,7 @@ export const ProductOverview = ({
           ) : (
             <>
               <button
+                onClick={() => handleAddToCart({ type: "buy" })}
                 className={cn(
                   "w-full rounded-[1.25rem] bg-[#1F5ADD] px-10 py-3 text-base font-bold leading-[1.21] text-white transition-all duration-200 hover:opacity-90 xs:w-auto",
                 )}
@@ -348,6 +380,7 @@ export const ProductOverview = ({
                 Chọn mua
               </button>
               <button
+                onClick={() => handleAddToCart({ type: "addToCart" })}
                 className={cn(
                   "w-full rounded-[1.25rem] bg-[#004FFF]/[0.23] px-5 py-3 text-base font-bold leading-[1.21] text-[#1F5ADD] xs:w-auto",
                 )}
