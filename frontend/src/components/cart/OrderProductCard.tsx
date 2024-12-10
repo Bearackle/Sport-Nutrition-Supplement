@@ -8,9 +8,10 @@ import { RemoveProductDialog } from "./RemoveProductDialog";
 
 type TProps = {
   cartProduct: CartProductType;
+  isOrdering: boolean;
 };
 
-export const OrderProductCard = ({ cartProduct }: TProps) => {
+export const OrderProductCard = ({ cartProduct, isOrdering }: TProps) => {
   const handleMinusButton = async () => {
     if (cartProduct.quantity === 1) return;
     try {
@@ -42,6 +43,84 @@ export const OrderProductCard = ({ cartProduct }: TProps) => {
       location.reload();
     }
   };
+
+  const QuantityButton = () => {
+    if (isOrdering) {
+      return (
+        <div
+          className={cn(
+            "w-max rounded-sm border border-solid border-[#657384] px-2.5 text-center text-[0.9375rem] leading-[1.21]",
+            "md:w-16 md:border-none",
+          )}
+        >
+          {cartProduct.quantity}
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={cn(
+            "flex h-[1.875rem] w-max flex-row rounded-full border border-solid border-[#D2D5D7]",
+          )}
+        >
+          <button
+            disabled={cartProduct.quantity === 1}
+            onClick={handleMinusButton}
+            className={cn(
+              "flex h-full items-center px-1",
+              cartProduct.quantity === 1 && "opacity-50",
+            )}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="black"
+              className="size-5"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14" />
+            </svg>
+          </button>
+          <div
+            className={cn(
+              "flex h-full w-10 select-none items-center justify-center border-x border-solid border-[#D2D5D7] text-[0.9375rem] leading-[1.21] focus:outline-none",
+            )}
+          >
+            {cartProduct.quantity}
+          </div>
+          <button
+            disabled={
+              cartProduct.quantity === cartProduct.stockQuantity ||
+              cartProduct.quantity === 999
+            }
+            onClick={handlePlusButton}
+            className={cn(
+              "flex h-full items-center px-1",
+              (cartProduct.quantity === cartProduct.stockQuantity ||
+                cartProduct.quantity === 999) &&
+                "opacity-50",
+            )}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="black"
+              className="size-5"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4.5v15m7.5-7.5h-15"
+              />
+            </svg>
+          </button>
+        </div>
+      );
+    }
+  };
   return (
     <div className={cn("flex items-center")}>
       <Link
@@ -63,12 +142,13 @@ export const OrderProductCard = ({ cartProduct }: TProps) => {
       </Link>
       <div
         className={cn(
-          "flex flex-wrap items-center justify-between md:flex-auto",
+          "flex flex-col justify-between gap-y-1 md:flex-auto md:flex-row md:items-center",
         )}
       >
         <div
           className={cn(
-            "flex shrink-0 basis-full flex-col gap-y-1 md:basis-[17.5rem]",
+            "flex shrink-0 basis-full flex-col gap-y-1",
+            isOrdering ? "md:basis-[22.5rem]" : "md:basis-[17.5rem]",
           )}
         >
           <Link
@@ -105,80 +185,23 @@ export const OrderProductCard = ({ cartProduct }: TProps) => {
             {formatPrice(cartProduct.price * cartProduct.quantity)}
           </span>
         </div>
-        <div className={cn("shrink-0 lg:ml-4 lg:mr-6")}>
+        <div
+          className={cn(
+            "shrink-0 lg:mr-6",
+            isOrdering ? "lg:ml-10" : "lg:ml-4",
+          )}
+        >
           {cartProduct.stockQuantity === 0 ? (
             <div className="text-base text-[#657384]">Hết hàng</div>
           ) : (
-            <div
-              className={cn(
-                "flex h-[1.875rem] flex-row rounded-full border border-solid border-[#D2D5D7]",
-              )}
-            >
-              <button
-                disabled={cartProduct.quantity === 1}
-                onClick={handleMinusButton}
-                className={cn(
-                  "flex h-full items-center px-1",
-                  cartProduct.quantity === 1 && "opacity-50",
-                )}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="black"
-                  className="size-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M5 12h14"
-                  />
-                </svg>
-              </button>
-              <div
-                className={cn(
-                  "flex h-full w-10 select-none items-center justify-center border-x border-solid border-[#D2D5D7] text-[0.9375rem] leading-[1.21] [appearance:textfield] focus:outline-none",
-                )}
-              >
-                {cartProduct.quantity}
-              </div>
-              <button
-                disabled={
-                  cartProduct.quantity === cartProduct.stockQuantity ||
-                  cartProduct.quantity === 999
-                }
-                onClick={handlePlusButton}
-                className={cn(
-                  "flex h-full items-center px-1",
-                  (cartProduct.quantity === cartProduct.stockQuantity ||
-                    cartProduct.quantity === 999) &&
-                    "opacity-50",
-                )}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="black"
-                  className="size-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 4.5v15m7.5-7.5h-15"
-                  />
-                </svg>
-              </button>
-            </div>
+            <QuantityButton />
           )}
         </div>
       </div>
       <div
         className={cn(
           "relative ml-3 flex shrink-0 items-center justify-center p-0.5 md:ml-4",
+          isOrdering ? "hidden" : "",
         )}
       >
         <RemoveProductDialog cartItemId={cartProduct.cartItemId} />

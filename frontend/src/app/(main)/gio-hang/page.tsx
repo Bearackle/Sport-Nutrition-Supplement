@@ -11,6 +11,7 @@ import emptyCart from "/public/empty-cart.png";
 export default function page() {
   const [data, setData] = useState<CartProductsType>([]);
   const [isAvailable, setIsAvailable] = useState(true);
+  const [isOrdering, setIsOrdering] = useState(true);
   console.log(isAvailable);
 
   useEffect(() => {
@@ -30,6 +31,14 @@ export default function page() {
     return data.reduce((acc, product) => {
       return acc + product.priceAfterSale * product.quantity;
     }, 0);
+  };
+
+  const handleOrderButton = () => {
+    if (isOrdering) {
+      // ...
+    } else {
+      // ...
+    }
   };
   if (data[0] === undefined) {
     return (
@@ -116,39 +125,41 @@ export default function page() {
           "mt-4 flex flex-col gap-y-4 xl:flex-row xl:justify-evenly",
         )}
       >
-        <div
-          className={cn(
-            "h-max w-full bg-white lg:rounded-[0.75rem] xl:w-[47.5rem]",
-          )}
-        >
-          <div
-            className={cn(
-              "flex flex-row items-center border-b border-solid border-[#D2D5D7] px-4 pb-2 pt-3 font-medium",
-            )}
-          >
-            <div className="ml-4 mr-auto">Sản phẩm</div>
-            <div className={cn("hidden basis-[6.875rem] text-center xl:block")}>
-              Giá thành
+        <div className="w-full xl:w-[47.5rem]">
+          <div className={cn("h-max w-full bg-white lg:rounded-[0.75rem]")}>
+            <div
+              className={cn(
+                "flex flex-row items-center border-b border-solid border-[#D2D5D7] px-4 pb-2 pt-3 font-medium",
+              )}
+            >
+              <div className="ml-4 mr-auto">Sản phẩm</div>
+              <div
+                className={cn("hidden basis-[6.875rem] text-center xl:block")}
+              >
+                Giá thành
+              </div>
+              <div
+                className={cn(
+                  "ml-8 hidden basis-[6.75rem] text-center xl:block",
+                  isOrdering ? "" : "mr-14",
+                )}
+              >
+                Số lượng
+              </div>
             </div>
             <div
               className={cn(
-                "ml-8 mr-14 hidden basis-[6.75rem] text-center xl:block",
+                "divide-y p-4 [&>*]:py-4 [&>:first-child]:pt-0 [&>:last-child]:pb-0",
               )}
             >
-              Số lượng
+              {data.map((cartProdcut) => (
+                <OrderProductCard
+                  key={cartProdcut.productId}
+                  cartProduct={cartProdcut}
+                  isOrdering={isOrdering}
+                />
+              ))}
             </div>
-          </div>
-          <div
-            className={cn(
-              "divide-y p-4 [&>*]:py-4 [&>:first-child]:pt-0 [&>:last-child]:pb-0",
-            )}
-          >
-            {data.map((cartProdcut) => (
-              <OrderProductCard
-                key={cartProdcut.productId}
-                cartProduct={cartProdcut}
-              />
-            ))}
           </div>
         </div>
         <div
@@ -257,12 +268,13 @@ export default function page() {
                   "linear-gradient(315deg, #1250dc 0%, #306de4 100%)",
               }}
             >
-              Mua hàng
+              {isOrdering ? "Hoàn tất" : "Mua hàng"}
             </button>
           </div>
           <div
             className={cn(
               "mt-3 text-center text-[0.8125rem] leading-[1.125rem] tracking-[0.02rem]",
+              isOrdering ? "hidden" : "",
             )}
           >
             <span>Bằng việc tiến hành đặt mua hàng, bạn đồng ý với </span>

@@ -15,7 +15,7 @@ export type CartProductType = {
   price: number;
   variantId: number;
   variantName: string;
-  stockQuantity: number;
+  stockQuantity?: number;
   quantity: number;
 };
 
