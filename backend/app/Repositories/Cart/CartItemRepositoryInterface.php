@@ -9,4 +9,5 @@ interface CartItemRepositoryInterface extends RepositoryInterface{
     public function getProductByCartID($cartId);
     public function getComboByCartID($cartId);
     public function emptyCart($cartId);
+    public function upadateVersion($cartId, $variantId,$version);
 }

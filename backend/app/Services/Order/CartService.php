@@ -35,6 +35,29 @@ class CartService implements CartServiceInterface
     public function getItems(ShoppingCartInputData $cart){
         return $this->cartRepository->getCartItems($cart->cart_id);
     }
+    public function updateCartItemsVersion(ShoppingCartInputData $cart){
+        $items = $this->cartRepository->getCartItems($cart->cart_id);
+        foreach($items->variants as $item){
+            $currentVersion = $item->version;
+            $version = $item->pivot->version;
+            if($currentVersion != $version){
+                $this->cartItemRepository->upadateVersion($cart->cart_id, $item->variant_id,$currentVersion);
+            }
+        }
+        return $items;
+    }
+    public function checkCartItemsVersion(ShoppingCartInputData $cart) : bool
+    {
+        $items = $this->cartRepository->getCartItems($cart->cart_id);
+        foreach($items->variants as $item){
+            $currentVersion = $item->version;
+            $version = $item->pivot->version;
+            if($currentVersion != $version){
+               return false;
+            }
+        }
+        return true;
+    }
     public function createCart(\App\DTOs\InputData\ShoppingCartInputData $cart): ShoppingCartOutputData
     {
         return ShoppingCartOutputData::from($this->cartRepository->create($cart->all()));

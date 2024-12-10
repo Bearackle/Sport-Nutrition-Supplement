@@ -18,7 +18,7 @@ class ProductVariant extends Model
 {
     use HasFactory;
     protected $table = 'product_variants';
-    protected $fillable = ['product_id','variant_name','stock_quantity'];
+    protected $fillable = ['product_id','variant_name','stock_quantity','version'];
     protected $primaryKey = 'variant_id';
     public $timestamps = false;
     public function product(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -42,8 +42,14 @@ class ProductVariant extends Model
     {
         return $this->belongsToMany(Order::class, 'order_details','variant_id','order_id');
     }
-//    protected static function booted() : void
-//    {
-//        static::addGlobalScope(new VariantDataScope);
-//    }
+    protected static function booted() : void
+    {
+        // static::addGlobalScope(new VariantDataScope);
+        static::updating(function ($variant) {
+            if ($variant->isDirty('stock_quantity')) {
+                $variant->version = $variant->version + 1;
+            }
+        });
+    }
+
 }

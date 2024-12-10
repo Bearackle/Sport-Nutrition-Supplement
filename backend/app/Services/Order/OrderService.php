@@ -6,6 +6,7 @@ use App\DTOs\InputData\AddressInputData;
 use App\DTOs\InputData\OrderInputData;
 use App\DTOs\InputData\PaymentInputData;
 use App\DTOs\InputData\ShippingMethodInputData;
+use App\DTOs\InputData\ShoppingCartInputData;
 use App\DTOs\InputData\UserInputData;
 use App\DTOs\OutputData\OrderOutputData;
 use App\DTOs\OutputData\PaymentOutputData;
@@ -13,11 +14,13 @@ use App\Enum\OrderStatus;
 use App\Enum\PaymentMethod;
 use App\Enum\ShipMethod;
 use App\Events\addShippingCharges;
+use App\Jobs\OrderStockQuantity;
 use App\Models\Address;
 use App\Repositories\Address\AddressRepositoryInterface;
 use App\Repositories\Cart\CartRepositoryInterface;
 use App\Repositories\Order\OrderDetailRepositoryInterface;
 use App\Repositories\Order\OrderRepositoryInterface;
+use App\Repositories\Product\ProductVariantRepositoryInterface;
 use App\Services\Address\AddressServiceInterface;
 
 class OrderService implements OrderServiceInterface
@@ -29,11 +32,12 @@ class OrderService implements OrderServiceInterface
     protected PaymentServiceInterface $payment_service;
     protected AddressRepositoryInterface $address_repository;
     protected AddressServiceInterface $address_service;
+    protected ProductVariantRepositoryInterface $product_variant_repository;
 
     public function __construct(OrderRepositoryInterface $order_repository,
                                 OrderDetailRepositoryInterface $order_detail_repository,CartServiceInterface $cart_service, CartRepositoryInterface
                                 $cart_repository, PaymentServiceInterface $payment_service, AddressRepositoryInterface $address_repository,
-    AddressServiceInterface $address_service)
+    AddressServiceInterface $address_service,ProductVariantRepositoryInterface $product_variant_repository)
     {
         $this->order_repository = $order_repository;
         $this->order_detail_repository = $order_detail_repository;
@@ -42,6 +46,7 @@ class OrderService implements OrderServiceInterface
         $this->payment_service = $payment_service;
         $this->address_repository = $address_repository;
         $this->address_service  = $address_service;
+        $this->product_variant_repository= $product_variant_repository;
     }
     public function getOrderData(OrderInputData $order)
     {
@@ -58,6 +63,7 @@ class OrderService implements OrderServiceInterface
             'status' => OrderStatus::PENDING,
             ];
         $new_order = $this->order_repository->create($new_order_make);
+        $this->decreaseQuantity($items,$new_order);
         $this->createOrderItems($new_order,$items);
         $data = $this->order_repository->getOrderWithProducts($new_order->order_id);
         return $data;
@@ -135,5 +141,23 @@ class OrderService implements OrderServiceInterface
     public function getAllOrders(): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
     {
         return OrderOutputData::collect($this->order_repository->getAllOrders()->paginate(10));
+    }
+
+    public function checkItemsQuantity(UserInputData $user)
+    {
+        $cart = $this->cart_service->getCart($user);
+        return $this->cart_service->checkCartItemsVersion(ShoppingCartInputData::from($cart));
+    }
+    public function decreaseQuantity($items,$order): void
+    {
+        $data = [];
+        foreach($items->variants as $item){
+            $data[$item->variant_id] = $item->pivot->quantity;
+            $variant = $this->product_variant_repository->find($item->variant_id);
+            $variant->update(['stock_quantity' => $variant->stock_quantity - $item->pivot->quantity]);
+            $product = $variant->product;
+            $product->update(['stock_quantity' => $product->stock_quantity - $item->pivot->quantity]);
+        }
+        OrderStockQuantity::dispatch($data,$order,$this->order_repository)->delay(30*60);
     }
 }

@@ -89,7 +89,8 @@ class CartController extends Controller
         /**@var User $user**/
         $user = auth()->user();
         $cart = $this->cartService->getCart(UserInputData::from(['user_id' => $user->user_id]));
-        $cartWithItems = $this->cartService->getItems(ShoppingCartInputData::validateAndCreate(['cart_id' => $cart->cart_id]));
+        $cartWithItems = $this->cartService->updateCartItemsVersion(ShoppingCartInputData::validateAndCreate(['cart_id' => $cart->cart_id]));
+//        $cartWithItems = $this->cartService->getItems(ShoppingCartInputData::validateAndCreate(['cart_id' => $cart->cart_id]));
         return new CartItemsResource($cartWithItems);
     }
     /**

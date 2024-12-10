@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
 class CartItem extends Model
 {
     use HasFactory;
-    protected $fillable = ['cart_id','product_id_fk','variant_id_fk','combo_id_fk','quantity'];
+    protected $fillable = ['cart_id','product_id_fk','variant_id_fk','combo_id_fk','quantity','version'];
     protected $primaryKey = 'cart_item_id';
     protected $table = 'cart_items';
     public $timestamps = false;

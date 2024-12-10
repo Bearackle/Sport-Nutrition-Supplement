@@ -6,6 +6,7 @@ use App\DTOs\InputData\OrderInputData;
 use App\DTOs\InputData\PaymentInputData;
 use App\DTOs\OutputData\OrderOutputData;
 use App\DTOs\OutputData\PaymentOutputData;
+use App\Enum\OrderStatus;
 use App\Enum\PaymentMethod;
 use App\Enum\PaymentStatus;
 use App\Models\Order;
@@ -44,5 +45,11 @@ class PaymentService implements PaymentServiceInterface
     public function createPayment(OrderInputData $order)
     {
         $orderData = $this->orderRepository->find($order->order_id);
+    }
+    public function updateSuccessStatus($orderData,PaymentStatus $paymentStatus): void
+    {
+        $order = $this->orderRepository->find($orderData['order_id']);
+        $order->update(['order_status' => OrderStatus::SHIPPED->value]);
+        $order->payment->update(['payment_status' => $paymentStatus->value]);
     }
 }

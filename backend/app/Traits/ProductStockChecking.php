@@ -43,9 +43,23 @@ trait ProductStockChecking
     public function soldProductVariants($variantId, $quantity) : void {
         $variant = $this->productVariantRepository->find($variantId);
         $this->productRepository->decreaseQuantity($variant->product_id, $quantity);
-        $this->productVariantRepository->decreaseStock($variant->product_id, $variant->stock_quantity);
+        $this->productVariantRepository->decreaseStock($variant->product_id, $quantity);
     }
     public function soldProduct($productId, $quantity) : void {
         $this->productRepository->increaseQuantity($productId, $quantity);
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function returnQuantity($variantIdsWithQuantity): void
+    {
+        foreach ($variantIdsWithQuantity as $variantId => $quantity){
+            $variant = $this->productVariantRepository->find($variantId);
+            if(!$variant)
+                throw new \Exception("Variant not found");
+            $variant->update(['stock_quantity' => $variant->stock_quantity + $quantity]);
+            $this->productRepository->increaseQuantity($variant->product_id, $quantity);
+        }
     }
 }

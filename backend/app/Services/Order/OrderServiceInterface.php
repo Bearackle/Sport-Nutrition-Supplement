@@ -22,4 +22,5 @@ interface OrderServiceInterface
     public function addAddress(OrderInputData $order, AddressInputData $address);
     public function addPaymentMethod(PaymentInputData $payment);
     public function addShippingMethod(OrderInputData $order, ShippingMethodInputData $ship);
+    public function checkItemsQuantity(UserInputData $user);
 }

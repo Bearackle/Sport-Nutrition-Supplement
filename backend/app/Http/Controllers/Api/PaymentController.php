@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\DTOs\InputData\OrderInputData;
 use App\DTOs\OutputData\OrderOutputData;
+use App\Enum\PaymentStatus;
 use App\Http\Controllers\Controller;
 use App\Jobs\SendEmail;
 use App\Mail\MailPaymentComplelete;
@@ -284,6 +285,7 @@ class PaymentController extends Controller
     public function success(string $data): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         $orderData = json_decode($this->aesCodeService->decryptAES($data),true);
+        $this->paymentService->updateSuccessStatus($orderData,PaymentStatus::PAID);
         $this->sendMail($orderData['order_id']);
         return view('SuccessPayment');
     }
@@ -325,11 +327,13 @@ class PaymentController extends Controller
     public function internetBanking(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
+        $this->paymentService->updateSuccessStatus($request->input('orderId'),PaymentStatus::PENDING);
         return view('InternetBanking',['payment' => $payment,'data' => $request->input('data')]);
     }
     public function codPayment(Request $request): \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application
     {
         $this->sendMail($request->input('orderId'));
+        $this->paymentService->updateSuccessStatus(['order_id' => $request->input('orderId')],PaymentStatus::PENDING);
         return view('SuccessOrdered');
     }
 }

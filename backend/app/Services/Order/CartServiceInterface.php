@@ -15,4 +15,6 @@ interface CartServiceInterface
     public function deleteCartItem(CartItemInputData $cartItem);
     public function updateCartItemQuantity(CartItemInputData $cartItem);
     public function emptyCart(ShoppingCartInputData $cart);
+    public function updateCartItemsVersion(ShoppingCartInputData $cart);
+    public function checkCartItemsVersion(ShoppingCartInputData $cart);
 }

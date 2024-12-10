@@ -36,4 +36,9 @@ class CartItemRepository extends BaseRepository implements CartItemRepositoryInt
         return (new \App\Models\CartItem)->where('cart_id',$cartId)
             ->delete();
     }
+    public function upadateVersion($cartId, $variantId,$version){
+        return (new \App\Models\CartItem)->where('cart_id',$cartId)
+            ->where('variant_id_fk',$variantId)
+            ->update(['version'=>$version]);
+    }
 }

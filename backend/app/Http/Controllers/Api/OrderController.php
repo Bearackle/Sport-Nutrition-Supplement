@@ -18,6 +18,7 @@ use App\Services\Order\OrderServiceInterface;
 use App\Services\Order\PaymentServiceInterface;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Arr;
@@ -79,11 +80,18 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function store(Request $request): OrderResourceComplex
+    public function store(Request $request): OrderResourceComplex | JsonResponse
     {
         $this->authorize('create', Order::class);
         /**@var User $user**/
         $user = auth()->user();
+        $isValid = $this->orderService->checkItemsQuantity(UserInputData::from($user));
+        if(!$isValid){
+            return response()->json([
+                'errors' => 'Conflict occurred',
+                'message' => 'Please refresh the page and try again'
+            ]);
+        }
         $order = $this->orderService->createOrder(
             UserInputData::validateAndCreate(['user_id' => $user->user_id]));
         return new OrderResourceComplex($order);

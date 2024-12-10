@@ -29,7 +29,7 @@ class ShoppingCart extends Model
     public function variants(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(ProductVariant::class,'cart_items','cart_id','variant_id_fk')
-            ->withPivot('cart_item_id','quantity');
+            ->withPivot('cart_item_id','quantity','version');
     }
     public function combos(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
