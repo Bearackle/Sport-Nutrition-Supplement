@@ -16,6 +16,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Services\Order\OrderServiceInterface;
 use App\Services\Order\PaymentServiceInterface;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\JsonResponse;
@@ -90,7 +91,7 @@ class OrderController extends Controller
             return response()->json([
                 'errors' => 'Conflict occurred',
                 'message' => 'Please refresh the page and try again'
-            ]);
+            ],400);
         }
         $order = $this->orderService->createOrder(
             UserInputData::validateAndCreate(['user_id' => $user->user_id]));
@@ -304,7 +305,7 @@ class OrderController extends Controller
      *  @OA\Response (response=500, description="Lỗi dịch vụ",@OA\JsonContent())
      * )
      */
-    public function addOrderContent(Request $request): OrderResource
+    public function addOrderContent(Request $request): JsonResponse
     {
         $this->authorize('create' , Order::class);
         /**@var User $user **/
@@ -315,12 +316,15 @@ class OrderController extends Controller
 
         $this->orderService->addAddress(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId'),'user_id' => $user->user_id]),
             AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
-
-        $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
-            ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
         if($request->has('note')){
             $this->orderService->updateOrder(OrderInputData::from(['order_id' => $request->input('orderId'),'note' => $request->input('note')]));
         }
-        return new OrderResource($order);
+        $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
+            ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
+
+        $redirectedUrl = $this->paymentService->getCheckOutUrl($order->order_id);
+        $orderResource = new OrderResource($order);
+        $resource = array_merge($orderResource->resolve(),['redirectUrl' => $redirectedUrl]);
+        return response()->json($resource);
     }
 }

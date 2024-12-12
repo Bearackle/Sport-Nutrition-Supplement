@@ -64,6 +64,13 @@ class CartService implements CartServiceInterface
     }
     public function addCartItem(CartItemInputData $cartItem): CartItemOutputData
     {
+        $cart = $this->getItems(ShoppingCartInputData::validateAndCreate(['cart_id' => $cartItem->cart_id]));
+        foreach($cart->variants as $item){
+            if($item->variant_id == $cartItem->variant_id_fk){
+               $item->pivot->update(['quantity' => $item->pivot->quantity + $cartItem->quantity]);
+               return CartItemOutputData::from($item->pivot);
+            }
+        }
         return CartItemOutputData::from($this->cartItemRepository->create($cartItem->all()));
     }
     public function deleteCartItem(CartItemInputData $cartItem) : void

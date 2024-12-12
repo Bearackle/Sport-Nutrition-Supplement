@@ -15,4 +15,5 @@ interface PaymentServiceInterface
     public function getPaymentData(OrderInputData $order);
     public function createPayment(OrderInputData $order);
     public function updateSuccessStatus($orderData,PaymentStatus $paymentStatus);
+    public function getCheckOutUrl($orderId);
 }

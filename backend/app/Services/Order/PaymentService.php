@@ -13,17 +13,22 @@ use App\Models\Order;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\Order\OrderRepositoryInterface;
 use App\Repositories\Payment\PaymentRepositoryInterface;
+use App\Services\User\AESCodeServiceInterface;
+use Carbon\Carbon;
 use http\Env\Request;
 
 class PaymentService implements PaymentServiceInterface
 {
     protected PaymentRepositoryInterface $paymentRepository;
     protected OrderRepositoryInterface $orderRepository;
+    protected AESCodeServiceInterface $aesCodeService;
 
-    public function __construct(PaymentRepositoryInterface $paymentRepository, OrderRepositoryInterface $orderRepository)
+    public function __construct(PaymentRepositoryInterface $paymentRepository, OrderRepositoryInterface $orderRepository,
+    AESCodeServiceInterface $aesCodeService)
     {
         $this->paymentRepository = $paymentRepository;
         $this->orderRepository = $orderRepository;
+        $this->aesCodeService = $aesCodeService;
     }
 
     public function addPaymentMethod(PaymentInputData $payment): PaymentOutputData
@@ -51,5 +56,12 @@ class PaymentService implements PaymentServiceInterface
         $order = $this->orderRepository->find($orderData['order_id']);
         $order->update(['order_status' => OrderStatus::SHIPPED->value]);
         $order->payment->update(['payment_status' => $paymentStatus->value]);
+    }
+    public function getCheckOutUrl($orderId): string
+    {
+        $data = json_encode(['order_id' => $orderId,
+            'ttl' => Carbon::now()->addMinutes(30)->timestamp]);
+        $encryptOrderData = $this->aesCodeService->encryptAES($data);
+        return route('payment.check-out', ['data' => $encryptOrderData]);
     }
 }
