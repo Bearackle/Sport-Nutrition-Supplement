@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             categories_table_default_data::class,
             seed_admin_account::class,
             RolesAndPermissionsSeeder::class,
+            add_missing_categories::class
         ]);
     }
 }
