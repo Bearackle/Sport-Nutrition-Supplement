@@ -88,8 +88,8 @@ class PaymentController extends Controller
         $payment = $this->paymentService->getPaymentData(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')]));
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         $vnp_Returnurl = "https://dinhhuan.id.vn/payment/success/".$request->input('data');
-        $vnp_TmnCode = "YHR1DK4Y";//Mã website tại VNPAY
-        $vnp_HashSecret = "3NSOGGL258PLOFC4KDPAVK4AK64TTWM2"; //Chuỗi bí mật
+        $vnp_TmnCode = getenv('VNP_TMN_CODE');//Mã website tại VNPAY
+        $vnp_HashSecret = getenv('VNP_HASH_SECRET'); //Chuỗi bí mật
         $vnp_TxnRef = '#HD'.$request->input('orderId');
         $vnp_OrderInfo = 'Thanh toán đơn hàng';
         $vnp_OrderType = 'billpayment';
