@@ -27,3 +27,25 @@ export type TParamsOrder = {
   totalAmount: number;
   status: string;
 };
+
+export type OrderHistoryType = {
+  orderId: number;
+  createdDate: string;
+  totalAmount: number;
+  note: string | null;
+  status: "CANCELLED" | "PENDING" | "SHIPPING" | "SUCCESS";
+  addressDetail: string | null;
+  shipmentCharges: number | null;
+  products: {
+    productId: number;
+    variantId: number;
+    variantName: string;
+    productName: string;
+    price: number;
+    priceAfterSale: number;
+    quantity: number;
+    image: string;
+  }[];
+};
+
+export type OrderHistoryResType = OrderHistoryType[];

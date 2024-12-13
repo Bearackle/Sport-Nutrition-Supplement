@@ -1,38 +1,19 @@
-import { TParamsOrderHistory } from "@/types/order-history";
+"use client";
+import cartApiRequests from "@/apiRequests/cart";
+import { OrderHistoryResType } from "@/types/order-history";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import OrderCard from "./OrderCard";
 import emptyBox from "/public/empty-box.png";
 
-const data: TParamsOrderHistory | null = [
-  {
-    orderId: 1,
-    products: [
-      {
-        productId: 1,
-        productName: "Nutrex Plant Protein - Protein Thực Vật (1.2 LBS)",
-        variant: "Chocolate",
-        productImage:
-          "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
-        quantity: 1,
-        price: 1579000,
-      },
-      {
-        productId: 1,
-        productName: "Nutrex Plant Protein - Protein Thực Vật (1.2 LBS)",
-        variant: "Cream",
-        productImage:
-          "https://bizweb.dktcdn.net/thumb/1024x1024/100/398/814/products/40395b14-a1c0-425b-8003-798cdda053e9.jpg?v=1672752142887",
-        quantity: 3,
-        price: 1579000,
-      },
-    ],
-    orderDate: "2024-11-02T02:48:00.000Z",
-    totalAmount: 6316000,
-    status: "Giao hàng thành công",
-  },
-];
-
 const OrderHistorySection = () => {
+  const [data, setData] = useState<OrderHistoryResType>([]);
+
+  useEffect(() => {
+    cartApiRequests.getAllOrders().then((res) => {
+      setData(res.payload);
+    });
+  }, []);
   if (!data[0]) {
     return (
       <div className="mt-[0.75em] flex h-[25em] w-full flex-col items-center justify-center gap-[0.5em] rounded-[0.625em] bg-white md:h-[30em]">
@@ -56,8 +37,9 @@ const OrderHistorySection = () => {
         <div className="shrink-0 basis-[8em]">Trạng thái</div>
       </div>
       <div className="divide-y md:px-[1em]">
-        <OrderCard order={data[0]} />
-        <OrderCard order={data[0]} />
+        {data.map((order, index) => (
+          <OrderCard key={index} order={order} />
+        ))}
       </div>
     </div>
   );

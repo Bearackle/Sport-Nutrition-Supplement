@@ -6,6 +6,7 @@ import {
   OrderContentResType,
   OrderRequestResType,
 } from "@/types/cart";
+import { OrderHistoryResType } from "@/types/order-history";
 
 const cartApiRequests = {
   // Cart
@@ -18,6 +19,7 @@ const cartApiRequests = {
     http.delete(`/cart/item/${cartItemId}`),
 
   // Order
+  getAllOrders: () => http.get<OrderHistoryResType>("/order/all"),
   createOrder: () => http.post<OrderRequestResType>("/order/create", {}),
   addOrderContent: (body: OrderContentBodyType) =>
     http.post<OrderContentResType>("/order/content", body),

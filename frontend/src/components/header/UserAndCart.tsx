@@ -13,7 +13,7 @@ import accountIcon from "/public/account-icon.svg";
 import cartIcon from "/public/cart-icon.svg";
 
 export const UserAndCart = () => {
-  const { user, isAuthenticated } = useAppContext();
+  const { user } = useAppContext();
   const MobileUser = () => {
     if (user) {
       return (
@@ -59,7 +59,7 @@ export const UserAndCart = () => {
       <MobileUser />
       <div>
         <Link
-          href={isAuthenticated ? "/gio-hang" : "/dang-nhap"}
+          href="/gio-hang"
           className="flex flex-row items-center gap-2 rounded-[3.125rem] px-4 py-2 lg:bg-[#1250DC]"
         >
           <Image src={cartIcon} alt="" className="size-5 xs:size-7" />
