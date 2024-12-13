@@ -25,8 +25,8 @@ public static function equals(string $label): OrderStatus
     $name = strtoupper($label);
     $value =  match($name){
         'PENDING' => 0,
-        'SHIPPED' => 1,
-        'DELIVERED' => 2,
+        'SHIPPING' => 1,
+        'SUCCESS' => 2,
         'CANCELLED' => 3,
     };
     return OrderStatus::tryFrom($value);
