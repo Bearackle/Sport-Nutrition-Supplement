@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Hướng dẫn Thanh Toán",
+};
 
 export default function page() {
   return (

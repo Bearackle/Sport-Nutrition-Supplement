@@ -15,10 +15,10 @@ export const ProductImages = ({ images }: { images: string[] }) => {
         >
           <Image
             src={images[0]}
-            alt={`Product image`}
+            alt="Product image"
             width={360}
             height={360}
-            className={cn("h-auto w-auto", "max-h-full max-w-full")}
+            className="h-auto max-h-full w-auto max-w-full select-none"
           />
         </div>
       </div>
@@ -43,7 +43,7 @@ export const ProductImages = ({ images }: { images: string[] }) => {
                 width={360}
                 height={360}
                 className={cn(
-                  "h-auto w-auto",
+                  "h-auto w-auto select-none",
                   "max-h-[70%] max-w-full xs:max-h-[20rem] xs:max-w-[20rem]",
                 )}
               />

@@ -1,4 +1,9 @@
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Chính Sách Đổi Trả Hàng, Hoàn Tiền",
+};
 
 export default function page() {
   return (

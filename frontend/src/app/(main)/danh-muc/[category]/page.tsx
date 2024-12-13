@@ -2,9 +2,36 @@ import FilterBar from "@/components/product-list/FilterBar";
 import ProductCategoryList from "@/components/product-list/ProductCategoryList";
 import { ProductListBreadcrumb } from "@/components/product-list/ProductListBreadcrumb";
 import ProductSection from "@/components/product-list/ProductSection";
+import { categories } from "@/data/category";
 import { cn } from "@/lib/utils";
+import { Metadata, ResolvingMetadata } from "next";
 
-const page = async ({ params }: { params: { category: string } }) => {
+type TProps = {
+  params: {
+    category: string;
+  };
+};
+
+export async function generateMetadata(
+  { params }: TProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const category = params.category;
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title:
+      category === "tat-ca-san-pham"
+        ? "Tất cả sản phẩm"
+        : category === "tim-kiem"
+          ? "Tra cứu sản phẩm"
+          : categories[category as unknown as keyof typeof categories],
+    openGraph: {
+      images: [...previousImages],
+    },
+  };
+}
+
+const page = async ({ params }: TProps) => {
   return (
     <div className="relative w-full leading-[1.21]">
       <div className="mx-auto w-full max-w-[75rem] space-y-4 py-4 xs:py-8 xl:w-full">
