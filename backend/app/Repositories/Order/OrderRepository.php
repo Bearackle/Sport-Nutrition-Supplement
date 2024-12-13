@@ -14,11 +14,15 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     }
     public function getAllOrdersByUserID($userId): \Illuminate\Database\Eloquent\Collection
     {
-        return (new \App\Models\Order)->where('user_id',$userId)->
-        OrderBy('order_date','desc')
+        return (new \App\Models\Order)->where('user_id',$userId)
+            ->orderBy('order_date', 'desc') // Đúng cú pháp orderBy
             ->with(['variants' => function ($variant) {
-                $variant->with(['product','image']);
-            }])->get();
+                $variant->with('image') // Đúng cú pháp
+                ->with(['product' => function ($product) {
+                    $product->with('images'); // Đúng cú pháp
+                }]);
+            }])
+            ->get();
     }
     public function getLatestOrder($userId)
     {

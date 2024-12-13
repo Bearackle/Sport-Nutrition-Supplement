@@ -25,7 +25,7 @@ class OrderAllResrouce extends JsonResource
             'status' => OrderStatus::tryFrom($this->status)->label(),
             'addressDetail' => $this->address_detail instanceof Optional ? null : $this->address_detail,
             'shipmentCharges' =>  $this->shipment_charges instanceof Optional ? null : $this->shipment_charges,
-            'products' => OrderProductsResource::collection($this->variants)
+            'products' => OrderProductsWithImagesResource::collection($this->variants)
         ];
     }
     public function withResponse(Request $request,JsonResponse $response): void
