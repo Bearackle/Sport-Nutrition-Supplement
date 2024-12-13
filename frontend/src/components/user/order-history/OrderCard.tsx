@@ -5,12 +5,20 @@ import {
   getVietnameseDate,
   getVietnameseTime,
 } from "@/lib/utils";
-import { TParamsOrder } from "@/types/order-history";
+import { OrderHistoryType } from "@/types/order-history";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
+const STATUS = {
+  CANCELLED: "Đã hủy",
+  PENDING: "Đang xử lý",
+  SHIPPING: "Đang giao hàng",
+  SUCCESS: "Giao hàng thành công",
+};
+
 type TProps = {
-  order: TParamsOrder;
+  order: OrderHistoryType;
 };
 
 const OrderCard = ({ order }: TProps) => {
@@ -32,7 +40,7 @@ const OrderCard = ({ order }: TProps) => {
             >
               <div className="flex size-[3.5em] items-center justify-center rounded-[0.375em] border border-solid">
                 <Image
-                  src={product.productImage}
+                  src={product.image}
                   alt={product.productName}
                   width={48}
                   height={48}
@@ -40,11 +48,14 @@ const OrderCard = ({ order }: TProps) => {
                 />
               </div>
               <div className="ml-[0.5em] grow">
-                <p className="line-clamp-1 text-[0.9375em] leading-[1.3]">
+                <Link
+                  href={`/san-pham/${product.productId}`}
+                  className="line-clamp-1 text-[0.9375em] leading-[1.3]"
+                >
                   {product.productName}
-                </p>
+                </Link>
                 <p className="line-clamp-1 text-[0.875em] leading-[1.3]">
-                  {product.variant}
+                  {product.variantName}
                 </p>
                 <p className="overflow-hidden text-[0.8em] leading-[1.3]">
                   SL: {product.quantity}
@@ -82,10 +93,10 @@ const OrderCard = ({ order }: TProps) => {
       >
         <div className="shrink-0 text-left md:w-auto md:basis-[7em] md:text-center">
           <div className="text-[0.9375em]">
-            {getVietnameseDate(order.orderDate)}
+            {getVietnameseDate(order.createdDate)}
           </div>
           <div className="text-[0.875em]">
-            {getVietnameseTime(order.orderDate)}
+            {getVietnameseTime(order.createdDate)}
           </div>
         </div>
         <div className={cn("flex flex-col md:contents")}>
@@ -97,8 +108,16 @@ const OrderCard = ({ order }: TProps) => {
           >
             {formatPrice(order.totalAmount)}
           </div>
-          <div className="shrink-0 text-right text-[0.9375em] md:w-auto md:basis-[8em] md:text-center">
-            {order.status}
+          <div
+            className={cn(
+              "shrink-0 text-right text-[0.9375em] font-medium md:w-auto md:basis-[8em] md:text-center",
+              order.status === "SUCCESS" && "text-green-500",
+              order.status === "CANCELLED" && "text-red-500",
+              order.status === "PENDING" && "text-yellow-500",
+              order.status === "SHIPPING" && "text-blue-500",
+            )}
+          >
+            {STATUS[order.status]}
           </div>
         </div>
       </div>

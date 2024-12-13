@@ -1,17 +1,32 @@
 "use client";
 import cartApiRequests from "@/apiRequests/cart";
+import { OrderAddress } from "@/components/cart/OrderAddress";
+import { OrderPaymentMethod } from "@/components/cart/OrderPaymentMethod";
 import { OrderProductCard } from "@/components/cart/OrderProductCard";
-import { cn, formatPrice } from "@/lib/utils";
-import { CartProductsType } from "@/types/cart";
+import { OrderShippingMethod } from "@/components/cart/OrderShippingMethod";
+import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { cn, formatPrice, handleErrorApi } from "@/lib/utils";
+import { CartProductsType, OrderRequestResType } from "@/types/cart";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import emptyCart from "/public/empty-cart.png";
 
 export default function page() {
+  const { toast } = useToast();
   const [data, setData] = useState<CartProductsType>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOrdering, setIsOrdering] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
-  console.log(isAvailable);
+  const [orderData, setOrderData] = useState<OrderRequestResType>();
+
+  // Order Information
+  const [address, setAddress] = useState("");
+  const [note, setNote] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("INTERNET_BANKING");
+  const [shippingMethod, setShippingMethod] = useState("TPHCM");
 
   useEffect(() => {
     cartApiRequests.getCartProducts().then((res) => {
@@ -30,6 +45,40 @@ export default function page() {
     return data.reduce((acc, product) => {
       return acc + product.priceAfterSale * product.quantity;
     }, 0);
+  };
+
+  const handleOrderButton = async () => {
+    setIsLoading(true);
+    if (isOrdering) {
+      try {
+        const result = await cartApiRequests.addOrderContent({
+          orderId: orderData?.orderId || 0,
+          paymentMethod: paymentMethod,
+          addressDetail: address,
+          method: shippingMethod,
+          note,
+        });
+        window.location.href = result.payload.redirectUrl;
+      } catch (error) {
+        handleErrorApi({ error });
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      try {
+        const result = await cartApiRequests.createOrder();
+        setOrderData(result.payload);
+      } catch (error: any) {
+        toast({
+          variant: "destructive",
+          title: "Lỗi không xác định, vui lòng thử lại sau",
+          description: error?.payload.message,
+        });
+      } finally {
+        setIsLoading(false);
+        setIsOrdering(true);
+      }
+    }
   };
   if (data[0] === undefined) {
     return (
@@ -89,6 +138,7 @@ export default function page() {
         "mx-auto min-h-[80vh] w-full max-w-[75rem] pb-12 pt-4 text-[#333] lg:w-[95%] xl:w-full xl:py-12",
       )}
     >
+      <CustomLoadingAnimation isLoading={isLoading} />
       <Link
         href="/"
         className={cn(
@@ -116,41 +166,65 @@ export default function page() {
           "mt-4 flex flex-col gap-y-4 xl:flex-row xl:justify-evenly",
         )}
       >
-        <div
-          className={cn(
-            "h-max w-full bg-white lg:rounded-[0.75rem] xl:w-[47.5rem]",
-          )}
-        >
-          <div
-            className={cn(
-              "flex flex-row items-center border-b border-solid border-[#D2D5D7] px-4 pb-2 pt-3 font-medium",
-            )}
-          >
-            <div className="ml-4 mr-auto">Sản phẩm</div>
-            <div className={cn("hidden basis-[6.875rem] text-center xl:block")}>
-              Giá thành
+        <div className="w-full space-y-6 xl:w-[47.5rem]">
+          <div className={cn("h-max w-full bg-white lg:rounded-[0.75rem]")}>
+            <div
+              className={cn(
+                "flex flex-row items-center border-b border-solid border-[#D2D5D7] px-4 pb-2 pt-3 font-medium",
+              )}
+            >
+              <div className="ml-4 mr-auto">Sản phẩm</div>
+              <div
+                className={cn("hidden basis-[6.875rem] text-center xl:block")}
+              >
+                Giá thành
+              </div>
+              <div
+                className={cn(
+                  "ml-8 hidden basis-[6.75rem] text-center xl:block",
+                  isOrdering ? "" : "mr-14",
+                )}
+              >
+                Số lượng
+              </div>
             </div>
             <div
               className={cn(
-                "ml-8 mr-14 hidden basis-[6.75rem] text-center xl:block",
+                "divide-y p-4 [&>*]:py-4 [&>:first-child]:pt-0 [&>:last-child]:pb-0",
               )}
             >
-              Số lượng
+              {data.map((cartProdcut) => (
+                <OrderProductCard
+                  key={cartProdcut.productId}
+                  cartProduct={cartProdcut}
+                  isOrdering={isOrdering}
+                />
+              ))}
             </div>
           </div>
-          <div
-            className={cn(
-              "divide-y p-4 [&>*]:py-4 [&>:first-child]:pt-0 [&>:last-child]:pb-0",
-            )}
-          >
-            {data.map((cartProdcut) => (
-              <OrderProductCard
-                key={cartProdcut.productId}
-                cartProduct={cartProdcut}
+
+          {/* When isOrdering is true, show Order Infomation components */}
+          {isOrdering && (
+            <>
+              <OrderAddress
+                address={address}
+                setAddress={setAddress}
+                note={note}
+                setNote={setNote}
               />
-            ))}
-          </div>
+              <OrderPaymentMethod
+                paymentMethod={paymentMethod}
+                setPaymentMethod={setPaymentMethod}
+              />
+              <OrderShippingMethod
+                shippingMethod={shippingMethod}
+                setShippingMethod={setShippingMethod}
+              />
+            </>
+          )}
         </div>
+
+        {/* Order Summary */}
         <div
           className={cn(
             "h-max w-full bg-white p-3 lg:rounded-[0.75rem] xl:w-[23.375rem]",
@@ -248,21 +322,26 @@ export default function page() {
                 </span>
               </div>
             </div>
-            <button
+            <Button
               className={cn(
-                "mt-3 w-full rounded-[2.625rem] bg-[#0037c1] px-6 py-3 text-base font-medium tracking-[0.005rem] text-white active:!bg-none lg:ml-auto lg:w-[20rem] xl:ml-0 xl:w-full",
+                "mt-3 h-auto w-full rounded-[2.625rem] !bg-[#0037c1] px-6 py-3 text-base font-medium tracking-[0.005rem] text-white",
+                "lg:ml-auto lg:w-[20rem] xl:ml-0 xl:w-full",
+                "active:!bg-none",
               )}
+              disabled={isOrdering ? !address : !isAvailable}
+              onClick={handleOrderButton}
               style={{
                 backgroundImage:
                   "linear-gradient(315deg, #1250dc 0%, #306de4 100%)",
               }}
             >
-              Mua hàng
-            </button>
+              {isOrdering ? "Hoàn tất" : "Mua hàng"}
+            </Button>
           </div>
           <div
             className={cn(
               "mt-3 text-center text-[0.8125rem] leading-[1.125rem] tracking-[0.02rem]",
+              isOrdering ? "hidden" : "",
             )}
           >
             <span>Bằng việc tiến hành đặt mua hàng, bạn đồng ý với </span>

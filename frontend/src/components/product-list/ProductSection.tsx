@@ -4,7 +4,7 @@ import { filterBrands } from "@/data/brand";
 import { categories } from "@/data/category";
 import { cn, getKeyByValueIgnoreCase } from "@/lib/utils";
 import { ProductsMetaType, ProductsResType } from "@/types/product";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import CustomPagination from "../common/CustomPagination";
 import MobileFilter from "./MobileFilter";
@@ -14,8 +14,10 @@ import { ProductsLoading } from "./ProductsLoading";
 type SortOptions = "asc" | "desc";
 
 const ProductSection = ({ category }: { category: string }) => {
-  const productsContainerRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const productsContainerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState<ProductsResType>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -31,9 +33,14 @@ const ProductSection = ({ category }: { category: string }) => {
   });
   const [sortOption, setSortOption] = useState<SortOptions>("asc");
 
+  const handleClearFilters = () => {
+    router.push(pathname);
+    router.refresh();
+  };
+
   useEffect(() => {
     setCurrentPage(1);
-  }, [searchParams]);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -88,7 +95,7 @@ const ProductSection = ({ category }: { category: string }) => {
         })
         .finally(() => setIsLoading(false));
     }
-  }, [searchParams, sortOption, currentPage]);
+  }, [pathname, searchParams, sortOption, currentPage]);
 
   const buildSearchParams = (params: Record<string, string[]>): string => {
     const urlSearchParams = new URLSearchParams();
@@ -105,12 +112,12 @@ const ProductSection = ({ category }: { category: string }) => {
     <div ref={productsContainerRef} className="w-full">
       <div className="w-full bg-white xl:hidden">
         <div className="border-b border-solid border-[#333]/30 px-3 py-4">
-          <h3 className="text-[1.125rem] font-bold text-black">
+          <h3 className="text-center text-[1.125rem] font-bold text-black xs:text-left">
             Danh mục sản phẩm
           </h3>
         </div>
         <div className="flex flex-row items-center justify-between px-3 py-2">
-          <div className="flex flex-row items-center gap-2 text-[0.875rem] font-bold leading-[1.21] ml:gap-4">
+          <div className="flex grow flex-wrap items-center gap-2 text-[0.875rem] font-bold leading-[1.21] ml:gap-4">
             <span className="hidden text-base font-normal xs:block">
               Sắp xếp theo
             </span>
@@ -132,7 +139,7 @@ const ProductSection = ({ category }: { category: string }) => {
                 if (sortOption !== "desc") setSortOption("desc");
               }}
               className={cn(
-                "rounded-full border border-solid bg-white px-3 py-2 transition-all duration-300",
+                "mr-auto rounded-full border border-solid bg-white px-3 py-2 transition-all duration-300",
                 sortOption === "desc"
                   ? "border-[#1F5ADD] text-[#1F5ADD]"
                   : "border-[#8C8F8D] text-[#8C8F8D]",
@@ -140,16 +147,64 @@ const ProductSection = ({ category }: { category: string }) => {
             >
               Giá cao
             </button>
+            <button
+              onClick={handleClearFilters}
+              className={cn(
+                "flex flex-row items-center gap-1 rounded-xl border border-solid border-[#8C8F8D] py-1 pl-3 pr-1.5 text-sm font-medium text-[#333]",
+                Boolean(searchParams.toString()) ? "" : "hidden",
+              )}
+            >
+              Xóa bộ lọc
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="#000"
+                className="size-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18 18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
           </div>
-          <div className="flex flex-row items-center gap-1 border-l border-solid border-[#333]/30 p-2">
+          <div className="ml-2 flex flex-row items-center gap-1 border-l border-solid border-[#333]/30 p-2">
             <MobileFilter category={category} />
           </div>
         </div>
       </div>
       <div className="hidden flex-row items-center justify-between xl:flex">
-        <h3 className="text-[1.125rem] font-bold text-black">
-          Danh mục sản phẩm
-        </h3>
+        <div className="flex flex-row items-center gap-4">
+          <h3 className="text-[1.125rem] font-bold text-black">
+            Danh mục sản phẩm
+          </h3>
+          <button
+            onClick={handleClearFilters}
+            className={cn(
+              "flex flex-row items-center gap-1 rounded-xl border border-solid border-[#8C8F8D] py-1 pl-3 pr-1.5 text-sm font-medium text-[#333]",
+              Boolean(searchParams.toString()) ? "" : "hidden",
+            )}
+          >
+            Xóa bộ lọc
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="#000"
+              className="size-4"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
         <div className="flex flex-row items-center gap-4 text-[0.875rem] font-bold leading-[1.21]">
           <span className="text-[1.125rem] font-normal">Sắp xếp theo</span>
           <button

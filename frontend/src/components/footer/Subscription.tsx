@@ -1,12 +1,18 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useAppContext } from "@/app/app-provider";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 export const Subscription = () => {
   const router = useRouter();
+  const { isAuthenticated } = useAppContext();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push("/dang-ky");
+    if (isAuthenticated) {
+      router.push("/");
+    } else {
+      router.push("/dang-ky");
+    }
   };
   return (
     <form
