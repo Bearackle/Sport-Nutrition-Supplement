@@ -16,7 +16,9 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     {
         return (new \App\Models\Order)->where('user_id',$userId)->
         OrderBy('order_date','desc')
-        ->get();
+            ->with(['variants' => function ($variant) {
+                $variant->with(['product','image']);
+            }])->get();
     }
     public function getLatestOrder($userId)
     {

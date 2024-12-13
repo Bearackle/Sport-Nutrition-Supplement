@@ -111,10 +111,10 @@ class OrderService implements OrderServiceInterface
                 ['unit_price' => $combo->combo_price_after_sale,'quantity' => $combo->pivot->quantity]);
         }
     }
-    public function getOrderofUser(UserInputData $user): \Illuminate\Contracts\Pagination\Paginator|\Illuminate\Support\Enumerable|array|\Illuminate\Support\Collection|\Illuminate\Support\LazyCollection|\Spatie\LaravelData\PaginatedDataCollection|\Illuminate\Pagination\AbstractCursorPaginator|\Spatie\LaravelData\CursorPaginatedDataCollection|\Spatie\LaravelData\DataCollection|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\CursorPaginator
+    public function getOrderofUser(UserInputData $user)
     {
         $orders = $this->order_repository->getAllOrdersByUserID($user->user_id);
-        return OrderOutputData::collect($orders);
+        return $orders;
     }
     public function addAddress(OrderInputData $order,AddressInputData $address) : OrderOutputData
     {

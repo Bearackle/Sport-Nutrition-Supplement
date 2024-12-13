@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enum\OrderStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\LaravelData\Optional;
@@ -21,9 +22,10 @@ class OrderAllResrouce extends JsonResource
             'createdDate' => $this->order_date,
             'totalAmount' => $this->total_amount,
             'note' => $this->note,
-            'status' => $this->status->label(),
+            'status' => OrderStatus::tryFrom($this->status)->label(),
             'addressDetail' => $this->address_detail instanceof Optional ? null : $this->address_detail,
-            'shipmentCharges' =>  $this->shipment_charges instanceof Optional ? null : $this->shipment_charges
+            'shipmentCharges' =>  $this->shipment_charges instanceof Optional ? null : $this->shipment_charges,
+            'products' => OrderProductsResource::collection($this->variants)
         ];
     }
     public function withResponse(Request $request,JsonResponse $response): void
