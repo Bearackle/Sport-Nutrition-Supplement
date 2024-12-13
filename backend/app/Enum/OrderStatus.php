@@ -5,8 +5,8 @@ namespace App\Enum;
 enum OrderStatus : int
 {
     case PENDING = 0;
-    case SHIPPED = 1;
-    case DELIVERED = 2;
+    case SHIPPING = 1;
+    case SUCCESS = 2;
     case CANCELLED = 3;
     public function is(OrderStatus $value) :bool
     {
@@ -15,8 +15,8 @@ enum OrderStatus : int
     public function label() : string{
         return match($this){
             self::PENDING => __('PENDING'),
-            self::SHIPPED => __('SHIPPED'),
-            self::DELIVERED => __('DELIVERED'),
+            self::SHIPPING => __('SHIPPING'),
+            self::SUCCESS => __('SUCCESS'),
             self::CANCELLED => __('CANCELLED'),
         };
     }

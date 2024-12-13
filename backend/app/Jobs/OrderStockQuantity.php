@@ -35,7 +35,7 @@ class OrderStockQuantity implements ShouldQueue
     public function handle(): void
     {
         $orderUpdated = $this->orderRepository->find($this->order->order_id);
-        if(OrderStatus::tryFrom($orderUpdated->status)->is(OrderStatus::SHIPPED)){
+        if(OrderStatus::tryFrom($orderUpdated->status)->is(OrderStatus::SHIPPING)){
             return;
         }
         $orderUpdated->update(['status' => OrderStatus::CANCELLED->value]);

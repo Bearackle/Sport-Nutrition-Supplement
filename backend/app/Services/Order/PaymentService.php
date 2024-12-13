@@ -54,7 +54,7 @@ class PaymentService implements PaymentServiceInterface
     public function updateSuccessStatus($orderData,PaymentStatus $paymentStatus): void
     {
         $order = $this->orderRepository->find($orderData['order_id']);
-        $order->update(['order_status' => OrderStatus::SHIPPED->value]);
+        $order->update(['order_status' => OrderStatus::SHIPPING->value]);
         $order->payment->update(['payment_status' => $paymentStatus->value]);
     }
     public function getCheckOutUrl($orderId): string

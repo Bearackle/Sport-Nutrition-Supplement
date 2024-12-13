@@ -8,6 +8,7 @@ use App\DTOs\InputData\PaymentInputData;
 use App\DTOs\InputData\ShippingMethodInputData;
 use App\DTOs\InputData\UserInputData;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderAllResrouce;
 use App\Http\Resources\OrderResource;
 use App\Http\Resources\OrderResourceComplex;
 use App\Http\Resources\PaymentResource;
@@ -45,13 +46,13 @@ class OrderController extends Controller
      * )
      * @throws AuthorizationException
      */
-    public function index(): AnonymousResourceCollection
+    public function index()
     {
         $this->authorize('view', Order::class);
         /**@var User $user**/
         $user = auth()->user();
         $orders = $this->orderService->getOrderofUser(UserInputData::validateAndCreate(['user_id' => $user->user_id]));
-        return OrderResource::collection($orders);
+        return OrderAllResrouce::collection($orders)->resolve();
     }
     /**
      * @OA\Get(
