@@ -27,3 +27,43 @@ export type AddProductToCartBodyType = {
   comboId: number | null;
   quantity: number;
 };
+
+export type OrderProductType = {
+  productId: number;
+  variantId: number;
+  variantName: string;
+  productName: string;
+  price: number;
+  priceAfterSale: number;
+  quantity: number;
+};
+
+export type OrderRequestResType = {
+  orderId: number;
+  createdDate: string;
+  totalAmount: number;
+  note: string | null;
+  status: string;
+  addressDetail: string;
+  shipmentCharges: number | null;
+  products: OrderProductType[];
+};
+
+export type OrderContentBodyType = {
+  orderId: number;
+  paymentMethod: string;
+  addressDetail: string;
+  method: string;
+  note: string | null;
+};
+
+export type OrderContentResType = {
+  orderId: number;
+  createdDate: string;
+  totalAmount: number;
+  note: string | null;
+  status: string;
+  addressDetail: string;
+  shipmentCharges: number | null;
+  redirectUrl: string;
+};
