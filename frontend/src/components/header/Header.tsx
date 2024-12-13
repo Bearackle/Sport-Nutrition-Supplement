@@ -71,7 +71,10 @@ export const Header = () => {
               <Image src={saleIcon} alt="" className="size-6" />
               <span>Hot Deals</span>
             </Link>
-            <Link href="#" className="flex flex-row items-center">
+            <Link
+              href="/nguoi-dung/lich-su-don-hang"
+              className="flex flex-row items-center"
+            >
               <Image src={trackingIcon} alt="" className="size-5" />
               <span>Tra cứu đơn hàng</span>
             </Link>
