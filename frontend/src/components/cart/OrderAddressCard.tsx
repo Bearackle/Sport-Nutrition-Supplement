@@ -5,7 +5,7 @@ import { AddressResType } from "@/schemaValidations/address.schema";
 
 type TProps = {
   address: AddressResType;
-  currentAddressId: number | null;
+  currentAddressId: number;
 };
 
 export const OrderAddressCard = ({ address, currentAddressId }: TProps) => {
