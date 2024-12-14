@@ -1,5 +1,10 @@
 import AddressSection from "@/components/user/addresses/AddressSection";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sổ địa chỉ",
+};
 
 export default function Page() {
   return (
