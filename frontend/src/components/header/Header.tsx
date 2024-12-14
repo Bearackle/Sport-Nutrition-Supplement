@@ -54,7 +54,7 @@ export const Header = () => {
               "max-w-[10rem] text-center text-[0.5rem] font-extrabold uppercase text-white xs:max-w-[15rem] xs:text-[0.75rem]",
             )}
           >
-            Thực phẩm dinh dưỡng thể thao sport nutrition supplement
+            Thực phẩm dinh dưỡng thể thao sport nutrition supplements
           </p>
         </Link>
         <div className={cn("relative hidden w-fit xl:block", nunito.className)}>
@@ -71,7 +71,10 @@ export const Header = () => {
               <Image src={saleIcon} alt="" className="size-6" />
               <span>Hot Deals</span>
             </Link>
-            <Link href="#" className="flex flex-row items-center">
+            <Link
+              href="/nguoi-dung/lich-su-don-hang"
+              className="flex flex-row items-center"
+            >
               <Image src={trackingIcon} alt="" className="size-5" />
               <span>Tra cứu đơn hàng</span>
             </Link>

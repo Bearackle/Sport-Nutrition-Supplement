@@ -1,5 +1,10 @@
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Chính sách thu thập và xử lý dữ liệu cá nhân",
+};
 
 export default function page() {
   return (

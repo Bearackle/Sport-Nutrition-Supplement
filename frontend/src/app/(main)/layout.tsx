@@ -7,10 +7,16 @@ import "../globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "4HProtein | Sport Nutrition Supplements",
+    default: "4HProtein | Thực phẩm thể hình chính hãng",
     template: `%s | 4HProtein`,
   },
-  description: "Sport Nutrition Supplements",
+  description:
+    "Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
+  openGraph: {
+    title: "4HProtein | Thực phẩm thể hình chính hãng",
+    description:
+      "Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
+  },
 };
 
 export async function generateStaticParams() {

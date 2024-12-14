@@ -18,11 +18,11 @@ type TProps = {
 
 const ProductCategory = ({ category }: TProps) => {
   const pathname = usePathname();
-  if (pathname === "/products/all") {
+  if (pathname === "/danh-muc/tat-ca-san-pham") {
     if (category.children) {
       return (
         <Link
-          href={`/products/${category.children[0].id}`}
+          href={`/danh-muc/${category.children[0].id}`}
           className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
         >
           <div className="size-10">
@@ -42,7 +42,7 @@ const ProductCategory = ({ category }: TProps) => {
     } else {
       return (
         <Link
-          href={`/products/${category.id}`}
+          href={`/danh-muc/${category.id}`}
           className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
         >
           <div className="size-10">
@@ -63,7 +63,7 @@ const ProductCategory = ({ category }: TProps) => {
   } else {
     return (
       <Link
-        href={`/products/${category.id}`}
+        href={`/danh-muc/${category.id}`}
         className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
       >
         <div className="flex size-10 min-w-10 items-center justify-center">

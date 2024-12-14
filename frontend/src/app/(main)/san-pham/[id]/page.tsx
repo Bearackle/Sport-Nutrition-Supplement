@@ -4,8 +4,32 @@ import { ProductDetailBreadcrumb } from "@/components/product-detail/ProductDeta
 import { ProductOverview } from "@/components/product-detail/ProductOverview";
 import { ProductReviews } from "@/components/product-detail/ProductReviews";
 import { cn } from "@/lib/utils";
+import { Metadata, ResolvingMetadata } from "next";
 
-const page = async ({ params }: { params: { id: string } }) => {
+type TProps = {
+  params: {
+    id: string;
+  };
+};
+
+export async function generateMetadata(
+  { params }: TProps,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const id = params.id;
+  const product = await productApiRequest
+    .productDetail(id)
+    .then((res) => res.payload);
+  const previousImages = (await parent).openGraph?.images || [];
+  return {
+    title: product.productName,
+    openGraph: {
+      images: [product.images[0], ...previousImages],
+    },
+  };
+}
+
+const page = async ({ params }: TProps) => {
   const result = await productApiRequest.productDetail(params.id);
   const data = result.payload;
 
