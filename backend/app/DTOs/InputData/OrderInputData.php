@@ -19,7 +19,7 @@ class OrderInputData extends Data
     public int|Optional $user_id;
     #[WithCast(EnumAutoCast::class)]
     public OrderStatus|Optional $status;
-    public string|Optional $note;
+    public ?string $note;
     public string|Optional $address_detail;
     public int|Optional $shipment_charges;
     public function has(string $propertyName): bool

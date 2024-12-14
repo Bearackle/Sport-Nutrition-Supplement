@@ -311,18 +311,21 @@ class OrderController extends Controller
         $this->authorize('create' , Order::class);
         /**@var User $user **/
         $user = auth()->user();
+        //payment
         $orderPayment = PaymentInputData::validateAndCreate(['order_id' => $request->input('orderId'),
             'payment_method' => $request->input('paymentMethod')]);
         $this->orderService->addPaymentMethod($orderPayment);
-
+        //address
         $this->orderService->addAddress(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId'),'user_id' => $user->user_id]),
-            AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId'])));
+            AddressInputData::validateAndCreate(Arr::except($request->input(),['orderId','method','note','paymentMethod'])));
+        //note
         if($request->has('note')){
             $this->orderService->updateOrder(OrderInputData::from(['order_id' => $request->input('orderId'),'note' => $request->input('note')]));
         }
+        //shipmethod
         $order = $this->orderService->addShippingMethod(OrderInputData::validateAndCreate(['order_id' => $request->input('orderId')])
-            ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId'])));
-
+            ,ShippingMethodInputData::from(Arr::except($request->input(),['orderId','paymentMethod','addressDetail','addressId','note'])));
+        // url
         $redirectedUrl = $this->paymentService->getCheckOutUrl($order->order_id);
         $orderResource = new OrderResource($order);
         $resource = array_merge($orderResource->resolve(),['redirectUrl' => $redirectedUrl]);

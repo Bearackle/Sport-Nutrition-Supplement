@@ -17,7 +17,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         return (new \App\Models\Order)->where('user_id',$userId)
             ->orderBy('order_date', 'desc') // Đúng cú pháp orderBy
             ->with(['variants' => function ($variant) {
-                $variant // Đúng cú pháp
+                $variant
                 ->with(['image','product' => function ($product) {
                     $product->with('images'); // Đúng cú pháp
                 }]);

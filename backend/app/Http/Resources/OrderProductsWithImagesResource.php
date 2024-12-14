@@ -22,7 +22,7 @@ class OrderProductsWithImagesResource extends JsonResource
             'price' => $this->product->price,
             'priceAfterSale' => $this->pivot->unit_price,
             'quantity'=> $this->pivot->quantity,
-            'image' => $this->image == null ? $this->product->images->value('image_url') : $this->image->value('image_url')
+            'image' => ($this->image == null) ? $this->product->images->value('image_url') : $this->image->value('image_url')
         ];
     }
 }
