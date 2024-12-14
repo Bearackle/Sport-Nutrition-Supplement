@@ -51,7 +51,7 @@ const HomeProductCard = ({ index, product }: TProps) => {
             )}
           >
             <div className="flex h-6 items-center justify-center rounded-full bg-[#C116164D] px-1 text-[#C11616]">
-              <span>🔥</span> TOP DEAL
+              🔥 TOP DEAL
             </div>
             <div className="flex h-6 w-fit flex-row items-center rounded-full bg-[#3498DB4D] px-1 text-[#043BFF]">
               <Image src={blueCheck} alt="" className="size-4" />
