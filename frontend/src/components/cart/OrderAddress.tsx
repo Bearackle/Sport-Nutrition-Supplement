@@ -11,15 +11,19 @@ import addressIcon from "/public/address-icon.svg";
 import profile from "/public/profile.svg";
 
 type TProps = {
-  address: string;
-  setAddress: Dispatch<SetStateAction<string>>;
+  addressId: number | null;
+  setAddressId: Dispatch<SetStateAction<number | null>>;
+  addressDetail: string;
+  setAddressDetail: Dispatch<SetStateAction<string>>;
   note: string;
   setNote: Dispatch<SetStateAction<string>>;
 };
 
 export const OrderAddress = ({
-  address,
-  setAddress,
+  addressId,
+  setAddressId,
+  addressDetail,
+  setAddressDetail,
   note,
   setNote,
 }: TProps) => {
@@ -74,9 +78,9 @@ export const OrderAddress = ({
                 "w-full rounded-lg border border-solid border-[#8C8F8D] px-4 py-1 text-sm",
               )}
               label="Địa chỉ"
-              onChange={(e) => setAddress(e.target.value)}
+              onChange={(e) => setAddressDetail(e.target.value)}
               placeholder="Số nhà + Tên đường, Phường / Xã, Tỉnh / Thành phố"
-              value={address}
+              value={addressDetail}
               variant="outlined"
             />
             <TextField
@@ -105,9 +109,9 @@ export const OrderAddress = ({
           {data.map((item) => (
             <button
               key={item.addressId}
-              onClick={() => setAddress(item.addressDetail)}
+              onClick={() => setAddressId(item.addressId)}
             >
-              <OrderAddressCard address={item} currentAddress={address} />
+              <OrderAddressCard address={item} currentAddressId={addressId} />
             </button>
           ))}
         </div>

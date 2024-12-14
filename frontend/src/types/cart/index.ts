@@ -52,7 +52,8 @@ export type OrderRequestResType = {
 export type OrderContentBodyType = {
   orderId: number;
   paymentMethod: string;
-  addressDetail: string;
+  addressId: number | null;
+  addressDetail: string | null;
   method: string;
   note: string | null;
 };

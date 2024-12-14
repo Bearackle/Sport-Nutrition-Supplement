@@ -192,7 +192,7 @@ export const OrderProductCard = ({ cartProduct, isOrdering }: TProps) => {
           )}
         >
           {cartProduct.stockQuantity === 0 ? (
-            <div className="text-base text-[#657384]">Hết hàng</div>
+            <div className="ml-1 mr-3 text-base text-red-500">Hết hàng</div>
           ) : (
             <QuantityButton />
           )}
