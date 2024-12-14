@@ -10,9 +10,9 @@ use Spatie\LaravelData\Optional;
 #[MapInputName(CamelCaseMapper::class)]
 class AddressInputData extends Data
 {
-    public int|Optional $address_id;
+    public ?int $address_id;
     public int|Optional $user_id;
-    public string|Optional $address_detail;
+    public ?string $address_detail;
     public function has(string $propertyName): bool
     {
         return isset($this->{$propertyName}) && !($this->{$propertyName} instanceof Optional);
@@ -20,13 +20,6 @@ class AddressInputData extends Data
     public static function rules(): array
     {
         return [
-            'address_id' => [
-                function ($attribute, $value, $fail) {
-                    if (!($value instanceof Optional) && !DB::table('addresses')->where('address_id', $value)->exists()) {
-                        $fail("The selected $attribute is invalid.");
-                    }
-                },
-            ],
             'user_id' => [
                 function ($attribute, $value, $fail) {
                     if (!($value instanceof Optional) && !DB::table('users')->where('user_id', $value)->exists()) {
