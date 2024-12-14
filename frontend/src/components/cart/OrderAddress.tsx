@@ -11,8 +11,8 @@ import addressIcon from "/public/address-icon.svg";
 import profile from "/public/profile.svg";
 
 type TProps = {
-  addressId: number | null;
-  setAddressId: Dispatch<SetStateAction<number | null>>;
+  addressId: number;
+  setAddressId: Dispatch<SetStateAction<number>>;
   addressDetail: string;
   setAddressDetail: Dispatch<SetStateAction<string>>;
   note: string;
