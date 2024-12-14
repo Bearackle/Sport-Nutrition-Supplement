@@ -1,6 +1,6 @@
 "use client";
 import cartApiRequests from "@/apiRequests/cart";
-import { cn, formatPrice, handleErrorApi } from "@/lib/utils";
+import { cn, convertSlugUrl, formatPrice, handleErrorApi } from "@/lib/utils";
 import { CartProductType } from "@/types/cart";
 import Image from "next/image";
 import Link from "next/link";
@@ -152,7 +152,7 @@ export const OrderProductCard = ({ cartProduct, isOrdering }: TProps) => {
           )}
         >
           <Link
-            href={`/san-pham/${cartProduct.productId}`}
+            href={`/san-pham/${convertSlugUrl(cartProduct.productName)}-${cartProduct.productId}.html`}
             className={cn("line-clamp-3 text-[0.9375rem] leading-[1.21]")}
           >
             {cartProduct.productName}

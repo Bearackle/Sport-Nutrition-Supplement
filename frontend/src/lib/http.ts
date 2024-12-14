@@ -129,7 +129,7 @@ const request = async <Response>(
             localStorage.removeItem("sessionTokenExpiresAt");
             localStorage.removeItem("user");
             clientLogoutRequest = null;
-            location.href = "/dang-nhap";
+            window.location.href = "/dang-nhap";
           }
         }
       } else {

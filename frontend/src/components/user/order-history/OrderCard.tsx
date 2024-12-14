@@ -1,6 +1,7 @@
 "use client";
 import {
   cn,
+  convertSlugUrl,
   formatPrice,
   getVietnameseDate,
   getVietnameseTime,
@@ -49,7 +50,7 @@ const OrderCard = ({ order }: TProps) => {
               </div>
               <div className="ml-[0.5em] grow">
                 <Link
-                  href={`/san-pham/${product.productId}`}
+                  href={`/san-pham/${convertSlugUrl(product.productName)}-${product.productId}.html`}
                   className="line-clamp-1 text-[0.9375em] leading-[1.3]"
                 >
                   {product.productName}

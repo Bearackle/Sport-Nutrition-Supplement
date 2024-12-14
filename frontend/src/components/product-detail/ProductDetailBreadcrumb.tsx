@@ -6,7 +6,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { productCategories } from "@/data/category";
+import { categories, productCategories } from "@/data/category";
+import { convertSlugUrl } from "@/lib/utils";
 import { TParamsCategory } from "@/types/category";
 import { useRouter } from "next/navigation";
 
@@ -79,14 +80,16 @@ export const ProductDetailBreadcrumb = ({ categoryId, name }: TProps) => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink
-                href={`/danh-muc/${parentCategory.children?.[0].id}`}
+                href={`/danh-muc/${convertSlugUrl(categories[parentCategory.children?.[0].id as unknown as keyof typeof categories])}-${parentCategory.children?.[0].id}`}
               >
                 {parentCategory?.label}
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="text-black">
-              <BreadcrumbLink href={`/danh-muc/${categoryId}`}>
+              <BreadcrumbLink
+                href={`/danh-muc/${convertSlugUrl(categories[categoryId as unknown as keyof typeof categories])}-${categoryId}`}
+              >
                 {
                   findCategoryById(categoryId.toString(), productCategories)
                     ?.label
@@ -102,7 +105,9 @@ export const ProductDetailBreadcrumb = ({ categoryId, name }: TProps) => {
           <>
             <BreadcrumbSeparator />
             <BreadcrumbItem className="text-black">
-              <BreadcrumbLink href={`/danh-muc/${categoryId}`}>
+              <BreadcrumbLink
+                href={`/danh-muc/${convertSlugUrl(categories[categoryId as unknown as keyof typeof categories])}-${categoryId}`}
+              >
                 {
                   findCategoryById(categoryId.toString(), productCategories)
                     ?.label

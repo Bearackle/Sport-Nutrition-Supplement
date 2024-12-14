@@ -1,6 +1,7 @@
 import { toast } from "@/hooks/use-toast";
 import { clsx, type ClassValue } from "clsx";
 import { UseFormSetError } from "react-hook-form";
+import slugify from "slugify";
 import { twMerge } from "tailwind-merge";
 import { EntityError } from "./http";
 
@@ -119,4 +120,18 @@ export const getKeyByValueIgnoreCase = (
 ) => {
   const lowerValue = value.toLowerCase();
   return Object.keys(obj).find((key) => obj[key].toLowerCase() === lowerValue);
+};
+
+export const convertSlugUrl = (str: string) => {
+  if (!str) return "";
+  return slugify(str, {
+    lower: true,
+    locale: "vi",
+  });
+};
+
+export const getIdFromSlug = (slug: string) => {
+  const splitHtml = slug.split(".html");
+  const splitHyphen = splitHtml[0].split("-");
+  return splitHyphen[splitHyphen.length - 1];
 };

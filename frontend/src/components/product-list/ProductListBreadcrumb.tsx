@@ -6,9 +6,10 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { useRouter } from "next/navigation";
-import { productCategories } from "@/data/category";
+import { categories, productCategories } from "@/data/category";
+import { convertSlugUrl, getIdFromSlug } from "@/lib/utils";
 import { TParamsCategory } from "@/types/category";
+import { useRouter } from "next/navigation";
 
 export const ProductListBreadcrumb = ({
   params,
@@ -16,7 +17,10 @@ export const ProductListBreadcrumb = ({
   params: { category: string };
 }) => {
   const router = useRouter();
-  const categoryId = params.category;
+  const categoryId =
+    params.category === "tat-ca-san-pham" || params.category === "tim-kiem"
+      ? params.category
+      : getIdFromSlug(params.category);
 
   const findParentCategory = (
     categoryId: string,
@@ -78,7 +82,7 @@ export const ProductListBreadcrumb = ({
               <BreadcrumbSeparator />
               <BreadcrumbItem>
                 <BreadcrumbLink
-                  href={`/danh-muc/${parentCategory.children?.[0].id}`}
+                  href={`/danh-muc/${convertSlugUrl(categories[parentCategory.children?.[0].id as unknown as keyof typeof categories])}-${parentCategory.children?.[0].id}`}
                 >
                   {parentCategory?.label}
                 </BreadcrumbLink>

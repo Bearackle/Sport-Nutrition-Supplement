@@ -1,4 +1,4 @@
-import { formatPrice } from "@/lib/utils";
+import { convertSlugUrl, formatPrice } from "@/lib/utils";
 import { TParamsProductCard } from "@/types/products";
 import { Rating } from "@mui/material";
 import Image from "next/image";
@@ -29,7 +29,10 @@ const ProductCard = ({
         />
       </div>
       <div className="pt-3">
-        <Link href={`/san-pham/${productId}`} className="space-y-1">
+        <Link
+          href={`/san-pham/${convertSlugUrl(productName)}-${productId}.html`}
+          className="space-y-1"
+        >
           <div className="line-clamp-3 min-h-[3.9875rem] text-[0.825rem] font-normal leading-normal text-[#333] group-hover:underline xs:text-[0.875rem]">
             {productName}
           </div>
@@ -47,7 +50,9 @@ const ProductCard = ({
       </div>
       <button
         onClick={() => {
-          router.push(`/san-pham/${productId}`);
+          router.push(
+            `/san-pham/${convertSlugUrl(productName)}-${productId}.html`,
+          );
           router.refresh();
         }}
         className="text-normal w-full rounded-full bg-[#1F5ADD] py-3 leading-[1.21] text-white transition-all duration-300 hover:bg-[#2c6af0]"

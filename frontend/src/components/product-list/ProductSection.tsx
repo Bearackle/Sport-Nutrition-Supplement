@@ -2,7 +2,7 @@
 import productApiRequest from "@/apiRequests/product";
 import { filterBrands } from "@/data/brand";
 import { categories } from "@/data/category";
-import { cn, getKeyByValueIgnoreCase } from "@/lib/utils";
+import { cn, getIdFromSlug, getKeyByValueIgnoreCase } from "@/lib/utils";
 import { ProductsMetaType, ProductsResType } from "@/types/product";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -88,7 +88,7 @@ const ProductSection = ({ category }: { category: string }) => {
         .finally(() => setIsLoading(false));
     } else {
       productApiRequest
-        .categoryProducts(category, buildSearchParams(params))
+        .categoryProducts(getIdFromSlug(category), buildSearchParams(params))
         .then((result) => {
           setData(result.payload.data);
           setMeta(result.payload.meta);
