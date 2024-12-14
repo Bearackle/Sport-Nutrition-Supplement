@@ -5,16 +5,16 @@ import { AddressResType } from "@/schemaValidations/address.schema";
 
 type TProps = {
   address: AddressResType;
-  currentAddress: string;
+  currentAddressId: number | null;
 };
 
-export const OrderAddressCard = ({ address, currentAddress }: TProps) => {
+export const OrderAddressCard = ({ address, currentAddressId }: TProps) => {
   const { user } = useAppContext();
   return (
     <div
       className={cn(
         "rounded-sm border border-solid p-2",
-        currentAddress === address.addressDetail
+        currentAddressId === address.addressId
           ? "border-[#1250DC] bg-[#007AFF]/20"
           : "border-[#4A4F63]",
       )}
@@ -22,7 +22,7 @@ export const OrderAddressCard = ({ address, currentAddress }: TProps) => {
       <div
         className={cn(
           "flex w-full flex-col gap-x-[0.5em] text-[1em] font-medium md:flex-row",
-          currentAddress === address.addressDetail
+          currentAddressId === address.addressId
             ? "text-[#1250DC]"
             : "text-[#333]",
         )}
@@ -66,7 +66,7 @@ export const OrderAddressCard = ({ address, currentAddress }: TProps) => {
       <div
         className={cn(
           "line-clamp-3 flex flex-row items-start gap-1 text-left font-normal md:mt-1",
-          currentAddress === address.addressDetail
+          currentAddressId === address.addressId
             ? "text-black"
             : "text-[#8C8F8D]",
         )}

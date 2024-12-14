@@ -17,16 +17,18 @@ import emptyCart from "/public/empty-cart.png";
 export const CartSection = () => {
   const { toast } = useToast();
   const [data, setData] = useState<CartProductsType>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOrdering, setIsOrdering] = useState(false);
-  const [isAvailable, setIsAvailable] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isOrdering, setIsOrdering] = useState<boolean>(false);
+  const [isAvailable, setIsAvailable] = useState<boolean>(true);
   const [orderData, setOrderData] = useState<OrderRequestResType>();
 
   // Order Information
-  const [address, setAddress] = useState("");
-  const [note, setNote] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("INTERNET_BANKING");
-  const [shippingMethod, setShippingMethod] = useState("TPHCM");
+  const [addressId, setAddressId] = useState<number | null>(null);
+  const [address, setAddress] = useState<string>("");
+  const [note, setNote] = useState<string>("");
+  const [paymentMethod, setPaymentMethod] =
+    useState<string>("INTERNET_BANKING");
+  const [shippingMethod, setShippingMethod] = useState<string>("TPHCM");
 
   useEffect(() => {
     cartApiRequests.getCartProducts().then((res) => {
@@ -54,6 +56,7 @@ export const CartSection = () => {
         const result = await cartApiRequests.addOrderContent({
           orderId: orderData?.orderId || 0,
           paymentMethod: paymentMethod,
+          addressId: addressId,
           addressDetail: address,
           method: shippingMethod,
           note,
@@ -208,8 +211,10 @@ export const CartSection = () => {
           {isOrdering && (
             <>
               <OrderAddress
-                address={address}
-                setAddress={setAddress}
+                addressId={addressId}
+                setAddressId={setAddressId}
+                addressDetail={address}
+                setAddressDetail={setAddress}
                 note={note}
                 setNote={setNote}
               />
@@ -329,7 +334,7 @@ export const CartSection = () => {
                 "lg:ml-auto lg:w-[20rem] xl:ml-0 xl:w-full",
                 "active:!bg-none",
               )}
-              disabled={isOrdering ? !address : !isAvailable}
+              disabled={isOrdering ? !address && !addressId : !isAvailable}
               onClick={handleOrderButton}
               style={{
                 backgroundImage:
