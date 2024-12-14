@@ -1,5 +1,10 @@
 import OrderHistorySection from "@/components/user/order-history/OrderHistorySection";
 import { cn } from "@/lib/utils";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Lịch sử đơn hàng",
+};
 
 export default function Page() {
   return (
