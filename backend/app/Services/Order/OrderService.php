@@ -118,7 +118,7 @@ class OrderService implements OrderServiceInterface
     }
     public function addAddress(OrderInputData $order,AddressInputData $address) : OrderOutputData
     {
-        if($address->has('address_id')) {
+        if($address->address_id != null) {
             $addressData = $this->address_service->getAddressDetail($address)->address_detail;
         } else {
             $addressData = $address->address_detail;
