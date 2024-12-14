@@ -1,3 +1,5 @@
+import { categories } from "@/data/category";
+import { convertSlugUrl } from "@/lib/utils";
 import Image from "next/image";
 import { SeeMoreButton } from "./SeeMoreButton";
 import TopDealListSection from "./TopDealListSection";
@@ -14,7 +16,7 @@ const TopDealSection = () => {
         <TopDealListSection />
       </div>
       <div className="mt-2 flex justify-center">
-        <SeeMoreButton url="/danh-muc/31" />
+        <SeeMoreButton url={`/danh-muc/${convertSlugUrl(categories[31])}-31`} />
       </div>
     </div>
   );

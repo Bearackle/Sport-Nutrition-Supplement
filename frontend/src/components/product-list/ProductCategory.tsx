@@ -1,4 +1,6 @@
 // ** Import next
+import { categories } from "@/data/category";
+import { convertSlugUrl } from "@/lib/utils";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -22,7 +24,7 @@ const ProductCategory = ({ category }: TProps) => {
     if (category.children) {
       return (
         <Link
-          href={`/danh-muc/${category.children[0].id}`}
+          href={`/danh-muc/${convertSlugUrl(categories[category.children[0].id as unknown as keyof typeof categories])}-${category.children[0].id}`}
           className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
         >
           <div className="size-10">
@@ -42,7 +44,7 @@ const ProductCategory = ({ category }: TProps) => {
     } else {
       return (
         <Link
-          href={`/danh-muc/${category.id}`}
+          href={`/danh-muc/${convertSlugUrl(categories[category.id as unknown as keyof typeof categories])}-${category.id}`}
           className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
         >
           <div className="size-10">
@@ -63,7 +65,7 @@ const ProductCategory = ({ category }: TProps) => {
   } else {
     return (
       <Link
-        href={`/danh-muc/${category.id}`}
+        href={`/danh-muc/${convertSlugUrl(categories[category.id as unknown as keyof typeof categories])}-${category.id}`}
         className="flex flex-1 flex-row items-center gap-3 rounded-xl bg-white p-3 leading-[1.21]"
       >
         <div className="flex size-10 min-w-10 items-center justify-center">

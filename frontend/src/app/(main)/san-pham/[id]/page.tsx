@@ -3,7 +3,7 @@ import { ProductDescription } from "@/components/product-detail/ProductDescripti
 import { ProductDetailBreadcrumb } from "@/components/product-detail/ProductDetailBreadcrumb";
 import { ProductOverview } from "@/components/product-detail/ProductOverview";
 import { ProductReviews } from "@/components/product-detail/ProductReviews";
-import { cn } from "@/lib/utils";
+import { cn, getIdFromSlug } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 
 type TProps = {
@@ -16,7 +16,7 @@ export async function generateMetadata(
   { params }: TProps,
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
-  const id = params.id;
+  const id = getIdFromSlug(params.id);
   const product = await productApiRequest
     .productDetail(id)
     .then((res) => res.payload);
@@ -30,7 +30,9 @@ export async function generateMetadata(
 }
 
 const page = async ({ params }: TProps) => {
-  const result = await productApiRequest.productDetail(params.id);
+  const result = await productApiRequest.productDetail(
+    getIdFromSlug(params.id),
+  );
   const data = result.payload;
 
   const productOverviewProps = {

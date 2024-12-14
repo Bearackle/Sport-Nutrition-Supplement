@@ -1,8 +1,8 @@
-import { cn } from "@/lib/utils";
+import { cn, convertSlugUrl } from "@/lib/utils";
 import Image from "next/image";
 
 // ** Import images
-import { productCategories } from "@/data/category";
+import { categories, productCategories } from "@/data/category";
 import arrow from "/public/arrow.svg";
 
 const SideBar = () => {
@@ -22,7 +22,11 @@ const SideBar = () => {
               <li key={index}>
                 {!nav.children && (
                   <a
-                    href={`/danh-muc/${nav.id}`}
+                    href={
+                      nav.id === "tat-ca-san-pham" || nav.id === "tim-kiem"
+                        ? `/danh-muc/${nav.id}`
+                        : `/danh-muc/${convertSlugUrl(categories[nav.id as unknown as keyof typeof categories])}-${nav.id}`
+                    }
                     className={cn(
                       "flex min-h-8 flex-row items-center gap-2 px-4 text-[0.875rem] font-semibold text-[#333333] hover:text-[#1250DC] hover:underline",
                     )}
@@ -71,7 +75,7 @@ const SideBar = () => {
                         {nav.children.map((childNav, index) => (
                           <li key={index}>
                             <a
-                              href={`/danh-muc/${childNav.id}`}
+                              href={`/danh-muc/${convertSlugUrl(categories[childNav.id as unknown as keyof typeof categories])}-${childNav.id}`}
                               className={cn(
                                 "flex min-h-8 flex-row items-center gap-2 text-[0.875rem] font-semibold text-[#333333] hover:text-[#1250DC] hover:underline",
                               )}

@@ -3,7 +3,7 @@ import ProductCategoryList from "@/components/product-list/ProductCategoryList";
 import { ProductListBreadcrumb } from "@/components/product-list/ProductListBreadcrumb";
 import ProductSection from "@/components/product-list/ProductSection";
 import { categories } from "@/data/category";
-import { cn } from "@/lib/utils";
+import { cn, getIdFromSlug } from "@/lib/utils";
 import { Metadata, ResolvingMetadata } from "next";
 
 type TProps = {
@@ -24,7 +24,9 @@ export async function generateMetadata(
         ? "Tất cả sản phẩm"
         : category === "tim-kiem"
           ? "Tra cứu sản phẩm"
-          : categories[category as unknown as keyof typeof categories],
+          : categories[
+              getIdFromSlug(category) as unknown as keyof typeof categories
+            ],
     openGraph: {
       images: [...previousImages],
     },

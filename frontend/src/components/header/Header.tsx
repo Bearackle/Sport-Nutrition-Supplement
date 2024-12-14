@@ -1,5 +1,6 @@
+import { categories } from "@/data/category";
 import { nunito } from "@/lib/font";
-import { cn } from "@/lib/utils";
+import { cn, convertSlugUrl } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import MobileNavBar from "../nav-bar/MobileNavBar";
@@ -65,7 +66,7 @@ export const Header = () => {
             )}
           >
             <Link
-              href="/danh-muc/32"
+              href={`/danh-muc/${convertSlugUrl(categories[32])}-32`}
               className="flex flex-row items-center gap-1"
             >
               <Image src={saleIcon} alt="" className="size-6" />
@@ -78,7 +79,10 @@ export const Header = () => {
               <Image src={trackingIcon} alt="" className="size-5" />
               <span>Tra cứu đơn hàng</span>
             </Link>
-            <Link href="/danh-muc/10" className="flex flex-row items-center">
+            <Link
+              href={`/danh-muc/${convertSlugUrl(categories[10])}-10`}
+              className="flex flex-row items-center"
+            >
               <Image src={saleTag} alt="" className="size-6" />
               <span>Xả kho hàng</span>
             </Link>

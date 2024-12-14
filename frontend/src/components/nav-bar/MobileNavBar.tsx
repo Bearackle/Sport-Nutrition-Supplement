@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn, convertSlugUrl } from "@/lib/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // ** Import next
@@ -14,7 +14,7 @@ import {
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
 
 // ** Import images
-import { productCategories } from "@/data/category";
+import { categories, productCategories } from "@/data/category";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { MobileUserNavBar } from "./MobileUserNavBar";
 
@@ -49,7 +49,7 @@ const MobileNavBar = () => {
                 <Accordion type="single" collapsible className="w-full">
                   {!nav.children && (
                     <a
-                      href={`/danh-muc/${nav.id}`}
+                      href={`/danh-muc/${convertSlugUrl(categories[nav.id as unknown as keyof typeof categories])}-${nav.id}`}
                       className={cn(
                         "flex min-h-8 flex-row items-center gap-2 border-b border-solid border-[#333]/10 px-4 py-2 text-[0.875rem] font-semibold text-[#333333]",
                       )}
@@ -90,7 +90,7 @@ const MobileNavBar = () => {
                         {nav.children.map((childNav, index) => (
                           <a
                             key={index}
-                            href={`/danh-muc/${childNav.id}`}
+                            href={`/danh-muc/${convertSlugUrl(categories[childNav.id as unknown as keyof typeof categories])}-${childNav.id}`}
                             className={cn(
                               "flex min-h-8 flex-row items-center gap-2 px-4 py-2 text-[0.875rem] font-semibold text-[#333333]",
                             )}
