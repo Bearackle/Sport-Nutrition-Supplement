@@ -2,16 +2,16 @@
 import { TParamsCategory } from "@/types/category";
 import allAccessories from "/public/categories/all-accessories.svg";
 import allDiet from "/public/categories/all-diet.webp";
-import allElements from "/public/categories/all-elements.png";
-import allFat from "/public/categories/all-fat.png";
-import allMass from "/public/categories/all-mass.png";
-import allPreworkout from "/public/categories/all-preworkout.png";
+// import allElements from "/public/categories/all-elements.png";
+// import allFat from "/public/categories/all-fat.png";
+// import allMass from "/public/categories/all-mass.png";
+// import allPreworkout from "/public/categories/all-preworkout.png";
 import allProducts from "/public/categories/all-products.svg";
-import allVitamin from "/public/categories/all-vitamin.png";
-import allWhey from "/public/categories/all-whey.png";
+// import allVitamin from "/public/categories/all-vitamin.png";
+// import allWhey from "/public/categories/all-whey.png";
 import amino from "/public/categories/amino.svg";
 import arginine from "/public/categories/arginine.png";
-import bcaaeaa from "/public/categories/bcaa-eaa.png";
+// import bcaaeaa from "/public/categories/bcaa-eaa.png";
 import bcaa from "/public/categories/bcaa.png";
 import betaAlanine from "/public/categories/beta-alanine.png";
 import caffeine from "/public/categories/caffeine.png";
@@ -59,11 +59,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "Whey Protein (Sữa Tăng Cơ)",
     icon: wheyProtein,
     children: [
-      {
-        id: "1",
-        label: "Whey Protein",
-        icon: allWhey,
-      },
+      // {
+      //   id: "1",
+      //   label: "Whey Protein",
+      //   icon: allWhey,
+      // },
       {
         id: "11",
         label: "Protein Trải Dài",
@@ -81,11 +81,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "Mass Gainer (Sữa Tăng Cân)",
     icon: massGainer,
     children: [
-      {
-        id: "2",
-        label: "Mass Gainer",
-        icon: allMass,
-      },
+      // {
+      //   id: "2",
+      //   label: "Mass Gainer",
+      //   icon: allMass,
+      // },
       {
         id: "13",
         label: "Mass Cao Năng Lượng",
@@ -103,11 +103,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "EAA-BCAA (Amino Thiết Yếu)",
     icon: amino,
     children: [
-      {
-        id: "3",
-        label: "Tất cả BCAA-EAA",
-        icon: bcaaeaa,
-      },
+      // {
+      //   id: "3",
+      //   label: "Tất cả BCAA-EAA",
+      //   icon: bcaaeaa,
+      // },
       {
         id: "15",
         label: "EAA",
@@ -125,11 +125,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "Fat Burner (Đốt Mỡ)",
     icon: fatBurner,
     children: [
-      {
-        id: "4",
-        label: "Tất cả Fat Burner",
-        icon: allFat,
-      },
+      // {
+      //   id: "4",
+      //   label: "Tất cả Fat Burner",
+      //   icon: allFat,
+      // },
       {
         id: "17",
         label: "Đốt Mỡ Không Chất Kích Thích",
@@ -147,11 +147,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "Pre-Workout (Tăng Sức Mạnh)",
     icon: workout,
     children: [
-      {
-        id: "5",
-        label: "Tất Cả Pre-Workout",
-        icon: allPreworkout,
-      },
+      // {
+      //   id: "5",
+      //   label: "Tất Cả Pre-Workout",
+      //   icon: allPreworkout,
+      // },
       {
         id: "19",
         label: "Tăng Sức Mạnh Có Caffeine",
@@ -169,11 +169,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "Vitamin (Tăng Cường Sức Khỏe)",
     icon: vitamin,
     children: [
-      {
-        id: "6",
-        label: "Tất Cả Các Loại Vitamin",
-        icon: allVitamin,
-      },
+      // {
+      //   id: "6",
+      //   label: "Tất Cả Các Loại Vitamin",
+      //   icon: allVitamin,
+      // },
       {
         id: "21",
         label: "Vitamin Sức Khỏe",
@@ -196,11 +196,11 @@ export const productCategories: Array<TParamsCategory> = [
     label: "Đơn Chất",
     icon: element,
     children: [
-      {
-        id: "7",
-        label: "Tất Cả Các Đơn Chất",
-        icon: allElements,
-      },
+      // {
+      //   id: "7",
+      //   label: "Tất Cả Các Đơn Chất",
+      //   icon: allElements,
+      // },
       {
         id: "24",
         label: "Creatine",

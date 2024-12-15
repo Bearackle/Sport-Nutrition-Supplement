@@ -18,7 +18,7 @@ export const metadata: Metadata = {
       "Thương hiệu hàng đầu về sản phẩm dinh dưỡng thể thao, giúp bạn nâng cao hiệu suất và chăm sóc sức khỏe toàn diện.",
     type: "website",
     images: [
-      "https://github.com/Bearackle/Sport-Nutrition-Supplement/blob/main/frontend/public/logo.png?raw=true",
+      "https://raw.githubusercontent.com/Bearackle/Sport-Nutrition-Supplement/refs/heads/main/frontend/public/logo.png",
     ],
   },
 };
