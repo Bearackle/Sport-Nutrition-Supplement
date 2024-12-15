@@ -83,7 +83,7 @@ export const CartSection = () => {
       }
     }
   };
-  if (!data) return null;
+  if (!data) return <div></div>;
   if (data[0] === undefined) {
     return (
       <div
