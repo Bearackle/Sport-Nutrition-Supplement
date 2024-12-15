@@ -334,9 +334,7 @@ export const CartSection = () => {
                 "lg:ml-auto lg:w-[20rem] xl:ml-0 xl:w-full",
                 "active:!bg-none",
               )}
-              disabled={
-                isOrdering ? !address && !(addressId === 0) : !isAvailable
-              }
+              disabled={isOrdering ? !address && addressId === 0 : !isAvailable}
               onClick={handleOrderButton}
               style={{
                 backgroundImage:
