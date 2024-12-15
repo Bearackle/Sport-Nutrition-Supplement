@@ -23,4 +23,13 @@ class CartRepository extends BaseRepository implements CartRepositoryInterface{
             }]
             ,'combos')->find($cartId);
     }
+    public function getCartItemsForCartFix($cartId)
+    {
+        return ShoppingCart::with(['variants' => function ($variant) {
+                $variant->with(['product' => function($product){
+                    $product->with(['images']);
+                },'image']);
+            }]
+            ,'combos')->find($cartId);
+    }
 }

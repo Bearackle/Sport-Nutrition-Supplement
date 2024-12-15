@@ -19,7 +19,7 @@ class ProductVariantPivotResource extends JsonResource
             'cartItemId' => $this->pivot->cart_item_id,
             'productId' => $this->product_id,
             'productName' => $this->product->product_name,
-            'image' => $this->has('image') ? $this->image->image_url : null,
+            'image' => $this->image == null ? $this->product->images->value('image_url') : $this->image,
             'priceAfterSale' => $this->product->price_after_sale,
             'price' => $this->product->price,
             'variantId' => $this->variant_id,

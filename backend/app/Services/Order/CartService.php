@@ -36,7 +36,7 @@ class CartService implements CartServiceInterface
         return $this->cartRepository->getCartItems($cart->cart_id);
     }
     public function updateCartItemsVersion(ShoppingCartInputData $cart){
-        $items = $this->cartRepository->getCartItems($cart->cart_id);
+        $items = $this->cartRepository->getCartItemsForCartFix($cart->cart_id);
         foreach($items->variants as $item){
             $currentVersion = $item->version;
             $version = $item->pivot->version;
