@@ -69,6 +69,8 @@ export default function Home() {
               <Image
                 src={cafeMocha}
                 alt="banner"
+                loading="eager"
+                priority={true}
                 className="h-full w-full rounded-[0.625rem] object-cover"
               />
             </Link>
@@ -79,6 +81,7 @@ export default function Home() {
               <Image
                 src={cafeMocha}
                 alt="banner"
+                loading="eager"
                 className="h-full w-full rounded-[0.625rem] object-cover"
               />
             </Link>
@@ -89,6 +92,7 @@ export default function Home() {
               <Image
                 src={cafeMocha}
                 alt="banner"
+                loading="eager"
                 className="h-full w-full rounded-[0.625rem] object-cover"
               />
             </Link>
@@ -101,27 +105,33 @@ export default function Home() {
           </div>
           <TopDealSection />
           <div className="flex h-[18rem] w-full flex-row items-center gap-4 overflow-x-scroll rounded-[0.9375rem] bg-white px-3 ml:justify-evenly ml:gap-0 ml:overflow-hidden ml:px-0">
-            <Link href="#" className="flex-shrink-0">
+            <Link href="#" className="shrink-0">
               <Image
                 src={proteinGainer}
                 alt="Protein Gainer"
                 loading="lazy"
+                width={265}
+                height={265}
                 className="size-[16.5625rem] rounded-[0.625rem] transition-all duration-300 hover:scale-90"
               />
             </Link>
-            <Link href="#" className="flex-shrink-0">
+            <Link href="#" className="shrink-0">
               <Image
                 src={liciousGainer}
                 alt="Licious Gainer"
                 loading="lazy"
+                width={265}
+                height={265}
                 className="size-[16.5625rem] rounded-[0.625rem] transition-all duration-300 hover:scale-90"
               />
             </Link>
-            <Link href="#" className="flex-shrink-0">
+            <Link href="#" className="shrink-0">
               <Image
                 src={megaMass}
                 alt="Mega Mass"
                 loading="lazy"
+                width={265}
+                height={265}
                 className="size-[16.5625rem] rounded-[0.625rem] transition-all duration-300 hover:scale-90"
               />
             </Link>

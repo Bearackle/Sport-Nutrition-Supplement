@@ -42,7 +42,7 @@ export const Header = () => {
             "mx-auto flex flex-row items-center xl:mx-0",
             "-translate-x-4 xs:-translate-x-6 xl:-translate-x-0",
           )}
-          title="4H Store"
+          title="4HProtein"
         >
           <Image
             src={logo}
