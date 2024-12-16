@@ -24,10 +24,10 @@ import {
 } from "@/components/ui/breadcrumb";
 
 // ** Import Icons
-import exitIcon from "/public/exit-icon.png";
-import locationIcon from "/public/location-icon.png";
-import orderIcon from "/public/order-icon.png";
-import profileIcon from "/public/profile-icon.png";
+import exitIcon from "/public/exit-icon.webp";
+import locationIcon from "/public/location-icon.webp";
+import orderIcon from "/public/order-icon.webp";
+import profileIcon from "/public/profile-icon.webp";
 
 const routeMap: Record<string, string> = {
   "/nguoi-dung/thong-tin-ca-nhan": "Thông tin cá nhân",

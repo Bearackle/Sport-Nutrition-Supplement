@@ -12,7 +12,7 @@ import { CartProductsType, OrderRequestResType } from "@/types/cart";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import emptyCart from "/public/empty-cart.png";
+import emptyCart from "/public/empty-cart.webp";
 
 export const CartSection = () => {
   const { toast } = useToast();

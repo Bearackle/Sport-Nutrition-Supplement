@@ -5,16 +5,16 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 // ** Import images
 import { categories } from "@/data/category";
-import accessory from "/public/home/category-bar/accessory.png";
-import bcaa from "/public/home/category-bar/bcaa.png";
-import bounty from "/public/home/category-bar/bounty.png";
-import diet from "/public/home/category-bar/diet.png";
-import element from "/public/home/category-bar/element.png";
-import lipo from "/public/home/category-bar/lipo.png";
-import mass from "/public/home/category-bar/mass.png";
-import preworkout from "/public/home/category-bar/pre-workout.png";
-import vitamin from "/public/home/category-bar/vitamin.png";
-import whey from "/public/home/category-bar/whey.png";
+import accessory from "/public/home/category-bar/accessory.webp";
+import bcaa from "/public/home/category-bar/bcaa.webp";
+import bounty from "/public/home/category-bar/bounty.webp";
+import diet from "/public/home/category-bar/diet.webp";
+import element from "/public/home/category-bar/element.webp";
+import lipo from "/public/home/category-bar/lipo.webp";
+import mass from "/public/home/category-bar/mass.webp";
+import preworkout from "/public/home/category-bar/pre-workout.webp";
+import vitamin from "/public/home/category-bar/vitamin.webp";
+import whey from "/public/home/category-bar/whey.webp";
 
 const categoryList = [
   {

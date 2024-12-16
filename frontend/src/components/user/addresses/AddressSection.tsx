@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import AddAddressModal from "./AddAddressModal";
 import AddressCard from "./AddressCard";
-import noAddress from "/public/no-address.png";
+import noAddress from "/public/no-address.webp";
 
 const AddressSection = () => {
   const [data, setData] = useState<AddressListResType>([]);

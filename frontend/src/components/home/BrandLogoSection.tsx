@@ -1,14 +1,14 @@
 // ** Import image
 import Image from "next/image";
-import dymatize from "/public/home/brand-logo/dymatize.png";
-import evl from "/public/home/brand-logo/evl.png";
-import kfd from "/public/home/brand-logo/kfd.png";
-import muscletech from "/public/home/brand-logo/muscletech.png";
-import nutrex from "/public/home/brand-logo/nutrex.png";
-import on from "/public/home/brand-logo/on.png";
-import onerule from "/public/home/brand-logo/onerule.png";
-import ostrovit from "/public/home/brand-logo/ostrovit.png";
-import zNutrition from "/public/home/brand-logo/z-nutrition.png";
+import dymatize from "/public/home/brand-logo/dymatize.webp";
+import evl from "/public/home/brand-logo/evl.webp";
+import kfd from "/public/home/brand-logo/kfd.webp";
+import muscletech from "/public/home/brand-logo/muscletech.webp";
+import nutrex from "/public/home/brand-logo/nutrex.webp";
+import on from "/public/home/brand-logo/on.webp";
+import onerule from "/public/home/brand-logo/onerule.webp";
+import ostrovit from "/public/home/brand-logo/ostrovit.webp";
+import zNutrition from "/public/home/brand-logo/z-nutrition.webp";
 
 const brandList = [
   {
