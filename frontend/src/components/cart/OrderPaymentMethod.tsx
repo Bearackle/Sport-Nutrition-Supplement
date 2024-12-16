@@ -5,8 +5,8 @@ import { Dispatch, SetStateAction } from "react";
 import { MethodSelection } from "./MethodSelection";
 import cash from "/public/cart/cash.svg";
 import internetBanking from "/public/cart/internet-banking.svg";
-import momo from "/public/cart/momo.png";
-import vnPay from "/public/cart/vn-pay.png";
+import momo from "/public/cart/momo.webp";
+import vnPay from "/public/cart/vn-pay.webp";
 
 const PAYMENT_METHODS = [
   {

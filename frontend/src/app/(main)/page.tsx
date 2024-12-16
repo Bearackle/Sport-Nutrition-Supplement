@@ -1,19 +1,22 @@
-import SideBar from "@/components/nav-bar/SideBar";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-// ** Import images
+// ** Import components
 import BrandLogoSection from "@/components/home/BrandLogoSection";
-import CategoryBar from "@/components/home/CategoryBar";
 import ClearanceSaleSection from "@/components/home/ClearanceSaleSection";
 import CouponCard from "@/components/home/CouponCard";
 import TopDealSection from "@/components/home/TopDealSection";
-import cafeMocha from "/public/product-banners/cafe-mocha.jpeg";
-import liciousGainer from "/public/product-banners/licious-gainer-banner.png";
-import megaMass from "/public/product-banners/mega-mass-banner.png";
-import proteinGainer from "/public/product-banners/protein-gainer-banner.png";
+import SideBar from "@/components/nav-bar/SideBar";
+
+// ** Import images
+import banner1 from "/public/product-banners/banner-1.webp";
+import banner2 from "/public/product-banners/banner-2.webp";
+import banner3 from "/public/product-banners/banner-3.webp";
+import liciousGainer from "/public/product-banners/licious-gainer-banner.webp";
+import megaMass from "/public/product-banners/mega-mass-banner.webp";
+import proteinGainer from "/public/product-banners/protein-gainer-banner.webp";
 
 export const metadata: Metadata = {
   title: "4HProtein | Thực phẩm thể hình chính hãng",
@@ -67,11 +70,11 @@ export default function Home() {
           >
             <Link href="#" className="col-span-4 row-span-4 rounded-[0.625rem]">
               <Image
-                src={cafeMocha}
+                src={banner1}
                 alt="banner"
                 loading="eager"
                 priority={true}
-                className="h-full w-full rounded-[0.625rem] object-cover"
+                className="h-full w-full rounded-[0.625rem] object-fill"
               />
             </Link>
             <Link
@@ -79,10 +82,10 @@ export default function Home() {
               className="col-span-2 col-start-5 row-span-2 hidden rounded-[0.625rem] sm:block"
             >
               <Image
-                src={cafeMocha}
+                src={banner2}
                 alt="banner"
                 loading="eager"
-                className="h-full w-full rounded-[0.625rem] object-cover"
+                className="h-full w-full rounded-[0.625rem] object-fill"
               />
             </Link>
             <Link
@@ -90,14 +93,14 @@ export default function Home() {
               className="col-span-2 col-start-5 row-span-2 row-start-3 hidden rounded-[0.625rem] sm:block"
             >
               <Image
-                src={cafeMocha}
+                src={banner3}
                 alt="banner"
                 loading="eager"
-                className="h-full w-full rounded-[0.625rem] object-cover"
+                className="h-full w-full rounded-[0.625rem] object-fill"
               />
             </Link>
           </div>
-          <CategoryBar />
+          {/* <CategoryBar /> */}
           <div className="flex w-full flex-row items-center gap-4 overflow-x-scroll ml:justify-between ml:gap-0 ml:overflow-hidden xl:h-[7.375rem]">
             {couponData.map((coupon, index) => (
               <CouponCard key={index} {...coupon} />

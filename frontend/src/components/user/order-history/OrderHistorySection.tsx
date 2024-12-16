@@ -4,7 +4,7 @@ import { OrderHistoryResType } from "@/types/order-history";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import OrderCard from "./OrderCard";
-import emptyBox from "/public/empty-box.png";
+import emptyBox from "/public/empty-box.webp";
 
 const OrderHistorySection = () => {
   const [data, setData] = useState<OrderHistoryResType>([]);
