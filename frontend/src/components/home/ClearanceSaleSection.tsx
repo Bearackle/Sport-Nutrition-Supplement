@@ -1,13 +1,13 @@
 "use client";
 import productApiRequest from "@/apiRequests/product";
-import { cn } from "@/lib/utils";
+import { categories } from "@/data/category";
+import { cn, convertSlugUrl } from "@/lib/utils";
 import { TopDealsResType } from "@/types/product";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { CustomCarousel } from "../common/CustomCarousel";
 import { CarouselItem } from "../ui/carousel";
 import HomeProductCard from "./HomeProductCard";
-import arrow from "/public/arrow.svg";
+import { SeeMoreButton } from "./SeeMoreButton";
 
 const ClearanceSaleSection = () => {
   const [activeProduct, setActiveProduct] = useState("clearance-sale");
@@ -63,10 +63,7 @@ const ClearanceSaleSection = () => {
         </CustomCarousel>
       </div>
       <div className="mt-2 flex justify-center">
-        <button className="flex flex-row items-center rounded-[0.625rem] border border-solid border-[#8C8F8D] px-2 py-1 text-[0.875rem]">
-          Xem tất cả{" "}
-          <Image src={arrow} alt="arrow" className="size-4 leading-[1.21]" />
-        </button>
+        <SeeMoreButton url={`/danh-muc/${convertSlugUrl(categories[10])}-10`} />
       </div>
     </div>
   );
