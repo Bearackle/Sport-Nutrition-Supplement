@@ -67,7 +67,10 @@ const OrderCard = ({ order }: TProps) => {
         {!showAll && (
           <button
             onClick={() => setShowAll(!showAll)}
-            className="flex flex-row items-center justify-center gap-[0.125em] text-[0.8em] text-[#707070]"
+            className={cn(
+              "flex flex-row items-center justify-center gap-[0.125em] text-[0.8em] text-[#707070]",
+              order.products.length > 1 ? "cursor-pointer" : "hidden",
+            )}
           >
             Xem thêm{" "}
             <svg
