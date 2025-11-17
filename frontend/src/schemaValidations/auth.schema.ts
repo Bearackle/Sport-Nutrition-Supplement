@@ -22,16 +22,7 @@ export const LoginBody = z
 export type LoginBodyType = z.TypeOf<typeof LoginBody>;
 
 export const LoginRes = z.object({
-  status: z.number(),
-  message: z.string(),
   token: z.string(),
-  expiresAt: z.string(),
-  account: z.object({
-    userId: z.number(),
-    name: z.string(),
-    email: z.string(),
-    phone: z.string(),
-  }),
 });
 
 export type LoginResType = z.TypeOf<typeof LoginRes>;
@@ -88,7 +79,9 @@ export const RegisterBody = z
 
 export type RegisterBodyType = z.TypeOf<typeof RegisterBody>;
 
-export const RegisterRes = LoginRes;
+export const RegisterRes = z.object({
+  userId: z.string(),
+});
 
 export type RegisterResType = z.TypeOf<typeof RegisterRes>;
 

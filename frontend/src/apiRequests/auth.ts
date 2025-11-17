@@ -1,4 +1,5 @@
 import http from "@/lib/http";
+import { getTokenExpiration } from "@/lib/jwt";
 import { ProfileResType } from "@/schemaValidations/account.schema";
 import {
   ChangePasswordBodyType,
@@ -9,18 +10,22 @@ import {
 } from "@/schemaValidations/auth.schema";
 
 const authApiRequest = {
-  login: (body: LoginBodyType) =>
-    http.post<LoginResType>("/account/login", body),
+  login: (body: LoginBodyType) => http.post<LoginResType>("/auth/login", body),
   register: (body: RegisterBodyType) =>
-    http.post<RegisterResType>("/account/register", body),
-  auth: (body: { sessionToken: string; expiresAt: string }) =>
-    http.post("/api/auth", body, {
-      baseUrl: "",
-    }),
-  logout: () => http.delete("/api/auth", { baseUrl: "" }),
+    http.post<RegisterResType>("/auth/register", body),
   changePassword: (body: ChangePasswordBodyType) =>
-    http.patch("/account/change-password", body),
+    http.patch("/auth/change-password", body),
+  setToken: (token: string) => {
+    const expiresAt = getTokenExpiration(token);
+    return http.post(
+      "/api/auth",
+      { sessionToken: token, expiresAt: expiresAt?.toISOString() },
+      { baseUrl: "" },
+    );
+  },
+  logout: () => http.delete("/api/auth", { baseUrl: "" }),
   profile: () => http.get<ProfileResType>("/account/profile"),
+  userID: () => http.get<string>("/auth/introspect"),
 };
 
 export default authApiRequest;

@@ -1,6 +1,5 @@
 import envConfig from "@/config";
-import { normalizePath } from "@/lib/utils";
-import { LoginResType } from "@/schemaValidations/auth.schema";
+import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 
 type CustomOptions = Omit<RequestInit, "method"> & {
@@ -70,7 +69,7 @@ const request = async <Response>(
           Accept: "application/json",
         };
   if (isClient()) {
-    const sessionToken = localStorage.getItem("sessionToken");
+    const sessionToken = Cookies.get("sessionToken");
     if (sessionToken) {
       baseHeaders.Authorization = `Bearer ${sessionToken}`;
     }
@@ -113,51 +112,24 @@ const request = async <Response>(
     } else if (res.status === AUTHENTICATION_ERROR_STATUS) {
       if (isClient()) {
         if (!clientLogoutRequest) {
-          clientLogoutRequest = fetch("/api/auth/logout", {
-            method: "POST",
-            body: JSON.stringify({ force: true }),
-            headers: {
-              ...baseHeaders,
-            } as any,
+          clientLogoutRequest = fetch("/api/auth", {
+            method: "DELETE",
           });
           try {
             await clientLogoutRequest;
           } catch (error) {
-            throw error;
+            console.error("Logout error:", error);
           } finally {
-            localStorage.removeItem("sessionToken");
-            localStorage.removeItem("sessionTokenExpiresAt");
             localStorage.removeItem("user");
             clientLogoutRequest = null;
             window.location.href = "/dang-nhap";
           }
         }
       } else {
-        const sessionToken = (options?.headers as any)?.Authorization.split(
-          "Bearer ",
-        )[1];
-        redirect(`/logout?sessionToken=${sessionToken}`);
+        redirect("/dang-nhap");
       }
     } else {
       throw new HttpError(data);
-    }
-  }
-  // Đảm bảo logic dưới đây chỉ chạy ở phía client (browser)
-  if (isClient()) {
-    if (
-      ["auth/login", "auth/register"].some(
-        (item) => item === normalizePath(url),
-      )
-    ) {
-      const token = (payload as LoginResType).token;
-      localStorage.setItem("sessionToken", token);
-      localStorage.setItem(
-        "sessionTokenExpiresAt",
-        new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-      );
-    } else if ("auth/logout" === normalizePath(url)) {
-      localStorage.removeItem("sessionToken");
-      localStorage.removeItem("sessionTokenExpiresAt");
     }
   }
   return data;

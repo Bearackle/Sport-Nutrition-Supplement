@@ -89,18 +89,16 @@ export default function UserLayout({
     setLoading(true);
     try {
       await authApiRequest.logout();
+      localStorage.removeItem("user");
       router.push("/dang-nhap");
-      localStorage.removeItem("sessionToken");
-      localStorage.removeItem("sessionTokenExpiresAt");
     } catch (error) {
       handleErrorApi({
         error,
       });
     } finally {
       setUser(null);
+      setLoading(false);
       router.refresh();
-      localStorage.removeItem("sessionToken");
-      localStorage.removeItem("sessionTokenExpiresAt");
     }
   };
 

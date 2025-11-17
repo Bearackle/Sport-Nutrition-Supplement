@@ -1,7 +1,8 @@
 export async function POST(request: Request) {
   const body = await request.json();
   const sessionToken = body.sessionToken as string;
-  const expiresAt = body.expiresAt as string;
+  const expiresAt = body.expiresAt as string | undefined;
+
   if (!sessionToken) {
     return Response.json(
       { message: "Không nhận được session token" },
@@ -10,13 +11,20 @@ export async function POST(request: Request) {
       },
     );
   }
-  const expiresDate = new Date(expiresAt).toUTCString();
-  return Response.json(body, {
-    status: 200,
-    headers: {
-      "Set-Cookie": `sessionToken=${sessionToken}; Path=/; HttpOnly; Expires=${expiresDate}; SameSite=Lax; Secure`,
+
+  const expiresDate = expiresAt
+    ? new Date(expiresAt).toUTCString()
+    : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toUTCString();
+
+  return Response.json(
+    { message: "Token đã được lưu" },
+    {
+      status: 200,
+      headers: {
+        "Set-Cookie": `sessionToken=${sessionToken}; Path=/; HttpOnly; Expires=${expiresDate}; SameSite=Lax; Secure`,
+      },
     },
-  });
+  );
 }
 
 export async function DELETE(_request: Request) {
