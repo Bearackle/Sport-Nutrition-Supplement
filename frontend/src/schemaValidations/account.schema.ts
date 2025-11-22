@@ -2,7 +2,7 @@ import z from "zod";
 
 export const AccountRes = z
   .object({
-    userId: z.number(),
+    userId: z.string(),
     name: z.string(),
     email: z.string(),
     phone: z.string(),
@@ -18,7 +18,7 @@ export const UpdateMeBody = z.object({
 export type UpdateMeBodyType = z.TypeOf<typeof UpdateMeBody>;
 
 export const ProfileRes = z.object({
-  userId: z.number(),
+  userId: z.string(),
   name: z.string(),
   email: z.string(),
   emailVerifiedAt: z.string().nullable(),

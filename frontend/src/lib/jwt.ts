@@ -32,3 +32,22 @@ export function getTokenExpiration(token: string): Date | null {
     return null;
   }
 }
+
+export function isTokenValid(
+  token: string,
+  bufferSeconds: number = 60,
+): boolean {
+  try {
+    const expirationDate = getTokenExpiration(token);
+    if (!expirationDate) {
+      return false;
+    }
+
+    const now = new Date();
+    const bufferTime = new Date(now.getTime() + bufferSeconds * 1000);
+
+    return expirationDate > bufferTime;
+  } catch {
+    return false;
+  }
+}

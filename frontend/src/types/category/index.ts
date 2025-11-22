@@ -22,3 +22,18 @@ export type TParamsCategoryWithAmount = {
     icon: string | StaticImageData;
   }[];
 };
+
+export type CategoryType = {
+  id: string;
+  categoryName: string;
+  imgUrl: string;
+};
+
+export type CategoryListType = CategoryType[];
+
+export type CategoryTreeType = {
+  id: string;
+  categoryName: string;
+  imgUrl: string;
+  children: CategoryTreeType[];
+};

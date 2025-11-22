@@ -22,8 +22,8 @@ const RegisterForm = () => {
   const form = useForm<RegisterBodyType>({
     resolver: zodResolver(RegisterBody),
     defaultValues: {
-      name: "",
-      phone: "",
+      fullName: "",
+      phoneNumber: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -33,13 +33,13 @@ const RegisterForm = () => {
   const formFields: FormFieldConfig<RegisterBodyType>[] = useMemo(
     () => [
       {
-        name: "name",
+        name: "fullName",
         label: "Họ và tên",
         placeholder: "Họ và tên",
         type: "text",
       },
       {
-        name: "phone",
+        name: "phoneNumber",
         label: "Số điện thoại",
         placeholder: "Số điện thoại",
         type: "tel",

@@ -57,7 +57,8 @@ const AddressSection = () => {
     <div className="mt-[0.75em] min-h-[30em] w-full rounded-[0.625em] bg-white pb-4">
       <div className="divide-y">
         {data.map((address) => (
-          <AddressCard key={address.addressId} address={address} />
+          // <AddressCard key={address.addressId} address={address} />
+          <AddressCard key={address.id} address={address} />
         ))}
       </div>
       <div className="flex w-full justify-center">

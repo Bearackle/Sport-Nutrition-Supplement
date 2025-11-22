@@ -1,6 +1,7 @@
 "use client";
 
 import authApiRequest from "@/apiRequests/auth";
+import userApiRequest from "@/apiRequests/user";
 import { useAppContext } from "@/app/app-provider";
 import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
 import { DynamicForm, FormFieldConfig } from "@/components/form";
@@ -56,7 +57,7 @@ const LoginForm = () => {
 
       await authApiRequest.setToken(token);
 
-      const profileResult = await authApiRequest.profile();
+      const profileResult = await userApiRequest.profile();
       setUser(profileResult.payload);
 
       toast({
@@ -67,11 +68,23 @@ const LoginForm = () => {
       router.push("/");
       router.refresh();
     } catch (error: any) {
-      handleErrorApi({
-        error,
-        setError: form.setError,
-      });
-      setError("Tài khoản hoặc mật khẩu không chính xác");
+      let errorMessage = "Đã có lỗi xảy ra. Vui lòng thử lại.";
+
+      if (error?.status === 401 || error?.payload?.status === 401) {
+        errorMessage = "Tài khoản hoặc mật khẩu không chính xác";
+      } else if (error?.status === 422 || error?.payload?.status === 422) {
+        handleErrorApi({
+          error,
+          setError: form.setError,
+        });
+        errorMessage = "Vui lòng kiểm tra lại thông tin đăng nhập";
+      } else if (!navigator.onLine) {
+        errorMessage = "Không có kết nối mạng. Vui lòng kiểm tra lại.";
+      } else if (error?.message?.includes("fetch")) {
+        errorMessage = "Không thể kết nối đến máy chủ. Vui lòng thử lại sau.";
+      }
+
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

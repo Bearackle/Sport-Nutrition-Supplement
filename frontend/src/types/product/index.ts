@@ -8,18 +8,25 @@ export type GetProductsBodyType = {
 };
 
 export type ProductsResType = {
-  productId: number;
+  id: string;
   productName: string;
   price: number;
-  sale: number;
-  priceAfterSale: number;
-  image: {
-    imageId: number;
-    imageUrl: string;
-    publicId: string;
-    createAt: string;
-  }[];
+  imageUrl: string;
 }[];
+
+// export type ProductsResType = {
+//   productId: number;
+//   productName: string;
+//   price: number;
+//   sale: number;
+//   priceAfterSale: number;
+//   image: {
+//     imageId: number;
+//     imageUrl: string;
+//     publicId: string;
+//     createAt: string;
+//   }[];
+// }[];
 
 export type ProductsMetaType = {
   path: string;
@@ -78,3 +85,13 @@ export type ProductDetailResType = {
     stockQuantity: number;
   }[];
 };
+
+export type ProductVariantType = {
+  id: string;
+  variantName: string;
+  productId: string;
+  quantity: number;
+  imgUrl: string;
+};
+
+export type ProductVariantListType = ProductVariantType[];

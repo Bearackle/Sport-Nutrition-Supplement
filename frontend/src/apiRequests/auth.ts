@@ -1,6 +1,5 @@
 import http from "@/lib/http";
 import { getTokenExpiration } from "@/lib/jwt";
-import { ProfileResType } from "@/schemaValidations/account.schema";
 import {
   ChangePasswordBodyType,
   LoginBodyType,
@@ -24,8 +23,6 @@ const authApiRequest = {
     );
   },
   logout: () => http.delete("/api/auth", { baseUrl: "" }),
-  profile: () => http.get<ProfileResType>("/account/profile"),
-  userID: () => http.get<string>("/auth/introspect"),
 };
 
 export default authApiRequest;

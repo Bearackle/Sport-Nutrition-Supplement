@@ -8,12 +8,14 @@ import {
 } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import accountIcon from "/public/account-icon.svg";
 import cartIcon from "/public/cart-icon.svg";
 
 export const UserAndCart = () => {
   const { user } = useAppContext();
+  const router = useRouter();
   const MobileUser = () => {
     if (user) {
       return (
@@ -54,19 +56,29 @@ export const UserAndCart = () => {
       </Link>
     );
   };
+
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (!user) {
+      router.push("/dang-nhap");
+    } else {
+      router.push("/gio-hang");
+    }
+  };
+
   return (
     <div className="absolute right-[4%] flex flex-row items-center gap-1 xs:gap-4 xl:hidden">
       <MobileUser />
       <div>
-        <Link
-          href="/gio-hang"
-          className="flex flex-row items-center gap-2 rounded-[3.125rem] px-4 py-2 lg:bg-[#1250DC]"
+        <button
+          onClick={handleCartClick}
+          className="flex cursor-pointer flex-row items-center gap-2 rounded-[3.125rem] px-4 py-2 lg:bg-[#1250DC]"
         >
           <Image src={cartIcon} alt="" className="size-5 xs:size-7" />
           <p className="hidden text-center text-[0.875rem] font-semibold tracking-[0.025rem] text-white lg:block">
             Giỏ hàng
           </p>
-        </Link>
+        </button>
       </div>
     </div>
   );

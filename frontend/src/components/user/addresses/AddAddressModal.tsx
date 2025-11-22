@@ -40,7 +40,8 @@ const AddAddressModal = () => {
   const form = useForm<z.infer<typeof AddressBody>>({
     resolver: zodResolver(AddressBody),
     defaultValues: {
-      addressDetail: "",
+      // addressDetail: "",
+      location: "",
     },
   });
 
@@ -87,7 +88,8 @@ const AddAddressModal = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
-              name="addressDetail"
+              // name="addressDetail"
+              name="location"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">

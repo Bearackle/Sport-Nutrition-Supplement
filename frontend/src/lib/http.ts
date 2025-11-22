@@ -1,6 +1,7 @@
 import envConfig from "@/config";
 import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
+import { isTokenValid } from "./jwt";
 
 type CustomOptions = Omit<RequestInit, "method"> & {
   baseUrl?: string | undefined;
@@ -71,11 +72,17 @@ const request = async <Response>(
   if (isClient()) {
     const sessionToken = Cookies.get("sessionToken");
     if (sessionToken) {
-      baseHeaders.Authorization = `Bearer ${sessionToken}`;
+      if (isTokenValid(sessionToken)) {
+        baseHeaders.Authorization = `Bearer ${sessionToken}`;
+      } else {
+        console.warn("Token đã hết hạn, đang đăng xuất...");
+        localStorage.removeItem("user");
+        window.dispatchEvent(new CustomEvent("auth:logout"));
+        window.location.href = "/dang-nhap";
+        throw new Error("Token đã hết hạn");
+      }
     }
   }
-  // Nếu không truyền baseUrl (hoặc baseUrl = undefined) thì lấy từ envConfig.NEXT_PUBLIC_API_ENDPOINT
-  // Nếu truyền baseUrl thì lấy giá trị truyền vào, truyền vào '' thì đồng nghĩa với việc chúng ta gọi API đến Next.js Server
 
   const baseUrl =
     options?.baseUrl === undefined
@@ -100,7 +107,6 @@ const request = async <Response>(
     status: res.status,
     payload,
   };
-  // Interceptor là nơi chúng ta xử lý request và response trước khi trả về cho phía component
   if (!res.ok) {
     if (res.status === ENTITY_ERROR_STATUS) {
       throw new EntityError(
@@ -121,6 +127,7 @@ const request = async <Response>(
             console.error("Logout error:", error);
           } finally {
             localStorage.removeItem("user");
+            window.dispatchEvent(new CustomEvent("auth:logout"));
             clientLogoutRequest = null;
             window.location.href = "/dang-nhap";
           }

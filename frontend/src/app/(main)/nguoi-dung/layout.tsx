@@ -1,5 +1,6 @@
 "use client";
 import authApiRequest from "@/apiRequests/auth";
+import userApiRequest from "@/apiRequests/user";
 import { useAppContext } from "@/app/app-provider";
 import CustomLoadingAnimation from "@/components/common/CustomLoadingAnimation";
 import {
@@ -26,6 +27,7 @@ import {
 // ** Import Icons
 import exitIcon from "/public/exit-icon.webp";
 import locationIcon from "/public/location-icon.webp";
+import loyaltyIcon from "/public/loyalty-icon.svg";
 import orderIcon from "/public/order-icon.webp";
 import profileIcon from "/public/profile-icon.webp";
 
@@ -33,6 +35,7 @@ const routeMap: Record<string, string> = {
   "/nguoi-dung/thong-tin-ca-nhan": "Thông tin cá nhân",
   "/nguoi-dung/lich-su-don-hang": "Lịch sử đơn hàng",
   "/nguoi-dung/so-dia-chi": "Quản lý sổ địa chỉ",
+  "/nguoi-dung/khach-hang-than-thiet": "Khách hàng thân thiết",
 };
 
 const tabs = [
@@ -50,6 +53,11 @@ const tabs = [
     href: "/nguoi-dung/so-dia-chi",
     label: "Quản lý sổ địa chỉ",
     icon: locationIcon,
+  },
+  {
+    href: "/nguoi-dung/khach-hang-than-thiet",
+    label: "Khách hàng thân thiết",
+    icon: loyaltyIcon,
   },
 ];
 
@@ -79,7 +87,7 @@ export default function UserLayout({
 
   useEffect(() => {
     const fetchProfile = async () => {
-      await authApiRequest.profile();
+      await userApiRequest.profile();
     };
     fetchProfile();
   }, []);

@@ -45,13 +45,15 @@ const EditAddressModal = ({ address }: TProps) => {
   const form = useForm<z.infer<typeof AddressBody>>({
     resolver: zodResolver(AddressBody),
     defaultValues: {
-      addressDetail: address.addressDetail,
+      // addressDetail: address.addressDetail,
+      location: address.location,
     },
   });
 
   async function onSubmit(values: AddressBodyType) {
     try {
-      await addressApiRequest.updateAddress(address.addressId, values);
+      // await addressApiRequest.updateAddress(address.addressId, values);
+      await addressApiRequest.updateAddress(address.id, values);
       toast({
         variant: "success",
         title: "Cập nhật địa chỉ thành công",
@@ -95,7 +97,8 @@ const EditAddressModal = ({ address }: TProps) => {
           >
             <FormField
               control={form.control}
-              name="addressDetail"
+              // name="addressDetail"
+              name="location"
               render={({ field }) => (
                 <FormItem className="space-y-2 md:space-y-0.5 lg:space-y-1 xl:space-y-2">
                   <FormLabel className="text-[0.875rem] md:text-[0.625rem] lg:text-[0.725rem] xl:text-[0.875rem]">

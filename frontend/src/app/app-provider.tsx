@@ -28,26 +28,44 @@ export default function AppProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [user, setUserState] = useState<User | null>(() => {
-    // if (isClient()) {
-    //   const _user = localStorage.getItem('user')
-    //   return _user ? JSON.parse(_user) : null
-    // }
-    return null;
-  });
+  const [user, setUserState] = useState<User | null>(null);
   const isAuthenticated = Boolean(user);
-  const setUser = useCallback(
-    (user: User | null) => {
-      setUserState(user);
+
+  const setUser = useCallback((user: User | null) => {
+    setUserState(user);
+    if (user === null) {
+      localStorage.removeItem("user");
+    } else {
       localStorage.setItem("user", JSON.stringify(user));
-    },
-    [setUserState],
-  );
+    }
+  }, []);
 
   useEffect(() => {
     const _user = localStorage.getItem("user");
-    setUserState(_user ? JSON.parse(_user) : null);
-  }, [setUserState]);
+    if (_user && _user !== "null" && _user !== "undefined") {
+      try {
+        const parsedUser = JSON.parse(_user);
+        if (parsedUser && typeof parsedUser === "object") {
+          setUserState(parsedUser);
+        }
+      } catch (error) {
+        console.error("Error parsing user from localStorage:", error);
+        localStorage.removeItem("user");
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleLogout = () => {
+      setUserState(null);
+    };
+
+    window.addEventListener("auth:logout", handleLogout);
+
+    return () => {
+      window.removeEventListener("auth:logout", handleLogout);
+    };
+  }, []);
 
   return (
     <AppContext.Provider

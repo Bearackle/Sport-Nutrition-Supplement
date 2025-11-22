@@ -16,7 +16,8 @@ const AddressCard = ({ address }: TProps) => {
 
   const handleDelete = async () => {
     try {
-      await addressApiRequest.deleteAddress(address.addressId);
+      // await addressApiRequest.deleteAddress(address.addressId);
+      await addressApiRequest.deleteAddress(address.id);
       toast({
         variant: "success",
         title: "Xóa địa chỉ thành công",
@@ -42,7 +43,8 @@ const AddressCard = ({ address }: TProps) => {
           </div>
         </div>
         <div className="line-clamp-3 font-normal text-[#8C8F8D]">
-          {address.addressDetail}
+          {/* {address.addressDetail} */}
+          {address.location}
         </div>
       </div>
       <div className="flex flex-row items-center gap-[0.5em] text-[0.875em] leading-[1.21]">

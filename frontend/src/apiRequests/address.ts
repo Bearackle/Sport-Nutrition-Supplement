@@ -2,16 +2,16 @@ import http from "@/lib/http";
 import {
   AddressBodyType,
   AddressListResType,
-  AddressResType,
 } from "@/schemaValidations/address.schema";
 
 const addressApiRequest = {
   getAddress: () => http.get<AddressListResType>("/address"),
   addAddress: (body: AddressBodyType) =>
-    http.post<AddressResType>("/address", body),
-  updateAddress: (addressId: number, body: AddressBodyType) =>
-    http.post<AddressResType>(`/address/update/${addressId}`, body),
-  deleteAddress: (addressId: number) => http.delete(`/address/${addressId}`),
+    http.post<{ id: string }>("/address", body),
+  updateAddress: (addressId: string, body: AddressBodyType) =>
+    http.put<{ status: string }>(`/address/${addressId}`, body),
+  deleteAddress: (addressId: string) =>
+    http.delete<{ status: string }>(`/address/${addressId}`),
 };
 
 export default addressApiRequest;
